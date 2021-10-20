@@ -25,7 +25,7 @@ class _SignInPageState extends State<SignInPage> {
             Container(
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage("assets/images/header2.png"),
+                      image: AssetImage("images/header3.png"),
                       fit: BoxFit.cover,
                       alignment: Alignment.topCenter)),
               child: Column(
@@ -51,15 +51,14 @@ class _SignInPageState extends State<SignInPage> {
                           decoration: BoxDecoration(
                               image: DecorationImage(
                                   scale: 1.5,
-                                  image: AssetImage("assets/images/circle.png"),
+                                  image: AssetImage("images/circle.png"),
                                   alignment: Alignment.center)),
                         ),
                         Container(
                           decoration: BoxDecoration(
                               image: DecorationImage(
                                   scale: 1.8,
-                                  image:
-                                      AssetImage("assets/images/iconlogin.png"),
+                                  image: AssetImage("images/iconlogin.png"),
                                   alignment: Alignment(0, 0.2))),
                         ),
                       ],

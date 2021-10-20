@@ -26,7 +26,7 @@ class _successpassword_pagesState extends State<successpassword_pages> {
               height: 800,
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage("assets/images/success.png"),
+                      image: AssetImage("images/success.png"),
                       fit: BoxFit.cover,
                       alignment: Alignment.topCenter)),
               child: Stack(
@@ -35,7 +35,7 @@ class _successpassword_pagesState extends State<successpassword_pages> {
                     decoration: BoxDecoration(
                         image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: AssetImage("assets/images/successbg.png"),
+                            image: AssetImage("images/successbg.png"),
                             alignment: Alignment.center)),
                   ),
 
@@ -43,8 +43,7 @@ class _successpassword_pagesState extends State<successpassword_pages> {
                     decoration: BoxDecoration(
                         image: DecorationImage(
                             scale: 1.5,
-                            image:
-                                AssetImage("assets/images/checkpassword.png"),
+                            image: AssetImage("images/checkpassword.png"),
                             alignment: Alignment.center)),
                   ),
                   GestureDetector(
