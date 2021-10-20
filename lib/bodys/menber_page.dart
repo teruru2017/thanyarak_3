@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:thanyarak/bodys/signin_page.dart';
 import 'package:thanyarak/utility/my_constant.dart';
 import 'package:thanyarak/widgets/show_title.dart';
 
@@ -73,7 +75,12 @@ class _MenderPageState extends State<MenderPage> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(builder: (context) => SignInPage()),
+                    );
+                  },
                   child: ShowTitle(
                     title: 'เข้าสู่ระบบ',
                     textStyle: MyConstant().h3StyleWhite(),
