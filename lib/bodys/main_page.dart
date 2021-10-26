@@ -2,6 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:thanyarak/bodys/about_page.dart';
+import 'package:thanyarak/bodys/menu_page.dart';
 import 'package:thanyarak/bodys/signin_page.dart';
 import 'package:thanyarak/utility/my_constant.dart';
 import 'package:thanyarak/widgets/show_circular.dart';
@@ -13,6 +15,10 @@ class MainPage extends StatefulWidget {
 
   @override
   _MainPageState createState() => _MainPageState();
+}
+
+void results() {
+  SignInPage();
 }
 
 class _MainPageState extends State<MainPage> {
@@ -149,7 +155,12 @@ class _MainPageState extends State<MainPage> {
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(primary: Colors.white),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => AboutPage()));
+                    },
                     child: ShowTitle(
                       title: 'ดูทั้งหมด',
                       textStyle: MyConstant().h2StyleBlue(),
@@ -166,7 +177,7 @@ class _MainPageState extends State<MainPage> {
 
   SizedBox listArticle() {
     return SizedBox(
-      height: 350,
+      height: 320,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,
@@ -195,7 +206,7 @@ class _MainPageState extends State<MainPage> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: ShowTitle(
-                  title: titleAritcles[index],
+                  title: cutWordH(titleAritcles[index]),
                   textStyle: MyConstant().h2StyleBlue(),
                 ),
               ),
@@ -211,7 +222,9 @@ class _MainPageState extends State<MainPage> {
                 ),
               ),
             ),
-            const Spacer(),
+            SizedBox(
+              height: 10,
+            ),
             Row(
               children: [
                 Padding(
@@ -267,6 +280,8 @@ class _MainPageState extends State<MainPage> {
 
   Column requirResult() {
     return Column(
+      // child: GestureDetector(
+
       children: [
         Image.asset('images/list.png'),
         const SizedBox(
@@ -418,7 +433,12 @@ class _MainPageState extends State<MainPage> {
               ),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(builder: (context) => MenuPage()),
+                );
+              },
               icon: const Icon(
                 Icons.menu,
                 color: Colors.white,
@@ -432,8 +452,17 @@ class _MainPageState extends State<MainPage> {
 
   String cutWord(String detailAritcl) {
     String resutl = detailAritcl;
-    if (resutl.length >= 200) {
-      resutl = resutl.substring(0, 100);
+    if (resutl.length >= 150) {
+      resutl = resutl.substring(0, 75);
+      resutl = '$resutl ....';
+    }
+    return resutl;
+  }
+
+  String cutWordH(String titleAritcles) {
+    String resutl = titleAritcles;
+    if (resutl.length >= 50) {
+      resutl = resutl.substring(0, 25);
       resutl = '$resutl ....';
     }
     return resutl;
