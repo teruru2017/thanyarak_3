@@ -1,6 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:thanyarak/bodys/shop_detail_page.dart';
 import 'package:thanyarak/models/store_models.dart';
+import 'package:thanyarak/utility/my_constant.dart';
+import 'package:thanyarak/widgets/show_title.dart';
 
 class Stores extends StatelessWidget {
   final List<Store> ListStore = Store.generateStore();
@@ -77,7 +81,21 @@ class Stores extends StatelessWidget {
                               SizedBox(
                                 height: 5,
                               ),
-                              _builButton()
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: Color(0xff43CEF8)),
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                          builder: (context) =>
+                                              ShopDetailPage()));
+                                },
+                                child: ShowTitle(
+                                  title: 'ช้อปเลย',
+                                  textStyle: MyConstant().h2StyleWhite(),
+                                ),
+                              ),
                             ],
                           ),
                         ],

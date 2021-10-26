@@ -1,6 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:thanyarak/bodys/article_details_page.dart';
 import 'package:thanyarak/models/article_model.dart';
+import 'package:thanyarak/utility/my_constant.dart';
+import 'package:thanyarak/widgets/show_title.dart';
 
 class ArticleWidget extends StatelessWidget {
   final List<Article> ListArticle = Article.generateArticle();
@@ -71,8 +75,31 @@ class ArticleWidget extends StatelessWidget {
                                       color: Colors.grey.withOpacity(0.8)),
                                 ),
                               ],
-                            )
+                            ),
                           ],
+                        ),
+                        Container(
+                          width: double.infinity,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 16, right: 16, bottom: 8),
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                          builder: (context) =>
+                                              ArticleDetailsPage()));
+                                },
+                                child: ShowTitle(
+                                  title: 'เข้าสู่ระบบ',
+                                  textStyle: MyConstant().h3StyleWhite(),
+                                )),
+                          ),
                         )
                       ],
                     ))
