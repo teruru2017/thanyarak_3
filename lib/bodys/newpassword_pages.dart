@@ -7,14 +7,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thanyarak/bodys/successpassword_page.dart';
 
-class password_pages extends StatefulWidget {
-  password_pages({Key? key}) : super(key: key);
+class newpassword_pages extends StatefulWidget {
+  newpassword_pages({Key? key}) : super(key: key);
 
   @override
-  _password_pagesState createState() => _password_pagesState();
+  _newpassword_pagesState createState() => _newpassword_pagesState();
 }
 
-class _password_pagesState extends State<password_pages> {
+class _newpassword_pagesState extends State<newpassword_pages> {
   int _selectedchoice = 0;
   int choice = 0;
 
@@ -64,6 +64,18 @@ class _password_pagesState extends State<password_pages> {
                                   image: AssetImage("images/iconlogin.png"),
                                   alignment: Alignment(0, 0.2))),
                         ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    scale: 1.3,
+                                    image: AssetImage("images/back01.png"),
+                                    alignment: Alignment(-0.9, -0.7))),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -110,13 +122,16 @@ class _password_pagesState extends State<password_pages> {
                         FormBuilderTextField(
                           name: 'password',
                           obscureText: true,
+                          style: GoogleFonts.kanit(),
 
                           decoration: InputDecoration(
                               //border: InputBorder.none,
 
                               prefixIcon: Icon(Icons.person),
                               labelText: 'รหัสผ่าน',
-                              border: OutlineInputBorder(),
+                              border: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                      const Radius.circular(10))),
                               fillColor: Color(0xfff3f3f4),
                               filled: false),
                           // valueTransformer: (text) => num.tryParse(text),
@@ -129,13 +144,16 @@ class _password_pagesState extends State<password_pages> {
                         FormBuilderTextField(
                           name: 'confirmpassword',
                           obscureText: true,
+                          style: GoogleFonts.kanit(),
 
                           decoration: InputDecoration(
                               //border: InputBorder.none,
 
                               prefixIcon: Icon(Icons.person),
                               labelText: 'ยืนยันรหัสผ่านอีกครั้ง',
-                              border: OutlineInputBorder(),
+                              border: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                      const Radius.circular(10))),
                               fillColor: Color(0xfff3f3f4),
                               filled: false),
                           // valueTransformer: (text) => num.tryParse(text),

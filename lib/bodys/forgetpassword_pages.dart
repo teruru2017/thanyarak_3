@@ -5,16 +5,20 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:thanyarak/bodys/register1_pages.dart';
+import 'package:thanyarak/bodys/otp_pages.dart';
+import 'package:thanyarak/bodys/successpassword_page.dart';
 
-class oldtype_pages extends StatefulWidget {
-  oldtype_pages({Key? key}) : super(key: key);
+class forgetpassword_pages extends StatefulWidget {
+  forgetpassword_pages({Key? key}) : super(key: key);
 
   @override
-  _oldtype_pagesState createState() => _oldtype_pagesState();
+  _forgetpassword_pagesState createState() => _forgetpassword_pagesState();
 }
 
-class _oldtype_pagesState extends State<oldtype_pages> {
+class _forgetpassword_pagesState extends State<forgetpassword_pages> {
+  int _selectedchoice = 0;
+  int choice = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,19 +39,18 @@ class _oldtype_pagesState extends State<oldtype_pages> {
                     width: 400,
                     child: Stack(
                       children: <Widget>[
-                        // Container(
-                        //     child: Column(
-                        //   children: <Widget>[
-                        //     Align(
-                        //       alignment: Alignment(-0.9, -0.7),
-                        //       child: IconButton(
-                        //           icon: Image.asset("assets/icons/back01.png"),
-                        //           onPressed: () {
-                        //             Navigator.pop(context);
-                        //           }),
-                        //     )
-                        //   ],
-                        // )),
+                        // IconButton(
+                        //   onPressed: () {
+                        //     Navigator.push(
+                        //         context,
+                        //         CupertinoPageRoute(
+                        //             builder: (context) => newtype_pages()));
+                        //   },
+                        //   icon: FaIcon(FontAwesomeIcons.chevronCircleLeft),
+                        //   iconSize: 35,
+                        //   color: Colors.white54,
+                        //   padding: const EdgeInsets.all(25),
+                        // ),
                         Container(
                           decoration: BoxDecoration(
                               image: DecorationImage(
@@ -81,14 +84,14 @@ class _oldtype_pagesState extends State<oldtype_pages> {
               ),
             ),
             Container(
-              height: 500,
+              height: 400,
               padding: EdgeInsets.symmetric(horizontal: 30),
               child: Column(
                 children: <Widget>[
                   Align(
                     alignment: Alignment(-1, -1),
                     child: Text(
-                      "ลงทะเบียน",
+                      "ลืมรหัสผ่าน",
                       style: GoogleFonts.kanit(
                         textStyle: Theme.of(context).textTheme.headline4,
                         fontSize: 24,
@@ -101,7 +104,7 @@ class _oldtype_pagesState extends State<oldtype_pages> {
                   Align(
                     alignment: Alignment(-1, -1),
                     child: Text(
-                      "กรุณาเลือกประเภทของคุณ",
+                      "กรุณากรอกเบอร์โทรศัพท์ เพื่อขอรหัสผ่านใหม่",
                       style: GoogleFonts.kanit(
                         textStyle: Theme.of(context).textTheme.headline4,
                         fontSize: 16,
@@ -110,85 +113,44 @@ class _oldtype_pagesState extends State<oldtype_pages> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 80),
+                  SizedBox(height: 20),
                   Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                    //color: Colors.amber,
+                    //margin: EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                            width: 80,
-                            height: 80,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                              image: AssetImage('assets/images/usernew.png'),
-                            ))),
-                        SizedBox(width: 80),
-                        Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                      width: 136,
-                                      height: 136,
-                                      decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                        image: AssetImage(
-                                            'assets/images/userold.png'),
-                                      ))),
-                                ],
-                              ),
-                            ],
-                          ),
+                        FormBuilderTextField(
+                          name: 'tel',
+                          obscureText: true,
+                          style: GoogleFonts.kanit(),
+
+                          decoration: InputDecoration(
+                              //border: InputBorder.none,
+
+                              prefixIcon: Icon(Icons.person),
+                              labelText: 'เบอร์โทรศัพท์',
+                              border: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                      const Radius.circular(10))),
+                              fillColor: Color(0xfff3f3f4),
+                              filled: false),
+                          // valueTransformer: (text) => num.tryParse(text),
+                          // validator: FormBuilderValidators.compose([
+                          //   FormBuilderValidators.required(context,
+                          //       errorText: 'กรุณากรอกรหัสผ่าน'),
+                          // ]),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                      child: Row(
-                    children: [
-                      SizedBox(width: 25),
-                      Align(
-                        alignment: Alignment(-0.8, 0),
-                        child: Text(
-                          "ผู้มาตรวจ รายใหม่",
-                          style: GoogleFonts.kanit(
-                            textStyle: Theme.of(context).textTheme.headline4,
-                            fontSize: 16,
-                            color: Color(0xffB7B7B7),
-                            // fontStyle: FontStyle.italic,
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 70),
-                      Align(
-                        alignment: Alignment(-0.8, 0),
-                        child: Text(
-                          "ผู้มาตรวจ รายเก่า",
-                          style: GoogleFonts.kanit(
-                            textStyle: Theme.of(context).textTheme.headline4,
-                            fontSize: 16,
-                            color: Color(0xff272727),
-                            // fontStyle: FontStyle.italic,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )),
-                  SizedBox(height: 120),
+                  SizedBox(height: 10),
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
                           context,
                           CupertinoPageRoute(
-                              builder: (context) => register1_pages()));
+                              builder: (context) => otp_pages()));
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width,
@@ -213,7 +175,6 @@ class _oldtype_pagesState extends State<oldtype_pages> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 5),
                 ],
               ),
             ),

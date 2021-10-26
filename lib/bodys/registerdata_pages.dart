@@ -61,8 +61,20 @@ class _registerdata_pagesState extends State<registerdata_pages> {
                           decoration: BoxDecoration(
                               image: DecorationImage(
                                   scale: 1.8,
-                                  image: AssetImage("images/iconlogin.png"),
+                                  image: AssetImage("images/userdata.png"),
                                   alignment: Alignment(0, 0.2))),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    scale: 1.3,
+                                    image: AssetImage("images/back01.png"),
+                                    alignment: Alignment(-0.9, -0.7))),
+                          ),
                         ),
                       ],
                     ),
@@ -71,7 +83,7 @@ class _registerdata_pagesState extends State<registerdata_pages> {
               ),
             ),
             Container(
-              height: 850,
+              height: 900,
               padding: EdgeInsets.symmetric(horizontal: 30),
               child: Column(
                 children: <Widget>[
@@ -110,13 +122,16 @@ class _registerdata_pagesState extends State<registerdata_pages> {
                         FormBuilderTextField(
                           name: 'id',
                           obscureText: true,
+                          style: GoogleFonts.kanit(),
 
                           decoration: InputDecoration(
                               //border: InputBorder.none,
 
                               prefixIcon: Icon(Icons.person),
                               labelText: 'เลขบัตรประจำตัวประชาชน',
-                              border: OutlineInputBorder(),
+                              border: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                      const Radius.circular(10))),
                               fillColor: Color(0xfff3f3f4),
                               filled: false),
                           // valueTransformer: (text) => num.tryParse(text),
@@ -129,13 +144,16 @@ class _registerdata_pagesState extends State<registerdata_pages> {
                         FormBuilderTextField(
                           name: 'prefixname',
                           obscureText: true,
+                          style: GoogleFonts.kanit(),
 
                           decoration: InputDecoration(
                               //border: InputBorder.none,
 
                               prefixIcon: Icon(Icons.person),
                               labelText: 'คำนำหน้าชื่อ',
-                              border: OutlineInputBorder(),
+                              border: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                      const Radius.circular(10))),
                               fillColor: Color(0xfff3f3f4),
                               filled: false),
                           // valueTransformer: (text) => num.tryParse(text),
@@ -148,13 +166,16 @@ class _registerdata_pagesState extends State<registerdata_pages> {
                         FormBuilderTextField(
                           name: 'name',
                           obscureText: true,
+                          style: GoogleFonts.kanit(),
 
                           decoration: InputDecoration(
                               //border: InputBorder.none,
 
                               prefixIcon: Icon(Icons.person),
                               labelText: 'ชื่อ-นามสกุล',
-                              border: OutlineInputBorder(),
+                              border: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                      const Radius.circular(10))),
                               fillColor: Color(0xfff3f3f4),
                               filled: false),
                           // valueTransformer: (text) => num.tryParse(text),
@@ -167,13 +188,16 @@ class _registerdata_pagesState extends State<registerdata_pages> {
                         FormBuilderTextField(
                           name: 'birthday',
                           obscureText: true,
+                          style: GoogleFonts.kanit(),
 
                           decoration: InputDecoration(
                               //border: InputBorder.none,
 
-                              prefixIcon: Icon(Icons.person),
+                              prefixIcon: Icon(Icons.calendar_today),
                               labelText: 'วัน/เดือน/ปีเกิด',
-                              border: OutlineInputBorder(),
+                              border: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                      const Radius.circular(10))),
                               fillColor: Color(0xfff3f3f4),
                               filled: false),
                           // valueTransformer: (text) => num.tryParse(text),
@@ -186,13 +210,16 @@ class _registerdata_pagesState extends State<registerdata_pages> {
                         FormBuilderTextField(
                           name: 'age',
                           obscureText: true,
+                          style: GoogleFonts.kanit(),
 
                           decoration: InputDecoration(
                               //border: InputBorder.none,
 
-                              prefixIcon: Icon(Icons.person),
+                              prefixIcon: Icon(Icons.calendar_today),
                               labelText: 'อายุ',
-                              border: OutlineInputBorder(),
+                              border: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                      const Radius.circular(10))),
                               fillColor: Color(0xfff3f3f4),
                               filled: false),
                           // valueTransformer: (text) => num.tryParse(text),
@@ -205,13 +232,16 @@ class _registerdata_pagesState extends State<registerdata_pages> {
                         FormBuilderTextField(
                           name: 'tel',
                           obscureText: true,
+                          style: GoogleFonts.kanit(),
 
                           decoration: InputDecoration(
                               //border: InputBorder.none,
 
-                              prefixIcon: Icon(Icons.person),
+                              prefixIcon: Icon(Icons.phone),
                               labelText: 'เบอร์โทรศัพท์',
-                              border: OutlineInputBorder(),
+                              border: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                      const Radius.circular(10))),
                               fillColor: Color(0xfff3f3f4),
                               filled: false),
                           // valueTransformer: (text) => num.tryParse(text),
@@ -224,13 +254,16 @@ class _registerdata_pagesState extends State<registerdata_pages> {
                         FormBuilderTextField(
                           name: 'address',
                           obscureText: true,
+                          style: GoogleFonts.kanit(),
 
                           decoration: InputDecoration(
                               //border: InputBorder.none,
 
-                              prefixIcon: Icon(Icons.person),
+                              prefixIcon: Icon(Icons.home_filled),
                               labelText: 'ที่อยู่',
-                              border: OutlineInputBorder(),
+                              border: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                      const Radius.circular(10))),
                               fillColor: Color(0xfff3f3f4),
                               filled: false),
                           // valueTransformer: (text) => num.tryParse(text),
@@ -243,13 +276,16 @@ class _registerdata_pagesState extends State<registerdata_pages> {
                         FormBuilderTextField(
                           name: 'email',
                           obscureText: true,
+                          style: GoogleFonts.kanit(),
 
                           decoration: InputDecoration(
                               //border: InputBorder.none,
 
-                              prefixIcon: Icon(Icons.person),
+                              prefixIcon: Icon(Icons.mail),
                               labelText: 'อีเมลล์',
-                              border: OutlineInputBorder(),
+                              border: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                      const Radius.circular(10))),
                               fillColor: Color(0xfff3f3f4),
                               filled: false),
                           // valueTransformer: (text) => num.tryParse(text),
@@ -262,13 +298,16 @@ class _registerdata_pagesState extends State<registerdata_pages> {
                         FormBuilderTextField(
                           name: 'congenital',
                           obscureText: true,
+                          style: GoogleFonts.kanit(),
 
                           decoration: InputDecoration(
                               //border: InputBorder.none,
 
                               prefixIcon: Icon(Icons.person),
                               labelText: 'โรคประจำตัว โปรดระบุ',
-                              border: OutlineInputBorder(),
+                              border: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                      const Radius.circular(10))),
                               fillColor: Color(0xfff3f3f4),
                               filled: false),
                           // valueTransformer: (text) => num.tryParse(text),
@@ -281,13 +320,16 @@ class _registerdata_pagesState extends State<registerdata_pages> {
                         FormBuilderTextField(
                           name: 'allergy',
                           obscureText: true,
+                          style: GoogleFonts.kanit(),
 
                           decoration: InputDecoration(
                               //border: InputBorder.none,
 
                               prefixIcon: Icon(Icons.person),
                               labelText: 'อาการแพ้ โปรดระบุ',
-                              border: OutlineInputBorder(),
+                              border: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                      const Radius.circular(10))),
                               fillColor: Color(0xfff3f3f4),
                               filled: false),
                           // valueTransformer: (text) => num.tryParse(text),

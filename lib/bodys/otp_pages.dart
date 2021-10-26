@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:thanyarak/bodys/newpassword_pages.dart';
 import 'package:thanyarak/bodys/registerdata_pages.dart';
 
 class otp_pages extends StatefulWidget {
@@ -58,8 +59,20 @@ class _otp_pagesState extends State<otp_pages> {
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 scale: 1.8,
-                                image: AssetImage("images/iconlogin.png"),
+                                image: AssetImage("images/userlock.png"),
                                 alignment: Alignment(0, 0.2))),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  scale: 1.3,
+                                  image: AssetImage("images/back01.png"),
+                                  alignment: Alignment(-0.9, -0.7))),
+                        ),
                       ),
                     ],
                   ),
@@ -172,7 +185,7 @@ class _otp_pagesState extends State<otp_pages> {
                           Navigator.push(
                               context,
                               CupertinoPageRoute(
-                                  builder: (context) => registerdata_pages()));
+                                  builder: (context) => newpassword_pages()));
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width,

@@ -35,19 +35,6 @@ class _newtype_pagesState extends State<newtype_pages> {
                     width: 400,
                     child: Stack(
                       children: <Widget>[
-                        // Container(
-                        //     child: Column(
-                        //   children: <Widget>[
-                        //     Align(
-                        //       alignment: Alignment(-0.9, -0.7),
-                        //       child: IconButton(
-                        //           icon: Image.asset("assets/icons/back01.png"),
-                        //           onPressed: () {
-                        //             Navigator.pop(context);
-                        //           }),
-                        //     )
-                        //   ],
-                        // )),
                         Container(
                           decoration: BoxDecoration(
                               image: DecorationImage(
@@ -59,8 +46,20 @@ class _newtype_pagesState extends State<newtype_pages> {
                           decoration: BoxDecoration(
                               image: DecorationImage(
                                   scale: 1.8,
-                                  image: AssetImage("images/iconlogin.png"),
+                                  image: AssetImage("images/userdata.png"),
                                   alignment: Alignment(0, 0.2))),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    scale: 1.3,
+                                    image: AssetImage("images/back01.png"),
+                                    alignment: Alignment(-0.9, -0.7))),
+                          ),
                         ),
                       ],
                     ),
@@ -69,7 +68,7 @@ class _newtype_pagesState extends State<newtype_pages> {
               ),
             ),
             Container(
-              height: 500,
+              height: 700,
               padding: EdgeInsets.symmetric(horizontal: 30),
               child: Column(
                 children: <Widget>[
@@ -103,7 +102,7 @@ class _newtype_pagesState extends State<newtype_pages> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
+                      children: <Widget>[
                         Container(
                             width: 136,
                             height: 136,
@@ -136,7 +135,7 @@ class _newtype_pagesState extends State<newtype_pages> {
                     ),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 60,
                   ),
                   Container(
                       child: Row(
@@ -169,7 +168,7 @@ class _newtype_pagesState extends State<newtype_pages> {
                       ),
                     ],
                   )),
-                  SizedBox(height: 120),
+                  SizedBox(height: 100),
                   GestureDetector(
                     onTap: () {
                       Navigator.push(

@@ -6,6 +6,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thanyarak/bodys/otp_pages.dart';
+import 'package:thanyarak/bodys/registerdata_pages.dart';
 
 class register1_pages extends StatefulWidget {
   register1_pages({Key? key}) : super(key: key);
@@ -61,8 +62,20 @@ class _register1_pagesState extends State<register1_pages> {
                           decoration: BoxDecoration(
                               image: DecorationImage(
                                   scale: 1.8,
-                                  image: AssetImage("images/iconlogin.png"),
+                                  image: AssetImage("images/userdata.png"),
                                   alignment: Alignment(0, 0.2))),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    scale: 1.3,
+                                    image: AssetImage("images/back01.png"),
+                                    alignment: Alignment(-0.9, -0.7))),
+                          ),
                         ),
                       ],
                     ),
@@ -109,7 +122,9 @@ class _register1_pagesState extends State<register1_pages> {
                             onChanged: (val) {
                               _selectedchoice = choice;
 
-                              setState(() {});
+                              setState(() {
+                                _selectedchoice = choice;
+                              });
                             }),
                         Text(
                           'HN',
@@ -127,7 +142,9 @@ class _register1_pagesState extends State<register1_pages> {
                             onChanged: (val) {
                               _selectedchoice = choice;
 
-                              setState(() {});
+                              setState(() {
+                                _selectedchoice = choice;
+                              });
                             }),
                         Text(
                           'เลขบัตรประจำตัวประชาชน',
@@ -151,13 +168,16 @@ class _register1_pagesState extends State<register1_pages> {
                         FormBuilderTextField(
                           name: 'id',
                           obscureText: true,
+                          style: GoogleFonts.kanit(),
 
                           decoration: InputDecoration(
                               //border: InputBorder.none,
 
                               prefixIcon: Icon(Icons.person),
                               labelText: 'เลขบัตรประจำตัวประชาชน',
-                              border: OutlineInputBorder(),
+                              border: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                      const Radius.circular(10))),
                               fillColor: Color(0xfff3f3f4),
                               filled: false),
                           // valueTransformer: (text) => num.tryParse(text),
@@ -175,7 +195,7 @@ class _register1_pagesState extends State<register1_pages> {
                       Navigator.push(
                           context,
                           CupertinoPageRoute(
-                              builder: (context) => otp_pages()));
+                              builder: (context) => registerdata_pages()));
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width,

@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:thanyarak/bodys/forgetpassword_pages.dart';
+import 'package:thanyarak/bodys/main_page.dart';
 import 'package:thanyarak/bodys/newtype_pages.dart';
 
 class SignInPage extends StatefulWidget {
@@ -61,6 +63,21 @@ class _SignInPageState extends State<SignInPage> {
                                   image: AssetImage("images/iconlogin.png"),
                                   alignment: Alignment(0, 0.2))),
                         ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                    builder: (context) => MainPage()));
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    scale: 1.3,
+                                    image: AssetImage("images/back01.png"),
+                                    alignment: Alignment(-0.9, -0.7))),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -107,13 +124,18 @@ class _SignInPageState extends State<SignInPage> {
                         FormBuilderTextField(
                           name: 'password',
                           obscureText: true,
-
+                          keyboardType: TextInputType.visiblePassword,
+                          style: GoogleFonts.kanit(),
                           decoration: InputDecoration(
-                              //border: InputBorder.none,
+                              border: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                      const Radius.circular(10))),
 
+                              //border: InputBorder.none,
+                              //fontfamily: GoogleFonts.kanit(),
                               prefixIcon: Icon(Icons.lock_rounded),
                               labelText: 'รหัสผ่าน',
-                              border: OutlineInputBorder(),
+                              //border: OutlineInputBorder(),
                               fillColor: Color(0xfff3f3f4),
                               filled: false),
                           // valueTransformer: (text) => num.tryParse(text),
@@ -123,28 +145,35 @@ class _SignInPageState extends State<SignInPage> {
                             FormBuilderValidators.minLength(context, 8,
                                 errorText: 'รหัสผ่านอย่างน้อย 8 ตัว'),
                           ]),
-                          keyboardType: TextInputType.visiblePassword,
                         ),
                       ],
                     ),
                   ),
-                  Align(
-                    alignment: Alignment(1, -1),
-                    child: Text(
-                      "ลืมรหัสผ่าน?",
-                      style: GoogleFonts.kanit(
-                        textStyle: Theme.of(context).textTheme.headline4,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xffB7B7B7),
-                        // fontStyle: FontStyle.italic,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => forgetpassword_pages()));
+                    },
+                    child: Align(
+                      alignment: Alignment(1, 0),
+                      child: Text(
+                        "ลืมรหัสผ่าน?",
+                        style: GoogleFonts.kanit(
+                          textStyle: Theme.of(context).textTheme.headline4,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xffB7B7B7),
+                          // fontStyle: FontStyle.italic,
+                        ),
                       ),
                     ),
                   ),
                   SizedBox(height: 20),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pop(context);
+                      //Navigator.pop(context);
                       //  Navigator.push(
                       //  context, MaterialPageRoute(builder: (context) => Registration())
                       //  );

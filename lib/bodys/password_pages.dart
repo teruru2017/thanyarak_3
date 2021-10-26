@@ -61,8 +61,20 @@ class _password_pagesState extends State<password_pages> {
                           decoration: BoxDecoration(
                               image: DecorationImage(
                                   scale: 1.8,
-                                  image: AssetImage("images/iconlogin.png"),
+                                  image: AssetImage("images/userdata.png"),
                                   alignment: Alignment(0, 0.2))),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    scale: 1.3,
+                                    image: AssetImage("images/back01.png"),
+                                    alignment: Alignment(-0.9, -0.7))),
+                          ),
                         ),
                       ],
                     ),
@@ -110,13 +122,16 @@ class _password_pagesState extends State<password_pages> {
                         FormBuilderTextField(
                           name: 'password',
                           obscureText: true,
+                          style: GoogleFonts.kanit(),
 
                           decoration: InputDecoration(
                               //border: InputBorder.none,
 
-                              prefixIcon: Icon(Icons.person),
+                              prefixIcon: Icon(Icons.lock),
                               labelText: 'รหัสผ่าน',
-                              border: OutlineInputBorder(),
+                              border: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                      const Radius.circular(10))),
                               fillColor: Color(0xfff3f3f4),
                               filled: false),
                           // valueTransformer: (text) => num.tryParse(text),
@@ -129,13 +144,16 @@ class _password_pagesState extends State<password_pages> {
                         FormBuilderTextField(
                           name: 'confirmpassword',
                           obscureText: true,
+                          style: GoogleFonts.kanit(),
 
                           decoration: InputDecoration(
                               //border: InputBorder.none,
 
-                              prefixIcon: Icon(Icons.person),
+                              prefixIcon: Icon(Icons.lock),
                               labelText: 'ยืนยันรหัสผ่าน',
-                              border: OutlineInputBorder(),
+                              border: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                      const Radius.circular(10))),
                               fillColor: Color(0xfff3f3f4),
                               filled: false),
                           // valueTransformer: (text) => num.tryParse(text),
