@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:thanyarak/bodys/forgetpassword_pages.dart';
 import 'package:thanyarak/bodys/newpassword_pages.dart';
 import 'package:thanyarak/bodys/registerdata_pages.dart';
 
@@ -59,20 +60,8 @@ class _otp_pagesState extends State<otp_pages> {
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 scale: 1.8,
-                                image: AssetImage("images/userlock.png"),
+                                image: AssetImage("images/iconlogin.png"),
                                 alignment: Alignment(0, 0.2))),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  scale: 1.3,
-                                  image: AssetImage("images/back01.png"),
-                                  alignment: Alignment(-0.9, -0.7))),
-                        ),
                       ),
                     ],
                   ),
@@ -221,45 +210,42 @@ class _otp_pagesState extends State<otp_pages> {
       ),
     );
   }
-}
 
-Widget _textFieldOTP({
-  first,
-  last,
-}) {
-  return Container(
-    height: 85,
-    child: AspectRatio(
-      aspectRatio: 0.75,
-      child: TextField(
-        autofocus: true,
-        onChanged: (value) {
-          if (value.length == 1 && last == false) {
-            //FocusScope.of(context).nextFocus();
-          }
-          if (value.length == 0 && first == false) {
-            //FocusScope.of(context).previousFocus();
-          }
-        },
-        showCursor: true,
-        readOnly: false,
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 24),
-        keyboardType: TextInputType.number,
-        maxLength: 1,
-        decoration: InputDecoration(
-          counter: Offstage(),
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(width: 2, color: Colors.black12),
-              borderRadius: BorderRadius.circular(12)),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(width: 2, color: Color(0xFF0088C6)),
-              borderRadius: BorderRadius.circular(12)),
-          fillColor: Colors.grey[50],
-          filled: true,
-          hoverColor: Colors.lightBlue[50],
+  Widget _textFieldOTP({first, last}) {
+    return Container(
+      height: 85,
+      child: AspectRatio(
+        aspectRatio: 0.75,
+        child: TextField(
+          autofocus: true,
+          onChanged: (value) {
+            if (value.length == 1 && last == false) {
+              FocusScope.of(context).nextFocus();
+            }
+            if (value.length == 0 && first == false) {
+              FocusScope.of(context).previousFocus();
+            }
+          },
+          showCursor: true,
+          readOnly: false,
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 24),
+          keyboardType: TextInputType.number,
+          maxLength: 1,
+          decoration: InputDecoration(
+            counter: Offstage(),
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(width: 2, color: Colors.black12),
+                borderRadius: BorderRadius.circular(12)),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(width: 2, color: Color(0xFF0088C6)),
+                borderRadius: BorderRadius.circular(12)),
+            fillColor: Colors.grey[50],
+            filled: true,
+            hoverColor: Colors.lightBlue[50],
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }

@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:thanyarak/bodys/newtype_pages.dart';
 import 'package:thanyarak/bodys/register1_pages.dart';
 
 class oldtype_pages extends StatefulWidget {
@@ -15,6 +16,8 @@ class oldtype_pages extends StatefulWidget {
 }
 
 class _oldtype_pagesState extends State<oldtype_pages> {
+  int a = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,7 +124,7 @@ class _oldtype_pagesState extends State<oldtype_pages> {
                             height: 80,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                              image: AssetImage('assets/images/usernew.png'),
+                              image: AssetImage('images/usernew.png'),
                             ))),
                         SizedBox(width: 80),
                         Container(
@@ -137,8 +140,7 @@ class _oldtype_pagesState extends State<oldtype_pages> {
                                       height: 136,
                                       decoration: BoxDecoration(
                                           image: DecorationImage(
-                                        image: AssetImage(
-                                            'assets/images/userold.png'),
+                                        image: AssetImage('images/userold.png'),
                                       ))),
                                 ],
                               ),
@@ -155,15 +157,23 @@ class _oldtype_pagesState extends State<oldtype_pages> {
                       child: Row(
                     children: [
                       SizedBox(width: 25),
-                      Align(
-                        alignment: Alignment(-0.8, 0),
-                        child: Text(
-                          "ผู้มาตรวจ รายใหม่",
-                          style: GoogleFonts.kanit(
-                            textStyle: Theme.of(context).textTheme.headline4,
-                            fontSize: 16,
-                            color: Color(0xffB7B7B7),
-                            // fontStyle: FontStyle.italic,
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) => newtype_pages()));
+                        },
+                        child: Align(
+                          alignment: Alignment(-0.8, 0),
+                          child: Text(
+                            "ผู้มาตรวจ รายใหม่",
+                            style: GoogleFonts.kanit(
+                              textStyle: Theme.of(context).textTheme.headline4,
+                              fontSize: 16,
+                              color: Color(0xffB7B7B7),
+                              // fontStyle: FontStyle.italic,
+                            ),
                           ),
                         ),
                       ),

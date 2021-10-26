@@ -160,6 +160,15 @@ class _register1_pagesState extends State<register1_pages> {
                   ),
                   SizedBox(height: 20),
                   Container(
+                    child: Row(
+                      children: [
+                        // ListTile(title: Text('HM')),
+                        // ListTile(title: Text('xx'))
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Container(
                     //color: Colors.amber,
                     //margin: EdgeInsets.symmetric(horizontal: 20),
                     child: Column(

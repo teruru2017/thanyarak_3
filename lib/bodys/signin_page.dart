@@ -8,6 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thanyarak/bodys/forgetpassword_pages.dart';
 import 'package:thanyarak/bodys/main_page.dart';
 import 'package:thanyarak/bodys/newtype_pages.dart';
+import 'package:thanyarak/bodys/test.dart';
 
 class SignInPage extends StatefulWidget {
   SignInPage({Key? key}) : super(key: key);
@@ -173,10 +174,9 @@ class _SignInPageState extends State<SignInPage> {
                   SizedBox(height: 20),
                   GestureDetector(
                     onTap: () {
-                      //Navigator.pop(context);
-                      //  Navigator.push(
-                      //  context, MaterialPageRoute(builder: (context) => Registration())
-                      //  );
+                      // Navigator.pop(context);
+                      // Navigator.push(context,
+                      //     MaterialPageRoute(builder: (context) => test()));
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width,

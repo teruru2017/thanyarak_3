@@ -2,8 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:thanyarak/bodys/about_page.dart';
-import 'package:thanyarak/bodys/menu_page.dart';
+// import 'package:thanyarak/bodys/about_page.dart';
+// import 'package:thanyarak/bodys/menu_page.dart';
 import 'package:thanyarak/bodys/signin_page.dart';
 import 'package:thanyarak/utility/my_constant.dart';
 import 'package:thanyarak/widgets/show_circular.dart';
@@ -156,10 +156,10 @@ class _MainPageState extends State<MainPage> {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(primary: Colors.white),
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => AboutPage()));
+                      // Navigator.push(
+                      //     context,
+                      //     CupertinoPageRoute(
+                      //         builder: (context) => AboutPage()));
                     },
                     child: ShowTitle(
                       title: 'ดูทั้งหมด',
@@ -434,10 +434,10 @@ class _MainPageState extends State<MainPage> {
             ),
             IconButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(builder: (context) => MenuPage()),
-                );
+                // Navigator.push(
+                //   context,
+                //   CupertinoPageRoute(builder: (context) => MenuPage()),
+                // );
               },
               icon: const Icon(
                 Icons.menu,
