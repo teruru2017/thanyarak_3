@@ -7,6 +7,7 @@ class ShowCircular extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
+      radius: 30.0,
       backgroundImage: AssetImage(path),
     );
   }

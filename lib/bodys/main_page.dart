@@ -2,6 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:thanyarak/bodys/shop_page.dart';
 // import 'package:thanyarak/bodys/about_page.dart';
 // import 'package:thanyarak/bodys/menu_page.dart';
 import 'package:thanyarak/bodys/signin_page.dart';
@@ -109,7 +111,61 @@ class _MainPageState extends State<MainPage> {
             listArticle(),
             const ShowHead(
                 title: 'โปรโมชั่นร้านค้า', pathIcon: 'images/shop.png'),
-            builBanner(),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 15.0),
+              height: MediaQuery.of(context).size.height * 0.30,
+              child: Card(
+                color: Color(0xffABDDFE),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                elevation: 2,
+                child: Container(
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage("images/bgsky.png"),
+                        )),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                          scale: 1.5,
+                          image: AssetImage("images/iconshop.png"),
+                          alignment: Alignment(0.8, 0.3),
+                        )),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                          scale: 1.5,
+                          image: AssetImage("images/textshop.png"),
+                          alignment: Alignment(-0.5, -0.5),
+                        )),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) => ShopPage()));
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  scale: 1.3,
+                                  image: AssetImage("images/clickshop.png"),
+                                  alignment: Alignment(-0.7, 0.6))),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
             const ShowHead(
                 title: 'มูลนิธิถันยรักษ์', pathIcon: 'images/shop.png'),
             buildAboutMe(),
@@ -177,76 +233,90 @@ class _MainPageState extends State<MainPage> {
 
   SizedBox listArticle() {
     return SizedBox(
-      height: 320,
+      height: 350,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,
         physics: const ClampingScrollPhysics(),
         itemCount: pathImageAritcles.length,
         itemBuilder: (context, index) => Card(
+            elevation: 3,
+            margin: EdgeInsets.all(8),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: 150,
-              width: 300,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                image: DecorationImage(
-                  image: AssetImage(
-                    pathImageAritcles[index],
-                  ),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Container(
-              width: 300,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: ShowTitle(
-                  title: cutWordH(titleAritcles[index]),
-                  textStyle: MyConstant().h2StyleBlue(),
-                ),
-              ),
-            ),
-            Container(
-              width: 300,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: ShowTitle(
-                  title: cutWord(detailAritcles[index]),
-                  textStyle: MyConstant().h4StyleBlack(),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 4, 4, 4),
-                  child: SvgPicture.asset('images/c1.svg'),
+                Container(
+                  margin: EdgeInsets.all(10),
+                  height: 150,
+                  width: 280,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(18),
+                    image: DecorationImage(
+                      image: AssetImage(
+                        pathImageAritcles[index],
+                      ),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
-                ShowTitle(
-                  title: dataAritcles[index],
-                  textStyle: MyConstant().h4StyleGley(),
+                Container(
+                  width: 300,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    child: ShowTitle(
+                        title: cutWordH(titleAritcles[index]),
+                        textStyle: GoogleFonts.kanit(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xff0088C6),
+                        )),
+                  ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 4, 4, 4),
-                  child: SvgPicture.asset('images/v2.svg'),
+                Container(
+                  width: 300,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    child: ShowTitle(
+                        title: cutWord(detailAritcles[index]),
+                        textStyle: GoogleFonts.kanit(
+                          fontSize: 12,
+                          color: Colors.black,
+                        )),
+                  ),
                 ),
-                ShowTitle(
-                  title: viewAritcles[index],
-                  textStyle: MyConstant().h4StyleGley(),
+                SizedBox(
+                  height: 5,
                 ),
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 4, 4, 4),
+                          child: SvgPicture.asset('images/c1.svg'),
+                        ),
+                        ShowTitle(
+                          title: dataAritcles[index],
+                          textStyle: MyConstant().h4StyleGley(),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 4, 4, 4),
+                          child: SvgPicture.asset('images/v2.svg'),
+                        ),
+                        ShowTitle(
+                          title: viewAritcles[index],
+                          textStyle: MyConstant().h4StyleGley(),
+                        ),
+                      ],
+                    ),
+                  ],
+                )
               ],
-            ),
-          ],
-        )),
+            )),
       ),
     );
   }
@@ -270,7 +340,7 @@ class _MainPageState extends State<MainPage> {
 
   Padding groupIcon() {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(15),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [requirResult(), addAppointMent(), myNotification()],
@@ -327,16 +397,23 @@ class _MainPageState extends State<MainPage> {
 
   Padding buildNonAppointCard() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        elevation: 3,
+        margin: EdgeInsets.all(3),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: Column(
           children: [
             ListTile(
               leading: Container(
                 decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(10)),
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(10),
+                  gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(14.0),
                   child: Container(
@@ -344,21 +421,22 @@ class _MainPageState extends State<MainPage> {
                 ),
               ),
               title: ShowTitle(
-                title: 'ยังไม่มีการนัดหมาย',
-                textStyle: MyConstant().h3StyleWeigth(),
-              ),
+                  title: 'ยังไม่มีการนัดหมาย',
+                  textStyle: GoogleFonts.kanit(
+                      fontSize: 16, fontWeight: FontWeight.w500)),
               subtitle: ShowTitle(
-                title: 'เข้าสู้ระบบ เพื่อทำการนัดหมาย',
-                textStyle: MyConstant().h4StyleGley(),
-              ),
+                  title: 'เข้าสู่ระบบ เพื่อทำการนัดหมาย',
+                  textStyle: GoogleFonts.kanit(
+                      fontSize: 14, color: Color(0xffB7B7B7))),
               trailing: Column(
                 children: [
                   IconButton(
                     onPressed: () {},
                     icon: Container(
                       decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
-                          borderRadius: BorderRadius.circular(5)),
+                        color: Colors.grey.shade50,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
                       child: const Icon(
                         Icons.navigate_next,
                         color: Colors.blue,
@@ -368,27 +446,35 @@ class _MainPageState extends State<MainPage> {
                 ],
               ),
             ),
-            Container(
-              width: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => SignInPage()));
-                    },
-                    child: ShowTitle(
-                      title: 'เข้าสู่ระบบ',
-                      textStyle: MyConstant().h3StyleWhite(),
-                    )),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+                    CupertinoPageRoute(builder: (context) => SignInPage()));
+              },
+              child: Container(
+                width: 320,
+                padding: EdgeInsets.symmetric(vertical: 15),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  color: Color(0xffE6EFFE),
+                  gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
+                ),
+                child: Text(
+                  "เข้าสู่ระบบ",
+                  style: GoogleFonts.kanit(
+                    textStyle: Theme.of(context).textTheme.headline4,
+                    fontSize: 16,
+                    color: Color(0xffFFFFFF),
+                    // fontStyle: FontStyle.italic,
+                  ),
+                ),
               ),
-            )
+            ),
+            SizedBox(height: 15),
           ],
         ),
       ),
@@ -399,28 +485,36 @@ class _MainPageState extends State<MainPage> {
     return CarouselSlider(
         items: widgets,
         options: CarouselOptions(
-            viewportFraction: 0.92,
+            viewportFraction: 1,
             autoPlay: true,
             autoPlayInterval: Duration(seconds: 3)));
   }
 
   Container buildHead() {
     return Container(
+      padding: EdgeInsets.symmetric(vertical: 25, horizontal: 10),
       decoration: const BoxDecoration(
         image: DecorationImage(
-            image: AssetImage('images/header.png'), fit: BoxFit.cover),
+            image: AssetImage('images/header.png'), fit: BoxFit.fitWidth),
       ),
       // width: double.infinity,
       height: 140,
       child: ListTile(
         leading: const ShowCircular(path: 'images/ter.jpg'),
         title: ShowTitle(
-          title: 'สวัสดี',
-          textStyle: MyConstant().h2StyleWhite(),
+          title: 'สวัสดีค่ะ',
+          textStyle: GoogleFonts.kanit(
+            fontSize: 24,
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
+          ),
         ),
         subtitle: ShowTitle(
-          title: 'กรุณาเข้าสู้ระบบ',
-          textStyle: MyConstant().h3StyleWhite(),
+          title: 'กรุณาเข้าสู่ระบบ',
+          textStyle: GoogleFonts.kanit(
+            fontSize: 14,
+            color: Colors.white60,
+          ),
         ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
