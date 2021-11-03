@@ -81,10 +81,138 @@ class _AboutPageState extends State<AboutPage> {
                   ),
                 )
               ],
-            )
+            ),
+            groupIcon1(),
+            groupIcon2()
           ],
         ),
       ),
+    );
+  }
+
+  Padding groupIcon1() {
+    return Padding(
+      padding: const EdgeInsets.all(15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          board1(),
+          board2(),
+        ],
+      ),
+    );
+  }
+
+  Padding groupIcon2() {
+    return Padding(
+      padding: const EdgeInsets.all(15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          board3(),
+          board4(),
+        ],
+      ),
+    );
+  }
+
+  Column board1() {
+    return Column(
+      // child: GestureDetector(
+
+      children: [
+        Image.asset(
+          'images/board1.png',
+          width: 100,
+          height: 104,
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        ShowTitle(
+          title: 'ดร. จิรายุ อิศรางกูร ณ อยุธยา',
+          textStyle: MyConstant().h4StyleBlack(),
+        ),
+        Text(
+          'รองประธานกรรมการ',
+          style: GoogleFonts.kanit(color: Colors.grey.withOpacity(0.8)),
+        ),
+      ],
+    );
+  }
+
+  Column board2() {
+    return Column(
+      // child: GestureDetector(
+
+      children: [
+        Image.asset(
+          'images/board2.png',
+          width: 100,
+          height: 104,
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        ShowTitle(
+          title: 'ม.ร.ว.ดิศนัดดา ดิศกุล',
+          textStyle: MyConstant().h4StyleBlack(),
+        ),
+        Text(
+          'กรรมการ',
+          style: GoogleFonts.kanit(color: Colors.grey.withOpacity(0.8)),
+        ),
+      ],
+    );
+  }
+
+  Column board3() {
+    return Column(
+      // child: GestureDetector(
+
+      children: [
+        Image.asset(
+          'images/board3_1.png',
+          width: 100,
+          height: 104,
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        ShowTitle(
+          title: 'ศ.นพ.อรุณ เผ่าสวัสดิ์',
+          textStyle: MyConstant().h4StyleBlack(),
+        ),
+        Text(
+          'กรรมการ',
+          style: GoogleFonts.kanit(color: Colors.grey.withOpacity(0.8)),
+        ),
+      ],
+    );
+  }
+
+  Column board4() {
+    return Column(
+      // child: GestureDetector(
+
+      children: [
+        Image.asset(
+          'images/board4_1.png',
+          width: 100,
+          height: 104,
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        ShowTitle(
+          title: 'คุณหญิงวรรณา สิริวัฒนภักดี',
+          textStyle: MyConstant().h4StyleBlack(),
+        ),
+        Text(
+          'กรรมการ',
+          style: GoogleFonts.kanit(color: Colors.grey.withOpacity(0.8)),
+        ),
+      ],
     );
   }
 
@@ -108,13 +236,13 @@ class _AboutPageState extends State<AboutPage> {
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.notifications,
-                color: Colors.white,
-              ),
-            ),
+            // IconButton(
+            //   onPressed: () {},
+            //   icon: const Icon(
+            //     Icons.notifications,
+            //     color: Colors.white,
+            //   ),
+            // ),
             IconButton(
               onPressed: () {},
               icon: const Icon(
