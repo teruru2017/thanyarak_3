@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:thanyarak/utility/my_constant.dart';
 import 'package:thanyarak/widgets/about_widget.dart';
 import 'package:thanyarak/widgets/show_title.dart';
@@ -39,6 +40,48 @@ class _AboutPageState extends State<AboutPage> {
               height: 6,
             ),
             const AboutHead(title: 'คณะกรรมการมูลนิธิถันยรักษ์ฯ'),
+            Row(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.asset(
+                    'images/princess.png',
+                    width: 140,
+                    height: 184,
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'สมเด็จพระกนิษฐาธิราชเจ้ากรมสมเด็จพระเทพรัตนราชสุดาเจ้าฟ้ามหาจักรีสิรินธร มหาวชิราลงกรณวรราชภักดี สิริกิจการิณีพีรยพัฒนรัฐสีมาคุณากรปิยชาติสยามบรมราชกุมารี',
+                        style: GoogleFonts.kanit(
+                          textStyle: Theme.of(context).textTheme.headline4,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w300,
+                          color: Color(0xff000000),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                'ประธานกิตติมศักดิ์',
+                                style: GoogleFonts.kanit(
+                                    color: Colors.grey.withOpacity(0.8)),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            )
           ],
         ),
       ),
@@ -111,7 +154,7 @@ class _AboutPageState extends State<AboutPage> {
                 title: cutWordH(
                   'ประวัติความเป็นมาของมูลนิธิถันยรักษ์ฯ',
                 ),
-                textStyle: MyConstant().h2StyleBlue(),
+                textStyle: MyConstant().h1StyleBlue(),
               ),
             ),
           ),
