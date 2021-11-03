@@ -1,6 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:thanyarak/bodys/detaildonate_pages.dart';
+import 'package:thanyarak/bodys/otp_pages.dart';
+import 'package:thanyarak/bodys/test.dart';
 import 'package:thanyarak/utility/my_constant.dart';
 import 'package:thanyarak/widgets/show_circular.dart';
 import 'package:thanyarak/widgets/show_title.dart';
@@ -50,7 +54,14 @@ class _DonatePageState extends State<DonatePage> {
         child: Column(
           children: [
             buildHead(),
-            listArticle(),
+            GestureDetector(
+              onTap: () => Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                      builder: (context) => detaildonate_pages())),
+              child: listArticle(),
+            ),
+            //listArticle(),
           ],
         ),
       ),

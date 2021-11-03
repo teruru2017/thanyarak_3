@@ -48,7 +48,7 @@ class MenuPage extends StatelessWidget {
             ),
             title: ShowTitle(
               title: 'หน้าหลัก',
-              textStyle: MyConstant().h1StyleWhites(),
+              textStyle: MyConstant().h1StyleWhite(),
             ),
             // subtitle: ShowTitle(
             //   title: 'เข้าสู้ระบบ เพื่อทำการนัดหมาย',
@@ -122,7 +122,7 @@ class MenuPage extends StatelessWidget {
             ),
             title: ShowTitle(
               title: 'บทความ',
-              textStyle: MyConstant().h1StyleWhites(),
+              textStyle: MyConstant().h1StyleWhite(),
             ),
             // subtitle: ShowTitle(
             //   title: 'เข้าสู้ระบบ เพื่อทำการนัดหมาย',
@@ -190,7 +190,7 @@ class MenuPage extends StatelessWidget {
             ),
             title: ShowTitle(
               title: 'ร้านค้า',
-              textStyle: MyConstant().h1StyleWhites(),
+              textStyle: MyConstant().h1StyleWhite(),
             ),
             // subtitle: ShowTitle(
             //   title: 'เข้าสู้ระบบ เพื่อทำการนัดหมาย',
@@ -258,7 +258,7 @@ class MenuPage extends StatelessWidget {
             ),
             title: ShowTitle(
               title: 'บริจาค',
-              textStyle: MyConstant().h1StyleWhites(),
+              textStyle: MyConstant().h1StyleWhite(),
             ),
             // subtitle: ShowTitle(
             //   title: 'เข้าสู้ระบบ เพื่อทำการนัดหมาย',
@@ -326,7 +326,7 @@ class MenuPage extends StatelessWidget {
             ),
             title: ShowTitle(
               title: 'สมาชิก',
-              textStyle: MyConstant().h1StyleWhites(),
+              textStyle: MyConstant().h1StyleWhite(),
             ),
             // subtitle: ShowTitle(
             //   title: 'เข้าสู้ระบบ เพื่อทำการนัดหมาย',
@@ -394,7 +394,7 @@ class MenuPage extends StatelessWidget {
             ),
             title: ShowTitle(
               title: 'ข้อกำหนดและเงื่อนไข',
-              textStyle: MyConstant().h1StyleWhites(),
+              textStyle: MyConstant().h1StyleWhite(),
             ),
             // subtitle: ShowTitle(
             //   title: 'เข้าสู้ระบบ เพื่อทำการนัดหมาย',

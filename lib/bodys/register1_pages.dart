@@ -15,7 +15,12 @@ class register1_pages extends StatefulWidget {
   _register1_pagesState createState() => _register1_pagesState();
 }
 
+enum SingingCharacter { HN, idcard }
+
 class _register1_pagesState extends State<register1_pages> {
+  SingingCharacter? _character = SingingCharacter.HN;
+  String txt = "HN";
+
   int _selectedchoice = 0;
   int choice = 0;
 
@@ -114,60 +119,61 @@ class _register1_pagesState extends State<register1_pages> {
                     ),
                   ),
                   Container(
-                    child: Row(
-                      children: <Widget>[
-                        Radio(
-                            value: 1,
-                            groupValue: _selectedchoice,
-                            onChanged: (val) {
-                              _selectedchoice = choice;
-
-                              setState(() {
-                                _selectedchoice = choice;
-                              });
-                            }),
-                        Text(
-                          'HN',
-                          style: GoogleFonts.kanit(
-                            textStyle: Theme.of(context).textTheme.headline4,
-                            fontSize: 16,
-                            color: Colors.black,
-                            // fontStyle: FontStyle.italic,
-                          ),
-                        ),
-                        SizedBox(width: 20),
-                        Radio(
-                            value: 2,
-                            groupValue: _selectedchoice,
-                            onChanged: (val) {
-                              _selectedchoice = choice;
-
-                              setState(() {
-                                _selectedchoice = choice;
-                              });
-                            }),
-                        Text(
-                          'เลขบัตรประจำตัวประชาชน',
-                          style: GoogleFonts.kanit(
-                            textStyle: Theme.of(context).textTheme.headline4,
-                            fontSize: 16,
-                            color: Colors.black,
-                            // fontStyle: FontStyle.italic,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Container(
-                    child: Row(
+                    //child: MyStatefulWidget(),
+                    child: Column(
                       children: [
-                        // ListTile(title: Text('HM')),
-                        // ListTile(title: Text('xx'))
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Row(
+                                children: [
+                                  Radio(
+                                    value: SingingCharacter.HN,
+                                    groupValue: _character,
+                                    onChanged: (SingingCharacter? value) {
+                                      setState(() {
+                                        _character = value;
+                                      });
+                                      txt = 'HN';
+                                    },
+                                  ),
+                                  Expanded(
+                                      child: Text('HN',
+                                          style: GoogleFonts.kanit(
+                                            fontSize: 16,
+                                          )))
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              flex: 3,
+                              child: Row(
+                                children: [
+                                  Radio(
+                                    value: SingingCharacter.idcard,
+                                    groupValue: _character,
+                                    onChanged: (SingingCharacter? value) {
+                                      setState(() {
+                                        _character = value;
+                                      });
+                                      txt = 'เลขบัตรประจำตัวประชาชน';
+                                    },
+                                  ),
+                                  Expanded(
+                                      child: Text('เลขบัตรประจำตัวประชาชน',
+                                          style: GoogleFonts.kanit(
+                                            fontSize: 16,
+                                          )))
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
-                  SizedBox(height: 20),
                   Container(
                     //color: Colors.amber,
                     //margin: EdgeInsets.symmetric(horizontal: 20),
@@ -182,8 +188,14 @@ class _register1_pagesState extends State<register1_pages> {
                           decoration: InputDecoration(
                               //border: InputBorder.none,
 
-                              prefixIcon: Icon(Icons.person),
-                              labelText: 'เลขบัตรประจำตัวประชาชน',
+                              prefixIcon: const Padding(
+                                padding: EdgeInsets.all(12),
+                                child: FaIcon(
+                                  FontAwesomeIcons.idCardAlt,
+                                  size: 20,
+                                ),
+                              ),
+                              labelText: txt,
                               border: OutlineInputBorder(
                                   borderRadius: const BorderRadius.all(
                                       const Radius.circular(10))),

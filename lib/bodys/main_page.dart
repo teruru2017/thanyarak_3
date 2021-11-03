@@ -11,6 +11,7 @@ import 'package:thanyarak/utility/my_constant.dart';
 import 'package:thanyarak/widgets/show_circular.dart';
 import 'package:thanyarak/widgets/show_title.dart';
 import 'package:thanyarak/widgets/show_title_head.dart';
+import 'package:thanyarak/states/main_home.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -18,6 +19,10 @@ class MainPage extends StatefulWidget {
   @override
   _MainPageState createState() => _MainPageState();
 }
+
+// Map<String, WidgetBuilder> map = {
+//   '/mainHome': (BuildContext context) => const MainHome(),
+// };
 
 void results() {
   SignInPage();
@@ -89,6 +94,7 @@ class _MainPageState extends State<MainPage> {
           children: [
             buildHead(),
             builBanner(),
+
             // Row(
             //   mainAxisAlignment: MainAxisAlignment.center,
             //   children: banners.map((urlOfItem) {
