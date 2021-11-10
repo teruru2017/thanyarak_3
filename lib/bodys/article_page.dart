@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:thanyarak/utility/my_constant.dart';
 import 'package:thanyarak/widgets/article_widget.dart';
 import 'package:thanyarak/widgets/show_circular.dart';
@@ -68,34 +69,45 @@ class _AticlePageState extends State<AticlePage> {
       ),
       // width: double.infinity,
       height: 100,
-      child: ListTile(
-        title: ShowTitle(
-          title: 'บทความ',
-          textStyle: MyConstant().h2StyleWhite(),
-        ),
-        // subtitle: ShowTitle(
-        //   title: 'กรุณาเข้าสู้ระบบ',
-        //   textStyle: MyConstant().h3StyleWhite(),
-        // ),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.notifications,
-                color: Colors.white,
-              ),
+      child: Column(
+        children: [
+          Container(
+            height: 100,
+            //width: 400,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Align(
+                    alignment: Alignment(-0.8, 0.1),
+                    child: Text('บทความ',
+                        style: GoogleFonts.kanit(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ))),
+                SizedBox(width: 170),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.notifications,
+                        color: Colors.white,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.menu,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.menu,
-                color: Colors.white,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

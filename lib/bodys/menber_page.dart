@@ -38,12 +38,12 @@ class _MenderPageState extends State<MenderPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(10),
               child: Text(
                 'เข้าสู่ระบบ',
                 style: GoogleFonts.kanit(
                   textStyle: Theme.of(context).textTheme.headline4,
-                  fontSize: 22,
+                  fontSize: 24,
                   fontWeight: FontWeight.w500,
                   color: Colors.black,
                   // fontStyle: FontStyle.italic,
@@ -51,7 +51,7 @@ class _MenderPageState extends State<MenderPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(10),
               child: Text(
                 'กรุณาเข้าสู่ระบบ เพื่อจัดการโปรไฟล์',
                 style: GoogleFonts.kanit(
@@ -66,24 +66,30 @@ class _MenderPageState extends State<MenderPage> {
             SizedBox(
               height: 100,
             ),
-            Container(
-              width: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute(builder: (context) => SignInPage()),
-                    );
-                  },
-                  child: ShowTitle(
-                    title: 'เข้าสู่ระบบ',
-                    textStyle: MyConstant().h3StyleWhite(),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+                    CupertinoPageRoute(builder: (context) => SignInPage()));
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.9,
+                padding: EdgeInsets.symmetric(vertical: 15),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  color: Color(0xffE6EFFE),
+                  gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
+                ),
+                child: Text(
+                  "เข้าสู่ระบบ",
+                  style: GoogleFonts.kanit(
+                    textStyle: Theme.of(context).textTheme.headline4,
+                    fontSize: 16,
+                    color: Color(0xffFFFFFF),
+                    // fontStyle: FontStyle.italic,
                   ),
                 ),
               ),
@@ -102,34 +108,45 @@ class _MenderPageState extends State<MenderPage> {
       ),
       // width: double.infinity,
       height: 100,
-      child: ListTile(
-        title: ShowTitle(
-          title: 'สมาชิก',
-          textStyle: MyConstant().h2StyleWhite(),
-        ),
-        // subtitle: ShowTitle(
-        //   title: 'กรุณาเข้าสู้ระบบ',
-        //   textStyle: MyConstant().h3StyleWhite(),
-        // ),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.notifications,
-                color: Colors.white,
-              ),
+      child: Column(
+        children: [
+          Container(
+            height: 100,
+            //width: 400,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Align(
+                    alignment: Alignment(-0.8, 0.1),
+                    child: Text('สมาชิก',
+                        style: GoogleFonts.kanit(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ))),
+                SizedBox(width: 170),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.notifications,
+                        color: Colors.white,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.menu,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.menu,
-                color: Colors.white,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

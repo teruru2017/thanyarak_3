@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:thanyarak/bodys/article_details_page.dart';
+import 'package:thanyarak/bodys/article_page.dart';
 import 'package:thanyarak/bodys/conditions_page.dart';
 import 'package:thanyarak/bodys/donate_page.dart';
 import 'package:thanyarak/bodys/main_page.dart';
@@ -135,7 +136,7 @@ class MenuPage extends StatelessWidget {
           ListTile(
             onTap: () {
               Navigator.push(context,
-                  CupertinoPageRoute(builder: (context) => ArticleWidget()));
+                  CupertinoPageRoute(builder: (context) => AticlePage()));
             },
             leading: Container(
               child: Padding(
