@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:thanyarak/bodys/about_page.dart';
 import 'package:thanyarak/bodys/article_page.dart';
 import 'package:thanyarak/bodys/donate_page.dart';
 import 'package:thanyarak/bodys/main_page.dart';
@@ -26,9 +27,9 @@ class _MainHomeState extends State<MainHome> {
   List<Widget> widgets = [
     MainPage(),
     AticlePage(),
-    ShopPage(),
     DonatePage(),
-    MenderPage()
+    MenderPage(),
+    AboutPage(),
   ];
 
   int currentTabIndex = 0;
@@ -91,10 +92,10 @@ class _MainHomeState extends State<MainHome> {
               ),
               BottomNavigationBarItem(
                 icon: currentTabIndex == 2
-                    ? new Image.asset('images/Btn_store_active.png')
-                    : new Image.asset('images/Btn_store.png'),
+                    ? new Image.asset('images/Btn_donate_active.png')
+                    : new Image.asset('images/Btn_donate.png'),
                 title: Text(
-                  'ร้านค้า',
+                  'บริจาค',
                   style: GoogleFonts.kanit(
                     textStyle: Theme.of(context).textTheme.headline4,
                     fontSize: 12,
@@ -108,10 +109,10 @@ class _MainHomeState extends State<MainHome> {
               ),
               BottomNavigationBarItem(
                 icon: currentTabIndex == 3
-                    ? new Image.asset('images/Btn_donate_active.png')
-                    : new Image.asset('images/Btn_donate.png'),
+                    ? new Image.asset('images/Btn_member_active.png')
+                    : new Image.asset('images/Btn_member.png'),
                 title: Text(
-                  'บริจาค',
+                  'สมาชิก',
                   style: GoogleFonts.kanit(
                     textStyle: Theme.of(context).textTheme.headline4,
                     fontSize: 12,
@@ -128,7 +129,7 @@ class _MainHomeState extends State<MainHome> {
                     ? new Image.asset('images/Btn_member_active.png')
                     : new Image.asset('images/Btn_member.png'),
                 title: Text(
-                  'สมาชิก',
+                  'เกี่ยวกับเรา',
                   style: GoogleFonts.kanit(
                     textStyle: Theme.of(context).textTheme.headline4,
                     fontSize: 12,
