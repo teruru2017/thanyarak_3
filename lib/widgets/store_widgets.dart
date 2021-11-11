@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:thanyarak/bodys/shop_detail_page.dart';
 import 'package:thanyarak/models/store_models.dart';
@@ -52,11 +53,24 @@ class Stores extends StatelessWidget {
                               textStyle: Theme.of(context).textTheme.headline4,
                               fontSize: 17,
                               fontWeight: FontWeight.w500,
-                              color: Color(0xff000000),
+                              color: Color(0xff0088c6),
                             ),
                           ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(5, 4, 4, 4),
+                                child: SvgPicture.asset('images/c1.svg'),
+                              ),
+                              Text(
+                                e.dateTime,
+                                style: GoogleFonts.kanit(
+                                    color: Colors.grey.withOpacity(0.8)),
+                              ),
+                            ],
+                          ),
                           Text(
-                            e.dateTime,
+                            'ราคา',
                             style: GoogleFonts.kanit(
                                 color: Colors.grey.withOpacity(0.8)),
                           ),
@@ -77,6 +91,16 @@ class Stores extends StatelessWidget {
                                     ),
                                   ),
                                 ],
+                              ),
+                              Text(
+                                'บาท',
+                                style: GoogleFonts.kanit(
+                                  textStyle:
+                                      Theme.of(context).textTheme.headline4,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xff000000),
+                                ),
                               ),
                               SizedBox(
                                 height: 5,
