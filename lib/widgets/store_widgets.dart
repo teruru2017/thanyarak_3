@@ -59,7 +59,7 @@ class Stores extends StatelessWidget {
                           Row(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.fromLTRB(5, 4, 4, 4),
+                                padding: const EdgeInsets.fromLTRB(2, 4, 4, 4),
                                 child: SvgPicture.asset('images/c1.svg'),
                               ),
                               Text(
@@ -72,25 +72,31 @@ class Stores extends StatelessWidget {
                           Text(
                             'ราคา',
                             style: GoogleFonts.kanit(
+                                fontSize: 18,
                                 color: Colors.grey.withOpacity(0.8)),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    e.details,
-                                    style: GoogleFonts.kanit(
-                                      textStyle:
-                                          Theme.of(context).textTheme.headline4,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                      color: Color(0xff000000),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(2, -0, -0, -0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      e.details,
+                                      style: GoogleFonts.kanit(
+                                        textStyle: Theme.of(context)
+                                            .textTheme
+                                            .headline4,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                        color: Color(0xff000000),
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                               Text(
                                 'บาท',
