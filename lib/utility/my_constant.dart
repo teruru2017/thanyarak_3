@@ -29,6 +29,13 @@ class MyConstant {
           color: Colors.white,
         ),
       );
+  TextStyle h2StyleBack() => GoogleFonts.kanit(
+        textStyle: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+          color: Colors.black,
+        ),
+      );
   TextStyle h2StyleBlue() => GoogleFonts.kanit(
         textStyle: const TextStyle(
           fontSize: 16,
