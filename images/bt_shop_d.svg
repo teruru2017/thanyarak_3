@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="411" height="105" viewBox="0 0 411 105">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.941" y1="0.109" x2="0.193" y2="0.767" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#43cef8"/>
+      <stop offset="1" stop-color="#0088c6"/>
+    </linearGradient>
+    <filter id="Rectangle_67" x="0" y="0" width="411" height="105" filterUnits="userSpaceOnUse">
+      <feOffset dy="5" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="7.5" result="blur"/>
+      <feFlood flood-color="#43cef8" flood-opacity="0.302"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="BT_01" data-name="BT 01" transform="translate(22.5 17.5)">
+    <g transform="matrix(1, 0, 0, 1, -22.5, -17.5)" filter="url(#Rectangle_67)">
+      <rect id="Rectangle_67-2" data-name="Rectangle 67" width="366" height="60" rx="10" transform="translate(22.5 17.5)" fill="url(#linear-gradient)"/>
+    </g>
+    <g id="Group_2145" data-name="Group 2145" transform="translate(139.257 18)">
+      <text id="ช้อปเลย" transform="translate(33.743)" fill="#fff" font-size="16" font-family="Kanit-Regular, Kanit"><tspan x="1.292" y="18">ช้อปเลย</tspan></text>
+      <rect id="Rectangle_141" data-name="Rectangle 141" width="24" height="24" rx="5" transform="translate(-0.257)" fill="#fff" opacity="0.2"/>
+      <g id="Group_2147" data-name="Group 2147" transform="translate(6 6)">
+        <path id="Path_916" data-name="Path 916" d="M2965.084,158.527a1.675,1.675,0,0,0-1.368-.7h-7.869v-.78A1.052,1.052,0,0,0,2954.8,156h-1.187a.61.61,0,1,0,0,1.22h1.017v6.443a1.694,1.694,0,0,0,1.692,1.692h6.267a1.687,1.687,0,0,0,1.61-1.171l1.135-4.156A1.676,1.676,0,0,0,2965.084,158.527Zm-4.152,3.575h-2.44a.61.61,0,0,1,0-1.22h2.44a.61.61,0,1,1,0,1.22Z" transform="translate(-2953 -156)" fill="#fff"/>
+        <circle id="Ellipse_122" data-name="Ellipse 122" cx="1.119" cy="1.119" r="1.119" transform="translate(2.237 9.763)" fill="#fff" opacity="0.6"/>
+        <circle id="Ellipse_123" data-name="Ellipse 123" cx="1.119" cy="1.119" r="1.119" transform="translate(8.542 9.763)" fill="#fff" opacity="0.6"/>
+      </g>
+    </g>
+  </g>
+</svg>
