@@ -18,7 +18,7 @@ class AticlePage extends StatefulWidget {
 
 class _AticlePageState extends State<AticlePage> {
   List<String> banners = [
-    'images/tt1.png',
+    'images/topgraphic.png',
     'images/topgraphic.png',
     'images/topgraphic.png',
   ];

@@ -2,11 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:thanyarak/bodys/main_login_page.dart';
 import 'package:thanyarak/bodys/shop_page.dart';
 import 'package:thanyarak/utility/my_constant.dart';
 import 'package:thanyarak/widgets/show_title.dart';
-
-import 'main_login_page.dart';
 
 class ShopDetailPage extends StatefulWidget {
   ShopDetailPage({Key? key}) : super(key: key);
