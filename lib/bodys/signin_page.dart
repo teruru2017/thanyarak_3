@@ -66,10 +66,10 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                    builder: (context) => MainPage()));
+                            // Navigator.push(
+                            //     context,
+                            //     CupertinoPageRoute(
+                            //         builder: (context) => MainPage()));
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -175,8 +175,10 @@ class _SignInPageState extends State<SignInPage> {
                   GestureDetector(
                     onTap: () {
                       // Navigator.pop(context);
-                      // Navigator.push(context,
-                      //     MaterialPageRoute(builder: (context) => test()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SignInPage()));
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width,

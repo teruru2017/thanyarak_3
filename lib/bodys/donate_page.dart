@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:thanyarak/bodys/detaildonate_pages.dart';
+import 'package:thanyarak/bodys/menu_page.dart';
+import 'package:thanyarak/bodys/notification_page.dart';
 import 'package:thanyarak/bodys/otp_pages.dart';
 import 'package:thanyarak/bodys/test.dart';
 import 'package:thanyarak/utility/my_constant.dart';
@@ -51,19 +53,94 @@ class _DonatePageState extends State<DonatePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            buildHead(),
-            GestureDetector(
-              onTap: () => Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                      builder: (context) => detaildonate_pages())),
-              child: listArticle(),
+        child: Column(children: [
+          Container(
+              child: Stack(children: <Widget>[
+            Container(
+              height: 120,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("images/header2.png"),
+                      fit: BoxFit.cover,
+                      alignment: Alignment.topCenter)),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Expanded(
+                    flex: 6,
+                    child: Container(
+                      margin: EdgeInsets.only(top: 40, left: 25),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          'บริจาค',
+                          style: GoogleFonts.kanit(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      height: 90,
+                      child: Container(
+                        margin: EdgeInsets.only(top: 45),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                        builder: (context) => NotiPage()));
+                              },
+                              child: Container(
+                                width: 20,
+                                height: 20,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image:
+                                            AssetImage('images/notimenu.png'))),
+                              ),
+                            ),
+                            SizedBox(width: 20),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                        builder: (context) => MenuPage()));
+                              },
+                              child: Container(
+                                width: 20,
+                                height: 20,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage('images/menu.png'))),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            //listArticle(),
-          ],
-        ),
+            Expanded(
+              child: Container(
+                // color: Colors.green,
+                margin: EdgeInsets.only(top: 95),
+                child: Column(children: <Widget>[listArticle()]),
+              ),
+            ),
+          ])),
+        ]),
       ),
     );
   }
@@ -75,137 +152,100 @@ class _DonatePageState extends State<DonatePage> {
         shrinkWrap: true,
         physics: const ClampingScrollPhysics(),
         itemCount: pathImageAritcles.length,
-        itemBuilder: (context, index) => Card(
-            elevation: 3,
-            margin: EdgeInsets.all(8),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  margin: EdgeInsets.all(10),
-                  height: 150,
-                  width: 280,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20)),
-                    image: DecorationImage(
-                      image: AssetImage(
-                        pathImageAritcles[index],
+        itemBuilder: (context, index) => GestureDetector(
+          onTap: () {
+            Navigator.push(context,
+                CupertinoPageRoute(builder: (context) => detaildonate_pages()));
+          },
+          child: Card(
+              //color: Colors.amber,
+              // elevation: 1,
+              margin: EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 10),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.2,
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20)),
+                      image: DecorationImage(
+                        image: AssetImage(
+                          pathImageAritcles[index],
+                        ),
+                        fit: BoxFit.cover,
                       ),
-                      fit: BoxFit.cover,
                     ),
                   ),
-                ),
-                Container(
-                  width: 300,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
-                    child: ShowTitle(
-                        title: cutWordH(titleAritcles[index]),
-                        textStyle: GoogleFonts.kanit(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xff0088C6),
-                        )),
+                  Container(
+                    // color: Colors.green,
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 10, bottom: 1, left: 20, right: 20),
+                      child: ShowTitle(
+                          title: cutWordH(titleAritcles[index]),
+                          textStyle: GoogleFonts.kanit(
+                            fontSize: 16.5,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xff0088C6),
+                          )),
+                    ),
                   ),
-                ),
-                Container(
-                  width: 300,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
-                    child: ShowTitle(
-                        title: cutWord(detailAritcles[index]),
-                        textStyle: GoogleFonts.kanit(
-                          fontSize: 12,
-                          color: Colors.black,
-                        )),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(bottom: 7, left: 20, right: 20),
+                      child: ShowTitle(
+                          title: cutWord(detailAritcles[index]),
+                          textStyle: GoogleFonts.kanit(
+                            fontSize: 14,
+                            color: Colors.black,
+                          )),
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Column(
-                  children: [
-                    Row(
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Container(
+                    //color: Colors.green,
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    padding:
+                        const EdgeInsets.only(bottom: 7, left: 5, right: 20),
+                    child: Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(16, 4, 4, 4),
-                          child: SvgPicture.asset('images/c1.svg'),
-                        ),
-                        ShowTitle(
-                          title: dataAritcles[index],
-                          textStyle: MyConstant().h4StyleGley(),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(16, 4, 4, 4),
-                          child: SvgPicture.asset('images/v2.svg'),
-                        ),
-                        ShowTitle(
-                          title: viewAritcles[index],
-                          textStyle: MyConstant().h4StyleGley(),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(16, 4, 4, 4),
+                              child: SvgPicture.asset('images/c1.svg'),
+                            ),
+                            ShowTitle(
+                              title: dataAritcles[index],
+                              textStyle: MyConstant().h4StyleGley(),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(16, 4, 4, 4),
+                              child: SvgPicture.asset('images/v2.svg'),
+                            ),
+                            ShowTitle(
+                              title: viewAritcles[index],
+                              textStyle: MyConstant().h4StyleGley(),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
-                )
-              ],
-            )),
-      ),
-    );
-  }
-
-  Container buildHead() {
-    return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage('images/header2.png'), fit: BoxFit.cover),
-      ),
-      // width: double.infinity,
-      height: 100,
-      child: Column(
-        children: [
-          Container(
-            height: 100,
-            //width: 400,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Align(
-                    alignment: Alignment(-0.8, 0.1),
-                    child: Text('บริจาค',
-                        style: GoogleFonts.kanit(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                        ))),
-                SizedBox(width: 170),
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.notifications,
-                        color: Colors.white,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.menu,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
+                  ),
+                  SizedBox(height: 20),
+                ],
+              )),
+        ),
       ),
     );
   }

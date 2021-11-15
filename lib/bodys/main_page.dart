@@ -2,17 +2,26 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:thanyarak/bodys/CarouselWithDotsPage.dart';
 import 'package:thanyarak/bodys/about_page.dart';
+import 'package:thanyarak/bodys/article_details_page.dart';
+import 'package:thanyarak/bodys/article_page.dart';
+import 'package:thanyarak/bodys/notification_page.dart';
 import 'package:thanyarak/bodys/shop_page.dart';
 // import 'package:thanyarak/bodys/about_page.dart';
 import 'package:thanyarak/bodys/menu_page.dart';
 import 'package:thanyarak/bodys/signin_page.dart';
+import 'package:thanyarak/models/article_model.dart';
 import 'package:thanyarak/utility/my_constant.dart';
+import 'package:thanyarak/widgets/article_widget.dart';
 import 'package:thanyarak/widgets/show_circular.dart';
 import 'package:thanyarak/widgets/show_title.dart';
 import 'package:thanyarak/widgets/show_title_head.dart';
 import 'package:thanyarak/states/main_home.dart';
+import 'package:avatar_view/avatar_view.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -30,12 +39,35 @@ void results() {
 }
 
 class _MainPageState extends State<MainPage> {
-  List<String> banners = [
+  int i = 0;
+
+  CarouselSlider builBannerPro() {
+    return CarouselSlider(
+        items: widgets,
+        options: CarouselOptions(
+            viewportFraction: 1,
+            autoPlay: true,
+            autoPlayInterval: Duration(seconds: 3)));
+  }
+
+  final controller = PageController(viewportFraction: 0.8, keepPage: true);
+  int _current = 0;
+  List<String> imgListPro = [
     'images/topgraphic.png',
     'images/topgraphic.png',
     'images/topgraphic.png',
+    'images/topgraphic.png'
   ];
+
+  List<String> imgList = [
+    'images/shopping.png',
+    'images/shopping.png',
+  ];
+
   List<Widget> widgets = [];
+
+  List<Widget> widgetsPro = [];
+
   List<String> pathImageAritcles = [
     'images/t1.jpg',
     'images/t2.jpg',
@@ -75,12 +107,21 @@ class _MainPageState extends State<MainPage> {
     super.initState();
 
     loopCreateBanner();
+    loopCreatePro();
   }
 
   void loopCreateBanner() {
-    for (var item in banners) {
+    for (var item in imgList) {
       setState(() {
         widgets.add(createBannerWidget(item));
+      });
+    }
+  }
+
+  void loopCreatePro() {
+    for (var itemPro in imgListPro) {
+      setState(() {
+        widgetsPro.add(createBannerWidget(itemPro));
       });
     }
   }
@@ -91,96 +132,265 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       backgroundColor: const Color(0xffffffff),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            buildHead(),
-            builBanner(),
-
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: banners.map((urlOfItem) {
-            //     int index = banners.indexOf(urlOfItem);
-            //     return Container(
-            //       width: 10.0,
-            //       height: 10.0,
-            //       margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-            //       decoration: BoxDecoration(
-            //         shape: BoxShape.circle,
-            //         color: _currentIndex == index
-            //             ? Color.fromRGBO(242, 145, 163, 1)
-            //             : Color.fromRGBO(0, 136, 192, 1),
-            //       ),
-            //     );
-            //   }).toList(),
-            // ),
-            buildContent(),
-            const ShowHead(title: 'บทความ', pathIcon: 'images/article.png'),
-            listArticle(),
-            const ShowHead(
-                title: 'โปรโมชั่นร้านค้า', pathIcon: 'images/shop.png'),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 15.0),
-              height: MediaQuery.of(context).size.height * 0.30,
-              child: Card(
-                color: Color(0xffABDDFE),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                elevation: 2,
-                child: Container(
-                  child: Stack(
-                    children: <Widget>[
-                      Container(
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
+        child: Column(children: [
+          Container(
+            child: Stack(
+              children: <Widget>[
+                Container(
+                  height: 120,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage("images/header2.png"),
                           fit: BoxFit.cover,
-                          image: AssetImage("images/bgsky.png"),
-                        )),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                          scale: 1.5,
-                          image: AssetImage("images/iconshop.png"),
-                          alignment: Alignment(0.8, 0.3),
-                        )),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                          scale: 1.5,
-                          image: AssetImage("images/textshop.png"),
-                          alignment: Alignment(-0.5, -0.5),
-                        )),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) => ShopPage()));
-                        },
+                          alignment: Alignment.topCenter)),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Expanded(
+                        flex: 2,
                         child: Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  scale: 1.3,
-                                  image: AssetImage("images/clickshop.png"),
-                                  alignment: Alignment(-0.7, 0.6))),
+                          height: 100,
+                          //color: Colors.amber,
+                          child: Container(
+                            padding: EdgeInsets.only(
+                                top: 10, left: 15, right: 20, bottom: 20),
+                            margin: EdgeInsets.only(bottom: 10),
+                            child: AvatarView(
+                              radius: 50,
+                              borderWidth: 1,
+                              borderColor: Colors.white,
+                              avatarType: AvatarType.CIRCLE,
+                              imagePath: "images/avatar.png",
+                              placeHolder: Container(
+                                child: Icon(
+                                  Icons.person,
+                                  size: 50,
+                                ),
+                              ),
+                              errorWidget: Container(
+                                child: Icon(
+                                  Icons.error,
+                                  size: 50,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
+                      Expanded(
+                        flex: 4,
+                        child: Container(
+                          height: 90,
+                          // color: Colors.blue,
+                          child: Container(
+                            margin: EdgeInsets.only(top: 10),
+                            child: Align(
+                              //alignment: Alignment.topLeft,
+                              child: Column(children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    'สวัสดีค่ะ',
+                                    style: GoogleFonts.kanit(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    'กรุณาเข้าสู่ระบบ',
+                                    style: GoogleFonts.kanit(
+                                      fontSize: 14,
+                                      color: Colors.white70,
+                                    ),
+                                  ),
+                                ),
+                              ]),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Container(
+                          height: 90,
+                          child: Container(
+                            margin: EdgeInsets.only(top: 17),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                            builder: (context) => NotiPage()));
+                                  },
+                                  child: Container(
+                                    width: 20,
+                                    height: 20,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: AssetImage(
+                                                'images/notimenu.png'))),
+                                  ),
+                                ),
+                                SizedBox(width: 20),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                            builder: (context) => MenuPage()));
+                                  },
+                                  child: Container(
+                                    width: 20,
+                                    height: 20,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image:
+                                                AssetImage('images/menu.png'))),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
-              ),
+                //แบนเนอ
+
+                Expanded(
+                  child: Container(
+                      margin: EdgeInsets.only(top: 90),
+                      child: Column(children: <Widget>[
+                        // ClipRRect(
+                        //   child: CarouselSlider(
+                        //     items: widgetsPro,
+                        //     options: CarouselOptions(
+                        //         viewportFraction: 1,
+                        //         autoPlay: true,
+                        //         enlargeCenterPage: true,
+                        //         // aspectRatio: 2.0,
+                        //         onPageChanged: (index, reason) {
+                        //           setState(() {
+                        //             _current = index;
+                        //           });
+                        //         }),
+                        //   ),
+                        // ),
+                        CarouselSlider(
+                          items: widgetsPro,
+                          options: CarouselOptions(
+                              viewportFraction: 1,
+                              autoPlay: true,
+                              enlargeCenterPage: true,
+                              // aspectRatio: 2.0,
+                              onPageChanged: (index, reason) {
+                                setState(() {
+                                  _current = index;
+                                });
+                              }),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: widgetsPro.map((urlOfItem) {
+                            int index = widgetsPro.indexOf(urlOfItem);
+                            return Container(
+                              width: 8,
+                              height: 8,
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 2.0),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: _current == index
+                                    ? Color.fromRGBO(242, 145, 163, 1)
+                                    : Color.fromRGBO(0, 136, 192, 1),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                        buildContent(),
+                        Row(
+                          children: [
+                            const ShowHead(
+                                title: 'บทความ',
+                                pathIcon: 'images/article.png'),
+                            SizedBox(width: 155),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => AticlePage()));
+                              },
+                              child: Align(
+                                alignment: Alignment.topRight,
+                                child: Text('ดูทั้งหมด',
+                                    style: GoogleFonts.kanit(
+                                      color: Colors.black38,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                    )),
+                              ),
+                            ),
+                          ],
+                        ),
+                        listArticle(),
+                        SizedBox(height: 20),
+                        const ShowHead(
+                            title: 'โปรโมชั่นร้านค้า',
+                            pathIcon: 'images/shop.png'),
+                        SizedBox(height: 1),
+                        CarouselSlider(
+                          items: widgets,
+                          options: CarouselOptions(
+                              viewportFraction: 1,
+                              autoPlay: true,
+                              enlargeCenterPage: true,
+                              // aspectRatio: 2.0,
+                              onPageChanged: (index, reason) {
+                                setState(() {
+                                  _current = index;
+                                });
+                              }),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: widgets.map((urlOfItem) {
+                            int index = widgets.indexOf(urlOfItem);
+                            return Container(
+                              width: 8,
+                              height: 8,
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 2.0),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: _current == index
+                                    ? Color.fromRGBO(242, 145, 163, 1)
+                                    : Color.fromRGBO(0, 136, 192, 1),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                        const ShowHead(
+                            title: 'มูลนิธิถันยรักษ์',
+                            pathIcon: 'images/shop.png'),
+                        buildAboutMe(),
+                        SizedBox(
+                          height: 30,
+                        ),
+                      ])),
+                ),
+              ],
             ),
-            const ShowHead(
-                title: 'มูลนิธิถันยรักษ์', pathIcon: 'images/shop.png'),
-            buildAboutMe(),
-            SizedBox(
-              height: 30,
-            )
-          ],
-        ),
+          ),
+        ]),
       ),
     );
   }
@@ -190,49 +400,74 @@ class _MainPageState extends State<MainPage> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        color: MyConstant.myBlue2,
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                children: [
-                  Container(
-                    width: 140,
-                    height: 140,
-                    child: Image.asset('images/tt.png'),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ShowTitle(
-                    title: 'เกี่ยวกับเรา',
-                    textStyle: MyConstant().h3StyleWeigth(),
-                  ),
-                  ShowTitle(
-                    title: 'ประวัติความเป็นมา',
-                    textStyle: MyConstant().h3StyleWeigth(),
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(primary: Colors.white),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => AboutPage()));
-                    },
-                    child: ShowTitle(
-                      title: 'ดูทั้งหมด',
-                      textStyle: MyConstant().h2StyleBlue(),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            color: Color(0xffE6EFFE),
+            gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [Color(0XFFe6effe), Color(0XFFFFFFFF)]),
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    Container(
+                      width: 140,
+                      height: 140,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage('images/tt.png'))),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ShowTitle(
+                      title: 'เกี่ยวกับเรา',
+                      textStyle: MyConstant().h3StyleWeigth(),
+                    ),
+                    ShowTitle(
+                      title: 'ประวัติความเป็นมา',
+                      textStyle: MyConstant().h3StyleWeigth(),
+                    ),
+                    SizedBox(height: 30),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AboutPage()));
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.25,
+                        padding: EdgeInsets.symmetric(vertical: 8),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          color: Colors.transparent,
+                        ),
+                        child: Text(
+                          "ดูทั้งหมด",
+                          style: GoogleFonts.kanit(
+                            textStyle: Theme.of(context).textTheme.headline4,
+                            fontSize: 16,
+                            color: Colors.blue[600],
+                            // fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -240,39 +475,43 @@ class _MainPageState extends State<MainPage> {
 
   SizedBox listArticle() {
     return SizedBox(
-      height: 350,
+      height: 320,
+      width: 370,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,
         physics: const ClampingScrollPhysics(),
         itemCount: pathImageAritcles.length,
         itemBuilder: (context, index) => Card(
-            elevation: 3,
-            margin: EdgeInsets.all(8),
+            elevation: 5,
+            margin: EdgeInsets.only(right: 20, bottom: 10),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  margin: EdgeInsets.all(10),
-                  height: 150,
-                  width: 280,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(18),
-                    image: DecorationImage(
-                      image: AssetImage(
-                        pathImageAritcles[index],
+                Expanded(
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.2,
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(20),
+                          topLeft: Radius.circular(20)),
+                      image: DecorationImage(
+                        image: AssetImage(
+                          pathImageAritcles[index],
+                        ),
+                        fit: BoxFit.cover,
                       ),
-                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
                 Container(
                   width: 300,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                     child: ShowTitle(
                         title: cutWordH(titleAritcles[index]),
                         textStyle: GoogleFonts.kanit(
@@ -285,8 +524,8 @@ class _MainPageState extends State<MainPage> {
                 Container(
                   width: 300,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                     child: ShowTitle(
                         title: cutWord(detailAritcles[index]),
                         textStyle: GoogleFonts.kanit(
@@ -294,9 +533,6 @@ class _MainPageState extends State<MainPage> {
                           color: Colors.black,
                         )),
                   ),
-                ),
-                SizedBox(
-                  height: 5,
                 ),
                 Column(
                   children: [
@@ -321,7 +557,8 @@ class _MainPageState extends State<MainPage> {
                       ],
                     ),
                   ],
-                )
+                ),
+                SizedBox(height: 10),
               ],
             )),
       ),
@@ -488,68 +725,14 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  CarouselSlider builBanner() {
-    return CarouselSlider(
-        items: widgets,
-        options: CarouselOptions(
-            viewportFraction: 1,
-            autoPlay: true,
-            autoPlayInterval: Duration(seconds: 3)));
-  }
-
-  Container buildHead() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 25, horizontal: 10),
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage('images/header.png'), fit: BoxFit.fitWidth),
-      ),
-      // width: double.infinity,
-      height: 140,
-      child: ListTile(
-        leading: const ShowCircular(path: 'images/ter.jpg'),
-        title: ShowTitle(
-          title: 'สวัสดีค่ะ',
-          textStyle: GoogleFonts.kanit(
-            fontSize: 24,
-            fontWeight: FontWeight.w500,
-            color: Colors.white,
-          ),
-        ),
-        subtitle: ShowTitle(
-          title: 'กรุณาเข้าสู่ระบบ',
-          textStyle: GoogleFonts.kanit(
-            fontSize: 14,
-            color: Colors.white60,
-          ),
-        ),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.notifications,
-                color: Colors.white,
-              ),
-            ),
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(builder: (context) => MenuPage()),
-                );
-              },
-              icon: const Icon(
-                Icons.menu,
-                color: Colors.white,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  // CarouselSlider builBanner() {
+  //   return CarouselSlider(
+  //       items: widgets,
+  //       options: CarouselOptions(
+  //           viewportFraction: 1,
+  //           autoPlay: true,
+  //           autoPlayInterval: Duration(seconds: 3)));
+  // }
 
   String cutWord(String detailAritcl) {
     String resutl = detailAritcl;
