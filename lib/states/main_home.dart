@@ -28,8 +28,8 @@ class _MainHomeState extends State<MainHome> {
     MainPage(),
     AticlePage(),
     DonatePage(),
-    MenderPage(),
     AboutPage(),
+    MenderPage(),
   ];
 
   int currentTabIndex = 0;
@@ -109,10 +109,10 @@ class _MainHomeState extends State<MainHome> {
               ),
               BottomNavigationBarItem(
                 icon: currentTabIndex == 3
-                    ? new Image.asset('images/Btn_member_active.png')
-                    : new Image.asset('images/Btn_member.png'),
+                    ? new Image.asset('images/TYR-1.png')
+                    : new Image.asset('images/TYR-2.png'),
                 title: Text(
-                  'สมาชิก',
+                  'เกี่ยวกับเรา',
                   style: GoogleFonts.kanit(
                     textStyle: Theme.of(context).textTheme.headline4,
                     fontSize: 12,
@@ -129,7 +129,7 @@ class _MainHomeState extends State<MainHome> {
                     ? new Image.asset('images/Btn_member_active.png')
                     : new Image.asset('images/Btn_member.png'),
                 title: Text(
-                  'เกี่ยวกับเรา',
+                  'สมาชิก',
                   style: GoogleFonts.kanit(
                     textStyle: Theme.of(context).textTheme.headline4,
                     fontSize: 12,
