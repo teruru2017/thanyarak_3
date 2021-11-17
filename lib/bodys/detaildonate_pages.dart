@@ -43,7 +43,7 @@ class _detaildonate_pagesState extends State<detaildonate_pages> {
   final CarouselController _controller = CarouselController();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContextcontext) {
     return Scaffold(
       backgroundColor: const Color(0xffffffff),
       body: SingleChildScrollView(
@@ -65,6 +65,10 @@ class _detaildonate_pagesState extends State<detaildonate_pages> {
                       child: GestureDetector(
                         onTap: () {
                           Navigator.maybePop(context);
+                          // Navigator.push(
+                          //     context,
+                          //     CupertinoPageRoute(
+                          //         builder: (context) => DonatePage()));
                         },
                         child: Container(
                           margin: EdgeInsets.only(top: 1, left: 1),
@@ -237,257 +241,300 @@ class _CustomDialogState extends State<CustomDialog> {
         backgroundColor: Colors.black38,
         body: Stack(
           children: <Widget>[
-            Container(
-                width: MediaQuery.of(context).size.width - 0,
-                height: 900,
-                padding: EdgeInsets.all(20),
-                margin: EdgeInsets.only(top: 80),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    const SizedBox(height: 20),
-                    Text(
-                      'ร่วมบริจาค',
-                      style: GoogleFonts.kanit(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff0088C6),
-                      ),
-                    ),
-                    const SizedBox(height: 15),
-                    Text(
-                      'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
-                      style: GoogleFonts.kanit(
-                        fontSize: 15.5,
-                        //fontWeight: FontWeight.w400,
-                        color: Colors.black,
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    //โอนผ่านธนาคาร
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                        setState(
-                          () {
-                            //page1 = !page1;
-                            showGeneralDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                barrierLabel: MaterialLocalizations.of(context)
-                                    .modalBarrierDismissLabel,
-                                barrierColor: Colors.transparent,
-                                transitionDuration: Duration(milliseconds: 200),
-                                pageBuilder: (BuildContext context,
-                                        Animation frist, Animation second) =>
-                                    bankDialog());
-                          },
-                        );
-                      },
-                      child: Container(
-                        width: 500,
-                        height: 50,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage("images/bank.png"),
-                                alignment: Alignment.center)),
-                      ),
-                    ),
-                    SizedBox(height: 230),
-                    Container(
-                      width: MediaQuery.of(context).size.width - 0,
-                      height: 50,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              scale: 1.5,
-                              image: AssetImage("images/textmoney.png"),
-                              alignment: Alignment.center)),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width - 0,
-                      height: 100,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              scale: 1.5,
-                              image: AssetImage("images/qrcode.png"),
-                              alignment: Alignment.center)),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                        setState(
-                          () {
-                            showGeneralDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                barrierLabel: MaterialLocalizations.of(context)
-                                    .modalBarrierDismissLabel,
-                                barrierColor: Colors.transparent,
-                                transitionDuration: Duration(milliseconds: 200),
-                                pageBuilder: (BuildContext context,
-                                        Animation frist, Animation second) =>
-                                    truemoveall());
-                          },
-                        );
-                      },
-                      child: Container(
-                        width: MediaQuery.of(context).size.width - 0,
-                        height: 50,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                scale: 1.5,
-                                image: AssetImage("images/donate01.png"),
-                                alignment: Alignment.center)),
-                      ),
-                    ),
-                    Text(
-                      '(ทุกเครือข่าย)',
-                      style: GoogleFonts.kanit(
-                        fontSize: 16,
-                      ),
-                    )
-
-                    //SizedBox(height: 20),
-                  ],
-                )),
-            Container(
-              width: MediaQuery.of(context).size.width - 0,
-              height: 210,
-              padding: EdgeInsets.all(20),
-              margin: EdgeInsets.only(top: 280),
-              color: Colors.white10,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Column(
-                    children: [
+            Expanded(
+              // flex: 5,
+              child: Container(
+                  width: MediaQuery.of(context).size.width - 0,
+                  padding: EdgeInsets.all(20),
+                  margin: EdgeInsets.only(top: 80),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      const SizedBox(height: 20),
                       Text(
-                        'ผ่านเครือข่าย TrueMove H',
+                        'ร่วมบริจาค',
+                        style: GoogleFonts.kanit(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff0088C6),
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      Text(
+                        'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
+                        style: GoogleFonts.kanit(
+                          fontSize: 15.5,
+                          //fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      //โอนผ่านธนาคาร
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                          setState(
+                            () {
+                              //page1 = !page1;
+                              showGeneralDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  barrierLabel:
+                                      MaterialLocalizations.of(context)
+                                          .modalBarrierDismissLabel,
+                                  barrierColor: Colors.transparent,
+                                  transitionDuration:
+                                      Duration(milliseconds: 200),
+                                  pageBuilder: (BuildContext context,
+                                          Animation frist, Animation second) =>
+                                      bankDialog());
+                            },
+                          );
+                        },
+                        child: Container(
+                          width: 500,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage("images/bank.png"),
+                                  alignment: Alignment.center)),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: Container(
+                          //color: Colors.red,
+                          //width: MediaQuery.of(context).size.width - 0,
+                          // height: 210,
+                          // padding: EdgeInsets.all(20),
+                          // margin: EdgeInsets.only(top: 15),
+                          //color: Colors.white10,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Column(
+                                children: [
+                                  Text(
+                                    'ผ่านเครือข่าย TrueMove H',
+                                    style: GoogleFonts.kanit(
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Container(
+                                      //color: Colors.green,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Column(
+                                            children: [
+                                              Container(
+                                                  width: 150,
+                                                  height: 70,
+                                                  decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                    image: AssetImage(
+                                                        'images/truemove.png'),
+                                                  ))),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Navigator.pop(context);
+                                                  setState(
+                                                    () {
+                                                      showGeneralDialog(
+                                                          context: context,
+                                                          barrierDismissible:
+                                                              false,
+                                                          barrierLabel:
+                                                              MaterialLocalizations
+                                                                      .of(
+                                                                          context)
+                                                                  .modalBarrierDismissLabel,
+                                                          barrierColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          transitionDuration:
+                                                              Duration(
+                                                                  milliseconds:
+                                                                      200),
+                                                          pageBuilder: (BuildContext
+                                                                      context,
+                                                                  Animation
+                                                                      frist,
+                                                                  Animation
+                                                                      second) =>
+                                                              truemoney10());
+                                                    },
+                                                  );
+                                                },
+                                                child: Container(
+                                                  width: 120,
+                                                  height: 40,
+                                                  decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                          image: AssetImage(
+                                                              "images/10bath.png"),
+                                                          alignment: Alignment
+                                                              .center)),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      //color: Colors.amber,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Column(
+                                            children: [
+                                              Container(
+                                                  width: 150,
+                                                  height: 70,
+                                                  decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                    image: AssetImage(
+                                                        'images/truemove.png'),
+                                                  ))),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Navigator.pop(context);
+                                                  setState(
+                                                    () {
+                                                      showGeneralDialog(
+                                                          context: context,
+                                                          barrierDismissible:
+                                                              false,
+                                                          barrierLabel:
+                                                              MaterialLocalizations
+                                                                      .of(
+                                                                          context)
+                                                                  .modalBarrierDismissLabel,
+                                                          barrierColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          transitionDuration:
+                                                              Duration(
+                                                                  milliseconds:
+                                                                      200),
+                                                          pageBuilder: (BuildContext
+                                                                      context,
+                                                                  Animation
+                                                                      frist,
+                                                                  Animation
+                                                                      second) =>
+                                                              truemoney100());
+                                                    },
+                                                  );
+                                                },
+                                                child: Container(
+                                                  width: 120,
+                                                  height: 40,
+                                                  decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                          image: AssetImage(
+                                                              "images/100bath.png"),
+                                                          alignment: Alignment
+                                                              .center)),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                '(ไม่รวมภาษีมูลค่าเพิ่ม)',
+                                style: GoogleFonts.kanit(
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          margin: EdgeInsets.only(top: 5),
+                          // width: MediaQuery.of(context).size.width - 0,
+                          // height: 50,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  scale: 1.5,
+                                  image: AssetImage("images/textmoney.png"),
+                                  alignment: Alignment.center)),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          // width: MediaQuery.of(context).size.width - 0,
+                          // height: 100,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  scale: 1.5,
+                                  image: AssetImage("images/qrcode.png"),
+                                  alignment: Alignment.center)),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                          setState(
+                            () {
+                              showGeneralDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  barrierLabel:
+                                      MaterialLocalizations.of(context)
+                                          .modalBarrierDismissLabel,
+                                  barrierColor: Colors.transparent,
+                                  transitionDuration:
+                                      Duration(milliseconds: 200),
+                                  pageBuilder: (BuildContext context,
+                                          Animation frist, Animation second) =>
+                                      truemoveall());
+                            },
+                          );
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width - 0,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  scale: 1.5,
+                                  image: AssetImage("images/donate01.png"),
+                                  alignment: Alignment.center)),
+                        ),
+                      ),
+                      Text(
+                        '(ทุกเครือข่าย)',
                         style: GoogleFonts.kanit(
                           fontSize: 16,
                         ),
-                      ),
+                      )
+
+                      //SizedBox(height: 20),
                     ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Column(
-                              children: [
-                                Container(
-                                    width: 150,
-                                    height: 70,
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                      image: AssetImage('images/truemove.png'),
-                                    ))),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                    setState(
-                                      () {
-                                        showGeneralDialog(
-                                            context: context,
-                                            barrierDismissible: false,
-                                            barrierLabel:
-                                                MaterialLocalizations.of(
-                                                        context)
-                                                    .modalBarrierDismissLabel,
-                                            barrierColor: Colors.transparent,
-                                            transitionDuration:
-                                                Duration(milliseconds: 200),
-                                            pageBuilder: (BuildContext context,
-                                                    Animation frist,
-                                                    Animation second) =>
-                                                truemoney10());
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 150,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image:
-                                                AssetImage("images/10bath.png"),
-                                            alignment: Alignment.center)),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Column(
-                              children: [
-                                Container(
-                                    width: 150,
-                                    height: 70,
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                      image: AssetImage('images/truemove.png'),
-                                    ))),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                    setState(
-                                      () {
-                                        showGeneralDialog(
-                                            context: context,
-                                            barrierDismissible: false,
-                                            barrierLabel:
-                                                MaterialLocalizations.of(
-                                                        context)
-                                                    .modalBarrierDismissLabel,
-                                            barrierColor: Colors.transparent,
-                                            transitionDuration:
-                                                Duration(milliseconds: 200),
-                                            pageBuilder: (BuildContext context,
-                                                    Animation frist,
-                                                    Animation second) =>
-                                                truemoney100());
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 150,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image: AssetImage(
-                                                "images/100bath.png"),
-                                            alignment: Alignment.center)),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    '(ไม่รวมภาษีมูลค่าเพิ่ม)',
-                    style: GoogleFonts.kanit(
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
-              ),
+                  )),
             ),
             Positioned(
               top: 50,
@@ -929,16 +976,17 @@ class _successDialogState extends State<successDialog> {
                     GestureDetector(
                       onTap: () {
                         setState(() {
-                          showGeneralDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              barrierLabel: MaterialLocalizations.of(context)
-                                  .modalBarrierDismissLabel,
-                              barrierColor: Colors.transparent,
-                              transitionDuration: Duration(milliseconds: 200),
-                              pageBuilder: (BuildContext context,
-                                      Animation frist, Animation second) =>
-                                  detaildonate_pages());
+                          Navigator.pop(context);
+                          // showGeneralDialog(
+                          //     context: context,
+                          //     barrierDismissible: false,
+                          //     barrierLabel: MaterialLocalizations.of(context)
+                          //         .modalBarrierDismissLabel,
+                          //     barrierColor: Colors.transparent,
+                          //     transitionDuration: Duration(milliseconds: 200),
+                          //     pageBuilder: (BuildContext context,
+                          //             Animation frist, Animation second) =>
+                          //         detaildonate_pages());
                           // Navigator.push(
                           //     context,
                           //     CupertinoPageRoute(
@@ -1005,208 +1053,212 @@ class _detailbankDialogState extends State<detailbankDialog> {
           body: SingleChildScrollView(
             child: Stack(
               children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width - 0,
-                  height: 600,
-                  padding: EdgeInsets.all(20),
-                  margin: EdgeInsets.only(top: 220),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child:
-                      Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                    const SizedBox(height: 20),
-                    Row(
-                      children: [
-                        SizedBox(width: 25),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                            setState(
-                              () {
-                                showGeneralDialog(
-                                    context: context,
-                                    barrierDismissible: false,
-                                    barrierLabel:
-                                        MaterialLocalizations.of(context)
-                                            .modalBarrierDismissLabel,
-                                    barrierColor: Colors.transparent,
-                                    transitionDuration:
-                                        Duration(milliseconds: 200),
-                                    pageBuilder: (BuildContext context,
-                                            Animation frist,
-                                            Animation second) =>
-                                        bankDialog());
-                              },
-                            );
-                          },
-                          child: Icon(
-                            Icons.arrow_back_ios_new_rounded,
-                            color: Colors.black54,
-                            size: 18,
+                Expanded(
+                  child: Container(
+                    //width: MediaQuery.of(context).size.width - 0,
+
+                    padding: EdgeInsets.all(20),
+                    margin: EdgeInsets.only(top: 220),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Column(mainAxisSize: MainAxisSize.min, children: <
+                        Widget>[
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          SizedBox(width: 25),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                              setState(
+                                () {
+                                  showGeneralDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      barrierLabel:
+                                          MaterialLocalizations.of(context)
+                                              .modalBarrierDismissLabel,
+                                      barrierColor: Colors.transparent,
+                                      transitionDuration:
+                                          Duration(milliseconds: 200),
+                                      pageBuilder: (BuildContext context,
+                                              Animation frist,
+                                              Animation second) =>
+                                          bankDialog());
+                                },
+                              );
+                            },
+                            child: Icon(
+                              Icons.arrow_back_ios_new_rounded,
+                              color: Colors.black54,
+                              size: 18,
+                            ),
+                          ),
+                          SizedBox(width: 75),
+                          Text(
+                            'สรุปการบริจาค',
+                            style: GoogleFonts.kanit(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff0088C6),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 15),
+                      Text(
+                        'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
+                        style: GoogleFonts.kanit(
+                          fontSize: 15.5,
+                          //fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(height: 30),
+                      Row(children: [
+                        Container(
+                          width: 45,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('images/iconmoney.png'),
+                              scale: 1.5,
+                            ),
                           ),
                         ),
-                        SizedBox(width: 75),
-                        Text(
-                          'สรุปการบริจาค',
+                        SizedBox(width: 10),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'โอนผ่านธนาคารไทยพาณิชย์',
+                            style: GoogleFonts.kanit(
+                              fontSize: 15.5,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ]),
+                      SizedBox(height: 5),
+                      Align(
+                        alignment: Alignment(0.35, 0),
+                        child: Text(
+                          'ชื่อบัญชี : มูลนิธิถันยรักษ์ในพระราชูประถัมภ์\nสมเด็จพระศรีนครินทราบรมราชชนนี\nเลขบัญชี : 016-2-66644-1',
                           style: GoogleFonts.kanit(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w400,
+                            fontSize: 15.5,
+                            color: Colors.black45,
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment(-0.62, 0),
+                        child: Text(
+                          '100 บาท',
+                          style: GoogleFonts.kanit(
+                            fontSize: 15.5,
                             color: Color(0xff0088C6),
                           ),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 15),
-                    Text(
-                      'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
-                      style: GoogleFonts.kanit(
-                        fontSize: 15.5,
-                        //fontWeight: FontWeight.w400,
-                        color: Colors.black,
                       ),
-                    ),
-                    SizedBox(height: 30),
-                    Row(children: [
                       Container(
-                        width: 45,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('images/iconmoney.png'),
-                            scale: 1.5,
+                          //image picker
                           ),
-                        ),
-                      ),
-                      SizedBox(width: 10),
+                      SizedBox(height: 20),
                       Align(
-                        alignment: Alignment.centerLeft,
+                        alignment: Alignment(-1, 1),
                         child: Text(
-                          'โอนผ่านธนาคารไทยพาณิชย์',
+                          'วัตถุประสงค์ในการบริจาค',
                           style: GoogleFonts.kanit(
-                            fontSize: 15.5,
-                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                       ),
-                    ]),
-                    SizedBox(height: 5),
-                    Align(
-                      alignment: Alignment(0.35, 0),
-                      child: Text(
-                        'ชื่อบัญชี : มูลนิธิถันยรักษ์ในพระราชูประถัมภ์\nสมเด็จพระศรีนครินทราบรมราชชนนี\nเลขบัญชี : 016-2-66644-1',
-                        style: GoogleFonts.kanit(
-                          fontSize: 15.5,
-                          color: Colors.black45,
+                      SizedBox(height: 5),
+                      Align(
+                        alignment: Alignment(-1, 1),
+                        child: Text(
+                          'ทำบุญ',
+                          style: GoogleFonts.kanit(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black45,
+                          ),
                         ),
                       ),
-                    ),
-                    Align(
-                      alignment: Alignment(-0.62, 0),
-                      child: Text(
-                        '100 บาท',
-                        style: GoogleFonts.kanit(
-                          fontSize: 15.5,
-                          color: Color(0xff0088C6),
+                      SizedBox(height: 10),
+                      Align(
+                        alignment: Alignment(-1, 1),
+                        child: Text(
+                          'ที่อยู่จัดส่งใบเสร็จรับเงิน',
+                          style: GoogleFonts.kanit(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ),
-                    ),
-                    Container(
-//image picker
-                        ),
-                    SizedBox(height: 20),
-                    Align(
-                      alignment: Alignment(-1, 1),
-                      child: Text(
-                        'วัตถุประสงค์ในการบริจาค',
-                        style: GoogleFonts.kanit(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
+                      SizedBox(height: 5),
+                      Align(
+                        alignment: Alignment(-1, 1),
+                        child: Text(
+                          '555 สายไหม 87 ถนนสายไหม แขวงสายไหม',
+                          style: GoogleFonts.kanit(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black45,
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(height: 5),
-                    Align(
-                      alignment: Alignment(-1, 1),
-                      child: Text(
-                        'ทำบุญ',
-                        style: GoogleFonts.kanit(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black45,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Align(
-                      alignment: Alignment(-1, 1),
-                      child: Text(
-                        'ที่อยู่จัดส่งใบเสร็จรับเงิน',
-                        style: GoogleFonts.kanit(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    Align(
-                      alignment: Alignment(-1, 1),
-                      child: Text(
-                        '555 สายไหม 87 ถนนสายไหม แขวงสายไหม',
-                        style: GoogleFonts.kanit(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black45,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                        setState(
-                          () {
-                            showGeneralDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                barrierLabel: MaterialLocalizations.of(context)
-                                    .modalBarrierDismissLabel,
-                                barrierColor: Colors.transparent,
-                                transitionDuration: Duration(milliseconds: 200),
-                                pageBuilder: (BuildContext context,
-                                        Animation frist, Animation second) =>
-                                    successDialog());
-                          },
-                        );
-                      },
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                          color: Color(0xffE6EFFE),
-                          gradient: LinearGradient(
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                              colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
-                        ),
+                      SizedBox(height: 20),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                          setState(
+                            () {
+                              showGeneralDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  barrierLabel:
+                                      MaterialLocalizations.of(context)
+                                          .modalBarrierDismissLabel,
+                                  barrierColor: Colors.transparent,
+                                  transitionDuration:
+                                      Duration(milliseconds: 200),
+                                  pageBuilder: (BuildContext context,
+                                          Animation frist, Animation second) =>
+                                      successDialog());
+                            },
+                          );
+                        },
                         child: Container(
                           width: MediaQuery.of(context).size.width,
                           padding: EdgeInsets.symmetric(vertical: 15),
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('images/donate02.png'),
-                              scale: 1.5,
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            color: Color(0xffE6EFFE),
+                            gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
+                          ),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage('images/donate02.png'),
+                                scale: 1.5,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ]),
+                    ]),
+                  ),
                 ),
                 Positioned(
                   top: 180,
@@ -1267,24 +1319,143 @@ class _truemoney10State extends State<truemoney10> {
         visible: !page4,
         child: Scaffold(
           backgroundColor: Colors.black38,
-          body: Stack(
-            children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width - 0,
-                height: 570,
-                padding: EdgeInsets.all(20),
-                margin: EdgeInsets.only(top: 190),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child:
-                    Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                  const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      SizedBox(width: 25),
+          body: SingleChildScrollView(
+            child: Stack(
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width - 0,
+                    padding: EdgeInsets.all(20),
+                    margin: EdgeInsets.only(top: 190),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Column(mainAxisSize: MainAxisSize.min, children: <
+                        Widget>[
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          SizedBox(width: 25),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                              setState(
+                                () {
+                                  showGeneralDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      barrierLabel:
+                                          MaterialLocalizations.of(context)
+                                              .modalBarrierDismissLabel,
+                                      barrierColor: Colors.transparent,
+                                      transitionDuration:
+                                          Duration(milliseconds: 200),
+                                      pageBuilder: (BuildContext context,
+                                              Animation frist,
+                                              Animation second) =>
+                                          CustomDialog());
+                                },
+                              );
+                            },
+                            child: Icon(
+                              Icons.arrow_back_ios_new_rounded,
+                              color: Colors.black54,
+                              size: 18,
+                            ),
+                          ),
+                          SizedBox(width: 90),
+                          Text(
+                            'ร่วมบริจาค',
+                            style: GoogleFonts.kanit(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff0088C6),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 15),
+                      Text(
+                        'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
+                        style: GoogleFonts.kanit(
+                          fontSize: 15.5,
+                          //fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width - 0,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                          image: AssetImage('images/truemoveh.png'),
+                          scale: 0.5,
+                        )),
+                      ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'บริจาคผ่านเครือข่าย TrueMove H',
+                          style: GoogleFonts.kanit(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      Container(
+                          //image picker
+                          ),
+                      SizedBox(height: 20),
+                      Align(
+                        alignment: Alignment(-1, 1),
+                        child: Text(
+                          'วัตถุประสงค์ในการบริจาค',
+                          style: GoogleFonts.kanit(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      FormBuilderTextField(
+                        name: 'objective',
+                        obscureText: true,
+                        style: GoogleFonts.kanit(),
+                        decoration: InputDecoration(
+                            labelText: 'วัตถุประสงค์',
+                            border: OutlineInputBorder(
+                                borderRadius: const BorderRadius.all(
+                                    const Radius.circular(10))),
+                            fillColor: Color(0xfff3f3f4),
+                            filled: false),
+                      ),
+                      SizedBox(height: 15),
+                      Align(
+                        alignment: Alignment(-1, 1),
+                        child: Text(
+                          'ที่อยู่จัดส่งใบเสร็จรับเงิน',
+                          style: GoogleFonts.kanit(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      FormBuilderTextField(
+                        name: 'addresscheck',
+                        obscureText: true,
+                        style: GoogleFonts.kanit(),
+                        decoration: InputDecoration(
+                            labelText: 'ที่อยู่',
+                            border: OutlineInputBorder(
+                                borderRadius: const BorderRadius.all(
+                                    const Radius.circular(10))),
+                            fillColor: Color(0xfff3f3f4),
+                            filled: false),
+                      ),
+                      SizedBox(height: 25),
                       GestureDetector(
                         onTap: () {
                           Navigator.pop(context);
@@ -1301,178 +1472,64 @@ class _truemoney10State extends State<truemoney10> {
                                       Duration(milliseconds: 200),
                                   pageBuilder: (BuildContext context,
                                           Animation frist, Animation second) =>
-                                      CustomDialog());
+                                      detailtrue10Dialog());
                             },
                           );
                         },
-                        child: Icon(
-                          Icons.arrow_back_ios_new_rounded,
-                          color: Colors.black54,
-                          size: 18,
-                        ),
-                      ),
-                      SizedBox(width: 90),
-                      Text(
-                        'ร่วมบริจาค',
-                        style: GoogleFonts.kanit(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff0088C6),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 15),
-                  Text(
-                    'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
-                    style: GoogleFonts.kanit(
-                      fontSize: 15.5,
-                      //fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(height: 15),
-                  Container(
-                    width: MediaQuery.of(context).size.width - 0,
-                    height: 60,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                      image: AssetImage('images/truemoveh.png'),
-                      scale: 0.5,
-                    )),
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'บริจาคผ่านเครือข่าย TrueMove H',
-                      style: GoogleFonts.kanit(
-                        fontSize: 16,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  Container(
-//image picker
-                      ),
-                  SizedBox(height: 20),
-                  Align(
-                    alignment: Alignment(-1, 1),
-                    child: Text(
-                      'วัตถุประสงค์ในการบริจาค',
-                      style: GoogleFonts.kanit(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  FormBuilderTextField(
-                    name: 'objective',
-                    obscureText: true,
-                    style: GoogleFonts.kanit(),
-                    decoration: InputDecoration(
-                        labelText: 'วัตถุประสงค์',
-                        border: OutlineInputBorder(
-                            borderRadius: const BorderRadius.all(
-                                const Radius.circular(10))),
-                        fillColor: Color(0xfff3f3f4),
-                        filled: false),
-                  ),
-                  SizedBox(height: 15),
-                  Align(
-                    alignment: Alignment(-1, 1),
-                    child: Text(
-                      'ที่อยู่จัดส่งใบเสร็จรับเงิน',
-                      style: GoogleFonts.kanit(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  FormBuilderTextField(
-                    name: 'addresscheck',
-                    obscureText: true,
-                    style: GoogleFonts.kanit(),
-                    decoration: InputDecoration(
-                        labelText: 'ที่อยู่',
-                        border: OutlineInputBorder(
-                            borderRadius: const BorderRadius.all(
-                                const Radius.circular(10))),
-                        fillColor: Color(0xfff3f3f4),
-                        filled: false),
-                  ),
-                  SizedBox(height: 25),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                      setState(
-                        () {
-                          showGeneralDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              barrierLabel: MaterialLocalizations.of(context)
-                                  .modalBarrierDismissLabel,
-                              barrierColor: Colors.transparent,
-                              transitionDuration: Duration(milliseconds: 200),
-                              pageBuilder: (BuildContext context,
-                                      Animation frist, Animation second) =>
-                                  detailtrue10Dialog());
-                        },
-                      );
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.symmetric(vertical: 15),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        color: Color(0xffE6EFFE),
-                        gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
-                      ),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('images/donate02.png'),
-                            scale: 1.5,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.symmetric(vertical: 15),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            color: Color(0xffE6EFFE),
+                            gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
+                          ),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage('images/donate02.png'),
+                                scale: 1.5,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ]),
                   ),
-                ]),
-              ),
-              Positioned(
-                top: 150,
-                left: 162,
-                right: 162,
-                child: Container(
-                  width: 70,
-                  height: 70,
-                  //padding: EdgeInsets.all(10),
-                  //margin: EdgeInsets.only(top: 50),
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(25),
-                    gradient: LinearGradient(
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                        colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
-                    image: DecorationImage(
-                      image: AssetImage('images/icondonate.png'),
-                      scale: 1.5,
+                ),
+                Positioned(
+                  top: 150,
+                  left: 162,
+                  right: 162,
+                  child: Container(
+                    width: 70,
+                    height: 70,
+                    //padding: EdgeInsets.all(10),
+                    //margin: EdgeInsets.only(top: 50),
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(25),
+                      gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
+                      image: DecorationImage(
+                        image: AssetImage('images/icondonate.png'),
+                        scale: 1.5,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -1506,24 +1563,144 @@ class _truemoney100State extends State<truemoney100> {
         visible: !page5,
         child: Scaffold(
           backgroundColor: Colors.black38,
-          body: Stack(
-            children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width - 0,
-                height: 570,
-                padding: EdgeInsets.all(20),
-                margin: EdgeInsets.only(top: 190),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child:
-                    Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                  const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      SizedBox(width: 25),
+          body: SingleChildScrollView(
+            child: Stack(
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width - 0,
+                    padding: EdgeInsets.all(20),
+                    margin: EdgeInsets.only(top: 190),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Column(mainAxisSize: MainAxisSize.min, children: <
+                        Widget>[
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          SizedBox(width: 25),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                              setState(
+                                () {
+                                  showGeneralDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      barrierLabel:
+                                          MaterialLocalizations.of(context)
+                                              .modalBarrierDismissLabel,
+                                      barrierColor: Colors.transparent,
+                                      transitionDuration:
+                                          Duration(milliseconds: 200),
+                                      pageBuilder: (BuildContext context,
+                                              Animation frist,
+                                              Animation second) =>
+                                          CustomDialog());
+                                },
+                              );
+                            },
+                            child: Icon(
+                              Icons.arrow_back_ios_new_rounded,
+                              color: Colors.black54,
+                              size: 18,
+                            ),
+                          ),
+                          SizedBox(width: 90),
+                          Text(
+                            'ร่วมบริจาค',
+                            style: GoogleFonts.kanit(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff0088C6),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 15),
+                      Text(
+                        'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
+                        style: GoogleFonts.kanit(
+                          fontSize: 15.5,
+                          //fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      Container(
+                        width: MediaQuery.of(context).size.width - 0,
+                        height: 60,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                          image: AssetImage('images/truemoveh.png'),
+                          scale: 0.5,
+                        )),
+                      ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'บริจาคผ่านเครือข่าย TrueMove H',
+                          style: GoogleFonts.kanit(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      Container(
+                          //image picker
+                          ),
+                      SizedBox(height: 20),
+                      Align(
+                        alignment: Alignment(-1, 1),
+                        child: Text(
+                          'วัตถุประสงค์ในการบริจาค',
+                          style: GoogleFonts.kanit(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      FormBuilderTextField(
+                        name: 'objective',
+                        obscureText: true,
+                        style: GoogleFonts.kanit(),
+                        decoration: InputDecoration(
+                            labelText: 'วัตถุประสงค์',
+                            border: OutlineInputBorder(
+                                borderRadius: const BorderRadius.all(
+                                    const Radius.circular(10))),
+                            fillColor: Color(0xfff3f3f4),
+                            filled: false),
+                      ),
+                      SizedBox(height: 15),
+                      Align(
+                        alignment: Alignment(-1, 1),
+                        child: Text(
+                          'ที่อยู่จัดส่งใบเสร็จรับเงิน',
+                          style: GoogleFonts.kanit(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      FormBuilderTextField(
+                        name: 'addresscheck',
+                        obscureText: true,
+                        style: GoogleFonts.kanit(),
+                        decoration: InputDecoration(
+                            labelText: 'ที่อยู่',
+                            border: OutlineInputBorder(
+                                borderRadius: const BorderRadius.all(
+                                    const Radius.circular(10))),
+                            fillColor: Color(0xfff3f3f4),
+                            filled: false),
+                      ),
+                      SizedBox(height: 25),
                       GestureDetector(
                         onTap: () {
                           Navigator.pop(context);
@@ -1540,178 +1717,64 @@ class _truemoney100State extends State<truemoney100> {
                                       Duration(milliseconds: 200),
                                   pageBuilder: (BuildContext context,
                                           Animation frist, Animation second) =>
-                                      CustomDialog());
+                                      detailtrue100Dialog());
                             },
                           );
                         },
-                        child: Icon(
-                          Icons.arrow_back_ios_new_rounded,
-                          color: Colors.black54,
-                          size: 18,
-                        ),
-                      ),
-                      SizedBox(width: 90),
-                      Text(
-                        'ร่วมบริจาค',
-                        style: GoogleFonts.kanit(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff0088C6),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 15),
-                  Text(
-                    'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
-                    style: GoogleFonts.kanit(
-                      fontSize: 15.5,
-                      //fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(height: 15),
-                  Container(
-                    width: MediaQuery.of(context).size.width - 0,
-                    height: 60,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                      image: AssetImage('images/truemoveh.png'),
-                      scale: 0.5,
-                    )),
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'บริจาคผ่านเครือข่าย TrueMove H',
-                      style: GoogleFonts.kanit(
-                        fontSize: 16,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  Container(
-//image picker
-                      ),
-                  SizedBox(height: 20),
-                  Align(
-                    alignment: Alignment(-1, 1),
-                    child: Text(
-                      'วัตถุประสงค์ในการบริจาค',
-                      style: GoogleFonts.kanit(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  FormBuilderTextField(
-                    name: 'objective',
-                    obscureText: true,
-                    style: GoogleFonts.kanit(),
-                    decoration: InputDecoration(
-                        labelText: 'วัตถุประสงค์',
-                        border: OutlineInputBorder(
-                            borderRadius: const BorderRadius.all(
-                                const Radius.circular(10))),
-                        fillColor: Color(0xfff3f3f4),
-                        filled: false),
-                  ),
-                  SizedBox(height: 15),
-                  Align(
-                    alignment: Alignment(-1, 1),
-                    child: Text(
-                      'ที่อยู่จัดส่งใบเสร็จรับเงิน',
-                      style: GoogleFonts.kanit(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  FormBuilderTextField(
-                    name: 'addresscheck',
-                    obscureText: true,
-                    style: GoogleFonts.kanit(),
-                    decoration: InputDecoration(
-                        labelText: 'ที่อยู่',
-                        border: OutlineInputBorder(
-                            borderRadius: const BorderRadius.all(
-                                const Radius.circular(10))),
-                        fillColor: Color(0xfff3f3f4),
-                        filled: false),
-                  ),
-                  SizedBox(height: 25),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                      setState(
-                        () {
-                          showGeneralDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              barrierLabel: MaterialLocalizations.of(context)
-                                  .modalBarrierDismissLabel,
-                              barrierColor: Colors.transparent,
-                              transitionDuration: Duration(milliseconds: 200),
-                              pageBuilder: (BuildContext context,
-                                      Animation frist, Animation second) =>
-                                  detailtrue100Dialog());
-                        },
-                      );
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.symmetric(vertical: 15),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        color: Color(0xffE6EFFE),
-                        gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
-                      ),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('images/donate02.png'),
-                            scale: 1.5,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.symmetric(vertical: 15),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            color: Color(0xffE6EFFE),
+                            gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
+                          ),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage('images/donate02.png'),
+                                scale: 1.5,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ]),
                   ),
-                ]),
-              ),
-              Positioned(
-                top: 150,
-                left: 162,
-                right: 162,
-                child: Container(
-                  width: 70,
-                  height: 70,
-                  //padding: EdgeInsets.all(10),
-                  //margin: EdgeInsets.only(top: 50),
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(25),
-                    gradient: LinearGradient(
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                        colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
-                    image: DecorationImage(
-                      image: AssetImage('images/icondonate.png'),
-                      scale: 1.5,
+                ),
+                Positioned(
+                  top: 150,
+                  left: 162,
+                  right: 162,
+                  child: Container(
+                    width: 70,
+                    height: 70,
+                    //padding: EdgeInsets.all(10),
+                    //margin: EdgeInsets.only(top: 50),
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(25),
+                      gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
+                      image: DecorationImage(
+                        image: AssetImage('images/icondonate.png'),
+                        scale: 1.5,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -1748,198 +1811,201 @@ class _detailtrue10DialogState extends State<detailtrue10Dialog> {
           body: SingleChildScrollView(
             child: Stack(
               children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width - 0,
-                  height: 550,
-                  padding: EdgeInsets.all(20),
-                  margin: EdgeInsets.only(top: 290),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child:
-                      Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                    const SizedBox(height: 20),
-                    Row(
-                      children: [
-                        SizedBox(width: 25),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                            setState(
-                              () {
-                                showGeneralDialog(
-                                    context: context,
-                                    barrierDismissible: false,
-                                    barrierLabel:
-                                        MaterialLocalizations.of(context)
-                                            .modalBarrierDismissLabel,
-                                    barrierColor: Colors.transparent,
-                                    transitionDuration:
-                                        Duration(milliseconds: 200),
-                                    pageBuilder: (BuildContext context,
-                                            Animation frist,
-                                            Animation second) =>
-                                        truemoney10());
-                              },
-                            );
-                          },
-                          child: Icon(
-                            Icons.arrow_back_ios_new_rounded,
-                            color: Colors.black54,
-                            size: 18,
+                Expanded(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width - 0,
+                    padding: EdgeInsets.all(20),
+                    margin: EdgeInsets.only(top: 290),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Column(mainAxisSize: MainAxisSize.min, children: <
+                        Widget>[
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          SizedBox(width: 25),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                              setState(
+                                () {
+                                  showGeneralDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      barrierLabel:
+                                          MaterialLocalizations.of(context)
+                                              .modalBarrierDismissLabel,
+                                      barrierColor: Colors.transparent,
+                                      transitionDuration:
+                                          Duration(milliseconds: 200),
+                                      pageBuilder: (BuildContext context,
+                                              Animation frist,
+                                              Animation second) =>
+                                          truemoney10());
+                                },
+                              );
+                            },
+                            child: Icon(
+                              Icons.arrow_back_ios_new_rounded,
+                              color: Colors.black54,
+                              size: 18,
+                            ),
+                          ),
+                          SizedBox(width: 75),
+                          Text(
+                            'สรุปการบริจาค',
+                            style: GoogleFonts.kanit(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff0088C6),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 15),
+                      Text(
+                        'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
+                        style: GoogleFonts.kanit(
+                          fontSize: 15.5,
+                          //fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(height: 30),
+                      Row(children: [
+                        Container(
+                          width: 45,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('images/iconmoney.png'),
+                              scale: 1.5,
+                            ),
                           ),
                         ),
-                        SizedBox(width: 75),
-                        Text(
-                          'สรุปการบริจาค',
+                        SizedBox(width: 10),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'บริจาคผ่านเครือข่าย TrueMoveH',
+                            style: GoogleFonts.kanit(
+                              fontSize: 15.5,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ]),
+                      SizedBox(height: 5),
+                      Align(
+                        alignment: Alignment(-0.62, 0),
+                        child: Text(
+                          '10 บาท',
                           style: GoogleFonts.kanit(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w400,
+                            fontSize: 15.5,
                             color: Color(0xff0088C6),
                           ),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 15),
-                    Text(
-                      'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
-                      style: GoogleFonts.kanit(
-                        fontSize: 15.5,
-                        //fontWeight: FontWeight.w400,
-                        color: Colors.black,
                       ),
-                    ),
-                    SizedBox(height: 30),
-                    Row(children: [
                       Container(
-                        width: 45,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('images/iconmoney.png'),
-                            scale: 1.5,
+                          //image picker
                           ),
-                        ),
-                      ),
-                      SizedBox(width: 10),
+                      SizedBox(height: 20),
                       Align(
-                        alignment: Alignment.centerLeft,
+                        alignment: Alignment(-1, 1),
                         child: Text(
-                          'บริจาคผ่านเครือข่าย TrueMoveH',
+                          'วัตถุประสงค์ในการบริจาค',
                           style: GoogleFonts.kanit(
-                            fontSize: 15.5,
-                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                       ),
-                    ]),
-                    SizedBox(height: 5),
-                    Align(
-                      alignment: Alignment(-0.62, 0),
-                      child: Text(
-                        '10 บาท',
-                        style: GoogleFonts.kanit(
-                          fontSize: 15.5,
-                          color: Color(0xff0088C6),
+                      SizedBox(height: 5),
+                      Align(
+                        alignment: Alignment(-1, 1),
+                        child: Text(
+                          'ทำบุญ',
+                          style: GoogleFonts.kanit(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black45,
+                          ),
                         ),
                       ),
-                    ),
-                    Container(
-//image picker
-                        ),
-                    SizedBox(height: 20),
-                    Align(
-                      alignment: Alignment(-1, 1),
-                      child: Text(
-                        'วัตถุประสงค์ในการบริจาค',
-                        style: GoogleFonts.kanit(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
+                      SizedBox(height: 10),
+                      Align(
+                        alignment: Alignment(-1, 1),
+                        child: Text(
+                          'ที่อยู่จัดส่งใบเสร็จรับเงิน',
+                          style: GoogleFonts.kanit(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(height: 5),
-                    Align(
-                      alignment: Alignment(-1, 1),
-                      child: Text(
-                        'ทำบุญ',
-                        style: GoogleFonts.kanit(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black45,
+                      SizedBox(height: 5),
+                      Align(
+                        alignment: Alignment(-1, 1),
+                        child: Text(
+                          '555 สายไหม 87 ถนนสายไหม แขวงสายไหม',
+                          style: GoogleFonts.kanit(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black45,
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(height: 10),
-                    Align(
-                      alignment: Alignment(-1, 1),
-                      child: Text(
-                        'ที่อยู่จัดส่งใบเสร็จรับเงิน',
-                        style: GoogleFonts.kanit(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    Align(
-                      alignment: Alignment(-1, 1),
-                      child: Text(
-                        '555 สายไหม 87 ถนนสายไหม แขวงสายไหม',
-                        style: GoogleFonts.kanit(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black45,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                        setState(
-                          () {
-                            showGeneralDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                barrierLabel: MaterialLocalizations.of(context)
-                                    .modalBarrierDismissLabel,
-                                barrierColor: Colors.transparent,
-                                transitionDuration: Duration(milliseconds: 200),
-                                pageBuilder: (BuildContext context,
-                                        Animation frist, Animation second) =>
-                                    successDialog());
-                          },
-                        );
-                      },
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                          color: Color(0xffE6EFFE),
-                          gradient: LinearGradient(
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                              colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
-                        ),
+                      SizedBox(height: 20),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                          setState(
+                            () {
+                              showGeneralDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  barrierLabel:
+                                      MaterialLocalizations.of(context)
+                                          .modalBarrierDismissLabel,
+                                  barrierColor: Colors.transparent,
+                                  transitionDuration:
+                                      Duration(milliseconds: 200),
+                                  pageBuilder: (BuildContext context,
+                                          Animation frist, Animation second) =>
+                                      successDialog());
+                            },
+                          );
+                        },
                         child: Container(
                           width: MediaQuery.of(context).size.width,
                           padding: EdgeInsets.symmetric(vertical: 15),
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('images/donate02.png'),
-                              scale: 1.5,
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            color: Color(0xffE6EFFE),
+                            gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
+                          ),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage('images/donate02.png'),
+                                scale: 1.5,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ]),
+                    ]),
+                  ),
                 ),
                 Positioned(
                   top: 250,
@@ -2000,24 +2066,158 @@ class _detailtrue100DialogState extends State<detailtrue100Dialog> {
         visible: !page8,
         child: Scaffold(
           backgroundColor: Colors.black38,
-          body: Stack(
-            children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width - 0,
-                height: 550,
-                padding: EdgeInsets.all(20),
-                margin: EdgeInsets.only(top: 290),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child:
-                    Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                  const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      SizedBox(width: 25),
+          body: SingleChildScrollView(
+            child: Stack(
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    // width: MediaQuery.of(context).size.width - 0,
+                    // height: 550,
+                    padding: EdgeInsets.all(20),
+                    margin: EdgeInsets.only(top: 290),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Column(mainAxisSize: MainAxisSize.min, children: <
+                        Widget>[
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          SizedBox(width: 25),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                              setState(
+                                () {
+                                  showGeneralDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      barrierLabel:
+                                          MaterialLocalizations.of(context)
+                                              .modalBarrierDismissLabel,
+                                      barrierColor: Colors.transparent,
+                                      transitionDuration:
+                                          Duration(milliseconds: 200),
+                                      pageBuilder: (BuildContext context,
+                                              Animation frist,
+                                              Animation second) =>
+                                          truemoney100());
+                                },
+                              );
+                            },
+                            child: Icon(
+                              Icons.arrow_back_ios_new_rounded,
+                              color: Colors.black54,
+                              size: 18,
+                            ),
+                          ),
+                          SizedBox(width: 75),
+                          Text(
+                            'สรุปการบริจาค',
+                            style: GoogleFonts.kanit(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff0088C6),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 15),
+                      Text(
+                        'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
+                        style: GoogleFonts.kanit(
+                          fontSize: 15.5,
+                          //fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(height: 30),
+                      Row(children: [
+                        Container(
+                          width: 45,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('images/iconmoney.png'),
+                              scale: 1.5,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'บริจาคผ่านเครือข่าย TrueMoveH',
+                            style: GoogleFonts.kanit(
+                              fontSize: 15.5,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ]),
+                      SizedBox(height: 5),
+                      Align(
+                        alignment: Alignment(-0.62, 0),
+                        child: Text(
+                          '100 บาท',
+                          style: GoogleFonts.kanit(
+                            fontSize: 15.5,
+                            color: Color(0xff0088C6),
+                          ),
+                        ),
+                      ),
+                      Container(
+                          //image picker
+                          ),
+                      SizedBox(height: 20),
+                      Align(
+                        alignment: Alignment(-1, 1),
+                        child: Text(
+                          'วัตถุประสงค์ในการบริจาค',
+                          style: GoogleFonts.kanit(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      Align(
+                        alignment: Alignment(-1, 1),
+                        child: Text(
+                          'ทำบุญ',
+                          style: GoogleFonts.kanit(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black45,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Align(
+                        alignment: Alignment(-1, 1),
+                        child: Text(
+                          'ที่อยู่จัดส่งใบเสร็จรับเงิน',
+                          style: GoogleFonts.kanit(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      Align(
+                        alignment: Alignment(-1, 1),
+                        child: Text(
+                          '555 สายไหม 87 ถนนสายไหม แขวงสายไหม',
+                          style: GoogleFonts.kanit(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black45,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20),
                       GestureDetector(
                         onTap: () {
                           Navigator.pop(context);
@@ -2034,191 +2234,64 @@ class _detailtrue100DialogState extends State<detailtrue100Dialog> {
                                       Duration(milliseconds: 200),
                                   pageBuilder: (BuildContext context,
                                           Animation frist, Animation second) =>
-                                      truemoney100());
+                                      successDialog());
                             },
                           );
                         },
-                        child: Icon(
-                          Icons.arrow_back_ios_new_rounded,
-                          color: Colors.black54,
-                          size: 18,
-                        ),
-                      ),
-                      SizedBox(width: 75),
-                      Text(
-                        'สรุปการบริจาค',
-                        style: GoogleFonts.kanit(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff0088C6),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 15),
-                  Text(
-                    'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
-                    style: GoogleFonts.kanit(
-                      fontSize: 15.5,
-                      //fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(height: 30),
-                  Row(children: [
-                    Container(
-                      width: 45,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('images/iconmoney.png'),
-                          scale: 1.5,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'บริจาคผ่านเครือข่าย TrueMoveH',
-                        style: GoogleFonts.kanit(
-                          fontSize: 15.5,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ]),
-                  SizedBox(height: 5),
-                  Align(
-                    alignment: Alignment(-0.62, 0),
-                    child: Text(
-                      '100 บาท',
-                      style: GoogleFonts.kanit(
-                        fontSize: 15.5,
-                        color: Color(0xff0088C6),
-                      ),
-                    ),
-                  ),
-                  Container(
-//image picker
-                      ),
-                  SizedBox(height: 20),
-                  Align(
-                    alignment: Alignment(-1, 1),
-                    child: Text(
-                      'วัตถุประสงค์ในการบริจาค',
-                      style: GoogleFonts.kanit(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 5),
-                  Align(
-                    alignment: Alignment(-1, 1),
-                    child: Text(
-                      'ทำบุญ',
-                      style: GoogleFonts.kanit(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black45,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Align(
-                    alignment: Alignment(-1, 1),
-                    child: Text(
-                      'ที่อยู่จัดส่งใบเสร็จรับเงิน',
-                      style: GoogleFonts.kanit(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 5),
-                  Align(
-                    alignment: Alignment(-1, 1),
-                    child: Text(
-                      '555 สายไหม 87 ถนนสายไหม แขวงสายไหม',
-                      style: GoogleFonts.kanit(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black45,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                      setState(
-                        () {
-                          showGeneralDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              barrierLabel: MaterialLocalizations.of(context)
-                                  .modalBarrierDismissLabel,
-                              barrierColor: Colors.transparent,
-                              transitionDuration: Duration(milliseconds: 200),
-                              pageBuilder: (BuildContext context,
-                                      Animation frist, Animation second) =>
-                                  successDialog());
-                        },
-                      );
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.symmetric(vertical: 15),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        color: Color(0xffE6EFFE),
-                        gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
-                      ),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('images/donate02.png'),
-                            scale: 1.5,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.symmetric(vertical: 15),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            color: Color(0xffE6EFFE),
+                            gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
+                          ),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage('images/donate02.png'),
+                                scale: 1.5,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ]),
                   ),
-                ]),
-              ),
-              Positioned(
-                top: 250,
-                left: 162,
-                right: 162,
-                child: Container(
-                  width: 70,
-                  height: 70,
-                  //padding: EdgeInsets.all(10),
-                  //margin: EdgeInsets.only(top: 50),
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(25),
-                    gradient: LinearGradient(
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                        colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
-                    image: DecorationImage(
-                      image: AssetImage('images/icondonate.png'),
-                      scale: 1.5,
+                ),
+                Positioned(
+                  top: 250,
+                  left: 162,
+                  right: 162,
+                  child: Container(
+                    width: 70,
+                    height: 70,
+                    //padding: EdgeInsets.all(10),
+                    //margin: EdgeInsets.only(top: 50),
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(25),
+                      gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
+                      image: DecorationImage(
+                        image: AssetImage('images/icondonate.png'),
+                        scale: 1.5,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -2252,24 +2325,145 @@ class _truemoveallState extends State<truemoveall> {
         visible: !page6,
         child: Scaffold(
           backgroundColor: Colors.black38,
-          body: Stack(
-            children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width - 0,
-                height: 570,
-                padding: EdgeInsets.all(20),
-                margin: EdgeInsets.only(top: 190),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child:
-                    Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                  const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      SizedBox(width: 25),
+          body: SingleChildScrollView(
+            child: Stack(
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width - 0,
+                    height: 570,
+                    padding: EdgeInsets.all(20),
+                    margin: EdgeInsets.only(top: 190),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Column(mainAxisSize: MainAxisSize.min, children: <
+                        Widget>[
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          SizedBox(width: 25),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                              setState(
+                                () {
+                                  showGeneralDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      barrierLabel:
+                                          MaterialLocalizations.of(context)
+                                              .modalBarrierDismissLabel,
+                                      barrierColor: Colors.transparent,
+                                      transitionDuration:
+                                          Duration(milliseconds: 200),
+                                      pageBuilder: (BuildContext context,
+                                              Animation frist,
+                                              Animation second) =>
+                                          CustomDialog());
+                                },
+                              );
+                            },
+                            child: Icon(
+                              Icons.arrow_back_ios_new_rounded,
+                              color: Colors.black54,
+                              size: 18,
+                            ),
+                          ),
+                          SizedBox(width: 90),
+                          Text(
+                            'ร่วมบริจาค',
+                            style: GoogleFonts.kanit(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff0088C6),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 15),
+                      Text(
+                        'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
+                        style: GoogleFonts.kanit(
+                          fontSize: 15.5,
+                          //fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      Container(
+                        width: MediaQuery.of(context).size.width - 0,
+                        height: 60,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                          image: AssetImage('images/truemoveh.png'),
+                          scale: 0.5,
+                        )),
+                      ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'บริจาคผ่านเครือข่าย TrueMove H',
+                          style: GoogleFonts.kanit(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      Container(
+                          //image picker
+                          ),
+                      SizedBox(height: 20),
+                      Align(
+                        alignment: Alignment(-1, 1),
+                        child: Text(
+                          'วัตถุประสงค์ในการบริจาค',
+                          style: GoogleFonts.kanit(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      FormBuilderTextField(
+                        name: 'objective',
+                        obscureText: true,
+                        style: GoogleFonts.kanit(),
+                        decoration: InputDecoration(
+                            labelText: 'วัตถุประสงค์',
+                            border: OutlineInputBorder(
+                                borderRadius: const BorderRadius.all(
+                                    const Radius.circular(10))),
+                            fillColor: Color(0xfff3f3f4),
+                            filled: false),
+                      ),
+                      SizedBox(height: 15),
+                      Align(
+                        alignment: Alignment(-1, 1),
+                        child: Text(
+                          'ที่อยู่จัดส่งใบเสร็จรับเงิน',
+                          style: GoogleFonts.kanit(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      FormBuilderTextField(
+                        name: 'addresscheck',
+                        obscureText: true,
+                        style: GoogleFonts.kanit(),
+                        decoration: InputDecoration(
+                            labelText: 'ที่อยู่',
+                            border: OutlineInputBorder(
+                                borderRadius: const BorderRadius.all(
+                                    const Radius.circular(10))),
+                            fillColor: Color(0xfff3f3f4),
+                            filled: false),
+                      ),
+                      SizedBox(height: 25),
                       GestureDetector(
                         onTap: () {
                           Navigator.pop(context);
@@ -2286,178 +2480,64 @@ class _truemoveallState extends State<truemoveall> {
                                       Duration(milliseconds: 200),
                                   pageBuilder: (BuildContext context,
                                           Animation frist, Animation second) =>
-                                      CustomDialog());
+                                      detailtrueallDialog());
                             },
                           );
                         },
-                        child: Icon(
-                          Icons.arrow_back_ios_new_rounded,
-                          color: Colors.black54,
-                          size: 18,
-                        ),
-                      ),
-                      SizedBox(width: 90),
-                      Text(
-                        'ร่วมบริจาค',
-                        style: GoogleFonts.kanit(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff0088C6),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 15),
-                  Text(
-                    'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
-                    style: GoogleFonts.kanit(
-                      fontSize: 15.5,
-                      //fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(height: 15),
-                  Container(
-                    width: MediaQuery.of(context).size.width - 0,
-                    height: 60,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                      image: AssetImage('images/truemoveh.png'),
-                      scale: 0.5,
-                    )),
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'บริจาคผ่านเครือข่าย TrueMove H',
-                      style: GoogleFonts.kanit(
-                        fontSize: 16,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  Container(
-//image picker
-                      ),
-                  SizedBox(height: 20),
-                  Align(
-                    alignment: Alignment(-1, 1),
-                    child: Text(
-                      'วัตถุประสงค์ในการบริจาค',
-                      style: GoogleFonts.kanit(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  FormBuilderTextField(
-                    name: 'objective',
-                    obscureText: true,
-                    style: GoogleFonts.kanit(),
-                    decoration: InputDecoration(
-                        labelText: 'วัตถุประสงค์',
-                        border: OutlineInputBorder(
-                            borderRadius: const BorderRadius.all(
-                                const Radius.circular(10))),
-                        fillColor: Color(0xfff3f3f4),
-                        filled: false),
-                  ),
-                  SizedBox(height: 15),
-                  Align(
-                    alignment: Alignment(-1, 1),
-                    child: Text(
-                      'ที่อยู่จัดส่งใบเสร็จรับเงิน',
-                      style: GoogleFonts.kanit(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  FormBuilderTextField(
-                    name: 'addresscheck',
-                    obscureText: true,
-                    style: GoogleFonts.kanit(),
-                    decoration: InputDecoration(
-                        labelText: 'ที่อยู่',
-                        border: OutlineInputBorder(
-                            borderRadius: const BorderRadius.all(
-                                const Radius.circular(10))),
-                        fillColor: Color(0xfff3f3f4),
-                        filled: false),
-                  ),
-                  SizedBox(height: 25),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                      setState(
-                        () {
-                          showGeneralDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              barrierLabel: MaterialLocalizations.of(context)
-                                  .modalBarrierDismissLabel,
-                              barrierColor: Colors.transparent,
-                              transitionDuration: Duration(milliseconds: 200),
-                              pageBuilder: (BuildContext context,
-                                      Animation frist, Animation second) =>
-                                  detailtrueallDialog());
-                        },
-                      );
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.symmetric(vertical: 15),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        color: Color(0xffE6EFFE),
-                        gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
-                      ),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('images/donate02.png'),
-                            scale: 1.5,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.symmetric(vertical: 15),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            color: Color(0xffE6EFFE),
+                            gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
+                          ),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage('images/donate02.png'),
+                                scale: 1.5,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ]),
                   ),
-                ]),
-              ),
-              Positioned(
-                top: 150,
-                left: 162,
-                right: 162,
-                child: Container(
-                  width: 70,
-                  height: 70,
-                  //padding: EdgeInsets.all(10),
-                  //margin: EdgeInsets.only(top: 50),
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(25),
-                    gradient: LinearGradient(
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                        colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
-                    image: DecorationImage(
-                      image: AssetImage('images/icondonate.png'),
-                      scale: 1.5,
+                ),
+                Positioned(
+                  top: 150,
+                  left: 162,
+                  right: 162,
+                  child: Container(
+                    width: 70,
+                    height: 70,
+                    //padding: EdgeInsets.all(10),
+                    //margin: EdgeInsets.only(top: 50),
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(25),
+                      gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
+                      image: DecorationImage(
+                        image: AssetImage('images/icondonate.png'),
+                        scale: 1.5,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -2491,24 +2571,157 @@ class _detailtrueallDialogState extends State<detailtrueallDialog> {
         visible: !page9,
         child: Scaffold(
           backgroundColor: Colors.black38,
-          body: Stack(
-            children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width - 0,
-                height: 550,
-                padding: EdgeInsets.all(20),
-                margin: EdgeInsets.only(top: 290),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child:
-                    Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                  const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      SizedBox(width: 25),
+          body: SingleChildScrollView(
+            child: Stack(
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width - 0,
+                    padding: EdgeInsets.all(20),
+                    margin: EdgeInsets.only(top: 290),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Column(mainAxisSize: MainAxisSize.min, children: <
+                        Widget>[
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          SizedBox(width: 25),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                              setState(
+                                () {
+                                  showGeneralDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      barrierLabel:
+                                          MaterialLocalizations.of(context)
+                                              .modalBarrierDismissLabel,
+                                      barrierColor: Colors.transparent,
+                                      transitionDuration:
+                                          Duration(milliseconds: 200),
+                                      pageBuilder: (BuildContext context,
+                                              Animation frist,
+                                              Animation second) =>
+                                          detailtrueallDialog());
+                                },
+                              );
+                            },
+                            child: Icon(
+                              Icons.arrow_back_ios_new_rounded,
+                              color: Colors.black54,
+                              size: 18,
+                            ),
+                          ),
+                          SizedBox(width: 75),
+                          Text(
+                            'สรุปการบริจาค',
+                            style: GoogleFonts.kanit(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff0088C6),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 15),
+                      Text(
+                        'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
+                        style: GoogleFonts.kanit(
+                          fontSize: 15.5,
+                          //fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(height: 30),
+                      Row(children: [
+                        Container(
+                          width: 45,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('images/iconmoney.png'),
+                              scale: 1.5,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'บริจาคผ่านเครือข่าย TrueMoveH',
+                            style: GoogleFonts.kanit(
+                              fontSize: 15.5,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ]),
+                      SizedBox(height: 5),
+                      Align(
+                        alignment: Alignment(-0.62, 0),
+                        child: Text(
+                          'จำนวนเงินที่ระบุ',
+                          style: GoogleFonts.kanit(
+                            fontSize: 15.5,
+                            color: Color(0xff0088C6),
+                          ),
+                        ),
+                      ),
+                      Container(
+                          //image picker
+                          ),
+                      SizedBox(height: 20),
+                      Align(
+                        alignment: Alignment(-1, 1),
+                        child: Text(
+                          'วัตถุประสงค์ในการบริจาค',
+                          style: GoogleFonts.kanit(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      Align(
+                        alignment: Alignment(-1, 1),
+                        child: Text(
+                          'ทำบุญ',
+                          style: GoogleFonts.kanit(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black45,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Align(
+                        alignment: Alignment(-1, 1),
+                        child: Text(
+                          'ที่อยู่จัดส่งใบเสร็จรับเงิน',
+                          style: GoogleFonts.kanit(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      Align(
+                        alignment: Alignment(-1, 1),
+                        child: Text(
+                          '555 สายไหม 87 ถนนสายไหม แขวงสายไหม',
+                          style: GoogleFonts.kanit(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black45,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20),
                       GestureDetector(
                         onTap: () {
                           Navigator.pop(context);
@@ -2525,330 +2738,11 @@ class _detailtrueallDialogState extends State<detailtrueallDialog> {
                                       Duration(milliseconds: 200),
                                   pageBuilder: (BuildContext context,
                                           Animation frist, Animation second) =>
-                                      detailtrueallDialog());
+                                      successDialog());
                             },
                           );
                         },
-                        child: Icon(
-                          Icons.arrow_back_ios_new_rounded,
-                          color: Colors.black54,
-                          size: 18,
-                        ),
-                      ),
-                      SizedBox(width: 75),
-                      Text(
-                        'สรุปการบริจาค',
-                        style: GoogleFonts.kanit(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff0088C6),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 15),
-                  Text(
-                    'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
-                    style: GoogleFonts.kanit(
-                      fontSize: 15.5,
-                      //fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(height: 30),
-                  Row(children: [
-                    Container(
-                      width: 45,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('images/iconmoney.png'),
-                          scale: 1.5,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'บริจาคผ่านเครือข่าย TrueMoveH',
-                        style: GoogleFonts.kanit(
-                          fontSize: 15.5,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ]),
-                  SizedBox(height: 5),
-                  Align(
-                    alignment: Alignment(-0.62, 0),
-                    child: Text(
-                      'จำนวนเงินที่ระบุ',
-                      style: GoogleFonts.kanit(
-                        fontSize: 15.5,
-                        color: Color(0xff0088C6),
-                      ),
-                    ),
-                  ),
-                  Container(
-//image picker
-                      ),
-                  SizedBox(height: 20),
-                  Align(
-                    alignment: Alignment(-1, 1),
-                    child: Text(
-                      'วัตถุประสงค์ในการบริจาค',
-                      style: GoogleFonts.kanit(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 5),
-                  Align(
-                    alignment: Alignment(-1, 1),
-                    child: Text(
-                      'ทำบุญ',
-                      style: GoogleFonts.kanit(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black45,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Align(
-                    alignment: Alignment(-1, 1),
-                    child: Text(
-                      'ที่อยู่จัดส่งใบเสร็จรับเงิน',
-                      style: GoogleFonts.kanit(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 5),
-                  Align(
-                    alignment: Alignment(-1, 1),
-                    child: Text(
-                      '555 สายไหม 87 ถนนสายไหม แขวงสายไหม',
-                      style: GoogleFonts.kanit(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black45,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                      setState(
-                        () {
-                          showGeneralDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              barrierLabel: MaterialLocalizations.of(context)
-                                  .modalBarrierDismissLabel,
-                              barrierColor: Colors.transparent,
-                              transitionDuration: Duration(milliseconds: 200),
-                              pageBuilder: (BuildContext context,
-                                      Animation frist, Animation second) =>
-                                  successDialog());
-                        },
-                      );
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.symmetric(vertical: 15),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        color: Color(0xffE6EFFE),
-                        gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
-                      ),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('images/donate02.png'),
-                            scale: 1.5,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ]),
-              ),
-              Positioned(
-                top: 250,
-                left: 162,
-                right: 162,
-                child: Container(
-                  width: 70,
-                  height: 70,
-                  //padding: EdgeInsets.all(10),
-                  //margin: EdgeInsets.only(top: 50),
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(25),
-                    gradient: LinearGradient(
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                        colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
-                    image: DecorationImage(
-                      image: AssetImage('images/icondonate.png'),
-                      scale: 1.5,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      onWillPop: () async {
-        Navigator.pop(context);
-        showGeneralDialog(
-            context: context,
-            barrierDismissible: false,
-            barrierLabel:
-                MaterialLocalizations.of(context).modalBarrierDismissLabel,
-            barrierColor: Colors.transparent,
-            transitionDuration: Duration(milliseconds: 200),
-            pageBuilder:
-                (BuildContext context, Animation frist, Animation second) =>
-                    CustomDialog());
-        return true;
-      });
-}
-
-class name extends StatefulWidget {
-  name({Key key}) : super(key: key);
-
-  @override
-  _nameState createState() => _nameState();
-}
-
-class _nameState extends State<name> {
-  @override
-  Widget build(BuildContext context) => WillPopScope(
-      child: Visibility(
-          visible: !success,
-          child: Scaffold(
-              backgroundColor: Colors.black38,
-              body: SingleChildScrollView(
-                  child: Stack(children: <Widget>[
-                Container(
-                  width: 350,
-                  height: 400,
-                  padding: EdgeInsets.all(20),
-                  margin: EdgeInsets.only(
-                    top: 150,
-                    left: 16,
-                    right: 16,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child:
-                      Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                    Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage('images/success01.png'))),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      'บริจาคสำเร็จ',
-                      style: GoogleFonts.kanit(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff0088C6),
-                      ),
-                    ),
-                    const SizedBox(height: 15),
-                    Text(
-                      'ขอบคุณสำหรับยอดบริจาคของท่าน',
-                      style: GoogleFonts.kanit(
-                        fontSize: 15.5,
-                        //fontWeight: FontWeight.w400,
-                        color: Colors.black45,
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    Align(
-                      alignment: Alignment(0, 0),
-                      child: Text(
-                        'โดยจะส่งใบเสร็จรับเงินไปยัง',
-                        style: GoogleFonts.kanit(
-                          fontSize: 15.5,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment(0, 0),
-                      child: Text(
-                        '555 สายไหม 87 ถนนสายไหม แขวงสายไหม',
-                        style: GoogleFonts.kanit(
-                          fontSize: 15.5,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment(0, 0),
-                      child: Text(
-                        'เขตสายไหม กทม. 10220',
-                        style: GoogleFonts.kanit(
-                          fontSize: 15.5,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 45),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          page1 = !page1;
-                          setState(
-                            () {
-                              page3 = !page3;
-                              page7 = !page7;
-                              page8 = !page8;
-                              page9 = !page9;
-                              showGeneralDialog(
-                                  context: context,
-                                  barrierDismissible: false,
-                                  barrierLabel:
-                                      MaterialLocalizations.of(context)
-                                          .modalBarrierDismissLabel,
-                                  barrierColor: Colors.transparent,
-                                  transitionDuration:
-                                      Duration(milliseconds: 200),
-                                  pageBuilder: (BuildContext context,
-                                          Animation frist, Animation second) =>
-                                      detaildonate_pages());
-                            },
-                          );
-                          // Navigator.push(
-                          //     context,
-                          //     CupertinoPageRoute(
-                          //         builder: (context) => detaildonate_pages()));
-                        });
-                      },
-                      child: Container(
+                        child: Container(
                           width: MediaQuery.of(context).size.width,
                           padding: EdgeInsets.symmetric(vertical: 15),
                           alignment: Alignment.center,
@@ -2860,21 +2754,51 @@ class _nameState extends State<name> {
                                 end: Alignment.centerRight,
                                 colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
                           ),
-                          child: Align(
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.symmetric(vertical: 15),
                             alignment: Alignment.center,
-                            child: Text(
-                              'เสร็จสิ้น',
-                              style: GoogleFonts.kanit(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage('images/donate02.png'),
+                                scale: 1.5,
                               ),
                             ),
-                          )),
-                    ),
-                  ]),
+                          ),
+                        ),
+                      ),
+                    ]),
+                  ),
                 ),
-              ])))),
+                Positioned(
+                  top: 250,
+                  left: 162,
+                  right: 162,
+                  child: Container(
+                    width: 70,
+                    height: 70,
+                    //padding: EdgeInsets.all(10),
+                    //margin: EdgeInsets.only(top: 50),
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(25),
+                      gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
+                      image: DecorationImage(
+                        image: AssetImage('images/icondonate.png'),
+                        scale: 1.5,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
       onWillPop: () async {
         Navigator.pop(context);
         showGeneralDialog(

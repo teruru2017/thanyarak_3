@@ -80,7 +80,7 @@ class _AticlePageState extends State<AticlePage> {
                       child: Container(
                         height: 90,
                         child: Container(
-                          margin: EdgeInsets.only(top: 45),
+                          margin: EdgeInsets.only(top: 50),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [

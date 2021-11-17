@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:thanyarak/bodys/menu_page.dart';
 import 'package:thanyarak/utility/my_constant.dart';
 import 'package:thanyarak/widgets/about_widget.dart';
 import 'package:thanyarak/widgets/show_title.dart';
@@ -35,53 +37,70 @@ class _AboutPageState extends State<AboutPage> {
         child: Column(
           children: [
             buildHead(),
-            listArticle(),
             SizedBox(
               height: 6,
             ),
             const AboutHead(title: 'คณะกรรมการมูลนิธิถันยรักษ์ฯ'),
             Row(
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Image.asset(
-                    'images/princess.png',
-                    width: 140,
-                    height: 184,
+                Expanded(
+                  child: Container(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.asset(
+                        'images/princess.png',
+                        width: 140,
+                        height: 184,
+                      ),
+                    ),
                   ),
                 ),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'สมเด็จพระกนิษฐาธิราชเจ้ากรมสมเด็จพระเทพรัตนราชสุดาเจ้าฟ้ามหาจักรีสิรินธร มหาวชิราลงกรณวรราชภักดี สิริกิจการิณีพีรยพัฒนรัฐสีมาคุณากรปิยชาติสยามบรมราชกุมารี',
-                        style: GoogleFonts.kanit(
-                          textStyle: Theme.of(context).textTheme.headline4,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w300,
-                          color: Color(0xff000000),
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            children: [
-                              Text(
-                                'ประธานกิตติมศักดิ์',
-                                style: GoogleFonts.kanit(
-                                    color: Colors.grey.withOpacity(0.8)),
-                              ),
-                            ],
+                  child: Container(
+                    margin: EdgeInsets.only(left: 1, right: 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'สมเด็จพระกนิษฐาธิราชเจ้ากรมสมเด็จพระเทพรัตนราชสุดาเจ้าฟ้ามหาจักรีสิรินธร มหาวชิราลงกรณวรราชภักดี สิริกิจการิณีพีรยพัฒนรัฐสีมาคุณากรปิยชาติสยามบรมราชกุมารี',
+                          style: GoogleFonts.kanit(
+                            textStyle: Theme.of(context).textTheme.headline4,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w300,
+                            color: Color(0xff000000),
                           ),
-                        ],
-                      ),
-                    ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              children: [
+                                Text(
+                                  'ประธานกิตติมศักดิ์',
+                                  style: GoogleFonts.kanit(
+                                      color: Colors.grey.withOpacity(0.8)),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 )
               ],
             ),
+            Container(
+                margin: EdgeInsets.only(left: 25, top: 25, bottom: 25),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'คณะกรรมการ',
+                    style: GoogleFonts.kanit(
+                      fontSize: 20,
+                    ),
+                  ),
+                )),
             groupIcon1(),
             groupIcon2()
           ],
@@ -92,7 +111,7 @@ class _AboutPageState extends State<AboutPage> {
 
   Padding groupIcon1() {
     return Padding(
-      padding: const EdgeInsets.all(15),
+      padding: const EdgeInsets.all(20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -105,7 +124,7 @@ class _AboutPageState extends State<AboutPage> {
 
   Padding groupIcon2() {
     return Padding(
-      padding: const EdgeInsets.all(15),
+      padding: const EdgeInsets.all(20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -218,42 +237,88 @@ class _AboutPageState extends State<AboutPage> {
 
   Container buildHead() {
     return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage('images/about.png'), fit: BoxFit.cover),
-      ),
-      // width: double.infinity,
-      height: 100,
-      child: ListTile(
-        title: ShowTitle(
-          title: 'เกี่ยวกับเรา',
-          textStyle: MyConstant().h2StyleWhite(),
-        ),
-        // subtitle: ShowTitle(
-        //   title: 'กรุณาเข้าสู้ระบบ',
-        //   textStyle: MyConstant().h3StyleWhite(),
-        // ),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // IconButton(
-            //   onPressed: () {},
-            //   icon: const Icon(
-            //     Icons.notifications,
-            //     color: Colors.white,
-            //   ),
-            // ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.menu,
-                color: Colors.white,
+        child: Stack(children: <Widget>[
+      Container(
+        height: 120,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("images/header4.png"),
+                fit: BoxFit.cover,
+                alignment: Alignment.topCenter)),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Expanded(
+              flex: 1,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.maybePop(context);
+                },
+                child: Container(
+                  margin: EdgeInsets.only(top: 1, left: 20),
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage('images/back01.png'), scale: 1.5)),
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 6,
+              child: Container(
+                margin: EdgeInsets.only(top: 43, left: 15),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'เกี่ยวกับเรา',
+                    style: GoogleFonts.kanit(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Container(
+                height: 90,
+                child: Container(
+                  margin: EdgeInsets.only(top: 55, left: 25),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) => MenuPage()));
+                        },
+                        child: Container(
+                          width: 20,
+                          height: 20,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage('images/menu.png'))),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
           ],
         ),
       ),
-    );
+      Expanded(
+        child: Container(
+          // color: Colors.green,
+          margin: EdgeInsets.only(top: 95),
+          child: Column(children: <Widget>[listArticle()]),
+        ),
+      ),
+    ]));
   }
 
   SizedBox listArticle() {
@@ -262,8 +327,9 @@ class _AboutPageState extends State<AboutPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            height: 150,
-            width: 300,
+            margin: EdgeInsets.all(5),
+            height: MediaQuery.of(context).size.height * 0.25,
+            width: MediaQuery.of(context).size.height * 0.5,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               image: DecorationImage(
@@ -275,29 +341,35 @@ class _AboutPageState extends State<AboutPage> {
             ),
           ),
           Container(
-            width: 300,
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: ShowTitle(
-                title: cutWordH(
-                  'ประวัติความเป็นมาของมูลนิธิถันยรักษ์ฯ',
-                ),
-                textStyle: MyConstant().h1StyleBlue(),
-              ),
-            ),
-          ),
+              margin: EdgeInsets.only(left: 20, right: 20),
+              child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'ประวัติความเป็นมาของมูลนิธิถันยรักษ์ฯ',
+                    style: GoogleFonts.kanit(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xff0088C6)),
+                  ))),
           Container(
-            width: 300,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ShowTitle(
-                title: cutWord(
-                  'มูลนิธิถันยรักษ์ ในพระราชูปถัมภ์สมเด็จพระศรีนครินทราบรมราชชนนีเป็นองค์กรการกุศล ลำดับที่ 271 ของกระทรวงการคลัง ได้ก่อตั้งขึ้นมาเมื่อวันที่ 9 พฤศจิกายน พ.ศ.2537 ด้วยพระมหากรุณาธิคุณของสมเด็จพระศรีนครินทราบรมราชชนนี ที่ทรงมีพระราชดำริช่วยเหลือหญิงไทยให้พ้นภัยจากมะเร็งเต้านม จึงได้พระราชทานเงินส่วนพระองค์ จำนวน 12 ล้านบาท เป็นทุนเริ่มแรก และพระราชทานชื่อมูลนิธิ “ถันยรักษ์” ทรงรับไว้ในพระราชูปถัมภ์ ทรงเป็นประธานกิตติมศักดิ์ และทรงแต่งตั้งสมเด็จพระเจ้าพี่นางเธอเจ้าฟ้ากัลยานิวัฒนา กรมหลวงนราธิวาสราชนครินทร์ เป็นประธานกรรมการมูลนิธิถันยรักษ์ฯ ซึ่งต่อมาทรงเป็นประธานกิตติมศักดิ์ และสมเด็จพระเทพรัตนราชสุดาฯ สยามบรมราชกุมารี ทรงดำรงตำแหน่งประธานกิตติมศักดิ์ตั้งแต่ปี พ.ศ. 2557 สืบมามูลนิธิถันยรักษ์ฯ ดำเนินการตามวัตถุประสงค์ เพื่อตรวจวินิจฉัยและคัดกรองโรคมะเร็งเต้านม โดยสมเด็จพระเจ้าพี่นางเธอ เจ้าฟ้ากัลยานิวัฒนา กรมหลวงนราธิวาสราชนครินทร์ ได้นำคณะกรรมการมูลนิธิถันยรักษ์ฯ มาปรึกษากับคณะกรรมการ คณะแพทยศาสตร์ศิริราชพยาบาล เมื่อพ.ศ. 2537 และได้มีมติจัดตั้งศูนย์ถันยรักษ์ ขึ้นที่โรงพยาบาลศิริราช เมื่อปี พ.ศ. 2538 ตลอด 20 ปีที่ผ่านมา ศูนย์ถันยรักษ์ได้รับความร่วมมืออย่างดียิ่ง จากคณะแพทยศาสตร์ศิริราชพยาบาล',
-                ),
-                textStyle: MyConstant().h4StyleBlack(),
+              margin: EdgeInsets.only(left: 20, right: 20),
+              child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'มูลนิธิถันยรักษ์ ในพระราชูปถัมภ์สมเด็จพระศรีนครินทราบรมราชชนนีเป็นองค์กรการกุศล ลำดับที่ 271 ของกระทรวงการคลัง ได้ก่อตั้งขึ้นมาเมื่อวันที่ 9 พฤศจิกายน พ.ศ.2537 ด้วยพระมหากรุณาธิคุณของสมเด็จพระศรีนครินทราบรมราชชนนี ที่ทรงมีพระราชดำริช่วยเหลือหญิงไทยให้พ้นภัยจากมะเร็งเต้านม จึงได้พระราชทานเงินส่วนพระองค์ จำนวน 12 ล้านบาท เป็นทุนเริ่มแรก และพระราชทานชื่อมูลนิธิ “ถันยรักษ์” ทรงรับไว้ในพระราชูปถัมภ์ ทรงเป็นประธานกิตติมศักดิ์ และทรงแต่งตั้งสมเด็จพระเจ้าพี่นางเธอเจ้าฟ้ากัลยานิวัฒนา กรมหลวงนราธิวาสราชนครินทร์ เป็นประธานกรรมการมูลนิธิถันยรักษ์ฯ ซึ่งต่อมาทรงเป็นประธานกิตติมศักดิ์ และสมเด็จพระเทพรัตนราชสุดาฯ สยามบรมราชกุมารี ทรงดำรงตำแหน่งประธานกิตติมศักดิ์ตั้งแต่ปี พ.ศ. 2557 สืบมามูลนิธิถันยรักษ์ฯ ดำเนินการตามวัตถุประสงค์ เพื่อตรวจวินิจฉัยและคัดกรองโรคมะเร็งเต้านม โดยสมเด็จพระเจ้าพี่นางเธอ เจ้าฟ้ากัลยานิวัฒนา กรมหลวงนราธิวาสราชนครินทร์ ได้นำคณะกรรมการมูลนิธิถันยรักษ์ฯ มาปรึกษากับคณะกรรมการ คณะแพทยศาสตร์ศิริราชพยาบาล เมื่อพ.ศ. 2537 และได้มีมติจัดตั้งศูนย์ถันยรักษ์ ขึ้นที่โรงพยาบาลศิริราช เมื่อปี พ.ศ. 2538 ตลอด 20 ปีที่ผ่านมา ศูนย์ถันยรักษ์ได้รับความร่วมมืออย่างดียิ่ง จากคณะแพทยศาสตร์ศิริราชพยาบาล',
+                    style: GoogleFonts.kanit(fontSize: 16, color: Colors.black),
+                  ))
+              // width: 300,
+              // child: Padding(
+              //   padding: const EdgeInsets.all(8.0),
+              //   child: ShowTitle(
+              //     title: cutWord(
+              //       'มูลนิธิถันยรักษ์ ในพระราชูปถัมภ์สมเด็จพระศรีนครินทราบรมราชชนนีเป็นองค์กรการกุศล ลำดับที่ 271 ของกระทรวงการคลัง ได้ก่อตั้งขึ้นมาเมื่อวันที่ 9 พฤศจิกายน พ.ศ.2537 ด้วยพระมหากรุณาธิคุณของสมเด็จพระศรีนครินทราบรมราชชนนี ที่ทรงมีพระราชดำริช่วยเหลือหญิงไทยให้พ้นภัยจากมะเร็งเต้านม จึงได้พระราชทานเงินส่วนพระองค์ จำนวน 12 ล้านบาท เป็นทุนเริ่มแรก และพระราชทานชื่อมูลนิธิ “ถันยรักษ์” ทรงรับไว้ในพระราชูปถัมภ์ ทรงเป็นประธานกิตติมศักดิ์ และทรงแต่งตั้งสมเด็จพระเจ้าพี่นางเธอเจ้าฟ้ากัลยานิวัฒนา กรมหลวงนราธิวาสราชนครินทร์ เป็นประธานกรรมการมูลนิธิถันยรักษ์ฯ ซึ่งต่อมาทรงเป็นประธานกิตติมศักดิ์ และสมเด็จพระเทพรัตนราชสุดาฯ สยามบรมราชกุมารี ทรงดำรงตำแหน่งประธานกิตติมศักดิ์ตั้งแต่ปี พ.ศ. 2557 สืบมามูลนิธิถันยรักษ์ฯ ดำเนินการตามวัตถุประสงค์ เพื่อตรวจวินิจฉัยและคัดกรองโรคมะเร็งเต้านม โดยสมเด็จพระเจ้าพี่นางเธอ เจ้าฟ้ากัลยานิวัฒนา กรมหลวงนราธิวาสราชนครินทร์ ได้นำคณะกรรมการมูลนิธิถันยรักษ์ฯ มาปรึกษากับคณะกรรมการ คณะแพทยศาสตร์ศิริราชพยาบาล เมื่อพ.ศ. 2537 และได้มีมติจัดตั้งศูนย์ถันยรักษ์ ขึ้นที่โรงพยาบาลศิริราช เมื่อปี พ.ศ. 2538 ตลอด 20 ปีที่ผ่านมา ศูนย์ถันยรักษ์ได้รับความร่วมมืออย่างดียิ่ง จากคณะแพทยศาสตร์ศิริราชพยาบาล',
+              //     ),
+              //     textStyle: MyConstant().h4StyleBlack(),
+              //   ),
+              // ),
               ),
-            ),
-          ),
           // SizedBox(
           //   height: 10,
           // ),

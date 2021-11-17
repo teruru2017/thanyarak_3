@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:thanyarak/bodys/menu_page.dart';
+import 'package:thanyarak/bodys/notification_page.dart';
 import 'package:thanyarak/bodys/signin_page.dart';
 import 'package:thanyarak/utility/my_constant.dart';
 import 'package:thanyarak/widgets/show_title.dart';
@@ -114,34 +116,70 @@ class _MenderPageState extends State<MenderPage> {
             height: 100,
             //width: 400,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Align(
-                    alignment: Alignment(-0.8, 0.1),
-                    child: Text('สมาชิก',
+                Expanded(
+                  flex: 6,
+                  child: Container(
+                    margin: EdgeInsets.only(top: 30, left: 25),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'สมาชิก',
                         style: GoogleFonts.kanit(
-                          fontSize: 22,
+                          fontSize: 24,
                           fontWeight: FontWeight.w500,
                           color: Colors.white,
-                        ))),
-                SizedBox(width: 170),
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.notifications,
-                        color: Colors.white,
+                        ),
                       ),
                     ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.menu,
-                        color: Colors.white,
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    height: 90,
+                    child: Container(
+                      margin: EdgeInsets.only(top: 40),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                      builder: (context) => NotiPage()));
+                            },
+                            child: Container(
+                              width: 20,
+                              height: 20,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image:
+                                          AssetImage('images/notimenu.png'))),
+                            ),
+                          ),
+                          SizedBox(width: 20),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                      builder: (context) => MenuPage()));
+                            },
+                            child: Container(
+                              width: 20,
+                              height: 20,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage('images/menu.png'))),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ],
             ),

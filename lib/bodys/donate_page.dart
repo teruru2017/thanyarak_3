@@ -88,7 +88,7 @@ class _DonatePageState extends State<DonatePage> {
                     child: Container(
                       height: 90,
                       child: Container(
-                        margin: EdgeInsets.only(top: 45),
+                        margin: EdgeInsets.only(top: 50),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [

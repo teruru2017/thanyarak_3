@@ -405,8 +405,8 @@ class _MainPageState extends State<MainPage> {
             borderRadius: BorderRadius.all(Radius.circular(10)),
             color: Color(0xffE6EFFE),
             gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
+                begin: Alignment.bottomLeft,
+                end: Alignment.bottomRight,
                 colors: [Color(0XFFe6effe), Color(0XFFFFFFFF)]),
           ),
           child: Row(
