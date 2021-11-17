@@ -69,7 +69,7 @@ class _DonatePageState extends State<DonatePage> {
                   Expanded(
                     flex: 6,
                     child: Container(
-                      margin: EdgeInsets.only(top: 40, left: 25),
+                      margin: EdgeInsets.only(top: 30, left: 25),
                       child: Align(
                         alignment: Alignment.topLeft,
                         child: Text(
@@ -88,7 +88,7 @@ class _DonatePageState extends State<DonatePage> {
                     child: Container(
                       height: 90,
                       child: Container(
-                        margin: EdgeInsets.only(top: 50),
+                        margin: EdgeInsets.only(top: 35),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [

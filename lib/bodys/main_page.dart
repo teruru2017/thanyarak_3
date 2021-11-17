@@ -218,7 +218,7 @@ class _MainPageState extends State<MainPage> {
                         child: Container(
                           height: 90,
                           child: Container(
-                            margin: EdgeInsets.only(top: 17),
+                            margin: EdgeInsets.only(top: 35),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -321,7 +321,7 @@ class _MainPageState extends State<MainPage> {
                             const ShowHead(
                                 title: 'บทความ',
                                 pathIcon: 'images/article.png'),
-                            SizedBox(width: 155),
+                            const SizedBox(width: 155),
                             GestureDetector(
                               onTap: () {
                                 Navigator.push(
@@ -334,7 +334,7 @@ class _MainPageState extends State<MainPage> {
                                 child: Text('ดูทั้งหมด',
                                     style: GoogleFonts.kanit(
                                       color: Colors.black38,
-                                      fontSize: 18,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w500,
                                     )),
                               ),
@@ -382,7 +382,7 @@ class _MainPageState extends State<MainPage> {
                             title: 'มูลนิธิถันยรักษ์',
                             pathIcon: 'images/shop.png'),
                         buildAboutMe(),
-                        SizedBox(
+                        const SizedBox(
                           height: 30,
                         ),
                       ])),
@@ -696,8 +696,10 @@ class _MainPageState extends State<MainPage> {
                     CupertinoPageRoute(builder: (context) => SignInPage()));
               },
               child: Container(
-                width: 320,
                 padding: EdgeInsets.symmetric(vertical: 15),
+                margin: EdgeInsets.symmetric(horizontal: 15),
+                //width: 320,
+                //padding: EdgeInsets.symmetric(vertical: 15),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(10)),

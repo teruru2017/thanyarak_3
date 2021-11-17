@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:thanyarak/bodys/menu_page.dart';
+import 'package:thanyarak/bodys/notification_page.dart';
 import 'package:thanyarak/utility/my_constant.dart';
 import 'package:thanyarak/widgets/about_widget.dart';
 import 'package:thanyarak/widgets/show_title.dart';
@@ -249,23 +250,9 @@ class _AboutPageState extends State<AboutPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Expanded(
-              flex: 1,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.maybePop(context);
-                },
-                child: Container(
-                  margin: EdgeInsets.only(top: 1, left: 20),
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('images/back01.png'), scale: 1.5)),
-                ),
-              ),
-            ),
-            Expanded(
               flex: 6,
               child: Container(
-                margin: EdgeInsets.only(top: 43, left: 15),
+                margin: EdgeInsets.only(top: 30, left: 15),
                 child: Align(
                   alignment: Alignment.topLeft,
                   child: Text(
@@ -284,10 +271,26 @@ class _AboutPageState extends State<AboutPage> {
               child: Container(
                 height: 90,
                 child: Container(
-                  margin: EdgeInsets.only(top: 55, left: 25),
+                  margin: EdgeInsets.only(top: 35, left: 25),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) => NotiPage()));
+                        },
+                        child: Container(
+                          width: 20,
+                          height: 20,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage('images/notimenu.png'))),
+                        ),
+                      ),
+                      SizedBox(width: 10),
                       GestureDetector(
                         onTap: () {
                           Navigator.push(
