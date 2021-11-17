@@ -9,6 +9,7 @@ import 'package:thanyarak/bodys/forgetpassword_pages.dart';
 import 'package:thanyarak/bodys/main_page.dart';
 import 'package:thanyarak/bodys/newtype_pages.dart';
 import 'package:thanyarak/bodys/test.dart';
+import 'package:thanyarak/states/main_home.dart';
 
 class SignInPage extends StatefulWidget {
   SignInPage({Key? key}) : super(key: key);
@@ -35,7 +36,7 @@ class _SignInPageState extends State<SignInPage> {
                 children: [
                   Container(
                     height: 220,
-                    width: 400,
+                    width: double.infinity,
                     child: Stack(
                       children: <Widget>[
                         // IconButton(
@@ -66,10 +67,10 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            // Navigator.push(
-                            //     context,
-                            //     CupertinoPageRoute(
-                            //         builder: (context) => MainPage()));
+                            Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                    builder: (context) => MainHome()));
                           },
                           child: Container(
                             decoration: BoxDecoration(

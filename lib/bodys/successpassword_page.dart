@@ -24,7 +24,8 @@ class _successpassword_pagesState extends State<successpassword_pages> {
         child: Column(
           children: <Widget>[
             Container(
-              height: 800,
+              height: 900,
+              width: double.infinity,
               decoration: BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage("images/success.png"),

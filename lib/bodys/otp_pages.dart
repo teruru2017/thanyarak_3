@@ -33,7 +33,7 @@ class _otp_pagesState extends State<otp_pages> {
               children: [
                 Container(
                   height: 220,
-                  width: 400,
+                  width: double.infinity,
                   child: Stack(
                     children: <Widget>[
                       // Container(

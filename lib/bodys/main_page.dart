@@ -267,7 +267,10 @@ class _MainPageState extends State<MainPage> {
 
                 Expanded(
                   child: Container(
-                      margin: EdgeInsets.only(top: 90),
+                      // color: Colors.amber,
+                      margin: EdgeInsets.only(
+                        top: 90,
+                      ),
                       child: Column(children: <Widget>[
                         // ClipRRect(
                         //   child: CarouselSlider(
@@ -305,7 +308,7 @@ class _MainPageState extends State<MainPage> {
                               width: 8,
                               height: 8,
                               margin: EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 2.0),
+                                  vertical: 1, horizontal: 2.0),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: _current == index
@@ -696,7 +699,7 @@ class _MainPageState extends State<MainPage> {
                     CupertinoPageRoute(builder: (context) => SignInPage()));
               },
               child: Container(
-                width: 320,
+                width: MediaQuery.of(context).size.width * 0.8,
                 padding: EdgeInsets.symmetric(vertical: 15),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(

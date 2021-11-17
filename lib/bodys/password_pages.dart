@@ -35,7 +35,7 @@ class _password_pagesState extends State<password_pages> {
                 children: [
                   Container(
                     height: 220,
-                    width: 400,
+                    width: double.infinity,
                     child: Stack(
                       children: <Widget>[
                         // IconButton(

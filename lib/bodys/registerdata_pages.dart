@@ -35,7 +35,7 @@ class _registerdata_pagesState extends State<registerdata_pages> {
                 children: [
                   Container(
                     height: 220,
-                    width: 400,
+                    width: double.infinity,
                     child: Stack(
                       children: <Widget>[
                         // IconButton(
@@ -66,7 +66,7 @@ class _registerdata_pagesState extends State<registerdata_pages> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.pop(context);
+                            Navigator.maybePop(context);
                           },
                           child: Container(
                             decoration: BoxDecoration(

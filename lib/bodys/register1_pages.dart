@@ -41,7 +41,7 @@ class _register1_pagesState extends State<register1_pages> {
                 children: [
                   Container(
                     height: 220,
-                    width: 400,
+                    width: double.infinity,
                     child: Stack(
                       children: <Widget>[
                         // IconButton(

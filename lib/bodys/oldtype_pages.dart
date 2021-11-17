@@ -35,7 +35,7 @@ class _oldtype_pagesState extends State<oldtype_pages> {
                 children: [
                   Container(
                     height: 220,
-                    width: 400,
+                    width: double.infinity,
                     child: Stack(
                       children: <Widget>[
                         // Container(

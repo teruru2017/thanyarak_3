@@ -42,7 +42,7 @@ class _newtype_pagesState extends State<newtype_pages> {
                 children: [
                   Container(
                     height: 220,
-                    width: 400,
+                    width: double.infinity,
                     child: Stack(
                       children: <Widget>[
                         Container(

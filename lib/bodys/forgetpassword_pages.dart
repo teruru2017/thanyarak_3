@@ -36,7 +36,7 @@ class _forgetpassword_pagesState extends State<forgetpassword_pages> {
                 children: [
                   Container(
                     height: 220,
-                    width: 400,
+                    width: double.infinity,
                     child: Stack(
                       children: <Widget>[
                         // IconButton(
