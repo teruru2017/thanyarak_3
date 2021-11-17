@@ -14,6 +14,8 @@ import 'package:thanyarak/utility/my_constant.dart';
 import 'package:thanyarak/widgets/article_widget.dart';
 import 'package:thanyarak/widgets/show_title.dart';
 
+import 'package:thanyarak/bodys/notification_page.dart';
+
 class MenuPage extends StatelessWidget {
   const MenuPage({Key? key}) : super(key: key);
 
@@ -46,7 +48,7 @@ class MenuPage extends StatelessWidget {
 
   Padding buildNonAppointCard1(context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
       // child: Card(
       //   color: Color(0xff43cef8),
       //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -67,7 +69,7 @@ class MenuPage extends StatelessWidget {
             title: ShowTitle(
                 title: 'หน้าแรก',
                 textStyle: GoogleFonts.kanit(
-                  fontSize: 22,
+                  fontSize: 16,
                   fontWeight: FontWeight.w500,
                   color: Colors.white,
                 )),
@@ -127,7 +129,7 @@ class MenuPage extends StatelessWidget {
 
   Padding buildNonAppointCard2(context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
       // child: Card(
       //   color: Color(0xff43cef8),
       //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -148,7 +150,7 @@ class MenuPage extends StatelessWidget {
             title: ShowTitle(
                 title: 'บทความ',
                 textStyle: GoogleFonts.kanit(
-                  fontSize: 22,
+                  fontSize: 16,
                   fontWeight: FontWeight.w500,
                   color: Colors.white,
                 )),
@@ -202,7 +204,7 @@ class MenuPage extends StatelessWidget {
 
   Padding buildNonAppointCard3(context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
       // child: Card(
       //   color: Color(0xff43cef8),
       //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -223,7 +225,7 @@ class MenuPage extends StatelessWidget {
             title: ShowTitle(
                 title: 'ร้านค้า',
                 textStyle: GoogleFonts.kanit(
-                  fontSize: 22,
+                  fontSize: 16,
                   fontWeight: FontWeight.w500,
                   color: Colors.white,
                 )),
@@ -277,7 +279,7 @@ class MenuPage extends StatelessWidget {
 
   Padding buildNonAppointCard4(context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
       // child: Card(
       //   color: Color(0xff43cef8),
       //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -298,7 +300,7 @@ class MenuPage extends StatelessWidget {
             title: ShowTitle(
                 title: 'บริจาค',
                 textStyle: GoogleFonts.kanit(
-                  fontSize: 22,
+                  fontSize: 16,
                   fontWeight: FontWeight.w500,
                   color: Colors.white,
                 )),
@@ -352,7 +354,7 @@ class MenuPage extends StatelessWidget {
 
   Padding buildNonAppointCard5(context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
       // child: Card(
       //   color: Color(0xff43cef8),
       //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -373,7 +375,7 @@ class MenuPage extends StatelessWidget {
             title: ShowTitle(
                 title: 'สมาชิก',
                 textStyle: GoogleFonts.kanit(
-                  fontSize: 22,
+                  fontSize: 16,
                   fontWeight: FontWeight.w500,
                   color: Colors.white,
                 )),
@@ -427,7 +429,7 @@ class MenuPage extends StatelessWidget {
 
   Padding buildNonAppointCard6(context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
       // child: Card(
       //   color: Color(0xff43cef8),
       //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -448,7 +450,7 @@ class MenuPage extends StatelessWidget {
             title: ShowTitle(
                 title: 'ข้อกำหนดและเงื่อนไข',
                 textStyle: GoogleFonts.kanit(
-                  fontSize: 22,
+                  fontSize: 16,
                   fontWeight: FontWeight.w500,
                   color: Colors.white,
                 )),
@@ -507,8 +509,10 @@ class MenuPage extends StatelessWidget {
       //       image: AssetImage('images/header2.png'), fit: BoxFit.cover),
       // ),
       // width: double.infinity,
-      padding: EdgeInsets.all(15),
-      height: 65,
+      // padding: EdgeInsets.all(15),
+      // padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
+      // height: 65,
+      padding: EdgeInsets.only(top: 35, left: 15, right: 15),
 
       child: ListTile(
         title: ShowTitle(
@@ -525,11 +529,17 @@ class MenuPage extends StatelessWidget {
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.notifications,
-                color: Colors.white,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+                    CupertinoPageRoute(builder: (context) => NotiPage()));
+              },
+              child: Container(
+                width: 20,
+                height: 20,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('images/notimenu.png'))),
               ),
             ),
             IconButton(
