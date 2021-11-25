@@ -38,6 +38,17 @@ void results() {
   SignInPage();
 }
 
+final List<String> imgLists = [
+  'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
+  'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
+  'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
+  'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
+  'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
+  'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
+];
+int _currents = 0;
+final CarouselController _controller = CarouselController();
+
 class _MainPageState extends State<MainPage> {
   int i = 0;
 
@@ -56,7 +67,6 @@ class _MainPageState extends State<MainPage> {
     'images/topgraphic.png',
     'images/topgraphic.png',
     'images/topgraphic.png',
-    'images/topgraphic.png'
   ];
 
   List<String> imgList = [
@@ -269,7 +279,7 @@ class _MainPageState extends State<MainPage> {
                   child: Container(
                       // color: Colors.amber,
                       margin: EdgeInsets.only(
-                        top: 90,
+                        top: 100,
                       ),
                       child: Column(children: <Widget>[
                         // ClipRRect(
@@ -288,36 +298,80 @@ class _MainPageState extends State<MainPage> {
                         //   ),
                         // ),
                         CarouselSlider(
-                          items: widgetsPro,
+                          items: imageSliders,
+                          carouselController: _controller,
                           options: CarouselOptions(
-                              viewportFraction: 1,
+                              viewportFraction: 0.9,
                               autoPlay: true,
                               enlargeCenterPage: true,
-                              // aspectRatio: 2.0,
+                              autoPlayInterval: Duration(seconds: 15),
+                              aspectRatio: 2.0,
                               onPageChanged: (index, reason) {
                                 setState(() {
-                                  _current = index;
+                                  _currents = index;
                                 });
                               }),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: widgetsPro.map((urlOfItem) {
-                            int index = widgetsPro.indexOf(urlOfItem);
-                            return Container(
-                              width: 8,
-                              height: 8,
-                              margin: EdgeInsets.symmetric(
-                                  vertical: 1, horizontal: 2.0),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: _current == index
-                                    ? Color.fromRGBO(242, 145, 163, 1)
-                                    : Color.fromRGBO(0, 136, 192, 1),
+                          children: imgLists.asMap().entries.map((entry) {
+                            return GestureDetector(
+                              onTap: () => _controller.animateToPage(entry.key),
+                              child: Container(
+                                width: 9.0,
+                                height: 9.0,
+                                margin: EdgeInsets.symmetric(
+                                    vertical: 8.0, horizontal: 4.0),
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: (Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? Colors.white
+                                            : Colors.blue)
+                                        .withOpacity(_currents == entry.key
+                                            ? 0.9
+                                            : 0.4)),
                               ),
                             );
                           }).toList(),
                         ),
+                        // CarouselSlider(
+                        //   items: widgetsPro,
+                        //   options: CarouselOptions(
+                        //       viewportFraction: 1,
+                        //       autoPlay: true,
+                        //       enlargeCenterPage: true,
+                        //       // aspectRatio: 2.0,
+                        //       onPageChanged: (index, reason) {
+                        //         setState(() {
+                        //           _current = index;
+                        //         });
+                        //       }),
+                        // ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: widgetsPro.map((urlOfItem) {
+                        //     int index = widgetsPro.indexOf(urlOfItem, 0);
+                        //     return Container(
+                        //       width: 8,
+                        //       height: 8,
+                        //       margin: EdgeInsets.symmetric(
+                        //           vertical: 1, horizontal: 2.0),
+                        //       decoration: BoxDecoration(
+                        //           shape: BoxShape.circle,
+                        //           color: (Theme.of(context).brightness ==
+                        //                       Brightness.dark
+                        //                   ? Colors.amber
+                        //                   : Colors.green)
+                        //               .withOpacity(
+                        //                   _current == index ? 0.9 : 0.4)
+                        //           // color: _current == index
+                        //           //     ? Color.fromRGBO(242, 145, 163, 1)
+                        //           //     : Color.fromRGBO(0, 136, 192, 1),
+                        //           ),
+                        //     );
+                        //   }).toList(),
+                        // ),
                         buildContent(),
                         Row(
                           children: [
@@ -758,3 +812,100 @@ class _MainPageState extends State<MainPage> {
     return resutl;
   }
 }
+
+class CarouselWithIndicatorDemo extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _CarouselWithIndicatorState();
+  }
+}
+
+class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
+  int _currents = 0;
+  final CarouselController _controller = CarouselController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Carousel with indicator controller demo')),
+      body: Column(children: [
+        Expanded(
+          child: CarouselSlider(
+            items: imageSliders,
+            carouselController: _controller,
+            options: CarouselOptions(
+                autoPlay: true,
+                enlargeCenterPage: true,
+                aspectRatio: 2.0,
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    _currents = index;
+                  });
+                }),
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: imgLists.asMap().entries.map((entry) {
+            return GestureDetector(
+              onTap: () => _controller.animateToPage(entry.key),
+              child: Container(
+                width: 12.0,
+                height: 12.0,
+                margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: (Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : Colors.black)
+                        .withOpacity(_currents == entry.key ? 0.9 : 0.4)),
+              ),
+            );
+          }).toList(),
+        ),
+      ]),
+    );
+  }
+}
+
+final List<Widget> imageSliders = imgLists
+    .map((item) => Container(
+          child: Container(
+            margin: EdgeInsets.all(5.0),
+            child: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                child: Stack(
+                  children: <Widget>[
+                    Image.network(item, fit: BoxFit.cover, width: 1000.0),
+                    Positioned(
+                      bottom: 0.0,
+                      left: 0.0,
+                      right: 0.0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Color.fromARGB(0, 0, 0, 0),
+                              Color.fromARGB(0, 0, 0, 0)
+                            ],
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                          ),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 20.0),
+                        child: Text(
+                          '',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )),
+          ),
+        ))
+    .toList();

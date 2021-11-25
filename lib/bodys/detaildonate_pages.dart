@@ -536,10 +536,10 @@ class _CustomDialogState extends State<CustomDialog> {
                     ],
                   )),
             ),
-            Positioned(
-              top: 50,
-              left: 162,
-              right: 162,
+            Container(
+              //color: Colors.amber,
+              padding: EdgeInsets.all(10),
+              margin: EdgeInsets.symmetric(vertical: 40, horizontal: 150),
               child: Container(
                 width: 70,
                 height: 70,
@@ -838,10 +838,9 @@ class _bankDialogState extends State<bankDialog> {
                     ]),
                   ),
                 ),
-                Positioned(
-                  top: 30,
-                  left: 162,
-                  right: 162,
+                Container(
+                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.symmetric(vertical: 15, horizontal: 150),
                   child: Container(
                     width: 70,
                     height: 70,
@@ -900,11 +899,11 @@ class _successDialogState extends State<successDialog> {
               body: SingleChildScrollView(
                   child: Stack(children: <Widget>[
                 Container(
-                  width: 350,
-                  height: 400,
+                  width: double.infinity,
+                  //height: 400,
                   padding: EdgeInsets.all(20),
                   margin: EdgeInsets.only(
-                    top: 150,
+                    top: 180,
                     left: 16,
                     right: 16,
                   ),
@@ -1260,10 +1259,9 @@ class _detailbankDialogState extends State<detailbankDialog> {
                     ]),
                   ),
                 ),
-                Positioned(
-                  top: 180,
-                  left: 162,
-                  right: 162,
+                Container(
+                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.symmetric(vertical: 175, horizontal: 150),
                   child: Container(
                     width: 70,
                     height: 70,
@@ -1316,7 +1314,7 @@ class _truemoney10State extends State<truemoney10> {
   @override
   Widget build(BuildContext context) => WillPopScope(
       child: Visibility(
-        visible: !page4,
+        visible: !page5,
         child: Scaffold(
           backgroundColor: Colors.black38,
           body: SingleChildScrollView(
@@ -1385,9 +1383,10 @@ class _truemoney10State extends State<truemoney10> {
                           color: Colors.black,
                         ),
                       ),
+                      SizedBox(height: 15),
                       Container(
                         width: MediaQuery.of(context).size.width - 0,
-                        height: 50,
+                        height: 60,
                         decoration: BoxDecoration(
                             image: DecorationImage(
                           image: AssetImage('images/truemoveh.png'),
@@ -1504,10 +1503,10 @@ class _truemoney10State extends State<truemoney10> {
                     ]),
                   ),
                 ),
-                Positioned(
-                  top: 150,
-                  left: 162,
-                  right: 162,
+                Container(
+                  //color: Colors.amber,
+                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.symmetric(vertical: 145, horizontal: 150),
                   child: Container(
                     width: 70,
                     height: 70,
@@ -1749,10 +1748,9 @@ class _truemoney100State extends State<truemoney100> {
                     ]),
                   ),
                 ),
-                Positioned(
-                  top: 150,
-                  left: 162,
-                  right: 162,
+                Container(
+                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.symmetric(vertical: 145, horizontal: 150),
                   child: Container(
                     width: 70,
                     height: 70,
@@ -1813,7 +1811,7 @@ class _detailtrue10DialogState extends State<detailtrue10Dialog> {
               children: <Widget>[
                 Expanded(
                   child: Container(
-                    width: MediaQuery.of(context).size.width - 0,
+                    //width: MediaQuery.of(context).size.width - 0,
                     padding: EdgeInsets.all(20),
                     margin: EdgeInsets.only(top: 290),
                     decoration: BoxDecoration(
@@ -2007,10 +2005,9 @@ class _detailtrue10DialogState extends State<detailtrue10Dialog> {
                     ]),
                   ),
                 ),
-                Positioned(
-                  top: 250,
-                  left: 162,
-                  right: 162,
+                Container(
+                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.symmetric(vertical: 245, horizontal: 150),
                   child: Container(
                     width: 70,
                     height: 70,
@@ -2266,10 +2263,9 @@ class _detailtrue100DialogState extends State<detailtrue100Dialog> {
                     ]),
                   ),
                 ),
-                Positioned(
-                  top: 250,
-                  left: 162,
-                  right: 162,
+                Container(
+                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.symmetric(vertical: 245, horizontal: 150),
                   child: Container(
                     width: 70,
                     height: 70,
@@ -2512,10 +2508,9 @@ class _truemoveallState extends State<truemoveall> {
                     ]),
                   ),
                 ),
-                Positioned(
-                  top: 150,
-                  left: 162,
-                  right: 162,
+                Container(
+                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.symmetric(vertical: 145, horizontal: 150),
                   child: Container(
                     width: 70,
                     height: 70,
@@ -2770,10 +2765,9 @@ class _detailtrueallDialogState extends State<detailtrueallDialog> {
                     ]),
                   ),
                 ),
-                Positioned(
-                  top: 250,
-                  left: 162,
-                  right: 162,
+                Container(
+                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.symmetric(vertical: 245, horizontal: 150),
                   child: Container(
                     width: 70,
                     height: 70,
