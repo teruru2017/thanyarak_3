@@ -71,6 +71,13 @@ class MyConstant {
           color: Colors.grey,
         ),
       );
+  TextStyle h5StyleGley() => GoogleFonts.kanit(
+        textStyle: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.normal,
+          color: Colors.grey,
+        ),
+      );
   TextStyle h4StyleBlack() => GoogleFonts.kanit(
         textStyle: const TextStyle(
           fontSize: 12,
