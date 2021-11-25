@@ -619,7 +619,7 @@ class MenuLoginPage extends StatelessWidget {
                   color: Color(0xff33BEEC),
                 ),
                 child: Text(
-                  "ลงทะเบียน",
+                  "ออกจากระบบ",
                   style: GoogleFonts.kanit(
                     textStyle: Theme.of(context).textTheme.headline4,
                     fontSize: 16,
