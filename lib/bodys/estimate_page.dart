@@ -1510,7 +1510,26 @@ class _estimate_pageState extends State<estimate_page> {
                               SizedBox(height: her),
                               Container(
                                 child: GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    setState(
+                                      () {
+                                        showGeneralDialog(
+                                            context: context,
+                                            barrierDismissible: false,
+                                            barrierLabel:
+                                                MaterialLocalizations.of(
+                                                        context)
+                                                    .modalBarrierDismissLabel,
+                                            barrierColor: Colors.transparent,
+                                            transitionDuration:
+                                                Duration(milliseconds: 200),
+                                            pageBuilder: (BuildContext context,
+                                                    Animation frist,
+                                                    Animation second) =>
+                                                successDialog());
+                                      },
+                                    );
+                                  },
                                   child: Container(
                                     width: MediaQuery.of(context).size.width,
                                     padding: EdgeInsets.symmetric(vertical: 15),
@@ -1555,4 +1574,136 @@ class _estimate_pageState extends State<estimate_page> {
       ])
     ])));
   }
+}
+
+class successDialog extends StatefulWidget {
+  successDialog({Key? key}) : super(key: key);
+
+  @override
+  _successDialogState createState() => _successDialogState();
+}
+
+bool success = false;
+
+class _successDialogState extends State<successDialog> {
+  @override
+  Widget build(BuildContext context) => WillPopScope(
+      child: Visibility(
+          visible: !success,
+          child: Scaffold(
+              backgroundColor: Colors.black38,
+              body: SingleChildScrollView(
+                  child: Stack(children: <Widget>[
+                Container(
+                  width: double.infinity,
+                  //height: 400,
+                  padding: EdgeInsets.all(20),
+                  margin: EdgeInsets.only(
+                    top: 180,
+                    left: 16,
+                    right: 16,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child:
+                      Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                    Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage('images/success01.png'))),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      'บริจาคสำเร็จ',
+                      style: GoogleFonts.kanit(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xff0088C6),
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    Text(
+                      'ขอบคุณสำหรับการสละเวลาในการทำแบบสอบถามการให้บริการนี้ ความเห็นของท่านสำคัญต่อการพัฒนางานบริการ ให้ดียิ่งขึ้นต่อไป',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.kanit(
+                        fontSize: 16,
+                        //fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+
+                    SizedBox(height: 20),
+                    //เสร็จสิ้น
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) => NotiPage()));
+                          // showGeneralDialog(
+                          //     context: context,
+                          //     barrierDismissible: false,
+                          //     barrierLabel: MaterialLocalizations.of(context)
+                          //         .modalBarrierDismissLabel,
+                          //     barrierColor: Colors.transparent,
+                          //     transitionDuration: Duration(milliseconds: 200),
+                          //     pageBuilder: (BuildContext context,
+                          //             Animation frist, Animation second) =>
+                          //         detaildonate_pages());
+                          // Navigator.push(
+                          //     context,
+                          //     CupertinoPageRoute(
+                          //         builder: (context) => detaildonate_pages()));
+                        });
+                      },
+                      child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.symmetric(vertical: 15),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            color: Color(0xffE6EFFE),
+                            gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
+                          ),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'เสร็จสิ้น',
+                              style: GoogleFonts.kanit(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                              ),
+                            ),
+                          )),
+                    ),
+                  ]),
+                ),
+              ])))),
+      onWillPop: () async {
+        Navigator.pop(context);
+        showGeneralDialog(
+            context: context,
+            barrierDismissible: false,
+            barrierLabel:
+                MaterialLocalizations.of(context).modalBarrierDismissLabel,
+            barrierColor: Colors.transparent,
+            transitionDuration: Duration(milliseconds: 200),
+            pageBuilder:
+                (BuildContext context, Animation frist, Animation second) =>
+                    NotiPage());
+        return true;
+      });
 }
