@@ -91,7 +91,7 @@ class ArticleWidget extends StatelessWidget {
                                   child: SvgPicture.asset('images/v2.svg'),
                                 ),
                                 ShowTitle(
-                                  title: 'ผู้เข้าชม' + e.review,
+                                  title: 'ผู้เข้าชม', //+ e.review,
                                   textStyle: MyConstant().h4StyleGley(),
                                 ),
                               ],

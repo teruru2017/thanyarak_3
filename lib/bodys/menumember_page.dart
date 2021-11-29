@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:thanyarak/bodys/conditions_page.dart';
 import 'package:thanyarak/bodys/editpassword_page.dart';
 import 'package:thanyarak/bodys/editprofile_page.dart';
+import 'package:thanyarak/bodys/estimate_page.dart';
 import 'package:thanyarak/bodys/fav_page.dart';
 import 'package:thanyarak/bodys/menu_page.dart';
 import 'package:thanyarak/bodys/notification_page.dart';
@@ -212,7 +213,15 @@ class _menumember_pagesState extends State<menumember_pages> {
                                                   )),
                                             ])),
                                       ),
-                                      Container(
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              CupertinoPageRoute(
+                                                  builder: (context) =>
+                                                      editpassword_page()));
+                                        },
+                                        child: Container(
                                           decoration: BoxDecoration(
                                               color: Colors.white,
                                               border: Border(
@@ -236,54 +245,46 @@ class _menumember_pagesState extends State<menumember_pages> {
                                                 )
                                               ]),
                                           height: 60,
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  CupertinoPageRoute(
-                                                      builder: (context) =>
-                                                          editpassword_page()));
-                                            },
-                                            child: Row(children: <Widget>[
-                                              Expanded(
-                                                  flex: 2,
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                            image: AssetImage(
-                                                                'images/2.png'),
-                                                            scale: 1.5)),
-                                                    // color: Colors.green,
-                                                  )),
-                                              Expanded(
-                                                  flex: 8,
-                                                  child: Container(
-                                                    padding: EdgeInsets.only(
-                                                        left: 10),
-                                                    child: Align(
-                                                      alignment:
-                                                          Alignment.centerLeft,
-                                                      child: Text(
-                                                        'แก้ไขรหัสผ่าน',
-                                                        style:
-                                                            GoogleFonts.kanit(
-                                                          fontSize: 18,
-                                                        ),
+                                          child: Row(children: <Widget>[
+                                            Expanded(
+                                                flex: 2,
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                          image: AssetImage(
+                                                              'images/2.png'),
+                                                          scale: 1.5)),
+                                                  // color: Colors.green,
+                                                )),
+                                            Expanded(
+                                                flex: 8,
+                                                child: Container(
+                                                  padding:
+                                                      EdgeInsets.only(left: 10),
+                                                  child: Align(
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Text(
+                                                      'แก้ไขรหัสผ่าน',
+                                                      style: GoogleFonts.kanit(
+                                                        fontSize: 18,
                                                       ),
                                                     ),
-                                                  )),
-                                              Expanded(
-                                                  flex: 2,
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                            image: AssetImage(
-                                                                'images/0.png'),
-                                                            scale: 1.5)),
-                                                    // color: Colors.green,
-                                                  )),
-                                            ]),
-                                          )),
+                                                  ),
+                                                )),
+                                            Expanded(
+                                                flex: 2,
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                          image: AssetImage(
+                                                              'images/0.png'),
+                                                          scale: 1.5)),
+                                                  // color: Colors.green,
+                                                )),
+                                          ]),
+                                        ),
+                                      ),
                                       GestureDetector(
                                         onTap: () {
                                           Navigator.push(
@@ -497,55 +498,67 @@ class _menumember_pagesState extends State<menumember_pages> {
                                                   )),
                                             ])),
                                       ),
-                                      Container(
-                                          decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              border: Border.all(
-                                                color: Colors.blue.shade50,
-                                              ),
-                                              borderRadius: BorderRadius.only(
-                                                bottomLeft: Radius.circular(30),
-                                                bottomRight:
-                                                    Radius.circular(30),
-                                              ),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.grey
-                                                      .withOpacity(0.2),
-                                                  spreadRadius: 2,
-                                                  blurRadius: 2,
-                                                  offset: Offset(0, 5),
-                                                )
-                                              ]),
-                                          height: 60,
-                                          child: Row(children: <Widget>[
-                                            Expanded(
-                                                flex: 2,
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                          image: AssetImage(
-                                                              'images/6.png'),
-                                                          scale: 1.5)),
-                                                  // color: Colors.green,
-                                                )),
-                                            Expanded(
-                                                flex: 8,
-                                                child: Container(
-                                                  padding:
-                                                      EdgeInsets.only(left: 10),
-                                                  child: Align(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: Text(
-                                                      'ออกจากระบบ',
-                                                      style: GoogleFonts.kanit(
-                                                          fontSize: 18,
-                                                          color: Colors.red),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              CupertinoPageRoute(
+                                                  builder: (context) =>
+                                                      estimate_page()));
+                                        },
+                                        child: Container(
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                border: Border.all(
+                                                  color: Colors.blue.shade50,
+                                                ),
+                                                borderRadius: BorderRadius.only(
+                                                  bottomLeft:
+                                                      Radius.circular(30),
+                                                  bottomRight:
+                                                      Radius.circular(30),
+                                                ),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.grey
+                                                        .withOpacity(0.2),
+                                                    spreadRadius: 2,
+                                                    blurRadius: 2,
+                                                    offset: Offset(0, 5),
+                                                  )
+                                                ]),
+                                            height: 60,
+                                            child: Row(children: <Widget>[
+                                              Expanded(
+                                                  flex: 2,
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                        image: DecorationImage(
+                                                            image: AssetImage(
+                                                                'images/6.png'),
+                                                            scale: 1.5)),
+                                                    // color: Colors.green,
+                                                  )),
+                                              Expanded(
+                                                  flex: 8,
+                                                  child: Container(
+                                                    padding: EdgeInsets.only(
+                                                        left: 10),
+                                                    child: Align(
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child: Text(
+                                                        'ออกจากระบบ',
+                                                        style:
+                                                            GoogleFonts.kanit(
+                                                                fontSize: 18,
+                                                                color:
+                                                                    Colors.red),
+                                                      ),
                                                     ),
-                                                  ),
-                                                )),
-                                          ])),
+                                                  )),
+                                            ])),
+                                      ),
                                     ],
                                   ),
                                 ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:thanyarak/bodys/history_details_page.dart';
+//import 'package:thanyarak/bodys/history_details_page.dart';
 import 'package:thanyarak/models/history_model.dart';
 import 'package:thanyarak/utility/my_constant.dart';
 import 'package:thanyarak/widgets/show_title.dart';
@@ -20,7 +20,7 @@ class HistoryWidget extends StatelessWidget {
         (e) => GestureDetector(
           onTap: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => HistoryDetailsPage()));
+                MaterialPageRoute(builder: (context) => HistoryWidget()));
           },
           child: Container(
             padding: const EdgeInsets.all(15),
