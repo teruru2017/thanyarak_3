@@ -15,8 +15,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:developer' as developer;
 
-import 'package:thanyarak/bodys/test.dart';
-
 bool page1 = false; //truemove&bank
 bool success = false; //popupsuccess
 bool page2 = false; // บริจาคแบบธนาคาร

@@ -4,7 +4,7 @@ import 'package:thanyarak/states/main_home.dart';
 import 'package:thanyarak/utility/my_constant.dart';
 
 Map<String, WidgetBuilder> map = {
-  '/mainHome': (BuildContext context) => const MainHome(),
+  '/mainHome': (BuildContext context) => MainHome(),
 };
 
 String firstState;

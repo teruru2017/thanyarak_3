@@ -1,48 +1,4 @@
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:thanyarak/bodys/menu_page.dart';
-import 'package:thanyarak/bodys/notification_page.dart';
-import 'package:thanyarak/utility/my_constant.dart';
-import 'package:thanyarak/widgets/article_widget.dart';
-import 'package:thanyarak/widgets/show_circular.dart';
-import 'package:thanyarak/widgets/show_title.dart';
-
-class AticlePage extends StatefulWidget {
-  const AticlePage({Key? key}) : super(key: key);
-
-  @override
-  _AticlePageState createState() => _AticlePageState();
-}
-
-class _AticlePageState extends State<AticlePage> {
-  List<String> banners = [
-    'images/topgraphic.png',
-    'images/topgraphic.png',
-    'images/topgraphic.png',
-  ];
-  List<Widget> widgets = [];
-  void loopCreateBanner() {
-    for (var item in banners) {
-      setState(() {
-        widgets.add(createBannerWidget(item));
-      });
-    }
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    loopCreateBanner();
-  }
-
-  double topWidgetHeight = 70;
-  Widget createBannerWidget(String path) => Image.asset(path);
-  @override
-  Widget build(BuildContext context) {
+Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
           child: Stack(children: <Widget>[
@@ -136,7 +92,7 @@ class _AticlePageState extends State<AticlePage> {
                   ),
                 ),
                 Container(
-                  height: MediaQuery.of(context).size.height + 400,
+                  height: MediaQuery.of(context).size.height + 850,
                   color: Colors.transparent,
                   child: Container(
                     width: MediaQuery.of(context).size.width,
@@ -154,18 +110,8 @@ class _AticlePageState extends State<AticlePage> {
                         Expanded(
                           child: Container(
                             padding: EdgeInsets.only(
-                                top: 10, left: 20, right: 20, bottom: 0),
-                            child: Column(
-                              children: <Widget>[
-                                Container(
-                                  child: builBanner(),
-                                ),
-                                Expanded(
-                                    child: Container(
-                                  child: ArticleWidget(),
-                                )),
-                              ],
-                            ),
+                                top: 30, left: 20, right: 20, bottom: 0),
+                            child: Column(),
                           ),
                         ),
                       ],
@@ -179,64 +125,3 @@ class _AticlePageState extends State<AticlePage> {
       ])),
     );
   }
-
-  CarouselSlider builBanner() {
-    return CarouselSlider(
-        items: widgets,
-        options: CarouselOptions(
-            viewportFraction: 0.99,
-            autoPlay: true,
-            autoPlayInterval: Duration(seconds: 3)));
-  }
-
-  Container buildHead() {
-    return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage('images/header2.png'), fit: BoxFit.cover),
-      ),
-      // width: double.infinity,
-      height: 100,
-      child: Column(
-        children: [
-          Container(
-            height: 100,
-            //width: 400,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Align(
-                    alignment: Alignment(-0.8, 0.1),
-                    child: Text('บทความ',
-                        style: GoogleFonts.kanit(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                        ))),
-                SizedBox(width: 170),
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.notifications,
-                        color: Colors.white,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.menu,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}

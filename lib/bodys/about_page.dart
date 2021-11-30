@@ -15,6 +15,8 @@ class AboutPage extends StatefulWidget {
   _AboutPageState createState() => _AboutPageState();
 }
 
+double topWidgetHeight = 70;
+
 class _AboutPageState extends State<AboutPage> {
   List<String> pathImageAritcles = [
     'images/about_h.png',
@@ -35,55 +37,194 @@ class _AboutPageState extends State<AboutPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            buildHead(),
-            SizedBox(
-              height: 6,
+          child: Stack(children: <Widget>[
+        Column(children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage("images/bg_menu.png"),
+                  alignment: Alignment.topCenter),
             ),
-            const AboutHead(title: 'คณะกรรมการมูลนิธิถันยรักษ์ฯ'),
-            Row(
+            child: Column(
               children: [
-                Expanded(
-                  child: Container(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.asset(
-                        'images/princess.png',
-                        width: 140,
-                        height: 184,
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    margin: EdgeInsets.only(left: 1, right: 15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'สมเด็จพระกนิษฐาธิราชเจ้ากรมสมเด็จพระเทพรัตนราชสุดาเจ้าฟ้ามหาจักรีสิรินธร มหาวชิราลงกรณวรราชภักดี สิริกิจการิณีพีรยพัฒนรัฐสีมาคุณากรปิยชาติสยามบรมราชกุมารี',
-                          style: GoogleFonts.kanit(
-                            textStyle: Theme.of(context).textTheme.headline4,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w300,
-                            color: Color(0xff000000),
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
+                Container(
+                  height: topWidgetHeight,
+                  child: Row(
+                    // crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                        flex: 4,
+                        child: Container(
+                          height: 100,
+                          child: Container(
+                            //margin: EdgeInsets.only(top: 35),
+                            padding: EdgeInsets.only(bottom: 10, left: 20),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
-                                  'ประธานกิตติมศักดิ์',
+                                  'เกี่ยวกับเรา',
                                   style: GoogleFonts.kanit(
-                                      color: Colors.grey.withOpacity(0.8)),
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ],
                             ),
-                          ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          height: 100,
+                          child: Container(
+                            //margin: EdgeInsets.only(top: 35),
+                            padding: EdgeInsets.only(bottom: 15),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                            builder: (context) => NotiPage()));
+                                  },
+                                  child: Container(
+                                    width: 20,
+                                    height: 20,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: AssetImage(
+                                                'images/notimenu.png'))),
+                                  ),
+                                ),
+                                SizedBox(width: 20),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                            builder: (context) => MenuPage()));
+                                  },
+                                  child: Container(
+                                    width: 20,
+                                    height: 20,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image:
+                                                AssetImage('images/menu.png'))),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.height + 850,
+                  color: Colors.transparent,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      //หัว
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(40.0),
+                        topRight: Radius.circular(40.0),
+                      ),
+                    ),
+                    child: Column(
+                      //crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.only(
+                                top: 30, left: 20, right: 20, bottom: 0),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          child: Image.asset(
+                                            'images/princess.png',
+                                            width: 140,
+                                            height: 184,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        margin:
+                                            EdgeInsets.only(left: 1, right: 15),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            //เนื้อหา
+                                            Text(
+                                              'สมเด็จพระกนิษฐาธิราชเจ้ากรมสมเด็จพระเทพรัตนราชสุดาเจ้าฟ้ามหาจักรีสิรินธร มหาวชิราลงกรณวรราชภักดี สิริกิจการิณีพีรยพัฒนรัฐสีมาคุณากรปิยชาติสยามบรมราชกุมารี',
+                                              style: GoogleFonts.kanit(
+                                                textStyle: Theme.of(context)
+                                                    .textTheme
+                                                    .headline4,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w300,
+                                                color: Color(0xff000000),
+                                              ),
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Column(
+                                                  children: [
+                                                    Text(
+                                                      'ประธานกิตติมศักดิ์',
+                                                      style: GoogleFonts.kanit(
+                                                          color: Colors.grey
+                                                              .withOpacity(
+                                                                  0.8)),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Container(
+                                    margin: EdgeInsets.only(
+                                        left: 25, top: 25, bottom: 25),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        'คณะกรรมการ',
+                                        style: GoogleFonts.kanit(
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    )),
+                                groupIcon1(),
+                                groupIcon2()
+                              ],
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -91,22 +232,9 @@ class _AboutPageState extends State<AboutPage> {
                 )
               ],
             ),
-            Container(
-                margin: EdgeInsets.only(left: 25, top: 25, bottom: 25),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'คณะกรรมการ',
-                    style: GoogleFonts.kanit(
-                      fontSize: 20,
-                    ),
-                  ),
-                )),
-            groupIcon1(),
-            groupIcon2()
-          ],
-        ),
-      ),
+          ),
+        ])
+      ])),
     );
   }
 

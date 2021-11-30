@@ -19,7 +19,7 @@ import 'package:thanyarak/widgets/article_widget.dart';
 import 'package:thanyarak/widgets/show_circular.dart';
 import 'package:thanyarak/widgets/show_title.dart';
 import 'package:thanyarak/widgets/show_title_head.dart';
-import 'package:thanyarak/states/main_home.dart';
+//import 'package:thanyarak/states/main_home.dart';
 import 'package:avatar_view/avatar_view.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -109,8 +109,10 @@ class _MainPageState extends State<MainPage> {
     'ผู้เข้าชม 123k'
   ];
   int _currentIndex = 0;
+  double topWidgetHeight = 100;
   int _volume = 0;
   int counter = 0;
+  double setbottom = 450;
   @override
   void initState() {
     // TODO: implement initState
@@ -140,48 +142,49 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffffffff),
       body: SingleChildScrollView(
-        child: Column(children: [
+          child: Stack(children: <Widget>[
+        Column(children: <Widget>[
           Container(
-            child: Stack(
-              children: <Widget>[
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage("images/bg_menu.png"),
+                  alignment: Alignment.topCenter),
+            ),
+            child: Column(
+              children: [
                 Container(
-                  height: 120,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("images/header2.png"),
-                          fit: BoxFit.cover,
-                          alignment: Alignment.topCenter)),
+                  //color: Colors.green,
+                  height: topWidgetHeight,
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Expanded(
                         flex: 2,
                         child: Container(
                           height: 100,
+                          width: 100,
                           //color: Colors.amber,
                           child: Container(
-                            padding: EdgeInsets.only(
-                                top: 10, left: 15, right: 20, bottom: 20),
-                            margin: EdgeInsets.only(bottom: 10),
-                            child: AvatarView(
-                              radius: 50,
-                              borderWidth: 1,
-                              borderColor: Colors.white,
-                              avatarType: AvatarType.CIRCLE,
-                              imagePath: "images/avatar.png",
-                              placeHolder: Container(
-                                child: Icon(
-                                  Icons.person,
-                                  size: 50,
-                                ),
-                              ),
-                              errorWidget: Container(
-                                child: Icon(
-                                  Icons.error,
-                                  size: 50,
-                                ),
+                            height: 50,
+                            width: 50,
+                            margin: EdgeInsets.all(10),
+                            //color: Colors.red,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              child: Container(
+                                width: 30,
+                                height: 30,
+                                decoration: ShapeDecoration(
+                                    color: Colors.green,
+                                    shape: CircleBorder(),
+                                    image: DecorationImage(
+                                      image: AssetImage('images/avatar.png'),
+                                    )),
+                                // child: Image(
+                                //   image: AssetImage('images/avatar.png'),
+                                // ),
                               ),
                             ),
                           ),
@@ -190,10 +193,11 @@ class _MainPageState extends State<MainPage> {
                       Expanded(
                         flex: 4,
                         child: Container(
-                          height: 90,
-                          // color: Colors.blue,
+                          height: 100,
+                          //color: Colors.blue,
                           child: Container(
-                            margin: EdgeInsets.only(top: 10),
+                            //margin: EdgeInsets.only(top: 10),
+                            padding: EdgeInsets.only(top: 15),
                             child: Align(
                               //alignment: Alignment.topLeft,
                               child: Column(children: [
@@ -226,9 +230,11 @@ class _MainPageState extends State<MainPage> {
                       Expanded(
                         flex: 2,
                         child: Container(
-                          height: 90,
+                          height: 100,
                           child: Container(
-                            margin: EdgeInsets.only(top: 35),
+                            //color: Colors.red,
+                            //margin: EdgeInsets.only(top: 35),
+                            padding: EdgeInsets.only(top: 22),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -273,182 +279,129 @@ class _MainPageState extends State<MainPage> {
                     ],
                   ),
                 ),
-                //แบนเนอ
-
-                Expanded(
+                Container(
+                  height: MediaQuery.of(context).size.height + setbottom,
+                  color: Colors.transparent,
                   child: Container(
-                      // color: Colors.amber,
-                      margin: EdgeInsets.only(
-                        top: 100,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      //หัว
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(40.0),
+                        topRight: Radius.circular(40.0),
                       ),
-                      child: Column(children: <Widget>[
-                        // ClipRRect(
-                        //   child: CarouselSlider(
-                        //     items: widgetsPro,
-                        //     options: CarouselOptions(
-                        //         viewportFraction: 1,
-                        //         autoPlay: true,
-                        //         enlargeCenterPage: true,
-                        //         // aspectRatio: 2.0,
-                        //         onPageChanged: (index, reason) {
-                        //           setState(() {
-                        //             _current = index;
-                        //           });
-                        //         }),
-                        //   ),
-                        // ),
-                        CarouselSlider(
-                          items: imageSliders,
-                          carouselController: _controller,
-                          options: CarouselOptions(
-                              viewportFraction: 0.9,
-                              autoPlay: true,
-                              enlargeCenterPage: true,
-                              autoPlayInterval: Duration(seconds: 15),
-                              aspectRatio: 2.0,
-                              onPageChanged: (index, reason) {
-                                setState(() {
-                                  _currents = index;
-                                });
-                              }),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: imgLists.asMap().entries.map((entry) {
-                            return GestureDetector(
-                              onTap: () => _controller.animateToPage(entry.key),
-                              child: Container(
-                                width: 9.0,
-                                height: 9.0,
-                                margin: EdgeInsets.symmetric(
-                                    vertical: 8.0, horizontal: 4.0),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: (Theme.of(context).brightness ==
-                                                Brightness.dark
-                                            ? Colors.white
-                                            : Colors.blue)
-                                        .withOpacity(_currents == entry.key
-                                            ? 0.9
-                                            : 0.4)),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                        // CarouselSlider(
-                        //   items: widgetsPro,
-                        //   options: CarouselOptions(
-                        //       viewportFraction: 1,
-                        //       autoPlay: true,
-                        //       enlargeCenterPage: true,
-                        //       // aspectRatio: 2.0,
-                        //       onPageChanged: (index, reason) {
-                        //         setState(() {
-                        //           _current = index;
-                        //         });
-                        //       }),
-                        // ),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.center,
-                        //   children: widgetsPro.map((urlOfItem) {
-                        //     int index = widgetsPro.indexOf(urlOfItem, 0);
-                        //     return Container(
-                        //       width: 8,
-                        //       height: 8,
-                        //       margin: EdgeInsets.symmetric(
-                        //           vertical: 1, horizontal: 2.0),
-                        //       decoration: BoxDecoration(
-                        //           shape: BoxShape.circle,
-                        //           color: (Theme.of(context).brightness ==
-                        //                       Brightness.dark
-                        //                   ? Colors.amber
-                        //                   : Colors.green)
-                        //               .withOpacity(
-                        //                   _current == index ? 0.9 : 0.4)
-                        //           // color: _current == index
-                        //           //     ? Color.fromRGBO(242, 145, 163, 1)
-                        //           //     : Color.fromRGBO(0, 136, 192, 1),
-                        //           ),
-                        //     );
-                        //   }).toList(),
-                        // ),
-                        buildContent(),
-                        Row(
-                          children: [
-                            const ShowHead(
-                                title: 'บทความ',
-                                pathIcon: 'images/article.png'),
-                            const SizedBox(width: 155),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => AticlePage()));
-                              },
-                              child: Align(
-                                alignment: Alignment.topRight,
-                                child: Text('ดูทั้งหมด',
-                                    style: GoogleFonts.kanit(
-                                      color: Colors.black38,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                    )),
-                              ),
+                    ),
+                    child: Column(
+                      //crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.only(
+                                top: 10, left: 0, right: 0, bottom: 0),
+                            child: Column(
+                              children: [
+                                //แบนเนอร์
+                                Expanded(
+                                  child: Container(
+                                      // color: Colors.amber,
+
+                                      child: Column(children: <Widget>[
+                                    CarouselSlider(
+                                      items: imageSliders,
+                                      carouselController: _controller,
+                                      options: CarouselOptions(
+                                          viewportFraction: 0.9,
+                                          autoPlay: true,
+                                          enlargeCenterPage: true,
+                                          autoPlayInterval:
+                                              Duration(seconds: 15),
+                                          aspectRatio: 2.0,
+                                          onPageChanged: (index, reason) {
+                                            setState(() {
+                                              _currents = index;
+                                            });
+                                          }),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children:
+                                          imgLists.asMap().entries.map((entry) {
+                                        return GestureDetector(
+                                          onTap: () => _controller
+                                              .animateToPage(entry.key),
+                                          child: Container(
+                                            width: 9.0,
+                                            height: 9.0,
+                                            margin: EdgeInsets.symmetric(
+                                                vertical: 8.0, horizontal: 4.0),
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: (Theme.of(context)
+                                                                .brightness ==
+                                                            Brightness.dark
+                                                        ? Colors.white
+                                                        : Colors.blue)
+                                                    .withOpacity(
+                                                        _currents == entry.key
+                                                            ? 0.9
+                                                            : 0.4)),
+                                          ),
+                                        );
+                                      }).toList(),
+                                    ),
+                                    buildContent(),
+                                    Row(
+                                      children: [
+                                        const ShowHead(
+                                            title: 'บทความ',
+                                            pathIcon: 'images/article.png'),
+                                        const SizedBox(width: 155),
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        AticlePage()));
+                                          },
+                                          child: Align(
+                                            alignment: Alignment.topRight,
+                                            child: Text('ดูทั้งหมด',
+                                                style: GoogleFonts.kanit(
+                                                  color: Colors.black38,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                )),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    listArticle(),
+                                    SizedBox(height: 20),
+                                    const ShowHead(
+                                        title: 'มูลนิธิถันยรักษ์',
+                                        pathIcon: 'images/shop.png'),
+                                    buildAboutMe(),
+                                    const SizedBox(
+                                      height: 30,
+                                    ),
+                                  ])),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
-                        listArticle(),
-                        SizedBox(height: 20),
-                        const ShowHead(
-                            title: 'โปรโมชั่นร้านค้า',
-                            pathIcon: 'images/shop.png'),
-                        SizedBox(height: 1),
-                        CarouselSlider(
-                          items: widgets,
-                          options: CarouselOptions(
-                              viewportFraction: 1,
-                              autoPlay: true,
-                              enlargeCenterPage: true,
-                              // aspectRatio: 2.0,
-                              onPageChanged: (index, reason) {
-                                setState(() {
-                                  _current = index;
-                                });
-                              }),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: widgets.map((urlOfItem) {
-                            int index = widgets.indexOf(urlOfItem);
-                            return Container(
-                              width: 8,
-                              height: 8,
-                              margin: EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 2.0),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: _current == index
-                                    ? Color.fromRGBO(242, 145, 163, 1)
-                                    : Color.fromRGBO(0, 136, 192, 1),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                        const ShowHead(
-                            title: 'มูลนิธิถันยรักษ์',
-                            pathIcon: 'images/shop.png'),
-                        buildAboutMe(),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                      ])),
-                ),
+                      ],
+                    ),
+                  ),
+                )
               ],
             ),
           ),
-        ]),
-      ),
+        ])
+      ])),
     );
   }
 
@@ -689,7 +642,7 @@ class _MainPageState extends State<MainPage> {
           height: 5,
         ),
         ShowTitle(
-          title: 'การแจ้งเตรียน',
+          title: 'การแจ้งเตือน',
           textStyle: MyConstant().h4StyleBlack(),
         ),
       ],

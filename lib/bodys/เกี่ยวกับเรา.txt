@@ -1,0 +1,77 @@
+Widget build(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            buildHead(),
+            SizedBox(
+              height: 6,
+            ),
+            const AboutHead(title: 'คณะกรรมการมูลนิธิถันยรักษ์ฯ'),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.asset(
+                        'images/princess.png',
+                        width: 140,
+                        height: 184,
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.only(left: 1, right: 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'สมเด็จพระกนิษฐาธิราชเจ้ากรมสมเด็จพระเทพรัตนราชสุดาเจ้าฟ้ามหาจักรีสิรินธร มหาวชิราลงกรณวรราชภักดี สิริกิจการิณีพีรยพัฒนรัฐสีมาคุณากรปิยชาติสยามบรมราชกุมารี',
+                          style: GoogleFonts.kanit(
+                            textStyle: Theme.of(context).textTheme.headline4,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w300,
+                            color: Color(0xff000000),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              children: [
+                                Text(
+                                  'ประธานกิตติมศักดิ์',
+                                  style: GoogleFonts.kanit(
+                                      color: Colors.grey.withOpacity(0.8)),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+            Container(
+                margin: EdgeInsets.only(left: 25, top: 25, bottom: 25),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'คณะกรรมการ',
+                    style: GoogleFonts.kanit(
+                      fontSize: 20,
+                    ),
+                  ),
+                )),
+            groupIcon1(),
+            groupIcon2()
+          ],
+        ),
+      ),
+    );
+  }

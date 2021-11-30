@@ -16,78 +16,67 @@ class successpassword_pages extends StatefulWidget {
 }
 
 class _successpassword_pagesState extends State<successpassword_pages> {
+  final double topWidgetHeight = 800;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffffffff),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: 900,
-              width: double.infinity,
+        body: SingleChildScrollView(
+      child: Stack(children: <Widget>[
+        Column(children: <Widget>[
+          Container(
               decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage("images/success.png"),
-                      fit: BoxFit.cover,
-                      alignment: Alignment.topCenter)),
-              child: Stack(
-                children: <Widget>[
-                  Container(
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage("images/successbg.png"),
-                            alignment: Alignment.center)),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            scale: 1.5,
-                            image: AssetImage("images/circle.png"),
-                            alignment: Alignment(0, -0.83))),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            scale: 1.5,
-                            image: AssetImage("images/userdata.png"),
-                            alignment: Alignment(0, -0.8))),
-                  ),
-
-                  Container(
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            scale: 1.5,
-                            image: AssetImage("images/checkpassword.png"),
-                            alignment: Alignment.center)),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => SignInPage()));
-                    },
-                  ),
-                  // IconButton(
-                  //   onPressed: () {
-                  //     Navigator.push(
-                  //         context,
-                  //         CupertinoPageRoute(
-                  //             builder: (context) => newtype_pages()));
-                  //   },
-                  //   icon: FaIcon(FontAwesomeIcons.chevronCircleLeft),
-                  //   iconSize: 35,
-                  //   color: Colors.white54,
-                  //   padding: const EdgeInsets.all(25),
-                  // ),
-                ],
+                image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage("images/bg_menu.png"),
+                    alignment: Alignment.topCenter),
               ),
-            ),
-          ],
-        ),
-      ),
-    );
+              child: Column(children: [
+                Container(
+                  height: topWidgetHeight,
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: AssetImage("images/successbg.png"),
+                                alignment: Alignment.center)),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                scale: 1.5,
+                                image: AssetImage("images/circle.png"),
+                                alignment: Alignment(0, -0.55))),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                scale: 1.5,
+                                image: AssetImage("images/userdata.png"),
+                                alignment: Alignment(0, -0.5))),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                scale: 1.5,
+                                image: AssetImage("images/checkpassword.png"),
+                                alignment: Alignment.center)),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) => SignInPage()));
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ]))
+        ])
+      ]),
+    ));
   }
 }

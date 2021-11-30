@@ -6,7 +6,7 @@ import 'package:thanyarak/bodys/detaildonate_pages.dart';
 import 'package:thanyarak/bodys/menu_page.dart';
 import 'package:thanyarak/bodys/notification_page.dart';
 import 'package:thanyarak/bodys/otp_pages.dart';
-import 'package:thanyarak/bodys/test.dart';
+
 import 'package:thanyarak/utility/my_constant.dart';
 import 'package:thanyarak/widgets/show_circular.dart';
 import 'package:thanyarak/widgets/show_title.dart';
@@ -17,6 +17,8 @@ class DonatePage extends StatefulWidget {
   @override
   _DonatePageState createState() => _DonatePageState();
 }
+
+double topWidgetHeight = 70;
 
 class _DonatePageState extends State<DonatePage> {
   List<String> pathImageAritcles = [
@@ -53,95 +55,139 @@ class _DonatePageState extends State<DonatePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Column(children: [
+          child: Stack(children: <Widget>[
+        Column(children: <Widget>[
           Container(
-              child: Stack(children: <Widget>[
-            Container(
-              height: 120,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage("images/header2.png"),
-                      fit: BoxFit.cover,
-                      alignment: Alignment.topCenter)),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(
-                    flex: 6,
-                    child: Container(
-                      margin: EdgeInsets.only(top: 30, left: 25),
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          'บริจาค',
-                          style: GoogleFonts.kanit(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: AssetImage("images/bg_menu.png"),
+                  alignment: Alignment.topCenter),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  height: topWidgetHeight,
+                  child: Row(
+                    // crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                        flex: 4,
+                        child: Container(
+                          height: 100,
+                          child: Container(
+                            //margin: EdgeInsets.only(top: 35),
+                            padding: EdgeInsets.only(bottom: 10, left: 20),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  'บริจาค',
+                                  style: GoogleFonts.kanit(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Container(
-                      height: 90,
-                      child: Container(
-                        margin: EdgeInsets.only(top: 35),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                        builder: (context) => NotiPage()));
-                              },
-                              child: Container(
-                                width: 20,
-                                height: 20,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image:
-                                            AssetImage('images/notimenu.png'))),
-                              ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          height: 100,
+                          child: Container(
+                            //margin: EdgeInsets.only(top: 35),
+                            padding: EdgeInsets.only(bottom: 15),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                            builder: (context) => NotiPage()));
+                                  },
+                                  child: Container(
+                                    width: 20,
+                                    height: 20,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: AssetImage(
+                                                'images/notimenu.png'))),
+                                  ),
+                                ),
+                                SizedBox(width: 20),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                            builder: (context) => MenuPage()));
+                                  },
+                                  child: Container(
+                                    width: 20,
+                                    height: 20,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image:
+                                                AssetImage('images/menu.png'))),
+                                  ),
+                                ),
+                              ],
                             ),
-                            SizedBox(width: 20),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                        builder: (context) => MenuPage()));
-                              },
-                              child: Container(
-                                width: 20,
-                                height: 20,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage('images/menu.png'))),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.height + 600,
+                  color: Colors.transparent,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      //หัว
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(40.0),
+                        topRight: Radius.circular(40.0),
                       ),
                     ),
+                    child: Column(
+                      //crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.only(
+                                top: 10, left: 20, right: 20, bottom: 0),
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    // color: Colors.green,
+
+                                    child: Column(
+                                        children: <Widget>[listArticle()]),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
+                )
+              ],
             ),
-            Expanded(
-              child: Container(
-                // color: Colors.green,
-                margin: EdgeInsets.only(top: 95),
-                child: Column(children: <Widget>[listArticle()]),
-              ),
-            ),
-          ])),
-        ]),
-      ),
+          ),
+        ])
+      ])),
     );
   }
 

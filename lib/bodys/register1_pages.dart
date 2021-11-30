@@ -23,230 +23,307 @@ class _register1_pagesState extends State<register1_pages> {
 
   int _selectedchoice = 0;
   int choice = 0;
+  final double topWidgetHeight = 180.0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffffffff),
       body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage("images/header3.png"),
-                      fit: BoxFit.cover,
-                      alignment: Alignment.topCenter)),
-              child: Column(
-                children: [
-                  Container(
-                    height: 220,
-                    width: double.infinity,
-                    child: Stack(
-                      children: <Widget>[
-                        // IconButton(
-                        //   onPressed: () {
-                        //     Navigator.push(
-                        //         context,
-                        //         CupertinoPageRoute(
-                        //             builder: (context) => newtype_pages()));
-                        //   },
-                        //   icon: FaIcon(FontAwesomeIcons.chevronCircleLeft),
-                        //   iconSize: 35,
-                        //   color: Colors.white54,
-                        //   padding: const EdgeInsets.all(25),
-                        // ),
-                        Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  scale: 1.5,
-                                  image: AssetImage("images/circle.png"),
-                                  alignment: Alignment.center)),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  scale: 1.8,
-                                  image: AssetImage("images/userdata.png"),
-                                  alignment: Alignment(0, 0.2))),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
+          child: Stack(children: <Widget>[
+        Column(children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage("images/bg_menu.png"),
+                  alignment: Alignment.topCenter),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  height: topWidgetHeight,
+                  child: Row(
+                    // crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                        flex: 4,
+                        child: Container(
+                          height: 200,
                           child: Container(
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    scale: 1.3,
-                                    image: AssetImage("images/back01.png"),
-                                    alignment: Alignment(-0.9, -0.7))),
+                            //color: Colors.amber,
+
+                            //margin: EdgeInsets.only(top: 35),
+                            padding: EdgeInsets.only(top: 30),
+                            child: Row(
+                              children: [
+                                Stack(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        height:
+                                            MediaQuery.of(context).size.height,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        decoration: BoxDecoration(
+                                            // color: Colors.pink,
+                                            image: DecorationImage(
+                                                scale: 1.5,
+                                                image: AssetImage(
+                                                    "images/circle.png"),
+                                                alignment: Alignment.center)),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        height:
+                                            MediaQuery.of(context).size.height,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                scale: 1.8,
+                                                image: AssetImage(
+                                                    "images/iconlogin.png"),
+                                                alignment: Alignment(0, 0.8))),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 4,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Container(
+                                          height: MediaQuery.of(context)
+                                              .size
+                                              .height,
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          decoration: BoxDecoration(
+                                              //color: Colors.amber,
+                                              image: DecorationImage(
+                                                  scale: 1.3,
+                                                  image: AssetImage(
+                                                      "images/back01.png"),
+                                                  alignment:
+                                                      Alignment(-0.9, -0.7))),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.height,
+                  color: Colors.transparent,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      //หัว
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(40.0),
+                        topRight: Radius.circular(40.0),
+                      ),
+                    ),
+                    child: Column(
+                      //crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.only(
+                                top: 30, left: 20, right: 20, bottom: 0),
+                            child: Column(
+                              children: [
+                                Align(
+                                  alignment: Alignment(-1, -1),
+                                  child: Text(
+                                    "ลงทะเบียน",
+                                    style: GoogleFonts.kanit(
+                                      textStyle:
+                                          Theme.of(context).textTheme.headline4,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xff0088C6),
+                                      // fontStyle: FontStyle.italic,
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment(-1, -1),
+                                  child: Text(
+                                    "กรุณากรอกข้อมูลของคุณ เพื่อลงทะเบียน",
+                                    style: GoogleFonts.kanit(
+                                      textStyle:
+                                          Theme.of(context).textTheme.headline4,
+                                      fontSize: 16,
+                                      color: Color(0xffB7B7B7),
+                                      // fontStyle: FontStyle.italic,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  //child: MyStatefulWidget(),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: Row(
+                                              children: [
+                                                Radio(
+                                                  value: SingingCharacter.HN,
+                                                  groupValue: _character,
+                                                  onChanged: (SingingCharacter?
+                                                      value) {
+                                                    setState(() {
+                                                      _character = value;
+                                                    });
+                                                    txt = 'HN';
+                                                  },
+                                                ),
+                                                Expanded(
+                                                    child: Text('HN',
+                                                        style:
+                                                            GoogleFonts.kanit(
+                                                          fontSize: 16,
+                                                        )))
+                                              ],
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 3,
+                                            child: Row(
+                                              children: [
+                                                Radio(
+                                                  value:
+                                                      SingingCharacter.idcard,
+                                                  groupValue: _character,
+                                                  onChanged: (SingingCharacter?
+                                                      value) {
+                                                    setState(() {
+                                                      _character = value;
+                                                    });
+                                                    txt =
+                                                        'เลขบัตรประจำตัวประชาชน';
+                                                  },
+                                                ),
+                                                Expanded(
+                                                    child: Text(
+                                                        'เลขบัตรประจำตัวประชาชน',
+                                                        style:
+                                                            GoogleFonts.kanit(
+                                                          fontSize: 16,
+                                                        )))
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  //color: Colors.amber,
+                                  //margin: EdgeInsets.symmetric(horizontal: 20),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      FormBuilderTextField(
+                                        name: 'id',
+                                        obscureText: true,
+                                        style: GoogleFonts.kanit(),
+
+                                        decoration: InputDecoration(
+                                            //border: InputBorder.none,
+
+                                            prefixIcon: const Padding(
+                                              padding: EdgeInsets.all(12),
+                                              child: FaIcon(
+                                                FontAwesomeIcons.idCardAlt,
+                                                size: 20,
+                                              ),
+                                            ),
+                                            labelText: txt,
+                                            border: OutlineInputBorder(
+                                                borderRadius: const BorderRadius
+                                                        .all(
+                                                    const Radius.circular(10))),
+                                            fillColor: Color(0xfff3f3f4),
+                                            filled: false),
+                                        // valueTransformer: (text) => num.tryParse(text),
+                                        validator:
+                                            FormBuilderValidators.compose([
+                                          FormBuilderValidators.required(
+                                              context,
+                                              errorText: 'กรุณากรอกรหัสผ่าน'),
+                                        ]),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                            builder: (context) =>
+                                                registerdata_pages()));
+                                  },
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    padding: EdgeInsets.symmetric(vertical: 15),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                      color: Color(0xffE6EFFE),
+                                      gradient: LinearGradient(
+                                          begin: Alignment.centerLeft,
+                                          end: Alignment.centerRight,
+                                          colors: [
+                                            Color(0xff0088C6),
+                                            Color(0xff43CEF8)
+                                          ]),
+                                    ),
+                                    child: Text(
+                                      "ถัดไป",
+                                      style: GoogleFonts.kanit(
+                                        textStyle: Theme.of(context)
+                                            .textTheme
+                                            .headline4,
+                                        fontSize: 16,
+                                        color: Color(0xffFFFFFF),
+                                        // fontStyle: FontStyle.italic,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                ],
-              ),
+                )
+              ],
             ),
-            Container(
-              height: 400,
-              padding: EdgeInsets.symmetric(horizontal: 30),
-              child: Column(
-                children: <Widget>[
-                  Align(
-                    alignment: Alignment(-1, -1),
-                    child: Text(
-                      "ลงทะเบียน",
-                      style: GoogleFonts.kanit(
-                        textStyle: Theme.of(context).textTheme.headline4,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff0088C6),
-                        // fontStyle: FontStyle.italic,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment(-1, -1),
-                    child: Text(
-                      "กรุณากรอกข้อมูลของคุณ เพื่อลงทะเบียน",
-                      style: GoogleFonts.kanit(
-                        textStyle: Theme.of(context).textTheme.headline4,
-                        fontSize: 16,
-                        color: Color(0xffB7B7B7),
-                        // fontStyle: FontStyle.italic,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    //child: MyStatefulWidget(),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Row(
-                                children: [
-                                  Radio(
-                                    value: SingingCharacter.HN,
-                                    groupValue: _character,
-                                    onChanged: (SingingCharacter? value) {
-                                      setState(() {
-                                        _character = value;
-                                      });
-                                      txt = 'HN';
-                                    },
-                                  ),
-                                  Expanded(
-                                      child: Text('HN',
-                                          style: GoogleFonts.kanit(
-                                            fontSize: 16,
-                                          )))
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: Row(
-                                children: [
-                                  Radio(
-                                    value: SingingCharacter.idcard,
-                                    groupValue: _character,
-                                    onChanged: (SingingCharacter? value) {
-                                      setState(() {
-                                        _character = value;
-                                      });
-                                      txt = 'เลขบัตรประจำตัวประชาชน';
-                                    },
-                                  ),
-                                  Expanded(
-                                      child: Text('เลขบัตรประจำตัวประชาชน',
-                                          style: GoogleFonts.kanit(
-                                            fontSize: 16,
-                                          )))
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    //color: Colors.amber,
-                    //margin: EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        FormBuilderTextField(
-                          name: 'id',
-                          obscureText: true,
-                          style: GoogleFonts.kanit(),
-
-                          decoration: InputDecoration(
-                              //border: InputBorder.none,
-
-                              prefixIcon: const Padding(
-                                padding: EdgeInsets.all(12),
-                                child: FaIcon(
-                                  FontAwesomeIcons.idCardAlt,
-                                  size: 20,
-                                ),
-                              ),
-                              labelText: txt,
-                              border: OutlineInputBorder(
-                                  borderRadius: const BorderRadius.all(
-                                      const Radius.circular(10))),
-                              fillColor: Color(0xfff3f3f4),
-                              filled: false),
-                          // valueTransformer: (text) => num.tryParse(text),
-                          validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(context,
-                                errorText: 'กรุณากรอกรหัสผ่าน'),
-                          ]),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => registerdata_pages()));
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.symmetric(vertical: 15),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        color: Color(0xffE6EFFE),
-                        gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
-                      ),
-                      child: Text(
-                        "ถัดไป",
-                        style: GoogleFonts.kanit(
-                          textStyle: Theme.of(context).textTheme.headline4,
-                          fontSize: 16,
-                          color: Color(0xffFFFFFF),
-                          // fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+          ),
+        ])
+      ])),
     );
   }
 }
