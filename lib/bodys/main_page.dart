@@ -112,7 +112,7 @@ class _MainPageState extends State<MainPage> {
   double topWidgetHeight = 100;
   int _volume = 0;
   int counter = 0;
-  double setbottom = 450;
+  double setbottom = 600;
   @override
   void initState() {
     // TODO: implement initState
@@ -280,7 +280,7 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ),
                 Container(
-                  height: MediaQuery.of(context).size.height + 600,
+                  height: MediaQuery.of(context).size.height + 500,
                   color: Colors.transparent,
                   child: Container(
                     width: MediaQuery.of(context).size.width,
