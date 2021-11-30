@@ -6,7 +6,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thanyarak/bodys/forgetpassword_pages.dart';
-import 'package:thanyarak/bodys/main_login_page.dart';
+import 'package:thanyarak/bodys/login/main_login_page.dart';
 import 'package:thanyarak/bodys/main_page.dart';
 import 'package:thanyarak/bodys/menu_page.dart';
 import 'package:thanyarak/bodys/newtype_pages.dart';

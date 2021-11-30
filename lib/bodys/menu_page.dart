@@ -7,7 +7,7 @@ import 'package:thanyarak/bodys/conditions_page.dart';
 import 'package:thanyarak/bodys/donate_page.dart';
 import 'package:thanyarak/bodys/main_page.dart';
 import 'package:thanyarak/bodys/menber_page.dart';
-import 'package:thanyarak/bodys/menumember_page.dart';
+import 'package:thanyarak/bodys/login/menumember_page.dart';
 import 'package:thanyarak/bodys/newtype_pages.dart';
 import 'package:thanyarak/bodys/shop_page.dart';
 import 'package:thanyarak/bodys/signin_page.dart';
@@ -578,7 +578,7 @@ class MenuPage extends StatelessWidget {
                   child: Container(
                       width: 50,
                       child: Image.asset(
-                        'images/usernew.png',
+                        'images/avatar.png',
                         fit: BoxFit.cover,
                       )),
                 ),

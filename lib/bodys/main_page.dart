@@ -280,7 +280,7 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ),
                 Container(
-                  height: MediaQuery.of(context).size.height + setbottom,
+                  height: MediaQuery.of(context).size.height + 600,
                   color: Colors.transparent,
                   child: Container(
                     width: MediaQuery.of(context).size.width,

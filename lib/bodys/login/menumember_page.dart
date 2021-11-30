@@ -5,13 +5,13 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:thanyarak/bodys/conditions_page.dart';
-import 'package:thanyarak/bodys/editpassword_page.dart';
-import 'package:thanyarak/bodys/editprofile_page.dart';
-import 'package:thanyarak/bodys/estimate_page.dart';
-import 'package:thanyarak/bodys/fav_page.dart';
+import 'package:thanyarak/bodys/login/editpassword_page.dart';
+import 'package:thanyarak/bodys/login/editprofile_page.dart';
+import 'package:thanyarak/bodys/login/estimate_page.dart';
+import 'package:thanyarak/bodys/login/fav_page.dart';
 import 'package:thanyarak/bodys/menu_page.dart';
 import 'package:thanyarak/bodys/notification_page.dart';
-import 'package:thanyarak/bodys/setting_page.dart';
+import 'package:thanyarak/bodys/login/setting_page.dart';
 import 'package:thanyarak/states/main_home.dart';
 import 'package:thanyarak/utility/my_constant.dart';
 

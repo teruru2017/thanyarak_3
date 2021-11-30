@@ -8,6 +8,7 @@ import 'package:thanyarak/bodys/CarouselWithDotsPage.dart';
 import 'package:thanyarak/bodys/about_page.dart';
 import 'package:thanyarak/bodys/article_details_page.dart';
 import 'package:thanyarak/bodys/article_page.dart';
+import 'package:thanyarak/bodys/login/menu_login_page.dart';
 import 'package:thanyarak/bodys/notification_page.dart';
 import 'package:thanyarak/bodys/shop_page.dart';
 // import 'package:thanyarak/bodys/about_page.dart';
@@ -180,7 +181,8 @@ class _MainLoginPageState extends State<MainLoginPage> {
                                     color: Colors.green,
                                     shape: CircleBorder(),
                                     image: DecorationImage(
-                                      image: AssetImage('images/avatar.png'),
+                                      image:
+                                          AssetImage('images/Member_login.png'),
                                     )),
                                 // child: Image(
                                 //   image: AssetImage('images/avatar.png'),
@@ -215,7 +217,7 @@ class _MainLoginPageState extends State<MainLoginPage> {
                                 Align(
                                   alignment: Alignment.topLeft,
                                   child: Text(
-                                    'กรุณาเข้าสู่ระบบ',
+                                    'จอร์นาธาน วิคตอเรีย',
                                     style: GoogleFonts.kanit(
                                       fontSize: 14,
                                       color: Colors.white70,
@@ -260,7 +262,8 @@ class _MainLoginPageState extends State<MainLoginPage> {
                                     Navigator.push(
                                         context,
                                         CupertinoPageRoute(
-                                            builder: (context) => MenuPage()));
+                                            builder: (context) =>
+                                                MenuLoginPage()));
                                   },
                                   child: Container(
                                     width: 20,
@@ -280,7 +283,7 @@ class _MainLoginPageState extends State<MainLoginPage> {
                   ),
                 ),
                 Container(
-                  height: MediaQuery.of(context).size.height + setbottom,
+                  height: MediaQuery.of(context).size.height + 600,
                   color: Colors.transparent,
                   child: Container(
                     width: MediaQuery.of(context).size.width,
