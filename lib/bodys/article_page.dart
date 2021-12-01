@@ -40,9 +40,11 @@ class _AticlePageState extends State<AticlePage> {
   }
 
   double topWidgetHeight = 70;
+
   Widget createBannerWidget(String path) => Image.asset(path);
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
           child: Stack(children: <Widget>[
@@ -136,7 +138,7 @@ class _AticlePageState extends State<AticlePage> {
                   ),
                 ),
                 Container(
-                  height: MediaQuery.of(context).size.height + 400,
+                  height: MediaQuery.of(context).size.width,
                   color: Colors.transparent,
                   child: Container(
                     width: MediaQuery.of(context).size.width,
@@ -187,56 +189,5 @@ class _AticlePageState extends State<AticlePage> {
             viewportFraction: 0.99,
             autoPlay: true,
             autoPlayInterval: Duration(seconds: 3)));
-  }
-
-  Container buildHead() {
-    return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage('images/header2.png'), fit: BoxFit.cover),
-      ),
-      // width: double.infinity,
-      height: 100,
-      child: Column(
-        children: [
-          Container(
-            height: 100,
-            //width: 400,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Align(
-                    alignment: Alignment(-0.8, 0.1),
-                    child: Text('บทความ',
-                        style: GoogleFonts.kanit(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                        ))),
-                SizedBox(width: 170),
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.notifications,
-                        color: Colors.white,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.menu,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

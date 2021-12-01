@@ -118,27 +118,27 @@ class _MainPageState extends State<MainPage> {
     // TODO: implement initState
     super.initState();
 
-    loopCreateBanner();
-    loopCreatePro();
+    // loopCreateBanner();
+    // loopCreatePro();
   }
 
-  void loopCreateBanner() {
-    for (var item in imgList) {
-      setState(() {
-        widgets.add(createBannerWidget(item));
-      });
-    }
-  }
+  // void loopCreateBanner() {
+  //   for (var item in imgList) {
+  //     setState(() {
+  //       widgets.add(createBannerWidget(item));
+  //     });
+  //   }
+  // }
 
-  void loopCreatePro() {
-    for (var itemPro in imgListPro) {
-      setState(() {
-        widgetsPro.add(createBannerWidget(itemPro));
-      });
-    }
-  }
+  // void loopCreatePro() {
+  //   for (var itemPro in imgListPro) {
+  //     setState(() {
+  //       widgetsPro.add(createBannerWidget(itemPro));
+  //     });
+  //   }
+  // }
 
-  Widget createBannerWidget(String path) => Image.asset(path);
+  //Widget createBannerWidget(String path) => Image.asset(path);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
