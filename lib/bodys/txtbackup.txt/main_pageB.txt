@@ -1,3 +1,6 @@
+// B 2/12/64
+// หน้าแรก
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,11 +26,11 @@ import 'package:thanyarak/widgets/show_title_head.dart';
 import 'package:avatar_view/avatar_view.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class MainLoginPage extends StatefulWidget {
-  const MainLoginPage({Key? key}) : super(key: key);
+class MainPage extends StatefulWidget {
+  const MainPage({Key? key}) : super(key: key);
 
   @override
-  _MainLoginPageState createState() => _MainLoginPageState();
+  _MainPageState createState() => _MainPageState();
 }
 
 // Map<String, WidgetBuilder> map = {
@@ -49,7 +52,7 @@ final List<String> imgLists = [
 int _currents = 0;
 final CarouselController _controller = CarouselController();
 
-class _MainLoginPageState extends State<MainLoginPage> {
+class _MainPageState extends State<MainPage> {
   int i = 0;
 
   CarouselSlider builBannerPro() {
@@ -112,33 +115,33 @@ class _MainLoginPageState extends State<MainLoginPage> {
   double topWidgetHeight = 100;
   int _volume = 0;
   int counter = 0;
-  double setbottom = 450;
+  double setbottom = 600;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    loopCreateBanner();
-    loopCreatePro();
+    // loopCreateBanner();
+    // loopCreatePro();
   }
 
-  void loopCreateBanner() {
-    for (var item in imgList) {
-      setState(() {
-        widgets.add(createBannerWidget(item));
-      });
-    }
-  }
+  // void loopCreateBanner() {
+  //   for (var item in imgList) {
+  //     setState(() {
+  //       widgets.add(createBannerWidget(item));
+  //     });
+  //   }
+  // }
 
-  void loopCreatePro() {
-    for (var itemPro in imgListPro) {
-      setState(() {
-        widgetsPro.add(createBannerWidget(itemPro));
-      });
-    }
-  }
+  // void loopCreatePro() {
+  //   for (var itemPro in imgListPro) {
+  //     setState(() {
+  //       widgetsPro.add(createBannerWidget(itemPro));
+  //     });
+  //   }
+  // }
 
-  Widget createBannerWidget(String path) => Image.asset(path);
+  //Widget createBannerWidget(String path) => Image.asset(path);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -280,7 +283,7 @@ class _MainLoginPageState extends State<MainLoginPage> {
                   ),
                 ),
                 Container(
-                  height: MediaQuery.of(context).size.height + setbottom,
+                  height: MediaQuery.of(context).size.height + 500,
                   color: Colors.transparent,
                   child: Container(
                     width: MediaQuery.of(context).size.width,
@@ -862,3 +865,4 @@ final List<Widget> imageSliders = imgLists
           ),
         ))
     .toList();
+v
