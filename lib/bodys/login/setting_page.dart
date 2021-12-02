@@ -41,38 +41,32 @@ class _setting_pageState extends State<setting_page> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          margin: EdgeInsets.only(top: 45, left: 25),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                scale: 1.3,
-                                image: AssetImage("images/back01.png"),
-                                alignment: Alignment.topLeft,
-                              )),
-                            ),
+                      Container(
+                        margin: EdgeInsets.only(top: 45, left: 25),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                              scale: 1.3,
+                              image: AssetImage("images/back01.png"),
+                              alignment: Alignment.topLeft,
+                            )),
                           ),
                         ),
                       ),
-                      Expanded(
-                        flex: 6,
-                        child: Container(
-                          margin: EdgeInsets.only(top: 45, left: 10),
-                          child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              'ตั้งค่า',
-                              style: GoogleFonts.kanit(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white,
-                              ),
+                      Container(
+                        margin: EdgeInsets.only(top: 45, left: 10),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'ตั้งค่า',
+                            style: GoogleFonts.kanit(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
                             ),
                           ),
                         ),
