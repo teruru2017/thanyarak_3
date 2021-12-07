@@ -9,11 +9,13 @@ import 'package:thanyarak/bodys/login/editpassword_page.dart';
 import 'package:thanyarak/bodys/login/editprofile_page.dart';
 import 'package:thanyarak/bodys/login/estimate_page.dart';
 import 'package:thanyarak/bodys/login/fav_page.dart';
+import 'package:thanyarak/bodys/main_page.dart';
 import 'package:thanyarak/bodys/menu_page.dart';
 import 'package:thanyarak/bodys/notification_page.dart';
 import 'package:thanyarak/bodys/login/setting_page.dart';
 import 'package:thanyarak/states/main_home.dart';
 import 'package:thanyarak/utility/my_constant.dart';
+import 'package:thanyarak/widgets/NavigationBar.dart';
 
 class menumember_pages extends StatefulWidget {
   menumember_pages({Key key}) : super(key: key);
@@ -23,7 +25,7 @@ class menumember_pages extends StatefulWidget {
 }
 
 Map<String, WidgetBuilder> map = {
-  '/mainHome': (BuildContext context) => const MainHome(),
+  '/mainHome': (BuildContext context) => const MainPage(),
 };
 String firstState;
 void main() {
@@ -39,8 +41,6 @@ class _menumember_pagesState extends State<menumember_pages> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      routes: map,
-      initialRoute: firstState,
       home: Scaffold(
         body: Center(
           child: SingleChildScrollView(
@@ -63,30 +63,40 @@ class _menumember_pagesState extends State<menumember_pages> {
                               children: <Widget>[
                                 Expanded(
                                   flex: 6,
-                                  child: Container(
-                                    margin: EdgeInsets.only(top: 30, left: 25),
-                                    child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Text(
-                                        'สมาชิก',
-                                        style: GoogleFonts.kanit(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.white,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                        top: 40, left: 30, right: 30),
+                                    child: Container(
+                                      height: 40,
+                                      // color: Colors.red,
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          'สมาชิก',
+                                          style: GoogleFonts.kanit(
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
-                                Expanded(
-                                  flex: 2,
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      top: 40, left: 30, right: 30),
                                   child: Container(
-                                    height: 90,
+                                    // color: Colors.amber,
+                                    height: 40,
+                                    width: 100,
                                     child: Container(
-                                      margin: EdgeInsets.only(top: 35),
+                                      //color: Colors.red,
+                                      //margin: EdgeInsets.only(top: 35),
+                                      // padding: EdgeInsets.only(top: 15),
                                       child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
                                         children: [
                                           GestureDetector(
                                             onTap: () {
@@ -98,7 +108,6 @@ class _menumember_pagesState extends State<menumember_pages> {
                                             },
                                             child: Container(
                                               width: 20,
-                                              height: 20,
                                               decoration: BoxDecoration(
                                                   image: DecorationImage(
                                                       image: AssetImage(
@@ -108,11 +117,11 @@ class _menumember_pagesState extends State<menumember_pages> {
                                           SizedBox(width: 20),
                                           GestureDetector(
                                             onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  CupertinoPageRoute(
-                                                      builder: (context) =>
-                                                          MenuPage()));
+                                              // Navigator.push(
+                                              //     context,
+                                              //     CupertinoPageRoute(
+                                              //         builder: (context) =>
+                                              //             MenuPage()));
                                             },
                                             child: Container(
                                               width: 20,
@@ -633,6 +642,7 @@ class _menumember_pagesState extends State<menumember_pages> {
             ),
           ),
         ),
+        bottomNavigationBar: NavigagitonBar(),
       ),
     );
   }

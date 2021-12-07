@@ -3,10 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:thanyarak/bodys/menu_page.dart';
 import 'package:thanyarak/bodys/notification_page.dart';
 import 'package:thanyarak/utility/my_constant.dart';
+import 'package:thanyarak/widgets/NavigationBar.dart';
 import 'package:thanyarak/widgets/show_title.dart';
 
 class ArticleDetailsPage extends StatefulWidget {
@@ -64,188 +66,345 @@ class _ArticleDetailsPageState extends State<ArticleDetailsPage> {
   ];
   int _currentIndex = 0;
   int index = 0;
+  bool txt = false;
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    int _w = 1, _f = 2;
+    if (width <= 414) {
+      _w = 2;
+      _f = 1;
+    }
+
     return Scaffold(
-        body: SingleChildScrollView(
-            child: Column(children: [
-      Container(
-        child: Stack(children: <Widget>[
-          Container(
-            height: 120,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("images/header2.png"),
-                    fit: BoxFit.cover,
-                    alignment: Alignment.topCenter)),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Expanded(
-                  flex: 2,
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.maybePop(context);
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(top: 1, left: 1),
+      backgroundColor: Colors.white,
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Container(
+                child: Stack(
+                  children: [
+                    //พื้นหลัง
+                    Container(
+                      height: MediaQuery.of(context).size.height,
+                      padding: EdgeInsets.only(top: 20, left: 15, right: 15),
                       decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage('images/back01.png'),
-                              scale: 1.5)),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 6,
-                  child: Container(
-                    margin: EdgeInsets.only(top: 45, left: 1),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        'รายละเอียดบทความ',
-                        style: GoogleFonts.kanit(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                        ),
+                        image: DecorationImage(
+                            image: AssetImage('images/bg_menu.png'),
+                            fit: BoxFit.cover,
+                            alignment: Alignment.topCenter),
                       ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Container(
-                    height: 90,
-                    child: Container(
-                      margin: EdgeInsets.only(top: 50),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Column(
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              // Navigator.push(
-                              //     context,
-                              //     CupertinoPageRoute(
-                              //         builder: (context) => NotiPage()));
-                            },
-                            child: Container(
-                              width: 20,
-                              height: 20,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage('images/Share.png'))),
-                            ),
-                          ),
-                          SizedBox(width: 20),
-                          GestureDetector(
-                            onTap: () {
-                              // Navigator.push(
-                              //     context,
-                              //     CupertinoPageRoute(
-                              //         builder: (context) => MenuPage()));
-                            },
-                            child: Container(
-                              width: 20,
-                              height: 20,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage('images/fav.png'))),
+                          Container(
+                            // color: Colors.amber,
+                            padding:
+                                EdgeInsets.only(top: 20, left: 15, right: 15),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 30,
+                                  height: 30,
+                                  // color: Colors.amber,
+                                  margin: EdgeInsets.only(right: 10),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                        scale: 1,
+                                        image: AssetImage("images/back01.png"),
+                                        alignment: Alignment.topLeft,
+                                      )),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: _f,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 0),
+                                    child: Container(
+                                      height: 40,
+                                      //color: Colors.red,
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          'รายละเอียดบทความ',
+                                          style: GoogleFonts.kanit(
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 0),
+                                  child: Container(
+                                    // color: Colors.amber,
+                                    height: 40,
+
+                                    child: Container(
+                                      //color: Colors.red,
+                                      //margin: EdgeInsets.only(top: 35),
+                                      // padding: EdgeInsets.only(top: 15),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              // Navigator.push(
+                                              //     context,
+                                              //     CupertinoPageRoute(
+                                              //         builder: (context) =>
+                                              //             NotiPage()));
+                                            },
+                                            child: Container(
+                                              width: 20,
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: AssetImage(
+                                                          'images/Share.png'))),
+                                            ),
+                                          ),
+                                          SizedBox(width: 20),
+                                          GestureDetector(
+                                            onTap: () {
+                                              // Navigator.push(
+                                              //     context,
+                                              //     CupertinoPageRoute(
+                                              //         builder: (context) =>
+                                              //             MenuPage()));
+                                            },
+                                            child: Container(
+                                              width: 20,
+                                              height: 20,
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: AssetImage(
+                                                          'images/fav.png'))),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
                       ),
                     ),
-                  ),
-                )
-              ],
-            ),
-          ),
-          Expanded(
-            child: Container(
-              margin: EdgeInsets.only(top: 100),
-              height: 200,
-              width: 400,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                image: AssetImage('images/imagearticle.png'),
-              )),
-            ),
-          ),
-          Expanded(
-            child: Container(
-              margin: EdgeInsets.only(top: 320, left: 35, right: 35),
-              child: Text(
-                cutWordH(titleAritcles[index]),
-                style: GoogleFonts.kanit(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.blue),
-              ),
-            ),
-          ),
-          Expanded(
-            child: Container(
-              margin: EdgeInsets.only(top: 375, left: 35, right: 35),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(3, 4, 4, 4),
-                        child: SvgPicture.asset('images/c1.svg'),
+
+                    //พื้นหลังเนื้อหา
+                    Padding(
+                      padding: const EdgeInsets.only(top: 90),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height,
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(40.0),
+                            topRight: Radius.circular(40.0),
+                          ),
+                        ),
                       ),
-                      ShowTitle(
-                        title: dataAritcles[index],
-                        textStyle: MyConstant().h4StyleGley(),
+                    ),
+                    //เนื้อหา
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          top: 110, left: 15, right: 15, bottom: 20),
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            height: 200,
+                            decoration: const BoxDecoration(
+                                color: Colors.amber,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(40)),
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage('images/1150.png'),
+                                  alignment: Alignment.center,
+                                )),
+                          ),
+                          SizedBox(height: 20),
+                          Align(
+                            child: Text(
+                              'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
+                              maxLines: 2,
+                              style: GoogleFonts.kanit(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xff0088C6),
+                              ),
+                            ),
+                            alignment: Alignment(-2, -1),
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              FaIcon(
+                                FontAwesomeIcons.solidClock,
+                                size: 12,
+                                color: Color(0xff0088C6),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                "16-06-2564",
+                                overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.kanit(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              FaIcon(
+                                FontAwesomeIcons.solidEye,
+                                size: 12,
+                                color: Color(0xff0088C6),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                "50,000",
+                                overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.kanit(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 20),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                                'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะหลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะหลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมม',
+                                maxLines: txt ? 10 : 5,
+                                style: GoogleFonts.kanit(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                )),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                txt = !txt;
+                              });
+                            },
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(txt ? 'ย่อลง' : 'อ่านต่อ',
+                                  style: GoogleFonts.kanit(
+                                    fontSize: 16,
+                                    color: Colors.red.shade300,
+                                  )),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text('แกลอรี่',
+                                style: GoogleFonts.kanit(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                )),
+                          ),
+                          SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Container(
+                                  // width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.only(
+                                    top: 10,
+                                    right: 10,
+                                  ),
+                                  //color: Colors.red,
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          width: 150,
+                                          height: 150,
+                                          decoration: BoxDecoration(
+                                              color: Colors.amber,
+                                              image: DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  image: AssetImage(
+                                                      'images/1150.png')),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20))),
+                                        ),
+                                        SizedBox(width: 10),
+                                        Container(
+                                          width: 150,
+                                          height: 150,
+                                          decoration: BoxDecoration(
+                                              color: Colors.amber,
+                                              image: DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  image: AssetImage(
+                                                      'images/1150.png')),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20))),
+                                        ),
+                                        SizedBox(width: 10),
+                                        Container(
+                                          width: 150,
+                                          height: 150,
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              image: DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  image: AssetImage(
+                                                      'images/1150.png')),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20))),
+                                        ),
+                                        SizedBox(width: 10),
+                                        Container(
+                                          width: 150,
+                                          height: 150,
+                                          decoration: BoxDecoration(
+                                              color: Colors.amber,
+                                              image: DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  image: AssetImage(
+                                                      'images/1150.png')),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20))),
+                                        ),
+                                      ])))
+                        ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 4, 4, 4),
-                        child: SvgPicture.asset('images/v2.svg'),
-                      ),
-                      ShowTitle(
-                        title: viewAritcles[index],
-                        textStyle: MyConstant().h4StyleGley(),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Expanded(
-              child: Container(
-                  margin: EdgeInsets.only(top: 400, left: 35, right: 35),
-                  child: Text(cutWord(detailAritcles[index]),
-                      style: GoogleFonts.kanit(
-                        fontSize: 16,
-                        color: Colors.black,
-                      )))),
-          Expanded(
-              child: Container(
-            margin: EdgeInsets.only(top: 600),
-            child: Align(
-              alignment: Alignment(-0.8, 0),
-              child: Text(
-                'แกลลอรี่',
-                style: GoogleFonts.kanit(
-                  fontSize: 16,
-                  color: Colors.black,
+                    ),
+                  ],
                 ),
               ),
             ),
-          )),
-          Expanded(
-              child: Container(
-                  margin: EdgeInsets.only(top: 630, left: 30, right: 30),
-                  child: Container(
-                    child: listImages(),
-                  )))
-        ]),
+          ),
+        ],
       ),
-    ])));
+      bottomNavigationBar: NavigagitonBar(),
+    );
   }
-
   // CarouselSlider builBanner() {
   //   return CarouselSlider(
   //       items: widgets,

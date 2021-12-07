@@ -19,7 +19,7 @@ class MyConstant {
         textStyle: const TextStyle(
           fontSize: 24,
           fontWeight: FontWeight.w500,
-          color: Colors.blue,
+          color: Color(0xff0088C6),
         ),
       );
   TextStyle h2StyleWhite() => GoogleFonts.kanit(

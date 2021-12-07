@@ -93,7 +93,7 @@ class _SignInPageState extends State<SignInPage> {
                                               context,
                                               CupertinoPageRoute(
                                                   builder: (context) =>
-                                                      MainHome()));
+                                                      MainPage()));
                                         },
                                         child: Container(
                                           height: MediaQuery.of(context)

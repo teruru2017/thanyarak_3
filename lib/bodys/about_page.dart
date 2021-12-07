@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:thanyarak/bodys/menu_page.dart';
 import 'package:thanyarak/bodys/notification_page.dart';
 import 'package:thanyarak/utility/my_constant.dart';
+import 'package:thanyarak/widgets/NavigationBar.dart';
 import 'package:thanyarak/widgets/about_widget.dart';
 import 'package:thanyarak/widgets/show_title.dart';
 
@@ -35,515 +37,566 @@ class _AboutPageState extends State<AboutPage> {
   ];
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    int _w = 1, _f = 2;
+    if (width <= 414) {
+      _w = 2;
+      _f = 1;
+    }
     return Scaffold(
-      body: SingleChildScrollView(
-          child: Stack(children: <Widget>[
-        Column(children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage("images/bg_menu.png"),
-                  alignment: Alignment.topCenter),
-            ),
-            child: Column(
-              children: [
-                Container(
-                  height: topWidgetHeight,
-                  child: Row(
-                    // crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 4,
-                        child: Container(
-                          height: 100,
-                          child: Container(
-                            //margin: EdgeInsets.only(top: 35),
-                            padding: EdgeInsets.only(bottom: 10, left: 20),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  'เกี่ยวกับเรา',
-                                  style: GoogleFonts.kanit(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+      backgroundColor: Colors.white,
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Container(
+                child: Stack(
+                  children: [
+                    //พื้นหลัง
+                    Container(
+                      height: MediaQuery.of(context).size.height,
+                      padding: EdgeInsets.only(top: 20, left: 15, right: 15),
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage('images/bg_menu.png'),
+                            fit: BoxFit.cover,
+                            alignment: Alignment.topCenter),
                       ),
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          height: 100,
-                          child: Container(
-                            //margin: EdgeInsets.only(top: 35),
-                            padding: EdgeInsets.only(bottom: 15),
+                      child: Column(
+                        children: [
+                          Container(
+                            // color: Colors.amber,
+                            padding:
+                                EdgeInsets.only(top: 20, left: 15, right: 15),
                             child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        CupertinoPageRoute(
-                                            builder: (context) => NotiPage()));
-                                  },
-                                  child: Container(
-                                    width: 20,
-                                    height: 20,
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image: AssetImage(
-                                                'images/notimenu.png'))),
-                                  ),
-                                ),
-                                SizedBox(width: 20),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        CupertinoPageRoute(
-                                            builder: (context) => MenuPage()));
-                                  },
-                                  child: Container(
-                                    width: 20,
-                                    height: 20,
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image:
-                                                AssetImage('images/menu.png'))),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  height: MediaQuery.of(context).size.height + 850,
-                  color: Colors.transparent,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      //หัว
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(40.0),
-                        topRight: Radius.circular(40.0),
-                      ),
-                    ),
-                    child: Column(
-                      //crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Expanded(
-                          child: Container(
-                            padding: EdgeInsets.only(
-                                top: 30, left: 20, right: 20, bottom: 0),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Container(
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          child: Image.asset(
-                                            'images/princess.png',
-                                            width: 140,
-                                            height: 184,
+                                Expanded(
+                                  flex: _f,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 0),
+                                    child: Container(
+                                      height: 40,
+                                      // color: Colors.red,
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          'เกี่ยวกับเรา',
+                                          style: GoogleFonts.kanit(
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white,
                                           ),
                                         ),
                                       ),
                                     ),
-                                    Expanded(
-                                      child: Container(
-                                        margin:
-                                            EdgeInsets.only(left: 1, right: 15),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            //เนื้อหา
-                                            Text(
-                                              'สมเด็จพระกนิษฐาธิราชเจ้ากรมสมเด็จพระเทพรัตนราชสุดาเจ้าฟ้ามหาจักรีสิรินธร มหาวชิราลงกรณวรราชภักดี สิริกิจการิณีพีรยพัฒนรัฐสีมาคุณากรปิยชาติสยามบรมราชกุมารี',
-                                              style: GoogleFonts.kanit(
-                                                textStyle: Theme.of(context)
-                                                    .textTheme
-                                                    .headline4,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w300,
-                                                color: Color(0xff000000),
-                                              ),
-                                            ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Column(
-                                                  children: [
-                                                    Text(
-                                                      'ประธานกิตติมศักดิ์',
-                                                      style: GoogleFonts.kanit(
-                                                          color: Colors.grey
-                                                              .withOpacity(
-                                                                  0.8)),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                  ],
+                                  ),
                                 ),
-                                Container(
-                                    margin: EdgeInsets.only(
-                                        left: 25, top: 25, bottom: 25),
-                                    child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        'คณะกรรมการ',
-                                        style: GoogleFonts.kanit(
-                                          fontSize: 20,
-                                        ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 0),
+                                  child: Container(
+                                    // color: Colors.amber,
+                                    height: 40,
+                                    width: 100,
+                                    child: Container(
+                                      //color: Colors.red,
+                                      //margin: EdgeInsets.only(top: 35),
+                                      // padding: EdgeInsets.only(top: 15),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              // Navigator.push(
+                                              //     context,
+                                              //     CupertinoPageRoute(
+                                              //         builder: (context) =>
+                                              //             MenuPage()));
+                                            },
+                                            child: Container(
+                                              width: 20,
+                                              height: 20,
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: AssetImage(
+                                                          'images/menu.png'))),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    )),
-                                groupIcon1(),
-                                groupIcon2()
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ])
-      ])),
-    );
-  }
 
-  Padding groupIcon1() {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          board1(),
-          board2(),
-        ],
-      ),
-    );
-  }
-
-  Padding groupIcon2() {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          board3(),
-          board4(),
-        ],
-      ),
-    );
-  }
-
-  Column board1() {
-    return Column(
-      // child: GestureDetector(
-
-      children: [
-        Image.asset(
-          'images/board1.png',
-          width: 100,
-          height: 104,
-        ),
-        const SizedBox(
-          height: 5,
-        ),
-        ShowTitle(
-          title: 'ดร. จิรายุ อิศรางกูร ณ อยุธยา',
-          textStyle: MyConstant().h4StyleBlack(),
-        ),
-        Text(
-          'รองประธานกรรมการ',
-          style: GoogleFonts.kanit(color: Colors.grey.withOpacity(0.8)),
-        ),
-      ],
-    );
-  }
-
-  Column board2() {
-    return Column(
-      // child: GestureDetector(
-
-      children: [
-        Image.asset(
-          'images/board2.png',
-          width: 100,
-          height: 104,
-        ),
-        const SizedBox(
-          height: 5,
-        ),
-        ShowTitle(
-          title: 'ม.ร.ว.ดิศนัดดา ดิศกุล',
-          textStyle: MyConstant().h4StyleBlack(),
-        ),
-        Text(
-          'กรรมการ',
-          style: GoogleFonts.kanit(color: Colors.grey.withOpacity(0.8)),
-        ),
-      ],
-    );
-  }
-
-  Column board3() {
-    return Column(
-      // child: GestureDetector(
-
-      children: [
-        Image.asset(
-          'images/board3_1.png',
-          width: 100,
-          height: 104,
-        ),
-        const SizedBox(
-          height: 5,
-        ),
-        ShowTitle(
-          title: 'ศ.นพ.อรุณ เผ่าสวัสดิ์',
-          textStyle: MyConstant().h4StyleBlack(),
-        ),
-        Text(
-          'กรรมการ',
-          style: GoogleFonts.kanit(color: Colors.grey.withOpacity(0.8)),
-        ),
-      ],
-    );
-  }
-
-  Column board4() {
-    return Column(
-      // child: GestureDetector(
-
-      children: [
-        Image.asset(
-          'images/board4_1.png',
-          width: 100,
-          height: 104,
-        ),
-        const SizedBox(
-          height: 5,
-        ),
-        ShowTitle(
-          title: 'คุณหญิงวรรณา สิริวัฒนภักดี',
-          textStyle: MyConstant().h4StyleBlack(),
-        ),
-        Text(
-          'กรรมการ',
-          style: GoogleFonts.kanit(color: Colors.grey.withOpacity(0.8)),
-        ),
-      ],
-    );
-  }
-
-  Container buildHead() {
-    return Container(
-        child: Stack(children: <Widget>[
-      Container(
-        height: 120,
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("images/header4.png"),
-                fit: BoxFit.cover,
-                alignment: Alignment.topCenter)),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Expanded(
-              flex: 6,
-              child: Container(
-                margin: EdgeInsets.only(top: 30, left: 15),
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    'เกี่ยวกับเรา',
-                    style: GoogleFonts.kanit(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Container(
-                height: 90,
-                child: Container(
-                  margin: EdgeInsets.only(top: 35, left: 25),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) => NotiPage()));
-                        },
-                        child: Container(
-                          width: 20,
-                          height: 20,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage('images/notimenu.png'))),
+                    //พื้นหลังเนื้อหา
+                    Padding(
+                      padding: const EdgeInsets.only(top: 90),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height,
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(40.0),
+                            topRight: Radius.circular(40.0),
+                          ),
                         ),
                       ),
-                      SizedBox(width: 10),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) => MenuPage()));
-                        },
-                        child: Container(
-                          width: 20,
-                          height: 20,
-                          decoration: BoxDecoration(
+                    ),
+                    //เนื้อหา
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          top: 110, left: 15, right: 15, bottom: 20),
+                      child: Column(
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 200,
+                            decoration: BoxDecoration(
+                              //color: Colors.amber,
                               image: DecorationImage(
-                                  image: AssetImage('images/menu.png'))),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      Expanded(
-        child: Container(
-          // color: Colors.green,
-          margin: EdgeInsets.only(top: 95),
-          child: Column(children: <Widget>[listArticle()]),
-        ),
-      ),
-    ]));
-  }
+                                  fit: BoxFit.cover,
+                                  image: AssetImage('images/imageabout.png')),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(30)),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Container(
+                            //padding: EdgeInsets.only(left: 10, right: 10),
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'ประวัติความเป็นมาของมูลนิธิถันยรักษ์ฯ',
+                              style: GoogleFonts.kanit(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xff0088C6),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Container(
+                            //padding: EdgeInsets.only(left: 10, right: 10),
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'มูลนิธิถันยรักษ์ ในพระราชูปถัมภ์สมเด็จพระศรีนครินทราบรมราชชนนีเป็นองค์กรการกุศล ลำดับที่ 271 ของกระทรวงการคลัง ได้ก่อตั้งขึ้นมาเมื่อวันที่ 9 พฤศจิกายน พ.ศ.2537 ด้วยพระมหากรุณาธิคุณของสมเด็จพระศรีนครินทราบรมราชชนนี ที่ทรงมีพระราชดำริช่วยเหลือหญิงไทยให้พ้นภัยจากมะเร็งเต้านม จึงได้พระราชทานเงินส่วนพระองค์ จำนวน 12 ล้านบาท เป็นทุนเริ่มแรก และพระราชทานชื่อมูลนิธิ “ถันยรักษ์” ทรงรับไว้ในพระราชูปถัมภ์ ทรงเป็นประธานกิตติมศักดิ์ และทรงแต่งตั้งสมเด็จพระเจ้าพี่นางเธอเจ้าฟ้ากัลยานิวัฒนา กรมหลวงนราธิวาสราชนครินทร์ เป็นประธานกรรมการมูลนิธิถันยรักษ์ฯ ซึ่งต่อมาทรงเป็นประธานกิตติมศักดิ์ และสมเด็จพระเทพรัตนราชสุดาฯ สยามบรมราชกุมารี ทรงดำรงตำแหน่งประธานกิตติมศักดิ์ตั้งแต่ปี พ.ศ. 2557 สืบมา',
+                              style: GoogleFonts.kanit(
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Container(
+                            //padding: EdgeInsets.only(left: 10, right: 10),
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'มูลนิธิถันยรักษ์ฯ ดำเนินการตามวัตถุประสงค์ เพื่อตรวจวินิจฉัยและคัดกรองโรคมะเร็งเต้านม โดยสมเด็จพระเจ้าพี่นางเธอ เจ้าฟ้ากัลยานิวัฒนา กรมหลวงนราธิวาสราชนครินทร์ ได้นำคณะกรรมการมูลนิธิถันยรักษ์ฯ มาปรึกษากับคณะกรรมการ คณะแพทยศาสตร์ศิริราชพยาบาล เมื่อพ.ศ. 2537 และได้มีมติจัดตั้งศูนย์ถันยรักษ์ ขึ้นที่โรงพยาบาลศิริราช เมื่อปี พ.ศ. 2538 ตลอด 20 ปีที่ผ่านมา ศูนย์ถันยรักษ์ได้รับความร่วมมืออย่างดียิ่ง จากคณะแพทยศาสตร์ศิริราชพยาบาล',
+                              style: GoogleFonts.kanit(
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Container(
+                            //padding: EdgeInsets.only(left: 10, right: 10),
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'คณะกรรมการมูลนิธิถันยรักษ์ฯ',
+                              style: GoogleFonts.kanit(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xff0088C6),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    height:
+                                        MediaQuery.of(context).size.width / 2,
+                                    decoration: BoxDecoration(
+                                        color: Colors.amber,
+                                        image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image:
+                                                AssetImage('images/queen.png')),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15))),
+                                  ),
+                                ),
+                                SizedBox(width: 10),
+                                Expanded(
+                                  child: Container(
+                                    width: 170,
 
-  SizedBox listArticle() {
-    return SizedBox(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            margin: EdgeInsets.all(5),
-            height: MediaQuery.of(context).size.height * 0.25,
-            width: MediaQuery.of(context).size.height * 0.5,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              image: DecorationImage(
-                image: AssetImage(
-                  'images/about_h.png',
+                                    //color: Colors.amber,
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          //padding: EdgeInsets.only(left: 10, right: 10),
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'สมเด็จพระกนิษฐาธิราชเจ้ากรมสมเด็จพระเทพรัตนราชสุดาเจ้าฟ้ามหาจักรีสิรินธร มหาวชิราลงกรณวรราชภักดี สิริกิจการิณีพีรยพัฒนรัฐสีมาคุณากรปิยชาติสยามบรมราชกุมารี',
+                                            maxLines: 7,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: GoogleFonts.kanit(
+                                              fontSize: 16,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 10),
+                                        Container(
+                                          //padding: EdgeInsets.only(left: 10, right: 10),
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'ประธานกิตติมศักดิ์',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: GoogleFonts.kanit(
+                                              fontSize: 16,
+                                              color: Colors.black45,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Container(
+                            //padding: EdgeInsets.only(left: 10, right: 10),
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'คณะกรรมการ',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.kanit(
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      height:
+                                          MediaQuery.of(context).size.width / 2,
+                                      padding: EdgeInsets.only(
+                                          top: 10,
+                                          bottom: 10,
+                                          left: 10,
+                                          right: 10),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.1),
+                                              spreadRadius: 2,
+                                              blurRadius: 2,
+                                              offset: Offset(0, 2),
+                                            )
+                                          ],
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20))),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Expanded(
+                                            child: Container(
+                                              margin: EdgeInsets.all(20),
+                                              height: 100,
+                                              decoration: BoxDecoration(
+                                                  //color: Colors.amber,
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(10)),
+                                                  image: DecorationImage(
+                                                      fit: BoxFit.cover,
+                                                      image: AssetImage(
+                                                          'images/jirayu.png'))),
+                                            ),
+                                          ),
+                                          Container(
+                                            //color: Colors.red,
+                                            child: Text(
+                                              'ดร. จิรายุ อิศรางกูร ณ อยุธยา',
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              style: GoogleFonts.kanit(
+                                                fontSize: 12,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            //color: Colors.red,
+                                            child: Text(
+                                              'รองประธานกรรมการ',
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              style: GoogleFonts.kanit(
+                                                fontSize: 12,
+                                                color: Colors.black38,
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 20),
+                                  Expanded(
+                                    child: Container(
+                                      height:
+                                          MediaQuery.of(context).size.width / 2,
+                                      padding: EdgeInsets.only(
+                                          top: 10,
+                                          bottom: 10,
+                                          left: 10,
+                                          right: 10),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.1),
+                                              spreadRadius: 2,
+                                              blurRadius: 2,
+                                              offset: Offset(0, 2),
+                                            )
+                                          ],
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20))),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Expanded(
+                                            child: Container(
+                                              margin: EdgeInsets.all(20),
+                                              height: 100,
+                                              decoration: BoxDecoration(
+                                                  //color: Colors.amber,
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(10)),
+                                                  image: DecorationImage(
+                                                      fit: BoxFit.cover,
+                                                      image: AssetImage(
+                                                          'images/disanan.png'))),
+                                            ),
+                                          ),
+                                          Container(
+                                            //color: Colors.red,
+                                            child: Text(
+                                              'ม.ร.ว.ดิศนัดดา ดิศกุล',
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              style: GoogleFonts.kanit(
+                                                fontSize: 12,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            //color: Colors.red,
+                                            child: Text(
+                                              'กรรมการ',
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              style: GoogleFonts.kanit(
+                                                fontSize: 12,
+                                                color: Colors.black38,
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 20),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      height:
+                                          MediaQuery.of(context).size.width / 2,
+                                      padding: EdgeInsets.only(
+                                          top: 10,
+                                          bottom: 10,
+                                          left: 10,
+                                          right: 10),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.1),
+                                              spreadRadius: 2,
+                                              blurRadius: 2,
+                                              offset: Offset(0, 2),
+                                            )
+                                          ],
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20))),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Expanded(
+                                            child: Container(
+                                              margin: EdgeInsets.all(20),
+                                              height: 100,
+                                              decoration: BoxDecoration(
+                                                  //color: Colors.amber,
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(10)),
+                                                  image: DecorationImage(
+                                                      fit: BoxFit.cover,
+                                                      image: AssetImage(
+                                                          'images/arun.png'))),
+                                            ),
+                                          ),
+                                          Container(
+                                            //color: Colors.red,
+                                            child: Text(
+                                              'ศ.นพ.อรุณ เผ่าสวัสดิ์',
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              style: GoogleFonts.kanit(
+                                                fontSize: 12,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            //color: Colors.red,
+                                            child: Text(
+                                              'กรรมการ',
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              style: GoogleFonts.kanit(
+                                                fontSize: 12,
+                                                color: Colors.black38,
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 20),
+                                  Expanded(
+                                    child: Container(
+                                      height:
+                                          MediaQuery.of(context).size.width / 2,
+                                      padding: EdgeInsets.only(
+                                          top: 10,
+                                          bottom: 10,
+                                          left: 10,
+                                          right: 10),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.1),
+                                              spreadRadius: 2,
+                                              blurRadius: 2,
+                                              offset: Offset(0, 2),
+                                            )
+                                          ],
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20))),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Expanded(
+                                            child: Container(
+                                              margin: EdgeInsets.all(20),
+                                              height: 100,
+                                              decoration: BoxDecoration(
+                                                  //color: Colors.amber,
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(10)),
+                                                  image: DecorationImage(
+                                                      fit: BoxFit.cover,
+                                                      image: AssetImage(
+                                                          'images/wanna.png'))),
+                                            ),
+                                          ),
+                                          Container(
+                                            //color: Colors.red,
+                                            child: Text(
+                                              'คุณหญิงวรรณา สิริวัฒนภักดี',
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              style: GoogleFonts.kanit(
+                                                fontSize: 12,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            //color: Colors.red,
+                                            child: Text(
+                                              'กรรมการ',
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              style: GoogleFonts.kanit(
+                                                fontSize: 12,
+                                                color: Colors.black38,
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                fit: BoxFit.cover,
               ),
             ),
           ),
-          Container(
-              margin: EdgeInsets.only(left: 20, right: 20),
-              child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'ประวัติความเป็นมาของมูลนิธิถันยรักษ์ฯ',
-                    style: GoogleFonts.kanit(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff0088C6)),
-                  ))),
-          Container(
-              margin: EdgeInsets.only(left: 20, right: 20),
-              child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'มูลนิธิถันยรักษ์ ในพระราชูปถัมภ์สมเด็จพระศรีนครินทราบรมราชชนนีเป็นองค์กรการกุศล ลำดับที่ 271 ของกระทรวงการคลัง ได้ก่อตั้งขึ้นมาเมื่อวันที่ 9 พฤศจิกายน พ.ศ.2537 ด้วยพระมหากรุณาธิคุณของสมเด็จพระศรีนครินทราบรมราชชนนี ที่ทรงมีพระราชดำริช่วยเหลือหญิงไทยให้พ้นภัยจากมะเร็งเต้านม จึงได้พระราชทานเงินส่วนพระองค์ จำนวน 12 ล้านบาท เป็นทุนเริ่มแรก และพระราชทานชื่อมูลนิธิ “ถันยรักษ์” ทรงรับไว้ในพระราชูปถัมภ์ ทรงเป็นประธานกิตติมศักดิ์ และทรงแต่งตั้งสมเด็จพระเจ้าพี่นางเธอเจ้าฟ้ากัลยานิวัฒนา กรมหลวงนราธิวาสราชนครินทร์ เป็นประธานกรรมการมูลนิธิถันยรักษ์ฯ ซึ่งต่อมาทรงเป็นประธานกิตติมศักดิ์ และสมเด็จพระเทพรัตนราชสุดาฯ สยามบรมราชกุมารี ทรงดำรงตำแหน่งประธานกิตติมศักดิ์ตั้งแต่ปี พ.ศ. 2557 สืบมามูลนิธิถันยรักษ์ฯ ดำเนินการตามวัตถุประสงค์ เพื่อตรวจวินิจฉัยและคัดกรองโรคมะเร็งเต้านม โดยสมเด็จพระเจ้าพี่นางเธอ เจ้าฟ้ากัลยานิวัฒนา กรมหลวงนราธิวาสราชนครินทร์ ได้นำคณะกรรมการมูลนิธิถันยรักษ์ฯ มาปรึกษากับคณะกรรมการ คณะแพทยศาสตร์ศิริราชพยาบาล เมื่อพ.ศ. 2537 และได้มีมติจัดตั้งศูนย์ถันยรักษ์ ขึ้นที่โรงพยาบาลศิริราช เมื่อปี พ.ศ. 2538 ตลอด 20 ปีที่ผ่านมา ศูนย์ถันยรักษ์ได้รับความร่วมมืออย่างดียิ่ง จากคณะแพทยศาสตร์ศิริราชพยาบาล',
-                    style: GoogleFonts.kanit(fontSize: 16, color: Colors.black),
-                  ))
-              // width: 300,
-              // child: Padding(
-              //   padding: const EdgeInsets.all(8.0),
-              //   child: ShowTitle(
-              //     title: cutWord(
-              //       'มูลนิธิถันยรักษ์ ในพระราชูปถัมภ์สมเด็จพระศรีนครินทราบรมราชชนนีเป็นองค์กรการกุศล ลำดับที่ 271 ของกระทรวงการคลัง ได้ก่อตั้งขึ้นมาเมื่อวันที่ 9 พฤศจิกายน พ.ศ.2537 ด้วยพระมหากรุณาธิคุณของสมเด็จพระศรีนครินทราบรมราชชนนี ที่ทรงมีพระราชดำริช่วยเหลือหญิงไทยให้พ้นภัยจากมะเร็งเต้านม จึงได้พระราชทานเงินส่วนพระองค์ จำนวน 12 ล้านบาท เป็นทุนเริ่มแรก และพระราชทานชื่อมูลนิธิ “ถันยรักษ์” ทรงรับไว้ในพระราชูปถัมภ์ ทรงเป็นประธานกิตติมศักดิ์ และทรงแต่งตั้งสมเด็จพระเจ้าพี่นางเธอเจ้าฟ้ากัลยานิวัฒนา กรมหลวงนราธิวาสราชนครินทร์ เป็นประธานกรรมการมูลนิธิถันยรักษ์ฯ ซึ่งต่อมาทรงเป็นประธานกิตติมศักดิ์ และสมเด็จพระเทพรัตนราชสุดาฯ สยามบรมราชกุมารี ทรงดำรงตำแหน่งประธานกิตติมศักดิ์ตั้งแต่ปี พ.ศ. 2557 สืบมามูลนิธิถันยรักษ์ฯ ดำเนินการตามวัตถุประสงค์ เพื่อตรวจวินิจฉัยและคัดกรองโรคมะเร็งเต้านม โดยสมเด็จพระเจ้าพี่นางเธอ เจ้าฟ้ากัลยานิวัฒนา กรมหลวงนราธิวาสราชนครินทร์ ได้นำคณะกรรมการมูลนิธิถันยรักษ์ฯ มาปรึกษากับคณะกรรมการ คณะแพทยศาสตร์ศิริราชพยาบาล เมื่อพ.ศ. 2537 และได้มีมติจัดตั้งศูนย์ถันยรักษ์ ขึ้นที่โรงพยาบาลศิริราช เมื่อปี พ.ศ. 2538 ตลอด 20 ปีที่ผ่านมา ศูนย์ถันยรักษ์ได้รับความร่วมมืออย่างดียิ่ง จากคณะแพทยศาสตร์ศิริราชพยาบาล',
-              //     ),
-              //     textStyle: MyConstant().h4StyleBlack(),
-              //   ),
-              // ),
-              ),
-          // SizedBox(
-          //   height: 10,
-          // ),
-          // Row(
-          //   children: [
-          //     Padding(
-          //       padding: const EdgeInsets.fromLTRB(20, 4, 4, 4),
-          //       child: SvgPicture.asset('images/c1.svg'),
-          //     ),
-          //     ShowTitle(
-          //       title: dataAritcles[index],
-          //       textStyle: MyConstant().h4StyleGley(),
-          //     ),
-          //     Padding(
-          //       padding: const EdgeInsets.fromLTRB(16, 4, 4, 4),
-          //       child: SvgPicture.asset('images/v2.svg'),
-          //     ),
-          //     ShowTitle(
-          //       title: viewAritcles[index],
-          //       textStyle: MyConstant().h4StyleGley(),
-          //     ),
-          //   ],
-          // ),
         ],
       ),
+      bottomNavigationBar: NavigagitonBar(),
     );
   }
-}
-
-String cutWord(String detailAritcl) {
-  String resutl = detailAritcl;
-  if (resutl.length >= 1500) {
-    resutl = resutl.substring(0, 750);
-    resutl = '$resutl ....';
-  }
-  return resutl;
-}
-
-String cutWordH(String titleAritcles) {
-  String resutl = titleAritcles;
-  if (resutl.length >= 50) {
-    resutl = resutl.substring(0, 25);
-    resutl = '$resutl ....';
-  }
-  return resutl;
 }

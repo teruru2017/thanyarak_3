@@ -1,47 +1,36 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:thanyarak/bodys/menu_page.dart';
-import 'package:thanyarak/bodys/notification_page.dart';
-import 'package:thanyarak/utility/my_constant.dart';
-import 'package:thanyarak/widgets/article_widget.dart';
-import 'package:thanyarak/widgets/show_circular.dart';
-import 'package:thanyarak/widgets/show_title.dart';
+import 'package:thanyarak/bodys/article_details_page.dart';
+import 'package:thanyarak/widgets/NavigationBar.dart';
 
-class AticlePage extends StatefulWidget {
-  const AticlePage({Key? key}) : super(key: key);
-
+class Article_page extends StatefulWidget {
+  Article_page({Key? key}) : super(key: key);
   @override
-  _AticlePageState createState() => _AticlePageState();
+  _Article_pageState createState() => _Article_pageState();
 }
 
-class _AticlePageState extends State<AticlePage> {
-  List<String> banners = [
-    'images/topgraphic.png',
-    'images/topgraphic.png',
-    'images/topgraphic.png',
-  ];
-  List<Widget> widgets = [];
-  void loopCreateBanner() {
-    for (var item in banners) {
-      setState(() {
-        widgets.add(createBannerWidget(item));
-      });
-    }
-  }
+final List<String> imgLists = [
+  'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
+  'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
+  'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
+  'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
+  'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
+  'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
+];
+int _currents = 0;
+final CarouselController _controller = CarouselController();
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    loopCreateBanner();
-  }
-
-  Widget createBannerWidget(String path) => Image.asset(path);
-  @override
+class _Article_pageState extends State<Article_page> {
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    int _w = 1, _f = 2;
+    if (width <= 414) {
+      _w = 2;
+      _f = 1;
+    }
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -54,7 +43,7 @@ class _AticlePageState extends State<AticlePage> {
                     //พื้นหลัง
                     Container(
                       height: MediaQuery.of(context).size.height,
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.only(top: 20, left: 15, right: 15),
                       decoration: BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage('images/bg_menu.png'),
@@ -64,9 +53,86 @@ class _AticlePageState extends State<AticlePage> {
                       child: Column(
                         children: [
                           Container(
+                            // color: Colors.amber,
+                            padding:
+                                EdgeInsets.only(top: 20, left: 15, right: 15),
                             child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[],
+                              children: [
+                                Expanded(
+                                  flex: _f,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 0),
+                                    child: Container(
+                                      height: 40,
+                                      // color: Colors.red,
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          'บทความ',
+                                          style: GoogleFonts.kanit(
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 0),
+                                  child: Container(
+                                    // color: Colors.amber,
+                                    height: 40,
+                                    width: 100,
+                                    child: Container(
+                                      //color: Colors.red,
+                                      //margin: EdgeInsets.only(top: 35),
+                                      // padding: EdgeInsets.only(top: 15),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              // Navigator.push(
+                                              //     context,
+                                              //     CupertinoPageRoute(
+                                              //         builder: (context) =>
+                                              //             NotiPage()));
+                                            },
+                                            child: Container(
+                                              width: 20,
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: AssetImage(
+                                                          'images/notimenu.png'))),
+                                            ),
+                                          ),
+                                          SizedBox(width: 20),
+                                          GestureDetector(
+                                            onTap: () {
+                                              // Navigator.push(
+                                              //     context,
+                                              //     CupertinoPageRoute(
+                                              //         builder: (context) =>
+                                              //             MenuPage()));
+                                            },
+                                            child: Container(
+                                              width: 20,
+                                              height: 20,
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: AssetImage(
+                                                          'images/menu.png'))),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
@@ -75,7 +141,7 @@ class _AticlePageState extends State<AticlePage> {
 
                     //พื้นหลังเนื้อหา
                     Padding(
-                      padding: const EdgeInsets.only(top: 100),
+                      padding: const EdgeInsets.only(top: 90),
                       child: Container(
                         height: MediaQuery.of(context).size.height,
                         padding: EdgeInsets.all(10),
@@ -90,70 +156,500 @@ class _AticlePageState extends State<AticlePage> {
                     ),
                     //เนื้อหา
                     Padding(
-                      padding:
-                          const EdgeInsets.only(top: 130, left: 40, right: 40),
+                      padding: const EdgeInsets.only(
+                          top: 110, left: 15, right: 15, bottom: 20),
                       child: Column(
                         children: [
                           Container(
-                            height: 50,
-                            padding: EdgeInsets.all(10),
-                            color: Colors.blue,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.2),
+                                    spreadRadius: 1,
+                                    blurRadius: 10,
+                                    offset: Offset(0, 8),
+                                  )
+                                ],
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(40))),
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 150,
+                                  decoration: BoxDecoration(
+                                    // color: Colors.white,
+                                    image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: AssetImage('images/1150.png')),
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(40),
+                                      topRight: Radius.circular(40),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(40),
+                                        bottomRight: Radius.circular(40),
+                                      ),
+                                    ),
+                                    child: Container(
+                                      padding:
+                                          EdgeInsets.only(left: 15, right: 15),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text('ทำไมต้องตรวจอัลตราซาวเต้านม',
+                                              style: GoogleFonts.kanit(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Color(0xff0088C6))),
+                                          Text(
+                                              'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: GoogleFonts.kanit(
+                                                  fontSize: 14,
+                                                  color: Colors.black)),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              FaIcon(
+                                                FontAwesomeIcons.solidClock,
+                                                size: 12,
+                                                color: Color(0xff0088C6),
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Text(
+                                                "16-06-2564",
+                                                overflow: TextOverflow.ellipsis,
+                                                style: GoogleFonts.kanit(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              FaIcon(
+                                                FontAwesomeIcons.solidEye,
+                                                size: 12,
+                                                color: Color(0xff0088C6),
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Text(
+                                                "50,000",
+                                                overflow: TextOverflow.ellipsis,
+                                                style: GoogleFonts.kanit(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    )),
+                              ],
+                            ),
                           ),
+                          SizedBox(height: 40),
                           Container(
-                            height: 50,
-                            padding: EdgeInsets.all(10),
-                            color: Colors.green,
+                            padding: EdgeInsets.only(left: 10),
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'บทความ',
+                              style: GoogleFonts.kanit(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                           ),
+                          SizedBox(height: 10),
+                          GestureDetector(
+                            onTap: () => Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                    builder: (context) =>
+                                        ArticleDetailsPage())),
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                  top: 10, bottom: 10, left: 10),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.1),
+                                      spreadRadius: 2,
+                                      blurRadius: 2,
+                                      offset: Offset(0, 2),
+                                    )
+                                  ],
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20))),
+                              height: 130,
+                              child: Row(
+                                children: <Widget>[
+                                  Container(
+                                    width: 150,
+                                    padding: EdgeInsets.all(20),
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image:
+                                                AssetImage('images/1150.png')),
+                                        color: Colors.amber,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20))),
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      // padding: EdgeInsets.only(left: 10),
+                                      decoration: BoxDecoration(
+                                          //color: Colors.red,
+                                          ),
+                                      padding:
+                                          EdgeInsets.only(left: 10, right: 10),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text('ทำไมต้องตรวจอัลตราซาวเต้านม',
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: GoogleFonts.kanit(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Color(0xff0088C6))),
+                                          SizedBox(height: 5),
+                                          Text(
+                                              'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: GoogleFonts.kanit(
+                                                  fontSize: 14,
+                                                  color: Colors.black)),
+                                          SizedBox(height: 10),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Flexible(
+                                                child: FaIcon(
+                                                  FontAwesomeIcons.solidClock,
+                                                  size: 12,
+                                                  color: Color(0xff0088C6),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Flexible(
+                                                child: Text(
+                                                  "16-06-2564",
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: GoogleFonts.kanit(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Flexible(
+                                                child: FaIcon(
+                                                  FontAwesomeIcons.solidEye,
+                                                  size: 12,
+                                                  color: Color(0xff0088C6),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Flexible(
+                                                child: Text(
+                                                  "50,000",
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: GoogleFonts.kanit(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20),
                           Container(
-                            height: 50,
-                            padding: EdgeInsets.all(10),
-                            color: Colors.blue,
+                            padding:
+                                EdgeInsets.only(top: 10, bottom: 10, left: 10),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.1),
+                                    spreadRadius: 2,
+                                    blurRadius: 2,
+                                    offset: Offset(0, 2),
+                                  )
+                                ],
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20))),
+                            height: 130,
+                            child: Row(
+                              children: <Widget>[
+                                Container(
+                                  width: 150,
+                                  padding: EdgeInsets.all(20),
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: AssetImage('images/1150.png')),
+                                      color: Colors.amber,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    // padding: EdgeInsets.only(left: 10),
+                                    decoration: BoxDecoration(
+                                        //color: Colors.red,
+                                        ),
+                                    padding:
+                                        EdgeInsets.only(left: 10, right: 10),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text('ทำไมต้องตรวจอัลตราซาวเต้านม',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: GoogleFonts.kanit(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                                color: Color(0xff0088C6))),
+                                        SizedBox(height: 5),
+                                        Text(
+                                            'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: GoogleFonts.kanit(
+                                                fontSize: 14,
+                                                color: Colors.black)),
+                                        SizedBox(height: 10),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Flexible(
+                                              child: FaIcon(
+                                                FontAwesomeIcons.solidClock,
+                                                size: 12,
+                                                color: Color(0xff0088C6),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            Flexible(
+                                              child: Text(
+                                                "16-06-2564",
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: GoogleFonts.kanit(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Flexible(
+                                              child: FaIcon(
+                                                FontAwesomeIcons.solidEye,
+                                                size: 12,
+                                                color: Color(0xff0088C6),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            Flexible(
+                                              child: Text(
+                                                "50,000",
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: GoogleFonts.kanit(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
+                          SizedBox(height: 20),
                           Container(
-                            height: 50,
-                            padding: EdgeInsets.all(10),
-                            color: Colors.green,
+                            padding:
+                                EdgeInsets.only(top: 10, bottom: 10, left: 10),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.1),
+                                    spreadRadius: 2,
+                                    blurRadius: 2,
+                                    offset: Offset(0, 2),
+                                  )
+                                ],
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20))),
+                            height: 130,
+                            child: Row(
+                              children: <Widget>[
+                                Container(
+                                  width: 150,
+                                  padding: EdgeInsets.all(20),
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: AssetImage('images/1150.png')),
+                                      color: Colors.amber,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    // padding: EdgeInsets.only(left: 10),
+                                    decoration: BoxDecoration(
+                                        //color: Colors.red,
+                                        ),
+                                    padding:
+                                        EdgeInsets.only(left: 10, right: 10),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text('ทำไมต้องตรวจอัลตราซาวเต้านม',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: GoogleFonts.kanit(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                                color: Color(0xff0088C6))),
+                                        SizedBox(height: 5),
+                                        Text(
+                                            'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: GoogleFonts.kanit(
+                                                fontSize: 14,
+                                                color: Colors.black)),
+                                        SizedBox(height: 10),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Flexible(
+                                              child: FaIcon(
+                                                FontAwesomeIcons.solidClock,
+                                                size: 12,
+                                                color: Color(0xff0088C6),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            Flexible(
+                                              child: Text(
+                                                "16-06-2564",
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: GoogleFonts.kanit(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Flexible(
+                                              child: FaIcon(
+                                                FontAwesomeIcons.solidEye,
+                                                size: 12,
+                                                color: Color(0xff0088C6),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            Flexible(
+                                              child: Text(
+                                                "50,000",
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: GoogleFonts.kanit(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                          Container(
-                            height: 50,
-                            padding: EdgeInsets.all(10),
-                            color: Colors.blue,
-                          ),
-                          Container(
-                            height: 50,
-                            padding: EdgeInsets.all(10),
-                            color: Colors.green,
-                          ),
-                          Container(
-                            height: 50,
-                            padding: EdgeInsets.all(10),
-                            color: Colors.blue,
-                          ),
-                          Container(
-                            height: 50,
-                            padding: EdgeInsets.all(10),
-                            color: Colors.green,
-                          ),
-                          Container(
-                            height: 50,
-                            padding: EdgeInsets.all(10),
-                            color: Colors.blue,
-                          ),
-                          Container(
-                            height: 50,
-                            padding: EdgeInsets.all(10),
-                            color: Colors.green,
-                          ),
-                          Container(
-                            height: 200,
-                            padding: EdgeInsets.all(10),
-                            color: Colors.blue,
-                          ),
-                          Container(
-                            height: 200,
-                            padding: EdgeInsets.all(10),
-                            color: Colors.green,
-                          ),
+                          SizedBox(height: 20),
                         ],
                       ),
                     ),
@@ -164,16 +660,49 @@ class _AticlePageState extends State<AticlePage> {
           ),
         ],
       ),
-      // bottomNavigationBar: NavigagitonBar(),
+      bottomNavigationBar: NavigagitonBar(),
     );
   }
-
-  CarouselSlider builBanner() {
-    return CarouselSlider(
-        items: widgets,
-        options: CarouselOptions(
-            viewportFraction: 0.99,
-            autoPlay: true,
-            autoPlayInterval: Duration(seconds: 3)));
-  }
 }
+
+final List<Widget> imageSliders = imgLists
+    .map((item) => Container(
+          child: Container(
+            margin: EdgeInsets.all(5.0),
+            child: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                child: Stack(
+                  children: <Widget>[
+                    Image.network(item, fit: BoxFit.cover, width: 1000.0),
+                    Positioned(
+                      bottom: 0.0,
+                      left: 0.0,
+                      right: 0.0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Color.fromARGB(0, 0, 0, 0),
+                              Color.fromARGB(0, 0, 0, 0)
+                            ],
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                          ),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 20.0),
+                        child: Text(
+                          '',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )),
+          ),
+        ))
+    .toList();

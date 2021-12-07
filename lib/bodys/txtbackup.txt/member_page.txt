@@ -7,16 +7,16 @@ import 'package:thanyarak/bodys/signin_page.dart';
 import 'package:thanyarak/utility/my_constant.dart';
 import 'package:thanyarak/widgets/show_title.dart';
 
-class MenderPage extends StatefulWidget {
-  const MenderPage({Key? key}) : super(key: key);
+class MemderPage extends StatefulWidget {
+  const MemderPage({Key? key}) : super(key: key);
 
   @override
-  _MenderPageState createState() => _MenderPageState();
+  _MemderPageState createState() => _MemderPageState();
 }
 
 double topWidgetHeight = 70;
 
-class _MenderPageState extends State<MenderPage> {
+class _MemderPageState extends State<MemderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

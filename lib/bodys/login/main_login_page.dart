@@ -367,7 +367,7 @@ class _MainLoginPageState extends State<MainLoginPage> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        AticlePage()));
+                                                        Article_page()));
                                           },
                                           child: Align(
                                             alignment: Alignment.topRight,

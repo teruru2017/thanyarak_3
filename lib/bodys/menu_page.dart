@@ -6,7 +6,7 @@ import 'package:thanyarak/bodys/article_page.dart';
 import 'package:thanyarak/bodys/conditions_page.dart';
 import 'package:thanyarak/bodys/donate_page.dart';
 import 'package:thanyarak/bodys/main_page.dart';
-import 'package:thanyarak/bodys/menber_page.dart';
+
 import 'package:thanyarak/bodys/login/menumember_page.dart';
 import 'package:thanyarak/bodys/newtype_pages.dart';
 import 'package:thanyarak/bodys/shop_page.dart';
@@ -139,7 +139,7 @@ class MenuPage extends StatelessWidget {
           ListTile(
             onTap: () {
               Navigator.push(context,
-                  CupertinoPageRoute(builder: (context) => AticlePage()));
+                  CupertinoPageRoute(builder: (context) => Article_page()));
             },
             leading: Container(
               child: Padding(

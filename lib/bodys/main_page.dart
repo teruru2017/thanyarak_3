@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +10,7 @@ import 'package:thanyarak/bodys/CarouselWithDotsPage.dart';
 import 'package:thanyarak/bodys/about_page.dart';
 import 'package:thanyarak/bodys/article_details_page.dart';
 import 'package:thanyarak/bodys/article_page.dart';
+import 'package:thanyarak/bodys/dating_page.dart';
 import 'package:thanyarak/bodys/notification_page.dart';
 import 'package:thanyarak/bodys/shop_page.dart';
 // import 'package:thanyarak/bodys/about_page.dart';
@@ -15,6 +18,7 @@ import 'package:thanyarak/bodys/menu_page.dart';
 import 'package:thanyarak/bodys/signin_page.dart';
 import 'package:thanyarak/models/article_model.dart';
 import 'package:thanyarak/utility/my_constant.dart';
+import 'package:thanyarak/widgets/NavigationBar.dart';
 import 'package:thanyarak/widgets/article_widget.dart';
 import 'package:thanyarak/widgets/show_circular.dart';
 import 'package:thanyarak/widgets/show_title.dart';
@@ -122,22 +126,6 @@ class _MainPageState extends State<MainPage> {
     // loopCreatePro();
   }
 
-  // void loopCreateBanner() {
-  //   for (var item in imgList) {
-  //     setState(() {
-  //       widgets.add(createBannerWidget(item));
-  //     });
-  //   }
-  // }
-
-  // void loopCreatePro() {
-  //   for (var itemPro in imgListPro) {
-  //     setState(() {
-  //       widgetsPro.add(createBannerWidget(itemPro));
-  //     });
-  //   }
-  // }
-
   //Widget createBannerWidget(String path) => Image.asset(path);
   @override
   Widget build(BuildContext context) {
@@ -153,7 +141,7 @@ class _MainPageState extends State<MainPage> {
                     //พื้นหลัง
                     Container(
                       height: MediaQuery.of(context).size.height,
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.only(top: 20, left: 15, right: 15),
                       decoration: BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage('images/bg_menu.png'),
@@ -163,37 +151,34 @@ class _MainPageState extends State<MainPage> {
                       child: Column(
                         children: [
                           Container(
-                            height: topWidgetHeight,
+                            //  color: Colors.amber,
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Expanded(
-                                  flex: 2,
+                                Container(
+                                  height: 100,
+                                  width: 100,
+                                  //color: Colors.amber,
                                   child: Container(
-                                    height: 100,
-                                    width: 100,
-                                    //color: Colors.amber,
-                                    child: Container(
-                                      height: 50,
-                                      width: 50,
-                                      margin: EdgeInsets.all(10),
-                                      //color: Colors.red,
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(50),
-                                        child: Container(
-                                          width: 30,
-                                          height: 30,
-                                          decoration: ShapeDecoration(
-                                              color: Colors.green,
-                                              shape: CircleBorder(),
-                                              image: DecorationImage(
-                                                image: AssetImage(
-                                                    'images/avatar.png'),
-                                              )),
-                                          // child: Image(
-                                          //   image: AssetImage('images/avatar.png'),
-                                          // ),
-                                        ),
+                                    height: 50,
+                                    width: 50,
+                                    margin: EdgeInsets.all(10),
+                                    //color: Colors.red,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(50),
+                                      child: Container(
+                                        width: 30,
+                                        height: 30,
+                                        decoration: ShapeDecoration(
+                                            //color: Colors.green,
+                                            shape: CircleBorder(),
+                                            image: DecorationImage(
+                                              image: AssetImage(
+                                                  'images/avatar.png'),
+                                            )),
+                                        // child: Image(
+                                        //   image: AssetImage('images/avatar.png'),
+                                        // ),
                                       ),
                                     ),
                                   ),
@@ -203,61 +188,65 @@ class _MainPageState extends State<MainPage> {
                                   child: Container(
                                     height: 100,
                                     //color: Colors.blue,
-                                    child: Container(
-                                      //margin: EdgeInsets.only(top: 10),
-                                      padding: EdgeInsets.only(top: 15),
-                                      child: Align(
-                                        //alignment: Alignment.topLeft,
-                                        child: Column(children: [
-                                          Align(
-                                            alignment: Alignment.topLeft,
-                                            child: Text(
-                                              'สวัสดีค่ะ',
-                                              style: GoogleFonts.kanit(
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.white,
-                                              ),
+
+                                    //margin: EdgeInsets.only(top: 10),
+                                    padding: EdgeInsets.only(top: 15),
+                                    child: Align(
+                                      //alignment: Alignment.topLeft,
+                                      child: Column(children: [
+                                        Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            'สวัสดีค่ะ',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.visible,
+                                            style: GoogleFonts.kanit(
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.white,
                                             ),
                                           ),
-                                          Align(
-                                            alignment: Alignment.topLeft,
-                                            child: Text(
-                                              'กรุณาเข้าสู่ระบบ',
-                                              style: GoogleFonts.kanit(
-                                                fontSize: 14,
-                                                color: Colors.white70,
-                                              ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            'กรุณาเข้าสู่ระบบ',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.visible,
+                                            style: GoogleFonts.kanit(
+                                              fontSize: 14,
+                                              color: Colors.white70,
                                             ),
                                           ),
-                                        ]),
-                                      ),
+                                        ),
+                                      ]),
                                     ),
                                   ),
                                 ),
-                                Expanded(
-                                  flex: 2,
+                                Padding(
+                                  padding: EdgeInsets.only(top: 20, right: 15),
                                   child: Container(
-                                    height: 100,
+                                    //color: Colors.amber,
+                                    height: 40,
+                                    width: 100,
                                     child: Container(
                                       //color: Colors.red,
                                       //margin: EdgeInsets.only(top: 35),
-                                      padding: EdgeInsets.only(top: 22),
+                                      // padding: EdgeInsets.only(top: 15),
                                       child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
                                         children: [
                                           GestureDetector(
                                             onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  CupertinoPageRoute(
-                                                      builder: (context) =>
-                                                          NotiPage()));
+                                              // Navigator.push(
+                                              //     context,
+                                              //     CupertinoPageRoute(
+                                              //         builder: (context) =>
+                                              //             NotiPage()));
                                             },
                                             child: Container(
                                               width: 20,
-                                              height: 20,
                                               decoration: BoxDecoration(
                                                   image: DecorationImage(
                                                       image: AssetImage(
@@ -267,11 +256,11 @@ class _MainPageState extends State<MainPage> {
                                           SizedBox(width: 20),
                                           GestureDetector(
                                             onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  CupertinoPageRoute(
-                                                      builder: (context) =>
-                                                          MenuPage()));
+                                              // Navigator.push(
+                                              //     context,
+                                              //     CupertinoPageRoute(
+                                              //         builder: (context) =>
+                                              //             MenuPage()));
                                             },
                                             child: Container(
                                               width: 20,
@@ -301,7 +290,7 @@ class _MainPageState extends State<MainPage> {
                         height: MediaQuery.of(context).size.height,
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: Colors.green,
+                          color: Colors.white,
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(40.0),
                             topRight: Radius.circular(40.0),
@@ -309,66 +298,535 @@ class _MainPageState extends State<MainPage> {
                         ),
                       ),
                     ),
+
                     //เนื้อหา
                     Padding(
-                      padding:
-                          const EdgeInsets.only(top: 130, left: 30, right: 30),
+                      padding: const EdgeInsets.only(
+                        top: 120,
+                      ),
                       child: Column(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 0),
-                            child: Container(
-                                // color: Colors.amber,
-
-                                child: Column(children: <Widget>[
-                              CarouselSlider(
-                                items: imageSliders,
-                                carouselController: _controller,
-                                options: CarouselOptions(
-                                    viewportFraction: 1,
-                                    autoPlay: true,
-                                    enlargeCenterPage: true,
-                                    autoPlayInterval: Duration(seconds: 15),
-                                    aspectRatio: 2.0,
-                                    onPageChanged: (index, reason) {
-                                      setState(() {
-                                        _currents = index;
-                                      });
-                                    }),
+                          Container(
+                              padding: EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade100,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(40.0),
+                                  topRight: Radius.circular(40.0),
+                                ),
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: imgLists.asMap().entries.map((entry) {
-                                  return GestureDetector(
-                                    onTap: () =>
-                                        _controller.animateToPage(entry.key),
-                                    child: Container(
-                                      width: 9.0,
-                                      height: 9.0,
-                                      margin: EdgeInsets.symmetric(
-                                          vertical: 8.0, horizontal: 4.0),
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color:
-                                              (Theme.of(context).brightness ==
+                              child: Column(
+                                children: [
+                                  CarouselSlider(
+                                    items: imageSliders,
+                                    carouselController: _controller,
+                                    options: CarouselOptions(
+                                        viewportFraction: 1,
+                                        autoPlay: true,
+                                        enlargeCenterPage: true,
+                                        autoPlayInterval: Duration(seconds: 15),
+                                        aspectRatio: 2.0,
+                                        onPageChanged: (index, reason) {
+                                          setState(() {
+                                            _currents = index;
+                                          });
+                                        }),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children:
+                                        imgLists.asMap().entries.map((entry) {
+                                      return GestureDetector(
+                                        onTap: () => _controller
+                                            .animateToPage(entry.key),
+                                        child: Container(
+                                          width: 9.0,
+                                          height: 9.0,
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 5.0, horizontal: 2.0),
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: (Theme.of(context)
+                                                              .brightness ==
                                                           Brightness.dark
                                                       ? Colors.white
-                                                      : Colors.blue)
+                                                      : Colors.blue.shade400)
                                                   .withOpacity(
                                                       _currents == entry.key
                                                           ? 0.9
                                                           : 0.4)),
-                                    ),
-                                  );
-                                }).toList(),
-                              ),
-                              Container(
-                                height: 50,
-                                padding: EdgeInsets.all(10),
-                                color: Colors.amber,
-                              )
-                            ])),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ],
+                              )),
+                          Container(
+                            padding: EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade100,
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.elliptical(200, 60),
+                                  bottomRight: Radius.elliptical(200, 60)),
+                            ),
+                            child: buildContent(),
                           ),
+                          SizedBox(height: 20),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: ShowHead(
+                                    title: 'บทความ',
+                                    pathIcon: 'images/article.png'),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              Article_page()));
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.only(right: 15),
+                                  // color: Colors.amber,
+                                  child: Text('ดูทั้งหมด',
+                                      style: GoogleFonts.kanit(
+                                        color: Colors.black38,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      )),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          //cardบทความ
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.only(
+                              left: 15,
+                            ),
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Container(
+                                // width: MediaQuery.of(context).size.width,
+                                padding: EdgeInsets.only(
+                                    top: 10, right: 10, left: 10, bottom: 20),
+                                //color: Colors.red,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 330,
+                                      decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
+                                              spreadRadius: 1,
+                                              blurRadius: 10,
+                                              offset: Offset(0, 8),
+                                            )
+                                          ],
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(40))),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: 150,
+                                            decoration: BoxDecoration(
+                                              // color: Colors.white,
+                                              image: DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  image: AssetImage(
+                                                      'images/1150.png')),
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(30),
+                                                topRight: Radius.circular(30),
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              height: 100,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.only(
+                                                  bottomLeft:
+                                                      Radius.circular(30),
+                                                  bottomRight:
+                                                      Radius.circular(30),
+                                                ),
+                                              ),
+                                              child: Container(
+                                                padding: EdgeInsets.only(
+                                                    left: 15, right: 15),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                        'ทำไมต้องตรวจอัลตราซาวเต้านม',
+                                                        style: GoogleFonts.kanit(
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Color(
+                                                                0xff0088C6))),
+                                                    Text(
+                                                        'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style:
+                                                            GoogleFonts.kanit(
+                                                                fontSize: 14,
+                                                                color: Colors
+                                                                    .black)),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        FaIcon(
+                                                          FontAwesomeIcons
+                                                              .solidClock,
+                                                          size: 12,
+                                                          color:
+                                                              Color(0xff0088C6),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Text(
+                                                          "16-06-2564",
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style:
+                                                              GoogleFonts.kanit(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        FaIcon(
+                                                          FontAwesomeIcons
+                                                              .solidEye,
+                                                          size: 12,
+                                                          color:
+                                                              Color(0xff0088C6),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Text(
+                                                          "50,000",
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style:
+                                                              GoogleFonts.kanit(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              )),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(width: 20),
+                                    Container(
+                                      width: 330,
+                                      decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
+                                              spreadRadius: 1,
+                                              blurRadius: 10,
+                                              offset: Offset(0, 8),
+                                            )
+                                          ],
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(40))),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: 150,
+                                            decoration: BoxDecoration(
+                                              // color: Colors.white,
+                                              image: DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  image: AssetImage(
+                                                      'images/1150.png')),
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(30),
+                                                topRight: Radius.circular(30),
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              height: 100,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.only(
+                                                  bottomLeft:
+                                                      Radius.circular(30),
+                                                  bottomRight:
+                                                      Radius.circular(30),
+                                                ),
+                                              ),
+                                              child: Container(
+                                                padding: EdgeInsets.only(
+                                                    left: 15, right: 15),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                        'ทำไมต้องตรวจอัลตราซาวเต้านม',
+                                                        style: GoogleFonts.kanit(
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Color(
+                                                                0xff0088C6))),
+                                                    Text(
+                                                        'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style:
+                                                            GoogleFonts.kanit(
+                                                                fontSize: 14,
+                                                                color: Colors
+                                                                    .black)),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        FaIcon(
+                                                          FontAwesomeIcons
+                                                              .solidClock,
+                                                          size: 12,
+                                                          color:
+                                                              Color(0xff0088C6),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Text(
+                                                          "16-06-2564",
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style:
+                                                              GoogleFonts.kanit(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        FaIcon(
+                                                          FontAwesomeIcons
+                                                              .solidEye,
+                                                          size: 12,
+                                                          color:
+                                                              Color(0xff0088C6),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Text(
+                                                          "50,000",
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style:
+                                                              GoogleFonts.kanit(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              )),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(width: 20),
+                                    Container(
+                                      width: 330,
+                                      decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
+                                              spreadRadius: 1,
+                                              blurRadius: 10,
+                                              offset: Offset(0, 8),
+                                            )
+                                          ],
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(40))),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: 150,
+                                            decoration: BoxDecoration(
+                                              // color: Colors.white,
+                                              image: DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  image: AssetImage(
+                                                      'images/1150.png')),
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(30),
+                                                topRight: Radius.circular(30),
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              height: 100,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.only(
+                                                  bottomLeft:
+                                                      Radius.circular(30),
+                                                  bottomRight:
+                                                      Radius.circular(30),
+                                                ),
+                                              ),
+                                              child: Container(
+                                                padding: EdgeInsets.only(
+                                                    left: 15, right: 15),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                        'ทำไมต้องตรวจอัลตราซาวเต้านม',
+                                                        style: GoogleFonts.kanit(
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Color(
+                                                                0xff0088C6))),
+                                                    Text(
+                                                        'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style:
+                                                            GoogleFonts.kanit(
+                                                                fontSize: 14,
+                                                                color: Colors
+                                                                    .black)),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        FaIcon(
+                                                          FontAwesomeIcons
+                                                              .solidClock,
+                                                          size: 12,
+                                                          color:
+                                                              Color(0xff0088C6),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Text(
+                                                          "16-06-2564",
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style:
+                                                              GoogleFonts.kanit(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        FaIcon(
+                                                          FontAwesomeIcons
+                                                              .solidEye,
+                                                          size: 12,
+                                                          color:
+                                                              Color(0xff0088C6),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Text(
+                                                          "50,000",
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style:
+                                                              GoogleFonts.kanit(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              )),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(width: 10),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          const ShowHead(
+                              title: 'มูลนิธิถันยรักษ์',
+                              pathIcon: 'images/shop.png'),
+                          buildAboutMe(),
+                          SizedBox(height: 20),
                         ],
                       ),
                     )
@@ -379,7 +837,7 @@ class _MainPageState extends State<MainPage> {
           ),
         ],
       ),
-      // bottomNavigationBar: NavigagitonBar(),
+      bottomNavigationBar: NavigagitonBar(),
     );
   }
 
@@ -463,11 +921,11 @@ class _MainPageState extends State<MainPage> {
 
   Container buildContent() {
     return Container(
-      height: 300,
+      // height: 300,
       decoration: const BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage('images/main_body.png'), fit: BoxFit.fill),
-      ),
+          // image: DecorationImage(
+          //     image: AssetImage('images/main_body.png'), fit: BoxFit.fill),
+          ),
       child: Column(
         children: [
           const ShowHead(title: 'การนัดหมาย', pathIcon: 'images/calendar.png'),
@@ -537,7 +995,7 @@ class _MainPageState extends State<MainPage> {
 
   Padding buildNonAppointCard() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+      padding: const EdgeInsets.only(left: 0, right: 0),
       child: Card(
         elevation: 3,
         margin: EdgeInsets.all(3),
@@ -588,8 +1046,10 @@ class _MainPageState extends State<MainPage> {
             ),
             GestureDetector(
               onTap: () {
+                // Navigator.push(context,
+                //     CupertinoPageRoute(builder: (context) => SignInPage()));
                 Navigator.push(context,
-                    CupertinoPageRoute(builder: (context) => SignInPage()));
+                    CupertinoPageRoute(builder: (context) => dating_page()));
               },
               child: Container(
                 width: double.infinity,

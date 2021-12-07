@@ -1,0 +1,155 @@
+ Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    int _w = 1, _f = 2;
+    if (width <= 414) {
+      _w = 2;
+      _f = 1;
+    }
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Container(
+                child: Stack(
+                  children: [
+                    //พื้นหลัง
+                    Container(
+                      height: MediaQuery.of(context).size.height,
+                      padding: EdgeInsets.only(top: 20, left: 15, right: 15),
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage('images/bg_menu.png'),
+                            fit: BoxFit.cover,
+                            alignment: Alignment.topCenter),
+                      ),
+                      child: Column(
+                        children: [
+                          Container(
+                            // color: Colors.amber,
+                            padding:
+                                EdgeInsets.only(top: 20, left: 15, right: 15),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: _f,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 0),
+                                    child: Container(
+                                      height: 40,
+                                      // color: Colors.red,
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          'ตั้งค่า',
+                                          overflow: TextOverflow.ellipsis,
+                                          style: GoogleFonts.kanit(
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 0),
+                                  child: Container(
+                                    // color: Colors.amber,
+                                    height: 40,
+                                    width: 200,
+                                    child: Container(
+                                      //color: Colors.red,
+                                      //margin: EdgeInsets.only(top: 35),
+                                      // padding: EdgeInsets.only(top: 15),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              // Navigator.push(
+                                              //     context,
+                                              //     CupertinoPageRoute(
+                                              //         builder: (context) =>
+                                              //             NotiPage()));
+                                            },
+                                            child: Container(
+                                              width: 20,
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: AssetImage(
+                                                          'images/notimenu.png'))),
+                                            ),
+                                          ),
+                                          SizedBox(width: 20),
+                                          GestureDetector(
+                                            onTap: () {
+                                              // Navigator.push(
+                                              //     context,
+                                              //     CupertinoPageRoute(
+                                              //         builder: (context) =>
+                                              //             MenuPage()));
+                                            },
+                                            child: Container(
+                                              width: 20,
+                                              height: 20,
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: AssetImage(
+                                                          'images/menu.png'))),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    //พื้นหลังเนื้อหา
+                    Padding(
+                      padding: const EdgeInsets.only(top: 90),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height,
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(40.0),
+                            topRight: Radius.circular(40.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                    //เนื้อหา
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          top: 110, left: 15, right: 15, bottom: 20),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 50,
+                            padding: EdgeInsets.all(10),
+                            color: Colors.black,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: NavigagitonBar(),
+    );
+  }
