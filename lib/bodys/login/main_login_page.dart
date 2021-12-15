@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,14 +10,19 @@ import 'package:thanyarak/bodys/CarouselWithDotsPage.dart';
 import 'package:thanyarak/bodys/about_page.dart';
 import 'package:thanyarak/bodys/article_details_page.dart';
 import 'package:thanyarak/bodys/article_page.dart';
-import 'package:thanyarak/bodys/login/menu_login_page.dart';
+import 'package:thanyarak/bodys/dating_page.dart';
+import 'package:thanyarak/bodys/detailcheck.dart';
+import 'package:thanyarak/bodys/hitstoryDetail.dart';
+import 'package:thanyarak/bodys/mark_procedure.dart';
 import 'package:thanyarak/bodys/notification_page.dart';
 import 'package:thanyarak/bodys/shop_page.dart';
 // import 'package:thanyarak/bodys/about_page.dart';
 import 'package:thanyarak/bodys/menu_page.dart';
 import 'package:thanyarak/bodys/signin_page.dart';
+import 'package:thanyarak/bodys/xray.dart';
 import 'package:thanyarak/models/article_model.dart';
 import 'package:thanyarak/utility/my_constant.dart';
+import 'package:thanyarak/widgets/NavigationBar.dart';
 import 'package:thanyarak/widgets/article_widget.dart';
 import 'package:thanyarak/widgets/show_circular.dart';
 import 'package:thanyarak/widgets/show_title.dart';
@@ -119,292 +126,716 @@ class _MainLoginPageState extends State<MainLoginPage> {
     // TODO: implement initState
     super.initState();
 
-    loopCreateBanner();
-    loopCreatePro();
+    // loopCreateBanner();
+    // loopCreatePro();
   }
 
-  void loopCreateBanner() {
-    for (var item in imgList) {
-      setState(() {
-        widgets.add(createBannerWidget(item));
-      });
-    }
-  }
-
-  void loopCreatePro() {
-    for (var itemPro in imgListPro) {
-      setState(() {
-        widgetsPro.add(createBannerWidget(itemPro));
-      });
-    }
-  }
-
-  Widget createBannerWidget(String path) => Image.asset(path);
+  //Widget createBannerWidget(String path) => Image.asset(path);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-          child: Stack(children: <Widget>[
-        Column(children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage("images/bg_menu.png"),
-                  alignment: Alignment.topCenter),
-            ),
-            child: Column(
-              children: [
-                Container(
-                  //color: Colors.green,
-                  height: topWidgetHeight,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 2,
-                        child: Container(
-                          height: 100,
-                          width: 100,
-                          //color: Colors.amber,
-                          child: Container(
-                            height: 50,
-                            width: 50,
-                            margin: EdgeInsets.all(10),
-                            //color: Colors.red,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(50),
+      backgroundColor: Colors.white,
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Container(
+                child: Stack(
+                  children: [
+                    //พื้นหลัง
+                    Container(
+                      height: MediaQuery.of(context).size.height,
+                      padding: EdgeInsets.only(top: 20, left: 15, right: 15),
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage('images/bg_menu.png'),
+                            fit: BoxFit.cover,
+                            alignment: Alignment.topCenter),
+                      ),
+                      child: Column(
+                        children: [
+                          Container(
+                            //  color: Colors.amber,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  height: 100,
+                                  width: 100,
+                                  //color: Colors.amber,
+                                  child: Container(
+                                    height: 50,
+                                    width: 50,
+                                    margin: EdgeInsets.all(10),
+                                    //color: Colors.red,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(50),
+                                      child: Container(
+                                        width: 30,
+                                        height: 30,
+                                        decoration: ShapeDecoration(
+                                            //color: Colors.green,
+                                            shape: CircleBorder(),
+                                            image: DecorationImage(
+                                              image: AssetImage(
+                                                  'images/avatar.png'),
+                                            )),
+                                        // child: Image(
+                                        //   image: AssetImage('images/avatar.png'),
+                                        // ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 4,
+                                  child: Container(
+                                    height: 100,
+                                    //color: Colors.blue,
+
+                                    //margin: EdgeInsets.only(top: 10),
+                                    padding: EdgeInsets.only(top: 15),
+                                    child: Align(
+                                      //alignment: Alignment.topLeft,
+                                      child: Column(children: [
+                                        Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            'สวัสดีค่ะ',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.visible,
+                                            style: GoogleFonts.kanit(
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            'กรุณาเข้าสู่ระบบ',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.visible,
+                                            style: GoogleFonts.kanit(
+                                              fontSize: 14,
+                                              color: Colors.white70,
+                                            ),
+                                          ),
+                                        ),
+                                      ]),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 20, right: 15),
+                                  child: Container(
+                                    //color: Colors.amber,
+                                    height: 40,
+                                    width: 100,
+                                    child: Container(
+                                      //color: Colors.red,
+                                      //margin: EdgeInsets.only(top: 35),
+                                      // padding: EdgeInsets.only(top: 15),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  CupertinoPageRoute(
+                                                      builder: (context) =>
+                                                          NotiPage()));
+                                            },
+                                            child: Container(
+                                              width: 20,
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: AssetImage(
+                                                          'images/notimenu.png'))),
+                                            ),
+                                          ),
+                                          SizedBox(width: 20),
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  CupertinoPageRoute(
+                                                      builder: (context) =>
+                                                          MenuPage()));
+                                            },
+                                            child: Container(
+                                              width: 20,
+                                              height: 20,
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: AssetImage(
+                                                          'images/menu.png'))),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    //พื้นหลังเนื้อหา
+                    Padding(
+                      padding: const EdgeInsets.only(top: 120),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height,
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(40.0),
+                            topRight: Radius.circular(40.0),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    //เนื้อหา
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 120,
+                      ),
+                      child: Column(
+                        children: [
+                          Container(
+                              padding: EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade100,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(40.0),
+                                  topRight: Radius.circular(40.0),
+                                ),
+                              ),
+                              child: Column(
+                                children: [
+                                  CarouselSlider(
+                                    items: imageSliders,
+                                    carouselController: _controller,
+                                    options: CarouselOptions(
+                                        viewportFraction: 1,
+                                        autoPlay: true,
+                                        enlargeCenterPage: true,
+                                        autoPlayInterval: Duration(seconds: 15),
+                                        aspectRatio: 2.0,
+                                        onPageChanged: (index, reason) {
+                                          setState(() {
+                                            _currents = index;
+                                          });
+                                        }),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children:
+                                        imgLists.asMap().entries.map((entry) {
+                                      return GestureDetector(
+                                        onTap: () => _controller
+                                            .animateToPage(entry.key),
+                                        child: Container(
+                                          width: 9.0,
+                                          height: 9.0,
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 5.0, horizontal: 2.0),
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: _currents == entry.key
+                                                  ? Colors.pink[200]
+                                                  : Colors.blue),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ],
+                              )),
+                          Container(
+                            padding: EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade100,
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.elliptical(200, 60),
+                                  bottomRight: Radius.elliptical(200, 60)),
+                            ),
+                            child: buildContent(),
+                          ),
+                          SizedBox(height: 20),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: ShowHead(
+                                    title: 'บทความ',
+                                    pathIcon: 'images/article.png'),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              Article_page()));
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.only(right: 15),
+                                  // color: Colors.amber,
+                                  child: Text('ดูทั้งหมด',
+                                      style: GoogleFonts.kanit(
+                                        color: Colors.black38,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      )),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          //cardบทความ
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.only(
+                              left: 15,
+                            ),
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
                               child: Container(
-                                width: 30,
-                                height: 30,
-                                decoration: ShapeDecoration(
-                                    color: Colors.green,
-                                    shape: CircleBorder(),
-                                    image: DecorationImage(
-                                      image:
-                                          AssetImage('images/Member_login.png'),
-                                    )),
-                                // child: Image(
-                                //   image: AssetImage('images/avatar.png'),
-                                // ),
+                                // width: MediaQuery.of(context).size.width,
+                                padding: EdgeInsets.only(
+                                    top: 10, right: 10, left: 10, bottom: 20),
+                                //color: Colors.red,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 330,
+                                      decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
+                                              spreadRadius: 1,
+                                              blurRadius: 10,
+                                              offset: Offset(0, 8),
+                                            )
+                                          ],
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(40))),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: 130,
+                                            decoration: BoxDecoration(
+                                              // color: Colors.white,
+                                              image: DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  image: AssetImage(
+                                                      'images/1150.png')),
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(30),
+                                                topRight: Radius.circular(30),
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              height: 100,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.only(
+                                                  bottomLeft:
+                                                      Radius.circular(30),
+                                                  bottomRight:
+                                                      Radius.circular(30),
+                                                ),
+                                              ),
+                                              child: Container(
+                                                padding: EdgeInsets.only(
+                                                    left: 15, right: 15),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                        'ทำไมต้องตรวจอัลตราซาวเต้านม',
+                                                        style: GoogleFonts.kanit(
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Color(
+                                                                0xff0088C6))),
+                                                    Text(
+                                                        'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style:
+                                                            GoogleFonts.kanit(
+                                                                fontSize: 14,
+                                                                color: Colors
+                                                                    .black)),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        FaIcon(
+                                                          FontAwesomeIcons
+                                                              .solidClock,
+                                                          size: 12,
+                                                          color:
+                                                              Color(0xff0088C6),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Text(
+                                                          "16-06-2564",
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style:
+                                                              GoogleFonts.kanit(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        FaIcon(
+                                                          FontAwesomeIcons
+                                                              .solidEye,
+                                                          size: 12,
+                                                          color:
+                                                              Color(0xff0088C6),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Text(
+                                                          "50,000",
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style:
+                                                              GoogleFonts.kanit(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              )),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(width: 20),
+                                    Container(
+                                      width: 330,
+                                      decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
+                                              spreadRadius: 1,
+                                              blurRadius: 10,
+                                              offset: Offset(0, 8),
+                                            )
+                                          ],
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(40))),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: 150,
+                                            decoration: BoxDecoration(
+                                              // color: Colors.white,
+                                              image: DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  image: AssetImage(
+                                                      'images/1150.png')),
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(30),
+                                                topRight: Radius.circular(30),
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              height: 100,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.only(
+                                                  bottomLeft:
+                                                      Radius.circular(30),
+                                                  bottomRight:
+                                                      Radius.circular(30),
+                                                ),
+                                              ),
+                                              child: Container(
+                                                padding: EdgeInsets.only(
+                                                    left: 15, right: 15),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                        'ทำไมต้องตรวจอัลตราซาวเต้านม',
+                                                        style: GoogleFonts.kanit(
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Color(
+                                                                0xff0088C6))),
+                                                    Text(
+                                                        'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style:
+                                                            GoogleFonts.kanit(
+                                                                fontSize: 14,
+                                                                color: Colors
+                                                                    .black)),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        FaIcon(
+                                                          FontAwesomeIcons
+                                                              .solidClock,
+                                                          size: 12,
+                                                          color:
+                                                              Color(0xff0088C6),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Text(
+                                                          "16-06-2564",
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style:
+                                                              GoogleFonts.kanit(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        FaIcon(
+                                                          FontAwesomeIcons
+                                                              .solidEye,
+                                                          size: 12,
+                                                          color:
+                                                              Color(0xff0088C6),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Text(
+                                                          "50,000",
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style:
+                                                              GoogleFonts.kanit(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              )),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(width: 20),
+                                    Container(
+                                      width: 330,
+                                      decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
+                                              spreadRadius: 1,
+                                              blurRadius: 10,
+                                              offset: Offset(0, 8),
+                                            )
+                                          ],
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(40))),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: 150,
+                                            decoration: BoxDecoration(
+                                              // color: Colors.white,
+                                              image: DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  image: AssetImage(
+                                                      'images/1150.png')),
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(30),
+                                                topRight: Radius.circular(30),
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              height: 100,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.only(
+                                                  bottomLeft:
+                                                      Radius.circular(30),
+                                                  bottomRight:
+                                                      Radius.circular(30),
+                                                ),
+                                              ),
+                                              child: Container(
+                                                padding: EdgeInsets.only(
+                                                    left: 15, right: 15),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                        'ทำไมต้องตรวจอัลตราซาวเต้านม',
+                                                        style: GoogleFonts.kanit(
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Color(
+                                                                0xff0088C6))),
+                                                    Text(
+                                                        'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style:
+                                                            GoogleFonts.kanit(
+                                                                fontSize: 14,
+                                                                color: Colors
+                                                                    .black)),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        FaIcon(
+                                                          FontAwesomeIcons
+                                                              .solidClock,
+                                                          size: 12,
+                                                          color:
+                                                              Color(0xff0088C6),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Text(
+                                                          "16-06-2564",
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style:
+                                                              GoogleFonts.kanit(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        FaIcon(
+                                                          FontAwesomeIcons
+                                                              .solidEye,
+                                                          size: 12,
+                                                          color:
+                                                              Color(0xff0088C6),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Text(
+                                                          "50,000",
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style:
+                                                              GoogleFonts.kanit(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              )),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(width: 10),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                          SizedBox(height: 20),
+                          const ShowHead(
+                              title: 'มูลนิธิถันยรักษ์',
+                              pathIcon: 'images/shop.png'),
+                          buildAboutMe(),
+                          SizedBox(height: 20),
+                        ],
                       ),
-                      Expanded(
-                        flex: 4,
-                        child: Container(
-                          height: 100,
-                          //color: Colors.blue,
-                          child: Container(
-                            //margin: EdgeInsets.only(top: 10),
-                            padding: EdgeInsets.only(top: 15),
-                            child: Align(
-                              //alignment: Alignment.topLeft,
-                              child: Column(children: [
-                                Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Text(
-                                    'สวัสดีค่ะ',
-                                    style: GoogleFonts.kanit(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Text(
-                                    'จอร์นาธาน วิคตอเรีย',
-                                    style: GoogleFonts.kanit(
-                                      fontSize: 14,
-                                      color: Colors.white70,
-                                    ),
-                                  ),
-                                ),
-                              ]),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Container(
-                          height: 100,
-                          child: Container(
-                            //color: Colors.red,
-                            //margin: EdgeInsets.only(top: 35),
-                            padding: EdgeInsets.only(top: 22),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        CupertinoPageRoute(
-                                            builder: (context) => NotiPage()));
-                                  },
-                                  child: Container(
-                                    width: 20,
-                                    height: 20,
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image: AssetImage(
-                                                'images/notimenu.png'))),
-                                  ),
-                                ),
-                                SizedBox(width: 20),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        CupertinoPageRoute(
-                                            builder: (context) =>
-                                                MenuLoginPage()));
-                                  },
-                                  child: Container(
-                                    width: 20,
-                                    height: 20,
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image:
-                                                AssetImage('images/menu.png'))),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-                Container(
-                  height: MediaQuery.of(context).size.height + 500,
-                  color: Colors.transparent,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      //หัว
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(40.0),
-                        topRight: Radius.circular(40.0),
-                      ),
-                    ),
-                    child: Column(
-                      //crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Expanded(
-                          child: Container(
-                            padding: EdgeInsets.only(
-                                top: 10, left: 0, right: 0, bottom: 0),
-                            child: Column(
-                              children: [
-                                //แบนเนอร์
-                                Expanded(
-                                  child: Container(
-                                      // color: Colors.amber,
-
-                                      child: Column(children: <Widget>[
-                                    CarouselSlider(
-                                      items: imageSliders,
-                                      carouselController: _controller,
-                                      options: CarouselOptions(
-                                          viewportFraction: 0.9,
-                                          autoPlay: true,
-                                          enlargeCenterPage: true,
-                                          autoPlayInterval:
-                                              Duration(seconds: 15),
-                                          aspectRatio: 2.0,
-                                          onPageChanged: (index, reason) {
-                                            setState(() {
-                                              _currents = index;
-                                            });
-                                          }),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children:
-                                          imgLists.asMap().entries.map((entry) {
-                                        return GestureDetector(
-                                          onTap: () => _controller
-                                              .animateToPage(entry.key),
-                                          child: Container(
-                                            width: 9.0,
-                                            height: 9.0,
-                                            margin: EdgeInsets.symmetric(
-                                                vertical: 8.0, horizontal: 4.0),
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: (Theme.of(context)
-                                                                .brightness ==
-                                                            Brightness.dark
-                                                        ? Colors.white
-                                                        : Colors.blue)
-                                                    .withOpacity(
-                                                        _currents == entry.key
-                                                            ? 0.9
-                                                            : 0.4)),
-                                          ),
-                                        );
-                                      }).toList(),
-                                    ),
-                                    buildContent(),
-                                    Row(
-                                      children: [
-                                        const ShowHead(
-                                            title: 'บทความ',
-                                            pathIcon: 'images/article.png'),
-                                        const SizedBox(width: 155),
-                                        GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        Article_page()));
-                                          },
-                                          child: Align(
-                                            alignment: Alignment.topRight,
-                                            child: Text('ดูทั้งหมด',
-                                                style: GoogleFonts.kanit(
-                                                  color: Colors.black38,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500,
-                                                )),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    listArticle(),
-                                    SizedBox(height: 20),
-                                    const ShowHead(
-                                        title: 'มูลนิธิถันยรักษ์',
-                                        pathIcon: 'images/shop.png'),
-                                    buildAboutMe(),
-                                    const SizedBox(
-                                      height: 30,
-                                    ),
-                                  ])),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-              ],
+              ),
             ),
           ),
-        ])
-      ])),
+        ],
+      ),
+      bottomNavigationBar: NavigagitonBar(),
     );
   }
 
@@ -486,105 +917,13 @@ class _MainLoginPageState extends State<MainLoginPage> {
     );
   }
 
-  SizedBox listArticle() {
-    return SizedBox(
-      height: 320,
-      width: 370,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        shrinkWrap: true,
-        physics: const ClampingScrollPhysics(),
-        itemCount: pathImageAritcles.length,
-        itemBuilder: (context, index) => Card(
-            elevation: 5,
-            margin: EdgeInsets.only(right: 20, bottom: 10),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.2,
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(20),
-                          topLeft: Radius.circular(20)),
-                      image: DecorationImage(
-                        image: AssetImage(
-                          pathImageAritcles[index],
-                        ),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 300,
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                    child: ShowTitle(
-                        title: cutWordH(titleAritcles[index]),
-                        textStyle: GoogleFonts.kanit(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xff0088C6),
-                        )),
-                  ),
-                ),
-                Container(
-                  width: 300,
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                    child: ShowTitle(
-                        title: cutWord(detailAritcles[index]),
-                        textStyle: GoogleFonts.kanit(
-                          fontSize: 12,
-                          color: Colors.black,
-                        )),
-                  ),
-                ),
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(16, 4, 4, 4),
-                          child: SvgPicture.asset('images/c1.svg'),
-                        ),
-                        ShowTitle(
-                          title: dataAritcles[index],
-                          textStyle: MyConstant().h4StyleGley(),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(16, 4, 4, 4),
-                          child: SvgPicture.asset('images/v2.svg'),
-                        ),
-                        ShowTitle(
-                          title: viewAritcles[index],
-                          textStyle: MyConstant().h4StyleGley(),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10),
-              ],
-            )),
-      ),
-    );
-  }
-
   Container buildContent() {
     return Container(
-      height: 300,
+      // height: 300,
       decoration: const BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage('images/main_body.png'), fit: BoxFit.fill),
-      ),
+          // image: DecorationImage(
+          //     image: AssetImage('images/main_body.png'), fit: BoxFit.fill),
+          ),
       child: Column(
         children: [
           const ShowHead(title: 'การนัดหมาย', pathIcon: 'images/calendar.png'),
@@ -610,7 +949,12 @@ class _MainLoginPageState extends State<MainLoginPage> {
       // child: GestureDetector(
 
       children: [
-        Image.asset('images/list.png'),
+        GestureDetector(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => detailcheck_page()));
+            },
+            child: Image.asset('images/list.png')),
         const SizedBox(
           height: 5,
         ),
@@ -625,7 +969,24 @@ class _MainLoginPageState extends State<MainLoginPage> {
   Column addAppointMent() {
     return Column(
       children: [
-        Image.asset('images/calenda.png'),
+        GestureDetector(
+            onTap: () {
+              setState(
+                () {
+                  showGeneralDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      barrierLabel: MaterialLocalizations.of(context)
+                          .modalBarrierDismissLabel,
+                      barrierColor: Colors.transparent,
+                      transitionDuration: Duration(milliseconds: 200),
+                      pageBuilder: (BuildContext context, Animation frist,
+                              Animation second) =>
+                          Addmark());
+                },
+              );
+            },
+            child: Image.asset('images/calenda.png')),
         const SizedBox(
           height: 5,
         ),
@@ -654,7 +1015,7 @@ class _MainLoginPageState extends State<MainLoginPage> {
 
   Padding buildNonAppointCard() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+      padding: const EdgeInsets.only(left: 0, right: 0),
       child: Card(
         elevation: 3,
         margin: EdgeInsets.all(3),
@@ -705,6 +1066,8 @@ class _MainLoginPageState extends State<MainLoginPage> {
             ),
             GestureDetector(
               onTap: () {
+                // Navigator.push(context,
+                //     CupertinoPageRoute(builder: (context) => SignInPage()));
                 Navigator.push(context,
                     CupertinoPageRoute(builder: (context) => SignInPage()));
               },
@@ -865,3 +1228,268 @@ final List<Widget> imageSliders = imgLists
           ),
         ))
     .toList();
+
+class Addmark extends StatefulWidget {
+  Addmark({Key? key}) : super(key: key);
+
+  @override
+  _AddmarkState createState() => _AddmarkState();
+}
+
+class _AddmarkState extends State<Addmark> {
+  @override
+  int getAction = 1;
+  Widget build(BuildContext context) => WillPopScope(
+      child: Visibility(
+        visible: true,
+        child: Scaffold(
+          backgroundColor: Colors.black38,
+          body: Stack(
+            children: <Widget>[
+              Center(
+                child: Container(
+                    padding: const EdgeInsets.all(10),
+                    width: MediaQuery.of(context).size.width * 0.95,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            top: 30, left: 20, right: 20, bottom: 15),
+                        child: Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(bottom: 10),
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image:
+                                          AssetImage('images/Calandar.png'))),
+                              height: 80,
+                              width: 80,
+                            ),
+                            Text(
+                              "เพิ่มการนัดหมาย",
+                              style: GoogleFonts.kanit(
+                                  color: Color(0xff0088C6), fontSize: 20),
+                            ),
+                            Text(
+                              "หากท่านต้องการนัดหมายทำหัตถการ",
+                              style: GoogleFonts.kanit(
+                                  color: Colors.black, fontSize: 14),
+                            ),
+                            Text(
+                              "กับทางศูนย์ถันยรักษ์ กรุณาส่งภาพถ่าย",
+                              style: GoogleFonts.kanit(
+                                  color: Colors.black, fontSize: 14),
+                            ),
+                            Text(
+                              "ใบส่งตรวจวินิขฉัยหรือติดต่อที่เบอร์",
+                              style: GoogleFonts.kanit(
+                                  color: Colors.black, fontSize: 14),
+                            ),
+                            Text(
+                              "02 411 5657",
+                              style: GoogleFonts.kanit(
+                                  color: Colors.black, fontSize: 18),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            )
+                            //ปุ่ม
+                            ,
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        getAction = 1;
+                                      });
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 15),
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          width: 1,
+                                          color: getAction == 1
+                                              ? Color(0xff0394fc)
+                                              : Colors.grey.shade300,
+                                        ),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                        color: Colors.white,
+                                      ),
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          'นัดหมายหัตถการ',
+                                          style: GoogleFonts.kanit(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                            color: getAction == 1
+                                                ? Color(0xff0088C6)
+                                                : Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        getAction = 2;
+                                      });
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 15),
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          width: 1,
+                                          color: getAction == 2
+                                              ? Color(0xff0394fc)
+                                              : Colors.grey.shade300,
+                                        ),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                        color: Colors.white,
+                                      ),
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          'เอกซเรย์เต้านม',
+                                          style: GoogleFonts.kanit(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                            color: getAction == 2
+                                                ? Color(0xff0088C6)
+                                                : Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  if (getAction == 1) {
+                                    Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                            builder: (context) =>
+                                                mark_procedure_page()));
+                                  } else {
+                                    Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                            builder: (context) => xray_page()));
+                                  }
+                                });
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(top: 30),
+                                width: MediaQuery.of(context).size.width,
+                                padding: EdgeInsets.symmetric(vertical: 15),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                  color: Color(0xffE6EFFE),
+                                  gradient: LinearGradient(
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                      colors: [
+                                        Color(0xff0088C6),
+                                        Color(0xff43CEF8)
+                                      ]),
+                                ),
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'ยืนยัน',
+                                    style: GoogleFonts.kanit(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  Navigator.pop(context);
+                                });
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(top: 10),
+                                width: MediaQuery.of(context).size.width,
+                                padding: EdgeInsets.symmetric(vertical: 15),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    //
+                                    color: Colors.white),
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'ยกเลิก',
+                                    style: GoogleFonts.kanit(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )),
+              ),
+            ],
+          ),
+        ),
+      ),
+      onWillPop: () async {
+        Navigator.pop(context);
+        showGeneralDialog(
+            context: context,
+            barrierDismissible: false,
+            barrierLabel:
+                MaterialLocalizations.of(context).modalBarrierDismissLabel,
+            barrierColor: Colors.transparent,
+            transitionDuration: Duration(milliseconds: 200),
+            pageBuilder:
+                (BuildContext context, Animation frist, Animation second) =>
+                    dating_page());
+        return true;
+      });
+
+  // BoxShadow BoxShadow2() {
+  //   return BoxShadow(
+  //     color: Colors.white,
+  //     offset: const Offset(0.0, 0.0),
+  //     blurRadius: 0.0,
+  //     spreadRadius: 0.0,
+  //   );
+  // } //BoxShadow
+
+}

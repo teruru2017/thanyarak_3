@@ -92,7 +92,7 @@ class _NotiPageState extends State<NotiPage> {
                           child: Container(
                             // color: Colors.amber,
                             height: 40,
-                            width: 200,
+                            width: 100,
                             child: Container(
                               //color: Colors.red,
                               //margin: EdgeInsets.only(top: 35),

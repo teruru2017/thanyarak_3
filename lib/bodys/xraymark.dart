@@ -1,4 +1,6 @@
 //@dart=2.9
+import 'dart:math';
+
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +21,28 @@ import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
+DateTime _currentDate = DateTime.now();
+DateTime _targetDateTime = DateTime.now();
+String _currentMonth = DateFormat.yMMM().format(DateTime.now());
+String _daysel = DateFormat.yMd().format(_currentDate);
+List<DateTime> absentDates = [
+  DateTime(2021, 12, 2),
+  DateTime(2021, 12, 7),
+  DateTime(2021, 12, 8),
+  DateTime(2021, 12, 12),
+  DateTime(2021, 12, 13),
+  DateTime(2021, 12, 14),
+  DateTime(2021, 12, 16),
+  DateTime(2021, 12, 17),
+  DateTime(2021, 12, 18),
+  DateTime(2021, 12, 19),
+  DateTime(2021, 12, 20),
+];
+
+EventList<Event> _markedDateMap = new EventList<Event>(
+  events: {},
+);
+
 class xrayMark_page extends StatefulWidget {
   xrayMark_page({Key key}) : super(key: key);
   @override
@@ -36,8 +60,27 @@ SingingCharacterV _characterV2 = SingingCharacterV.have;
 SingingCharacterCD _characterCD = SingingCharacterCD.have;
 
 class _xrayMark_pageState extends State<xrayMark_page> {
-//
-
+  var len = min(absentDates?.length, absentDates.length);
+  double cHeight;
+  String ck;
+  CalendarCarousel _calendarCarouselNoHeader;
+  static Widget _absentIcon(String day) => ClipRRect(
+        borderRadius: BorderRadius.circular(0.0), //or 15.0
+        child: Container(
+          height: 50.0,
+          width: 50.0,
+          color: Colors.red[100],
+          child: Align(
+            alignment: Alignment.center,
+            child: Text(
+              day,
+              style: TextStyle(
+                color: Colors.red,
+              ),
+            ),
+          ),
+        ),
+      );
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     int _w = 1, _f = 2;
@@ -46,7 +89,63 @@ class _xrayMark_pageState extends State<xrayMark_page> {
       _w = 2;
       _f = 1;
     }
+    cHeight = MediaQuery.of(context).size.height;
 
+    for (int i = 0; i < len; i++) {
+      _markedDateMap.add(
+        absentDates[i],
+        new Event(
+          date: absentDates[i],
+          title: absentDates[i].toString(),
+          icon: _absentIcon(
+            absentDates[i].day.toString(),
+          ),
+        ),
+      );
+    }
+
+    _calendarCarouselNoHeader = CalendarCarousel<Event>(
+      todayBorderColor: Colors.grey[200],
+      todayButtonColor: Colors.grey[200],
+      daysHaveCircularBorder: false,
+      // thisMonthDayBorderColor: Colors.grey,
+      todayTextStyle: TextStyle(
+        color: Colors.black,
+      ),
+
+      onDayPressed: (date, events) {
+        ck = '';
+        events.forEach(
+          (event) => ck = event.title,
+        );
+
+        print(_targetDateTime);
+        print(_daysel);
+
+        if (ck == '') {
+          this.setState(() => _currentDate = date);
+          print('ว่าง');
+        } else {
+          print('ไม่ว่าง');
+        }
+      },
+      weekendTextStyle: TextStyle(
+        color: Colors.red,
+      ),
+      selectedDayButtonColor: Colors.blue,
+
+      selectedDayBorderColor: Colors.blue,
+
+      markedDatesMap: _markedDateMap,
+      markedDateShowIcon: true,
+      markedDateIconMaxShown: 1,
+      markedDateMoreShowTotal:
+          null, // null for not showing hidden events indicator
+      markedDateIconBuilder: (event) {
+        return event.icon;
+      },
+      selectedDateTime: _currentDate,
+    );
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -59,7 +158,7 @@ class _xrayMark_pageState extends State<xrayMark_page> {
                     //พื้นหลัง
                     Container(
                       height: MediaQuery.of(context).size.height,
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.only(top: 20, left: 15, right: 15),
                       decoration: BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage('images/bg_menu.png'),
@@ -74,7 +173,7 @@ class _xrayMark_pageState extends State<xrayMark_page> {
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(top: 0),
+                                  padding: EdgeInsets.only(top: 20),
                                   child: GestureDetector(
                                     onTap: () {
                                       setState(() {
@@ -96,7 +195,7 @@ class _xrayMark_pageState extends State<xrayMark_page> {
                                 Expanded(
                                   flex: _f,
                                   child: Padding(
-                                    padding: EdgeInsets.only(top: 0),
+                                    padding: EdgeInsets.only(top: 20),
                                     child: Container(
                                       height: 40,
                                       child: Align(
@@ -126,7 +225,7 @@ class _xrayMark_pageState extends State<xrayMark_page> {
 
                     //พื้นหลังเนื้อหา
                     Padding(
-                      padding: const EdgeInsets.only(top: 70),
+                      padding: const EdgeInsets.only(top: 90),
                       child: Container(
                         height: MediaQuery.of(context).size.height,
                         padding: EdgeInsets.all(10),
@@ -147,9 +246,10 @@ class _xrayMark_pageState extends State<xrayMark_page> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Container(
-                            height: 200,
-                            padding: EdgeInsets.all(10),
-                            color: Colors.black,
+                            //color: Colors.amber,
+                            width: MediaQuery.of(context).size.width,
+                            height: 400,
+                            child: _calendarCarouselNoHeader,
                           ),
                           Text(
                             'เวลานัด',
@@ -1319,10 +1419,11 @@ class _xrayMark_pageState extends State<xrayMark_page> {
                               ],
                             ),
                           ),
+                          SizedBox(height: 20),
                           Text(
                             'เบอร์ติดต่อ',
                             style: GoogleFonts.kanit(
-                              fontSize: 18,
+                              fontSize: 16,
                               fontWeight: FontWeight.w500,
                               color: Colors.black,
                             ),
@@ -1334,14 +1435,36 @@ class _xrayMark_pageState extends State<xrayMark_page> {
                             ],
                             keyboardType: TextInputType.number,
                             name: 'phnoe',
-                            style: GoogleFonts.kanit(),
+                            style: GoogleFonts.kanit(fontSize: 14),
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderRadius: const BorderRadius.all(
                                     const Radius.circular(10),
                                   ),
                                 ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.blue, width: 1),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15)),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.grey.shade300, width: 1),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15)),
+                                ),
+                                prefixIcon: Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Image.asset(
+                                    'images/phone.png',
+                                    alignment: Alignment.center,
+                                    scale: 1.3,
+                                    color: Colors.grey,
+                                  ),
+                                ),
                                 hintText: 'เบอร์โทรศัพท์',
+                                hintStyle: TextStyle(color: Colors.grey),
                                 fillColor: Color(0xfff3f3f4),
                                 filled: false),
                           ),
@@ -1459,7 +1582,7 @@ class _CustomDialogState extends State<CustomDialog> {
                   children: [
                     Container(
                       width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.all(20),
+                      padding: EdgeInsets.only(top: 20, left: 15, right: 15),
                       margin: EdgeInsets.only(top: 80),
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -1483,7 +1606,7 @@ class _CustomDialogState extends State<CustomDialog> {
                           Row(
                             children: [
                               Transform.scale(
-                                scale: 0.8,
+                                scale: 1,
                                 child: Radio<SingingCharacter>(
                                   activeColor: Color(0xff0088C6),
                                   value: SingingCharacter.buse01,
@@ -1499,8 +1622,7 @@ class _CustomDialogState extends State<CustomDialog> {
                                   child: Text(
                                 'สิทธิเบิกจ่ายตรง กรมบัญชีกลาง',
                                 style: GoogleFonts.kanit(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
                                   color: Colors.grey,
                                 ),
                               )),
@@ -1509,7 +1631,7 @@ class _CustomDialogState extends State<CustomDialog> {
                           Row(
                             children: [
                               Transform.scale(
-                                scale: 0.8,
+                                scale: 1,
                                 child: Radio<SingingCharacter>(
                                   activeColor: Color(0xff0088C6),
                                   value: SingingCharacter.buse02,
@@ -1525,8 +1647,7 @@ class _CustomDialogState extends State<CustomDialog> {
                                   child: Text(
                                 'สิทธิเบิกราชการอื่นๆ',
                                 style: GoogleFonts.kanit(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
                                   color: Colors.grey,
                                 ),
                               )),
@@ -1535,7 +1656,7 @@ class _CustomDialogState extends State<CustomDialog> {
                           Row(
                             children: [
                               Transform.scale(
-                                scale: 0.8,
+                                scale: 1,
                                 child: Radio<SingingCharacter>(
                                   activeColor: Color(0xff0088C6),
                                   value: SingingCharacter.buse03,
@@ -1551,8 +1672,7 @@ class _CustomDialogState extends State<CustomDialog> {
                                   child: Text(
                                 'สิทธิประกันสังคม (รพ.ศิริราช)',
                                 style: GoogleFonts.kanit(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
                                   color: Colors.grey,
                                 ),
                               )),
@@ -1561,7 +1681,7 @@ class _CustomDialogState extends State<CustomDialog> {
                           Row(
                             children: [
                               Transform.scale(
-                                scale: 0.8,
+                                scale: 1,
                                 child: Radio<SingingCharacter>(
                                   activeColor: Color(0xff0088C6),
                                   value: SingingCharacter.buse04,
@@ -1577,8 +1697,7 @@ class _CustomDialogState extends State<CustomDialog> {
                                   child: Text(
                                 'สิทธิประกันสังคม (รพ.อื่น)',
                                 style: GoogleFonts.kanit(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
                                   color: Colors.grey,
                                 ),
                               )),
@@ -1587,7 +1706,7 @@ class _CustomDialogState extends State<CustomDialog> {
                           Row(
                             children: [
                               Transform.scale(
-                                scale: 0.8,
+                                scale: 1,
                                 child: Radio<SingingCharacter>(
                                   activeColor: Color(0xff0088C6),
                                   value: SingingCharacter.buse05,
@@ -1603,8 +1722,7 @@ class _CustomDialogState extends State<CustomDialog> {
                                   child: Text(
                                 'สิทธิหลักประกันคุณภาพ 30 บาท (บัตรทอง) (รพ.ศิริราช)',
                                 style: GoogleFonts.kanit(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
                                   color: Colors.grey,
                                 ),
                               )),
@@ -1613,7 +1731,7 @@ class _CustomDialogState extends State<CustomDialog> {
                           Row(
                             children: [
                               Transform.scale(
-                                scale: 0.8,
+                                scale: 1,
                                 child: Radio<SingingCharacter>(
                                   activeColor: Color(0xff0088C6),
                                   value: SingingCharacter.buse06,
@@ -1629,8 +1747,7 @@ class _CustomDialogState extends State<CustomDialog> {
                                   child: Text(
                                 'สิทธิหลักประกันคุณภาพ 30 บาท (บัตรทอง) (รพ.อื่น)',
                                 style: GoogleFonts.kanit(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
                                   color: Colors.grey,
                                 ),
                               )),
@@ -1639,7 +1756,7 @@ class _CustomDialogState extends State<CustomDialog> {
                           Row(
                             children: [
                               Transform.scale(
-                                scale: 0.8,
+                                scale: 1,
                                 child: Radio<SingingCharacter>(
                                   activeColor: Color(0xff0088C6),
                                   value: SingingCharacter.buse07,
@@ -1655,8 +1772,7 @@ class _CustomDialogState extends State<CustomDialog> {
                                   child: Text(
                                 'สิทธิหลักประกันคุณภาพ 30 บาท (บัตรทอง) (สิทธิว่าง)',
                                 style: GoogleFonts.kanit(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
                                   color: Colors.grey,
                                 ),
                               )),
@@ -1680,10 +1796,9 @@ class _CustomDialogState extends State<CustomDialog> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              '1.ค่าบริการ 160 บาท',
+                              '1. ค่าบริการ 160 บาท',
                               style: GoogleFonts.kanit(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
                                 color: Colors.grey,
                               ),
                             ),
@@ -1691,10 +1806,9 @@ class _CustomDialogState extends State<CustomDialog> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              '2.ค่าเอ็กซ์เรย์ 999 บาท',
+                              '2. ค่าเอ็กซ์เรย์ 999 บาท',
                               style: GoogleFonts.kanit(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
                                 color: Colors.grey,
                               ),
                             ),
@@ -1702,10 +1816,9 @@ class _CustomDialogState extends State<CustomDialog> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              '3.ค่ายารักษา 999 บาท',
+                              '3. ค่ายารักษา 999 บาท',
                               style: GoogleFonts.kanit(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
                                 color: Colors.grey,
                               ),
                             ),
@@ -1949,7 +2062,9 @@ class _SuscesDialogState extends State<SuscesDialog> {
                             Text(
                               "นัดตรวจสำเร็จ",
                               style: GoogleFonts.kanit(
-                                  color: Color(0xff0088C6), fontSize: 20),
+                                  color: Color(0xff0088C6),
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500),
                             ),
                             SizedBox(
                               height: 10,
@@ -2090,7 +2205,7 @@ class _SuscesDialogState extends State<SuscesDialog> {
                               child: Text(
                                 'เอกสารที่เกี่ยวข้อง',
                                 style: GoogleFonts.kanit(
-                                    color: Colors.black, fontSize: 14),
+                                    color: Colors.black, fontSize: 16),
                               ),
                             ),
                             SizedBox(
@@ -2101,7 +2216,7 @@ class _SuscesDialogState extends State<SuscesDialog> {
                               child: Text(
                                 '1.ใบส่งตรวจวินิจฉัย (ถ้ามี)',
                                 style: GoogleFonts.kanit(
-                                    color: Colors.grey, fontSize: 12),
+                                    color: Colors.grey, fontSize: 14),
                               ),
                             ),
                             Align(
@@ -2109,7 +2224,7 @@ class _SuscesDialogState extends State<SuscesDialog> {
                               child: Text(
                                 '2.ผลการตรวจ , CD โรงพยาบาลอื่น (ถ้ามี)',
                                 style: GoogleFonts.kanit(
-                                    color: Colors.grey, fontSize: 12),
+                                    color: Colors.grey, fontSize: 14),
                               ),
                             ),
                             Align(
@@ -2117,7 +2232,7 @@ class _SuscesDialogState extends State<SuscesDialog> {
                               child: Text(
                                 '3.เอกสารรับรองสิทธิการรักษา (ถ้ามี)',
                                 style: GoogleFonts.kanit(
-                                    color: Colors.grey, fontSize: 12),
+                                    color: Colors.grey, fontSize: 14),
                               ),
                             ),
                             Align(
@@ -2125,7 +2240,7 @@ class _SuscesDialogState extends State<SuscesDialog> {
                               child: Text(
                                 '4.เอกสารการเปลี่ยนชื่อ - สกุล (ถ้ามี)',
                                 style: GoogleFonts.kanit(
-                                    color: Colors.grey, fontSize: 12),
+                                    color: Colors.grey, fontSize: 14),
                               ),
                             ),
                             Align(
@@ -2133,7 +2248,7 @@ class _SuscesDialogState extends State<SuscesDialog> {
                               child: Text(
                                 '5.บัตรประจำตัวประชาชน',
                                 style: GoogleFonts.kanit(
-                                    color: Colors.grey, fontSize: 12),
+                                    color: Colors.grey, fontSize: 14),
                               ),
                             ),
                             SizedBox(
@@ -2148,7 +2263,7 @@ class _SuscesDialogState extends State<SuscesDialog> {
                               child: Text(
                                 "แก้ไขวันนัดหมาย",
                                 style: GoogleFonts.kanit(
-                                    fontWeight: FontWeight.w300,
+                                    fontWeight: FontWeight.w500,
                                     color: Color(0xff0088C6),
                                     fontSize: 16),
                               ),

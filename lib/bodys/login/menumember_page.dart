@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:thanyarak/bodys/alert_page.dart';
 import 'package:thanyarak/bodys/conditions_page.dart';
 import 'package:thanyarak/bodys/login/editpassword_page.dart';
 import 'package:thanyarak/bodys/login/editprofile_page.dart';
@@ -13,6 +15,7 @@ import 'package:thanyarak/bodys/main_page.dart';
 import 'package:thanyarak/bodys/menu_page.dart';
 import 'package:thanyarak/bodys/notification_page.dart';
 import 'package:thanyarak/bodys/login/setting_page.dart';
+import 'package:thanyarak/models/session.dart';
 import 'package:thanyarak/states/main_home.dart';
 import 'package:thanyarak/utility/my_constant.dart';
 import 'package:thanyarak/widgets/NavigationBar.dart';
@@ -34,9 +37,26 @@ void main() {
   runApp(menumember_pages());
 }
 
+String checklogin = '';
+SessionManager ssr = SessionManager();
+
 class _menumember_pagesState extends State<menumember_pages> {
   final double topWidgetHeight = 120.0;
   final double avatarRadius = 50.0;
+
+  Future getDATA() async {
+    final SharedPreferences per = await SharedPreferences.getInstance();
+    setState(() {
+      checklogin = per.getString('id');
+      print(checklogin);
+    });
+  }
+
+  @override
+  void initState() {
+    getDATA();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +124,11 @@ class _menumember_pagesState extends State<menumember_pages> {
                                                   context,
                                                   CupertinoPageRoute(
                                                       builder: (context) =>
-                                                          NotiPage()));
+                                                          checklogin == '' ||
+                                                                  checklogin ==
+                                                                      null
+                                                              ? NotiPage()
+                                                              : alert_page()));
                                             },
                                             child: Container(
                                               width: 20,
@@ -117,11 +141,11 @@ class _menumember_pagesState extends State<menumember_pages> {
                                           SizedBox(width: 20),
                                           GestureDetector(
                                             onTap: () {
-                                              // Navigator.push(
-                                              //     context,
-                                              //     CupertinoPageRoute(
-                                              //         builder: (context) =>
-                                              //             MenuPage()));
+                                              Navigator.push(
+                                                  context,
+                                                  CupertinoPageRoute(
+                                                      builder: (context) =>
+                                                          MenuPage()));
                                             },
                                             child: Container(
                                               width: 20,
@@ -537,11 +561,15 @@ class _menumember_pagesState extends State<menumember_pages> {
                                         ),
                                         GestureDetector(
                                           onTap: () {
+                                            setState(() {
+                                              ssr.setID('');
+                                            });
+                                            //Navigator.pop(context);
                                             Navigator.push(
                                                 context,
-                                                CupertinoPageRoute(
+                                                MaterialPageRoute(
                                                     builder: (context) =>
-                                                        estimate_page()));
+                                                        MainPage()));
                                           },
                                           child: Container(
                                               decoration: BoxDecoration(

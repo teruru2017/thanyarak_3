@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:thanyarak/bodys/alert_page.dart';
 import 'package:thanyarak/bodys/detaildonate_pages.dart';
 import 'package:thanyarak/bodys/menu_page.dart';
 import 'package:thanyarak/bodys/notification_page.dart';
@@ -10,6 +11,7 @@ import 'package:thanyarak/bodys/otp_pages.dart';
 
 import 'package:thanyarak/utility/my_constant.dart';
 import 'package:thanyarak/widgets/NavigationBar.dart';
+import 'package:thanyarak/widgets/donate_widget.dart';
 import 'package:thanyarak/widgets/show_circular.dart';
 import 'package:thanyarak/widgets/show_title.dart';
 
@@ -20,7 +22,7 @@ class DonatePage extends StatefulWidget {
   _DonatePageState createState() => _DonatePageState();
 }
 
-double topWidgetHeight = 70;
+String checklogin = '';
 
 class _DonatePageState extends State<DonatePage> {
   List<String> pathImageAritcles = [
@@ -125,11 +127,15 @@ class _DonatePageState extends State<DonatePage> {
                                         children: [
                                           GestureDetector(
                                             onTap: () {
-                                              // Navigator.push(
-                                              //     context,
-                                              //     CupertinoPageRoute(
-                                              //         builder: (context) =>
-                                              //             NotiPage()));
+                                              Navigator.push(
+                                                  context,
+                                                  CupertinoPageRoute(
+                                                      builder: (context) =>
+                                                          checklogin == '' ||
+                                                                  checklogin ==
+                                                                      null
+                                                              ? NotiPage()
+                                                              : alert_page()));
                                             },
                                             child: Container(
                                               width: 20,
@@ -142,11 +148,11 @@ class _DonatePageState extends State<DonatePage> {
                                           SizedBox(width: 20),
                                           GestureDetector(
                                             onTap: () {
-                                              // Navigator.push(
-                                              //     context,
-                                              //     CupertinoPageRoute(
-                                              //         builder: (context) =>
-                                              //             MenuPage()));
+                                              Navigator.push(
+                                                  context,
+                                                  CupertinoPageRoute(
+                                                      builder: (context) =>
+                                                          MenuPage()));
                                             },
                                             child: Container(
                                               width: 20,
@@ -192,396 +198,397 @@ class _DonatePageState extends State<DonatePage> {
                         width: MediaQuery.of(context).size.width,
                         child: Column(
                           children: [
-                            GestureDetector(
-                              onTap: () => Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(
-                                      builder: (context) =>
-                                          detaildonate_pages())),
-                              child: Container(
-                                // width: 380,
-                                decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.2),
-                                        spreadRadius: 1,
-                                        blurRadius: 10,
-                                        offset: Offset(0, 8),
-                                      )
-                                    ],
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(40))),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      height: 160,
-                                      decoration: BoxDecoration(
-                                        // color: Colors.white,
-                                        image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image:
-                                                AssetImage('images/1150.png')),
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(40),
-                                          topRight: Radius.circular(40),
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        height: 150,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.only(
-                                            bottomLeft: Radius.circular(40),
-                                            bottomRight: Radius.circular(40),
-                                          ),
-                                        ),
-                                        child: Container(
-                                          padding: EdgeInsets.only(
-                                              top: 10, left: 20, right: 20),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                  'บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิถันยรักษ์ฯ',
-                                                  maxLines: 2,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: GoogleFonts.kanit(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color:
-                                                          Color(0xff0088C6))),
-                                              SizedBox(height: 5),
-                                              Text(
-                                                  'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
-                                                  maxLines: 2,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: GoogleFonts.kanit(
-                                                      fontSize: 14,
-                                                      color: Colors.black)),
-                                              SizedBox(height: 5),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  FaIcon(
-                                                    FontAwesomeIcons.solidClock,
-                                                    size: 12,
-                                                    color: Color(0xff0088C6),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  Text(
-                                                    "16-06-2564",
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: GoogleFonts.kanit(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: Colors.grey,
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  FaIcon(
-                                                    FontAwesomeIcons.solidEye,
-                                                    size: 12,
-                                                    color: Color(0xff0088C6),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  Text(
-                                                    "50,000",
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: GoogleFonts.kanit(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: Colors.grey,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        )),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 20),
-                            GestureDetector(
-                              onTap: () => Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(
-                                      builder: (context) =>
-                                          detaildonate_pages())),
-                              child: Container(
-                                // width: 380,
-                                decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.2),
-                                        spreadRadius: 1,
-                                        blurRadius: 10,
-                                        offset: Offset(0, 8),
-                                      )
-                                    ],
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(40))),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      height: 160,
-                                      decoration: BoxDecoration(
-                                        // color: Colors.white,
-                                        image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image:
-                                                AssetImage('images/1150.png')),
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(40),
-                                          topRight: Radius.circular(40),
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        height: 150,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.only(
-                                            bottomLeft: Radius.circular(40),
-                                            bottomRight: Radius.circular(40),
-                                          ),
-                                        ),
-                                        child: Container(
-                                          padding: EdgeInsets.only(
-                                              top: 10, left: 20, right: 20),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                  'บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิถันยรักษ์ฯ',
-                                                  maxLines: 2,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: GoogleFonts.kanit(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color:
-                                                          Color(0xff0088C6))),
-                                              SizedBox(height: 5),
-                                              Text(
-                                                  'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
-                                                  maxLines: 2,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: GoogleFonts.kanit(
-                                                      fontSize: 14,
-                                                      color: Colors.black)),
-                                              SizedBox(height: 5),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  FaIcon(
-                                                    FontAwesomeIcons.solidClock,
-                                                    size: 12,
-                                                    color: Color(0xff0088C6),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  Text(
-                                                    "16-06-2564",
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: GoogleFonts.kanit(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: Colors.grey,
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  FaIcon(
-                                                    FontAwesomeIcons.solidEye,
-                                                    size: 12,
-                                                    color: Color(0xff0088C6),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  Text(
-                                                    "50,000",
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: GoogleFonts.kanit(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: Colors.grey,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        )),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 20),
-                            GestureDetector(
-                              onTap: () => Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(
-                                      builder: (context) =>
-                                          detaildonate_pages())),
-                              child: Container(
-                                // width: 380,
-                                decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.2),
-                                        spreadRadius: 1,
-                                        blurRadius: 10,
-                                        offset: Offset(0, 8),
-                                      )
-                                    ],
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(40))),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      height: 160,
-                                      decoration: BoxDecoration(
-                                        // color: Colors.white,
-                                        image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image:
-                                                AssetImage('images/1150.png')),
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(40),
-                                          topRight: Radius.circular(40),
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        height: 150,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.only(
-                                            bottomLeft: Radius.circular(40),
-                                            bottomRight: Radius.circular(40),
-                                          ),
-                                        ),
-                                        child: Container(
-                                          padding: EdgeInsets.only(
-                                              top: 10, left: 20, right: 20),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                  'บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิถันยรักษ์ฯ',
-                                                  maxLines: 2,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: GoogleFonts.kanit(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color:
-                                                          Color(0xff0088C6))),
-                                              SizedBox(height: 5),
-                                              Text(
-                                                  'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
-                                                  maxLines: 2,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: GoogleFonts.kanit(
-                                                      fontSize: 14,
-                                                      color: Colors.black)),
-                                              SizedBox(height: 5),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  FaIcon(
-                                                    FontAwesomeIcons.solidClock,
-                                                    size: 12,
-                                                    color: Color(0xff0088C6),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  Text(
-                                                    "16-06-2564",
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: GoogleFonts.kanit(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: Colors.grey,
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  FaIcon(
-                                                    FontAwesomeIcons.solidEye,
-                                                    size: 12,
-                                                    color: Color(0xff0088C6),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  Text(
-                                                    "50,000",
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: GoogleFonts.kanit(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: Colors.grey,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        )),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 20),
+                            DonateWidget()
+                            // GestureDetector(
+                            //   onTap: () => Navigator.push(
+                            //       context,
+                            //       CupertinoPageRoute(
+                            //           builder: (context) =>
+                            //               detaildonate_pages())),
+                            //   child: Container(
+                            //     // width: 380,
+                            //     decoration: BoxDecoration(
+                            //         boxShadow: [
+                            //           BoxShadow(
+                            //             color: Colors.grey.withOpacity(0.2),
+                            //             spreadRadius: 1,
+                            //             blurRadius: 10,
+                            //             offset: Offset(0, 8),
+                            //           )
+                            //         ],
+                            //         borderRadius:
+                            //             BorderRadius.all(Radius.circular(40))),
+                            //     child: Column(
+                            //       children: [
+                            //         Container(
+                            //           width: MediaQuery.of(context).size.width,
+                            //           height: 160,
+                            //           decoration: BoxDecoration(
+                            //             // color: Colors.white,
+                            //             image: DecorationImage(
+                            //                 fit: BoxFit.cover,
+                            //                 image:
+                            //                     AssetImage('images/1150.png')),
+                            //             borderRadius: BorderRadius.only(
+                            //               topLeft: Radius.circular(40),
+                            //               topRight: Radius.circular(40),
+                            //             ),
+                            //           ),
+                            //         ),
+                            //         Container(
+                            //             width:
+                            //                 MediaQuery.of(context).size.width,
+                            //             height: 150,
+                            //             decoration: BoxDecoration(
+                            //               color: Colors.white,
+                            //               borderRadius: BorderRadius.only(
+                            //                 bottomLeft: Radius.circular(40),
+                            //                 bottomRight: Radius.circular(40),
+                            //               ),
+                            //             ),
+                            //             child: Container(
+                            //               padding: EdgeInsets.only(
+                            //                   top: 10, left: 20, right: 20),
+                            //               child: Column(
+                            //                 crossAxisAlignment:
+                            //                     CrossAxisAlignment.start,
+                            //                 children: [
+                            //                   Text(
+                            //                       'บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิถันยรักษ์ฯ',
+                            //                       maxLines: 2,
+                            //                       overflow:
+                            //                           TextOverflow.ellipsis,
+                            //                       style: GoogleFonts.kanit(
+                            //                           fontSize: 16,
+                            //                           fontWeight:
+                            //                               FontWeight.w500,
+                            //                           color:
+                            //                               Color(0xff0088C6))),
+                            //                   SizedBox(height: 5),
+                            //                   Text(
+                            //                       'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
+                            //                       maxLines: 2,
+                            //                       overflow:
+                            //                           TextOverflow.ellipsis,
+                            //                       style: GoogleFonts.kanit(
+                            //                           fontSize: 14,
+                            //                           color: Colors.black)),
+                            //                   SizedBox(height: 5),
+                            //                   Row(
+                            //                     mainAxisAlignment:
+                            //                         MainAxisAlignment.start,
+                            //                     children: [
+                            //                       FaIcon(
+                            //                         FontAwesomeIcons.solidClock,
+                            //                         size: 12,
+                            //                         color: Color(0xff0088C6),
+                            //                       ),
+                            //                       SizedBox(
+                            //                         width: 5,
+                            //                       ),
+                            //                       Text(
+                            //                         "16-06-2564",
+                            //                         overflow:
+                            //                             TextOverflow.ellipsis,
+                            //                         style: GoogleFonts.kanit(
+                            //                           fontSize: 12,
+                            //                           fontWeight:
+                            //                               FontWeight.w500,
+                            //                           color: Colors.grey,
+                            //                         ),
+                            //                       ),
+                            //                       SizedBox(
+                            //                         width: 10,
+                            //                       ),
+                            //                       FaIcon(
+                            //                         FontAwesomeIcons.solidEye,
+                            //                         size: 12,
+                            //                         color: Color(0xff0088C6),
+                            //                       ),
+                            //                       SizedBox(
+                            //                         width: 5,
+                            //                       ),
+                            //                       Text(
+                            //                         "50,000",
+                            //                         overflow:
+                            //                             TextOverflow.ellipsis,
+                            //                         style: GoogleFonts.kanit(
+                            //                           fontSize: 12,
+                            //                           fontWeight:
+                            //                               FontWeight.w500,
+                            //                           color: Colors.grey,
+                            //                         ),
+                            //                       ),
+                            //                     ],
+                            //                   ),
+                            //                 ],
+                            //               ),
+                            //             )),
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
+                            // SizedBox(height: 20),
+                            // GestureDetector(
+                            //   onTap: () => Navigator.push(
+                            //       context,
+                            //       CupertinoPageRoute(
+                            //           builder: (context) =>
+                            //               detaildonate_pages())),
+                            //   child: Container(
+                            //     // width: 380,
+                            //     decoration: BoxDecoration(
+                            //         boxShadow: [
+                            //           BoxShadow(
+                            //             color: Colors.grey.withOpacity(0.2),
+                            //             spreadRadius: 1,
+                            //             blurRadius: 10,
+                            //             offset: Offset(0, 8),
+                            //           )
+                            //         ],
+                            //         borderRadius:
+                            //             BorderRadius.all(Radius.circular(40))),
+                            //     child: Column(
+                            //       children: [
+                            //         Container(
+                            //           width: MediaQuery.of(context).size.width,
+                            //           height: 160,
+                            //           decoration: BoxDecoration(
+                            //             // color: Colors.white,
+                            //             image: DecorationImage(
+                            //                 fit: BoxFit.cover,
+                            //                 image:
+                            //                     AssetImage('images/1150.png')),
+                            //             borderRadius: BorderRadius.only(
+                            //               topLeft: Radius.circular(40),
+                            //               topRight: Radius.circular(40),
+                            //             ),
+                            //           ),
+                            //         ),
+                            //         Container(
+                            //             width:
+                            //                 MediaQuery.of(context).size.width,
+                            //             height: 150,
+                            //             decoration: BoxDecoration(
+                            //               color: Colors.white,
+                            //               borderRadius: BorderRadius.only(
+                            //                 bottomLeft: Radius.circular(40),
+                            //                 bottomRight: Radius.circular(40),
+                            //               ),
+                            //             ),
+                            //             child: Container(
+                            //               padding: EdgeInsets.only(
+                            //                   top: 10, left: 20, right: 20),
+                            //               child: Column(
+                            //                 crossAxisAlignment:
+                            //                     CrossAxisAlignment.start,
+                            //                 children: [
+                            //                   Text(
+                            //                       'บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิถันยรักษ์ฯ',
+                            //                       maxLines: 2,
+                            //                       overflow:
+                            //                           TextOverflow.ellipsis,
+                            //                       style: GoogleFonts.kanit(
+                            //                           fontSize: 16,
+                            //                           fontWeight:
+                            //                               FontWeight.w500,
+                            //                           color:
+                            //                               Color(0xff0088C6))),
+                            //                   SizedBox(height: 5),
+                            //                   Text(
+                            //                       'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
+                            //                       maxLines: 2,
+                            //                       overflow:
+                            //                           TextOverflow.ellipsis,
+                            //                       style: GoogleFonts.kanit(
+                            //                           fontSize: 14,
+                            //                           color: Colors.black)),
+                            //                   SizedBox(height: 5),
+                            //                   Row(
+                            //                     mainAxisAlignment:
+                            //                         MainAxisAlignment.start,
+                            //                     children: [
+                            //                       FaIcon(
+                            //                         FontAwesomeIcons.solidClock,
+                            //                         size: 12,
+                            //                         color: Color(0xff0088C6),
+                            //                       ),
+                            //                       SizedBox(
+                            //                         width: 5,
+                            //                       ),
+                            //                       Text(
+                            //                         "16-06-2564",
+                            //                         overflow:
+                            //                             TextOverflow.ellipsis,
+                            //                         style: GoogleFonts.kanit(
+                            //                           fontSize: 12,
+                            //                           fontWeight:
+                            //                               FontWeight.w500,
+                            //                           color: Colors.grey,
+                            //                         ),
+                            //                       ),
+                            //                       SizedBox(
+                            //                         width: 10,
+                            //                       ),
+                            //                       FaIcon(
+                            //                         FontAwesomeIcons.solidEye,
+                            //                         size: 12,
+                            //                         color: Color(0xff0088C6),
+                            //                       ),
+                            //                       SizedBox(
+                            //                         width: 5,
+                            //                       ),
+                            //                       Text(
+                            //                         "50,000",
+                            //                         overflow:
+                            //                             TextOverflow.ellipsis,
+                            //                         style: GoogleFonts.kanit(
+                            //                           fontSize: 12,
+                            //                           fontWeight:
+                            //                               FontWeight.w500,
+                            //                           color: Colors.grey,
+                            //                         ),
+                            //                       ),
+                            //                     ],
+                            //                   ),
+                            //                 ],
+                            //               ),
+                            //             )),
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
+                            // SizedBox(height: 20),
+                            // GestureDetector(
+                            //   onTap: () => Navigator.push(
+                            //       context,
+                            //       CupertinoPageRoute(
+                            //           builder: (context) =>
+                            //               detaildonate_pages())),
+                            //   child: Container(
+                            //     // width: 380,
+                            //     decoration: BoxDecoration(
+                            //         boxShadow: [
+                            //           BoxShadow(
+                            //             color: Colors.grey.withOpacity(0.2),
+                            //             spreadRadius: 1,
+                            //             blurRadius: 10,
+                            //             offset: Offset(0, 8),
+                            //           )
+                            //         ],
+                            //         borderRadius:
+                            //             BorderRadius.all(Radius.circular(40))),
+                            //     child: Column(
+                            //       children: [
+                            //         Container(
+                            //           width: MediaQuery.of(context).size.width,
+                            //           height: 160,
+                            //           decoration: BoxDecoration(
+                            //             // color: Colors.white,
+                            //             image: DecorationImage(
+                            //                 fit: BoxFit.cover,
+                            //                 image:
+                            //                     AssetImage('images/1150.png')),
+                            //             borderRadius: BorderRadius.only(
+                            //               topLeft: Radius.circular(40),
+                            //               topRight: Radius.circular(40),
+                            //             ),
+                            //           ),
+                            //         ),
+                            //         Container(
+                            //             width:
+                            //                 MediaQuery.of(context).size.width,
+                            //             height: 150,
+                            //             decoration: BoxDecoration(
+                            //               color: Colors.white,
+                            //               borderRadius: BorderRadius.only(
+                            //                 bottomLeft: Radius.circular(40),
+                            //                 bottomRight: Radius.circular(40),
+                            //               ),
+                            //             ),
+                            //             child: Container(
+                            //               padding: EdgeInsets.only(
+                            //                   top: 10, left: 20, right: 20),
+                            //               child: Column(
+                            //                 crossAxisAlignment:
+                            //                     CrossAxisAlignment.start,
+                            //                 children: [
+                            //                   Text(
+                            //                       'บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิถันยรักษ์ฯ',
+                            //                       maxLines: 2,
+                            //                       overflow:
+                            //                           TextOverflow.ellipsis,
+                            //                       style: GoogleFonts.kanit(
+                            //                           fontSize: 16,
+                            //                           fontWeight:
+                            //                               FontWeight.w500,
+                            //                           color:
+                            //                               Color(0xff0088C6))),
+                            //                   SizedBox(height: 5),
+                            //                   Text(
+                            //                       'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
+                            //                       maxLines: 2,
+                            //                       overflow:
+                            //                           TextOverflow.ellipsis,
+                            //                       style: GoogleFonts.kanit(
+                            //                           fontSize: 14,
+                            //                           color: Colors.black)),
+                            //                   SizedBox(height: 5),
+                            //                   Row(
+                            //                     mainAxisAlignment:
+                            //                         MainAxisAlignment.start,
+                            //                     children: [
+                            //                       FaIcon(
+                            //                         FontAwesomeIcons.solidClock,
+                            //                         size: 12,
+                            //                         color: Color(0xff0088C6),
+                            //                       ),
+                            //                       SizedBox(
+                            //                         width: 5,
+                            //                       ),
+                            //                       Text(
+                            //                         "16-06-2564",
+                            //                         overflow:
+                            //                             TextOverflow.ellipsis,
+                            //                         style: GoogleFonts.kanit(
+                            //                           fontSize: 12,
+                            //                           fontWeight:
+                            //                               FontWeight.w500,
+                            //                           color: Colors.grey,
+                            //                         ),
+                            //                       ),
+                            //                       SizedBox(
+                            //                         width: 10,
+                            //                       ),
+                            //                       FaIcon(
+                            //                         FontAwesomeIcons.solidEye,
+                            //                         size: 12,
+                            //                         color: Color(0xff0088C6),
+                            //                       ),
+                            //                       SizedBox(
+                            //                         width: 5,
+                            //                       ),
+                            //                       Text(
+                            //                         "50,000",
+                            //                         overflow:
+                            //                             TextOverflow.ellipsis,
+                            //                         style: GoogleFonts.kanit(
+                            //                           fontSize: 12,
+                            //                           fontWeight:
+                            //                               FontWeight.w500,
+                            //                           color: Colors.grey,
+                            //                         ),
+                            //                       ),
+                            //                     ],
+                            //                   ),
+                            //                 ],
+                            //               ),
+                            //             )),
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
+                            // SizedBox(height: 20),
                           ],
                         ),
                       ),

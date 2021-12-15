@@ -107,11 +107,11 @@ class _AboutPageState extends State<AboutPage> {
                                         children: [
                                           GestureDetector(
                                             onTap: () {
-                                              // Navigator.push(
-                                              //     context,
-                                              //     CupertinoPageRoute(
-                                              //         builder: (context) =>
-                                              //             MenuPage()));
+                                              Navigator.push(
+                                                  context,
+                                                  CupertinoPageRoute(
+                                                      builder: (context) =>
+                                                          MenuPage()));
                                             },
                                             child: Container(
                                               width: 20,

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:thanyarak/bodys/alert_page.dart';
 import 'package:thanyarak/bodys/menu_page.dart';
 import 'package:thanyarak/bodys/notification_page.dart';
 import 'package:thanyarak/bodys/signin_page.dart';
@@ -15,6 +16,8 @@ class MemderPage extends StatefulWidget {
   @override
   _MemderPageState createState() => _MemderPageState();
 }
+
+String checklogin = '';
 
 class _MemderPageState extends State<MemderPage> {
   @override
@@ -34,7 +37,7 @@ class _MemderPageState extends State<MemderPage> {
           children: [
             //พื้นหลัง
             Container(
-              height: MediaQuery.of(context).size.height,
+              height: MediaQuery.of(context).size.height / 2,
               padding: EdgeInsets.only(top: 20, left: 15, right: 15),
               decoration: BoxDecoration(
                 image: DecorationImage(
@@ -89,7 +92,10 @@ class _MemderPageState extends State<MemderPage> {
                                           context,
                                           CupertinoPageRoute(
                                               builder: (context) =>
-                                                  NotiPage()));
+                                                  checklogin == '' ||
+                                                          checklogin == null
+                                                      ? NotiPage()
+                                                      : alert_page()));
                                     },
                                     child: Container(
                                       width: 20,
@@ -137,7 +143,7 @@ class _MemderPageState extends State<MemderPage> {
                   Expanded(
                     child: Container(
                       width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
+                      height: MediaQuery.of(context).size.height / 2,
                       padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -154,25 +160,28 @@ class _MemderPageState extends State<MemderPage> {
                             // color: Colors.red,
                             child: Column(
                               children: [
-                                Container(
-                                  margin: EdgeInsets.only(
-                                      top: 50, left: 50, right: 50),
-                                  width: 300,
-                                  height: 300,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        alignment: Alignment.center,
-                                        scale: 1.5,
-                                        image: AssetImage('images/lock01.png')),
-                                    color: Colors.green,
-                                    shape: BoxShape.circle,
-                                    gradient: LinearGradient(
-                                        begin: Alignment.bottomCenter,
-                                        end: Alignment.topCenter,
-                                        colors: [
-                                          Colors.grey.shade100,
-                                          Colors.white,
-                                        ]),
+                                Expanded(
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        top: 50, left: 50, right: 50),
+                                    width: 300,
+                                    height: 300,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          alignment: Alignment.center,
+                                          scale: 1.5,
+                                          image:
+                                              AssetImage('images/lock01.png')),
+                                      color: Colors.green,
+                                      shape: BoxShape.circle,
+                                      gradient: LinearGradient(
+                                          begin: Alignment.bottomCenter,
+                                          end: Alignment.topCenter,
+                                          colors: [
+                                            Colors.grey.shade100,
+                                            Colors.white,
+                                          ]),
+                                    ),
                                   ),
                                 ),
                                 Container(
@@ -204,10 +213,10 @@ class _MemderPageState extends State<MemderPage> {
                     color: Colors.white,
                     child: GestureDetector(
                       onTap: () {
-                        // Navigator.push(
-                        //     context,
-                        //     CupertinoPageRoute(
-                        //         builder: (context) => otp_pages()));
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) => SignInPage()));
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width,

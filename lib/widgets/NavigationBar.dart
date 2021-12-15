@@ -1,6 +1,8 @@
+//@dart=2.9
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:thanyarak/bodys/about_page.dart';
 import 'package:thanyarak/bodys/article_page.dart';
 import 'package:thanyarak/bodys/donate_page.dart';
@@ -21,8 +23,23 @@ bool articleck = false;
 bool doneck = false;
 bool detailck = false;
 bool memberck = false;
+String checklogin = '';
 
 class _NavigagitonBarState extends State<NavigagitonBar> {
+  Future getDATA() async {
+    final SharedPreferences per = await SharedPreferences.getInstance();
+    setState(() {
+      checklogin = per.getString('id');
+      print(checklogin);
+    });
+  }
+
+  @override
+  void initState() {
+    getDATA();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -236,7 +253,10 @@ class _NavigagitonBarState extends State<NavigagitonBar> {
                 Navigator.push(
                   context,
                   PageTransition(
-                      type: PageTransitionType.fade, child: menumember_pages()),
+                      type: PageTransitionType.fade,
+                      child: checklogin == '' || checklogin == null
+                          ? MemderPage()
+                          : menumember_pages()),
                 );
                 setState(() {
                   memberck = true;

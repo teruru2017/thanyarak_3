@@ -137,8 +137,8 @@ class MenuLoginPage extends StatelessWidget {
         children: [
           ListTile(
             onTap: () {
-              Navigator.push(context,
-                  CupertinoPageRoute(builder: (context) => ArticleWidget()));
+              // Navigator.push(context,
+              //     CupertinoPageRoute(builder: (context) => ArticleWidget()));
             },
             leading: Container(
               child: Padding(

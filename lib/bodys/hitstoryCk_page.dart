@@ -70,7 +70,7 @@ class _hitstory_pages_pagesState extends State<hitstory_pages> {
                     //พื้นหลัง
                     Container(
                       height: MediaQuery.of(context).size.height,
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.only(top: 20, left: 15, right: 15),
                       decoration: BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage('images/bg_menu.png'),
@@ -80,72 +80,75 @@ class _hitstory_pages_pagesState extends State<hitstory_pages> {
                       child: Column(
                         children: [
                           Container(
+                            padding:
+                                EdgeInsets.only(top: 20, left: 15, right: 15),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(top: 0),
-                                  child: Container(
-                                    width: 50,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                      scale: 1.3,
-                                      image: AssetImage("images/back01.png"),
-                                      alignment: Alignment.center,
-                                    )),
+                                  padding: EdgeInsets.only(top: 5, right: 10),
+                                  child: GestureDetector(
+                                    onTap: () => Navigator.pop(context),
+                                    child: Container(
+                                      width: 30,
+                                      height: 30,
+                                      decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                        scale: 1.3,
+                                        image: AssetImage("images/back01.png"),
+                                        alignment: Alignment.center,
+                                      )),
+                                    ),
                                   ),
                                 ),
-                                Expanded(
-                                  flex: _f,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(top: 0),
-                                    child: Container(
-                                      height: 40,
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          'ประวัติการตรวจ',
-                                          overflow: TextOverflow.ellipsis,
-                                          style: GoogleFonts.kanit(
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.white,
-                                          ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 0),
+                                  child: Container(
+                                    height: 40,
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        'ประวัติการตรวจ',
+                                        overflow: TextOverflow.ellipsis,
+                                        style: GoogleFonts.kanit(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.white,
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      PageTransition(
-                                          type: PageTransitionType.fade,
-                                          child: dating_page()),
-                                    );
-                                  },
-                                  child: Expanded(
-                                    flex: _w,
+                                Expanded(
+                                  flex: _w,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        PageTransition(
+                                            type: PageTransitionType.fade,
+                                            child: dating_page()),
+                                      );
+                                    },
                                     child: Padding(
-                                      padding: EdgeInsets.only(top: 0),
+                                      padding: EdgeInsets.only(top: 5),
                                       child: Container(
-                                        height: 40,
+                                        height: 30,
                                         decoration: BoxDecoration(
-                                          color: Colors.white,
+                                          color: Color(0xFF43CEF8),
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(10)),
                                         ),
                                         child: FlatButton.icon(
-                                          icon: Icon(Icons.assignment_rounded),
+                                          icon: Image.asset('images/calen.png',
+                                              scale: 1.2),
                                           label: Flexible(
                                             child: Text(
                                               'ตารางนัดหมาย',
-                                              style: GoogleFonts.kanit(
-                                                  color: Colors.black),
                                               overflow: TextOverflow.ellipsis,
+                                              style: GoogleFonts.kanit(
+                                                  color: Colors.white),
                                             ),
                                           ),
                                         ),
@@ -156,7 +159,7 @@ class _hitstory_pages_pagesState extends State<hitstory_pages> {
                                 Expanded(
                                   flex: _w,
                                   child: Padding(
-                                    padding: EdgeInsets.only(top: 0),
+                                    padding: EdgeInsets.only(top: 5),
                                     child: GestureDetector(
                                       onTap: () {
                                         setState(
@@ -174,9 +177,9 @@ class _hitstory_pages_pagesState extends State<hitstory_pages> {
                                         );
                                       },
                                       child: Container(
-                                        height: 40,
+                                        height: 30,
                                         decoration: BoxDecoration(
-                                          color: Colors.green[200],
+                                          color: Color(0xff69E6E7),
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(10)),
                                         ),
@@ -184,12 +187,14 @@ class _hitstory_pages_pagesState extends State<hitstory_pages> {
                                           icon: Icon(
                                             Icons.check_box_outlined,
                                             color: Colors.white,
+                                            size: 20,
                                           ),
                                           label: Flexible(
                                             child: Text(
                                               'เลือก',
                                               style: GoogleFonts.kanit(
                                                   color: Colors.white),
+                                              maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
@@ -207,7 +212,7 @@ class _hitstory_pages_pagesState extends State<hitstory_pages> {
 
                     //พื้นหลังเนื้อหา
                     Padding(
-                      padding: const EdgeInsets.only(top: 100),
+                      padding: const EdgeInsets.only(top: 90),
                       child: Container(
                         height: MediaQuery.of(context).size.height,
                         padding: EdgeInsets.all(10),
@@ -223,17 +228,22 @@ class _hitstory_pages_pagesState extends State<hitstory_pages> {
                     //เนื้อหา
                     Padding(
                       padding: const EdgeInsets.only(
-                          top: 130, left: 30, right: 30, bottom: 20),
+                          top: 110, left: 15, right: 15, bottom: 20),
                       child: Column(
                         children: [
                           Container(
                             child: Column(
                               children: ListMarkLast.map(
                                 (e) => GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                            builder: (context) =>
+                                                hitstorydetail_page()));
+                                  },
                                   child: Container(
-                                    height: 100,
-                                    padding: EdgeInsets.all(5),
+                                    height: 90,
                                     margin: EdgeInsets.only(bottom: 10),
                                     decoration: BoxDecoration(
                                       color: Colors.white,
@@ -258,19 +268,41 @@ class _hitstory_pages_pagesState extends State<hitstory_pages> {
                                           height: 60,
                                           width: 60,
                                           decoration: BoxDecoration(
-                                            color: e.type == 'cancel'
-                                                ? Colors.red
+                                            gradient: e.type == 'cancel'
+                                                ? LinearGradient(
+                                                    begin:
+                                                        Alignment.bottomCenter,
+                                                    end: Alignment.topCenter,
+                                                    colors: [
+                                                        Colors.red,
+                                                        Colors.red
+                                                      ])
                                                 : e.type == 'succ'
-                                                    ? Colors.greenAccent[400]
-                                                    : Color(0xff43CEF8),
+                                                    ? LinearGradient(
+                                                        begin: Alignment
+                                                            .bottomCenter,
+                                                        end:
+                                                            Alignment.topCenter,
+                                                        colors: [
+                                                            Color(0xFF88D31D),
+                                                            Color(0xFF88D31D)
+                                                          ])
+                                                    : LinearGradient(
+                                                        begin: Alignment
+                                                            .bottomCenter,
+                                                        end:
+                                                            Alignment.topCenter,
+                                                        colors: [
+                                                            Color(0xff0088C6),
+                                                            Color(0xff43CEF8)
+                                                          ]),
                                             borderRadius: BorderRadius.all(
-                                              Radius.circular(20),
+                                              Radius.circular(15),
                                             ),
                                           ),
-                                          child: Icon(
-                                            Icons.date_range_outlined,
-                                            color: Colors.white,
-                                          ),
+                                          child: Image.asset(
+                                              'images/history__outline.png',
+                                              scale: 2),
                                         ),
                                         Expanded(
                                           child: Container(
@@ -292,10 +324,7 @@ class _hitstory_pages_pagesState extends State<hitstory_pages> {
                                                           child: Text(e.name,
                                                               style: GoogleFonts
                                                                   .kanit(
-                                                                fontSize: 20,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
+                                                                fontSize: 18,
                                                                 color: Colors
                                                                     .black,
                                                               )),
@@ -325,8 +354,8 @@ class _hitstory_pages_pagesState extends State<hitstory_pages> {
                                                             child: const Icon(
                                                               Icons
                                                                   .navigate_next,
-                                                              color:
-                                                                  Colors.blue,
+                                                              color: Color(
+                                                                  0xff0088C6),
                                                             ),
                                                           ),
                                                         ),
@@ -368,8 +397,9 @@ class _hitstory_pages_pagesState extends State<hitstory_pages> {
                                                       Icon(
                                                         Icons
                                                             .access_time_filled,
-                                                        size: 13,
-                                                        color: Colors.blue[400],
+                                                        size: 14,
+                                                        color:
+                                                            Color(0xff0088C6),
                                                       ),
                                                       SizedBox(
                                                         width: 5,
@@ -388,10 +418,7 @@ class _hitstory_pages_pagesState extends State<hitstory_pages> {
                                                                       .ellipsis,
                                                               style: GoogleFonts
                                                                   .kanit(
-                                                                fontSize: 13,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
+                                                                fontSize: 14,
                                                                 color: Colors
                                                                     .grey[400],
                                                               ),

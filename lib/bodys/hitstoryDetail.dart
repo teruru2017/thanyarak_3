@@ -46,7 +46,7 @@ class _hitstorydetail_pageState extends State<hitstorydetail_page> {
                     //พื้นหลัง
                     Container(
                       height: MediaQuery.of(context).size.height,
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.only(top: 20, left: 15, right: 15),
                       decoration: BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage('images/bg_menu.png'),
@@ -56,6 +56,7 @@ class _hitstorydetail_pageState extends State<hitstorydetail_page> {
                       child: Column(
                         children: [
                           Container(
+                            padding: EdgeInsets.only(top: 20),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.max,
@@ -69,8 +70,8 @@ class _hitstorydetail_pageState extends State<hitstorydetail_page> {
                                       });
                                     },
                                     child: Container(
-                                      width: 50,
-                                      height: 40,
+                                      width: 30,
+                                      height: 30,
                                       decoration: BoxDecoration(
                                           image: DecorationImage(
                                         scale: 1.3,
@@ -113,7 +114,7 @@ class _hitstorydetail_pageState extends State<hitstorydetail_page> {
 
                     //พื้นหลังเนื้อหา
                     Padding(
-                      padding: const EdgeInsets.only(top: 70),
+                      padding: const EdgeInsets.only(top: 90),
                       child: Container(
                         //ถ้าจอดล้นมาลบ -170 ออก
                         height: MediaQuery.of(context).size.height,
@@ -131,7 +132,7 @@ class _hitstorydetail_pageState extends State<hitstorydetail_page> {
                     //เนื้อหา
                     Padding(
                       padding: const EdgeInsets.only(
-                          top: 90, left: 15, right: 15, bottom: 20),
+                          top: 110, left: 15, right: 15, bottom: 20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -142,13 +143,16 @@ class _hitstorydetail_pageState extends State<hitstorydetail_page> {
                               Container(
                                 height: 100,
                                 // color: Colors.red,
-                                padding: EdgeInsets.all(5),
+                                //padding: EdgeInsets.all(5),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
                                       margin: EdgeInsets.only(
-                                          left: 0, bottom: 0, top: 0, right: 0),
+                                          left: 15,
+                                          bottom: 0,
+                                          top: 0,
+                                          right: 5),
                                       height: 80,
                                       width: 80,
                                       decoration: BoxDecoration(
@@ -271,7 +275,7 @@ class _hitstorydetail_pageState extends State<hitstorydetail_page> {
 
                           getText(
                               'พัฒนาวิทยาการด้านการตรวจวินิจฉัยเต้านม โดยการฝึกอบรมรังสีแพทย์และนักรังสีการแพทย์ให้มีทักษะเชี่ยวชาญทางด้านนี้',
-                              14,
+                              16,
                               Colors.black,
                               FontWeight.normal),
                           SizedBox(
@@ -279,14 +283,14 @@ class _hitstorydetail_pageState extends State<hitstorydetail_page> {
                           ),
                           getText(
                               'ตรวจวินิจฉัยโรคเต้านม ด้วยเครื่องมือแพทย์และเทคนิคที่ทันสมัย มีระบบประกันคุณภาพ เพื่อให้มีประสิทธิภาพที่ดี',
-                              14,
+                              16,
                               Colors.black,
                               FontWeight.normal),
                           SizedBox(
                             height: 10,
                           ),
                           getText(
-                              'ผลตรวจ', 14, Colors.black, FontWeight.normal),
+                              'ผลตรวจ', 16, Colors.black, FontWeight.normal),
                           SizedBox(
                             height: 10,
                           ),
@@ -298,7 +302,7 @@ class _hitstorydetail_pageState extends State<hitstorydetail_page> {
                           ),
 
                           SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.2,
+                            height: MediaQuery.of(context).size.height * 0.10,
                           ),
 
                           GestureDetector(
@@ -370,8 +374,8 @@ class _hitstorydetail_pageState extends State<hitstorydetail_page> {
     return Text(
       txt,
       style: GoogleFonts.kanit(
-        fontSize: 14,
-        fontWeight: FontWeight.w200,
+        fontSize: 16,
+        fontWeight: FontWeight.w300,
         color: Colors.grey,
       ),
     );

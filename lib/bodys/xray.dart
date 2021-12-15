@@ -37,7 +37,7 @@ class _xray_pageState extends State<xray_page> {
                     //พื้นหลัง
                     Container(
                       height: MediaQuery.of(context).size.height,
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.only(top: 20, left: 15, right: 15),
                       decoration: BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage('images/bg_menu.png'),
@@ -52,7 +52,7 @@ class _xray_pageState extends State<xray_page> {
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(top: 0),
+                                  padding: EdgeInsets.only(top: 20),
                                   child: GestureDetector(
                                     onTap: () {
                                       setState(() {
@@ -60,8 +60,8 @@ class _xray_pageState extends State<xray_page> {
                                       });
                                     },
                                     child: Container(
-                                      width: 50,
-                                      height: 40,
+                                      width: 30,
+                                      height: 30,
                                       decoration: BoxDecoration(
                                           image: DecorationImage(
                                         scale: 1.3,
@@ -74,7 +74,7 @@ class _xray_pageState extends State<xray_page> {
                                 Expanded(
                                   flex: _f,
                                   child: Padding(
-                                    padding: EdgeInsets.only(top: 0),
+                                    padding: EdgeInsets.only(top: 20),
                                     child: Container(
                                       height: 40,
                                       child: Align(
@@ -104,7 +104,7 @@ class _xray_pageState extends State<xray_page> {
 
                     //พื้นหลังเนื้อหา
                     Padding(
-                      padding: const EdgeInsets.only(top: 70),
+                      padding: const EdgeInsets.only(top: 90),
                       child: Container(
                         height: MediaQuery.of(context).size.height,
                         padding: EdgeInsets.all(10),
@@ -120,7 +120,7 @@ class _xray_pageState extends State<xray_page> {
                     //เนื้อหา
                     Padding(
                       padding: const EdgeInsets.only(
-                          top: 90, left: 15, right: 15, bottom: 20),
+                          top: 110, left: 15, right: 15, bottom: 20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[

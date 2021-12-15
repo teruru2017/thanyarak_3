@@ -1,21 +1,29 @@
 // ignore_for_file: prefer_const_constructors
-
+//@dart=2.9
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:thanyarak/bodys/CarouselWithDotsPage.dart';
 import 'package:thanyarak/bodys/about_page.dart';
+import 'package:thanyarak/bodys/alert_page.dart';
 import 'package:thanyarak/bodys/article_details_page.dart';
 import 'package:thanyarak/bodys/article_page.dart';
 import 'package:thanyarak/bodys/dating_page.dart';
+import 'package:thanyarak/bodys/detailMark.dart';
+import 'package:thanyarak/bodys/detailcheck.dart';
+import 'package:thanyarak/bodys/hitstoryDetail.dart';
+import 'package:thanyarak/bodys/mark_procedure.dart';
+import 'package:thanyarak/bodys/member_page.dart';
 import 'package:thanyarak/bodys/notification_page.dart';
 import 'package:thanyarak/bodys/shop_page.dart';
 // import 'package:thanyarak/bodys/about_page.dart';
 import 'package:thanyarak/bodys/menu_page.dart';
 import 'package:thanyarak/bodys/signin_page.dart';
+import 'package:thanyarak/bodys/xray.dart';
 import 'package:thanyarak/models/article_model.dart';
 import 'package:thanyarak/utility/my_constant.dart';
 import 'package:thanyarak/widgets/NavigationBar.dart';
@@ -28,7 +36,7 @@ import 'package:avatar_view/avatar_view.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
+  const MainPage({Key key}) : super(key: key);
 
   @override
   _MainPageState createState() => _MainPageState();
@@ -37,6 +45,7 @@ class MainPage extends StatefulWidget {
 // Map<String, WidgetBuilder> map = {
 //   '/mainHome': (BuildContext context) => const MainHome(),
 // };
+String checklogin = '';
 
 void results() {
   SignInPage();
@@ -119,11 +128,16 @@ class _MainPageState extends State<MainPage> {
   double setbottom = 600;
   @override
   void initState() {
-    // TODO: implement initState
+    getDATA();
     super.initState();
+  }
 
-    // loopCreateBanner();
-    // loopCreatePro();
+  Future getDATA() async {
+    final SharedPreferences per = await SharedPreferences.getInstance();
+    setState(() {
+      checklogin = per.getString('id');
+      print(checklogin);
+    });
   }
 
   //Widget createBannerWidget(String path) => Image.asset(path);
@@ -174,7 +188,10 @@ class _MainPageState extends State<MainPage> {
                                             shape: CircleBorder(),
                                             image: DecorationImage(
                                               image: AssetImage(
-                                                  'images/avatar.png'),
+                                                  checklogin == '' ||
+                                                          checklogin == null
+                                                      ? 'images/avatar.png'
+                                                      : 'images/loginuser.png'),
                                             )),
                                         // child: Image(
                                         //   image: AssetImage('images/avatar.png'),
@@ -193,33 +210,41 @@ class _MainPageState extends State<MainPage> {
                                     padding: EdgeInsets.only(top: 15),
                                     child: Align(
                                       //alignment: Alignment.topLeft,
-                                      child: Column(children: [
-                                        Align(
-                                          alignment: Alignment.topLeft,
-                                          child: Text(
-                                            'สวัสดีค่ะ',
-                                            maxLines: 1,
-                                            overflow: TextOverflow.visible,
-                                            style: GoogleFonts.kanit(
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.white,
+                                      child: Column(
+                                        children: [
+                                          Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Text(
+                                              checklogin == '' ||
+                                                      checklogin == null
+                                                  ? 'สวัสดีค่ะ'
+                                                  : 'สวัสดีครับ',
+                                              maxLines: 1,
+                                              overflow: TextOverflow.visible,
+                                              style: GoogleFonts.kanit(
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.white,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        Align(
-                                          alignment: Alignment.topLeft,
-                                          child: Text(
-                                            'กรุณาเข้าสู่ระบบ',
-                                            maxLines: 1,
-                                            overflow: TextOverflow.visible,
-                                            style: GoogleFonts.kanit(
-                                              fontSize: 14,
-                                              color: Colors.white70,
+                                          Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Text(
+                                              checklogin == '' ||
+                                                      checklogin == null
+                                                  ? 'กรุณาเข้าสู่ระบบ'
+                                                  : 'จอร์นาธาน วิคตอรเรีย',
+                                              maxLines: 1,
+                                              overflow: TextOverflow.visible,
+                                              style: GoogleFonts.kanit(
+                                                fontSize: 14,
+                                                color: Colors.white70,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ]),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -239,11 +264,15 @@ class _MainPageState extends State<MainPage> {
                                         children: [
                                           GestureDetector(
                                             onTap: () {
-                                              // Navigator.push(
-                                              //     context,
-                                              //     CupertinoPageRoute(
-                                              //         builder: (context) =>
-                                              //             NotiPage()));
+                                              Navigator.push(
+                                                  context,
+                                                  CupertinoPageRoute(
+                                                      builder: (context) =>
+                                                          checklogin == '' ||
+                                                                  checklogin ==
+                                                                      null
+                                                              ? NotiPage()
+                                                              : alert_page()));
                                             },
                                             child: Container(
                                               width: 20,
@@ -256,11 +285,11 @@ class _MainPageState extends State<MainPage> {
                                           SizedBox(width: 20),
                                           GestureDetector(
                                             onTap: () {
-                                              // Navigator.push(
-                                              //     context,
-                                              //     CupertinoPageRoute(
-                                              //         builder: (context) =>
-                                              //             MenuPage()));
+                                              Navigator.push(
+                                                  context,
+                                                  CupertinoPageRoute(
+                                                      builder: (context) =>
+                                                          MenuPage()));
                                             },
                                             child: Container(
                                               width: 20,
@@ -346,15 +375,9 @@ class _MainPageState extends State<MainPage> {
                                               vertical: 5.0, horizontal: 2.0),
                                           decoration: BoxDecoration(
                                               shape: BoxShape.circle,
-                                              color: (Theme.of(context)
-                                                              .brightness ==
-                                                          Brightness.dark
-                                                      ? Colors.white
-                                                      : Colors.blue.shade400)
-                                                  .withOpacity(
-                                                      _currents == entry.key
-                                                          ? 0.9
-                                                          : 0.4)),
+                                              color: _currents == entry.key
+                                                  ? Colors.pink[200]
+                                                  : Colors.blue),
                                         ),
                                       );
                                     }).toList(),
@@ -437,7 +460,7 @@ class _MainPageState extends State<MainPage> {
                                             width: MediaQuery.of(context)
                                                 .size
                                                 .width,
-                                            height: 150,
+                                            height: 130,
                                             decoration: BoxDecoration(
                                               // color: Colors.white,
                                               image: DecorationImage(
@@ -928,8 +951,56 @@ class _MainPageState extends State<MainPage> {
           ),
       child: Column(
         children: [
-          const ShowHead(title: 'การนัดหมาย', pathIcon: 'images/calendar.png'),
-          buildNonAppointCard(),
+          Row(
+            children: [
+              Expanded(
+                  child: ShowHead(
+                      title: 'การนัดหมาย', pathIcon: 'images/calendar.png')),
+              checklogin == '' || checklogin == null
+                  ? Visibility(
+                      visible: false,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => dating_page()));
+                        },
+                        child: Container(
+                          padding: EdgeInsets.only(right: 15),
+                          // color: Colors.amber,
+                          child: Text('ดูทั้งหมด',
+                              style: GoogleFonts.kanit(
+                                color: Colors.black38,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              )),
+                        ),
+                      ),
+                    )
+                  : GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => dating_page()));
+                      },
+                      child: Container(
+                        padding: EdgeInsets.only(right: 15),
+                        // color: Colors.amber,
+                        child: Text('ดูทั้งหมด',
+                            style: GoogleFonts.kanit(
+                              color: Colors.black38,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            )),
+                      ),
+                    ),
+            ],
+          ),
+          checklogin == '' || checklogin == null
+              ? buildNonAppointCard()
+              : logincard(),
           groupIcon(),
         ],
       ),
@@ -951,7 +1022,17 @@ class _MainPageState extends State<MainPage> {
       // child: GestureDetector(
 
       children: [
-        Image.asset('images/list.png'),
+        GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          checklogin == '' || checklogin == null
+                              ? MemderPage()
+                              : detailcheck_page()));
+            },
+            child: Image.asset('images/list.png')),
         const SizedBox(
           height: 5,
         ),
@@ -966,7 +1047,27 @@ class _MainPageState extends State<MainPage> {
   Column addAppointMent() {
     return Column(
       children: [
-        Image.asset('images/calenda.png'),
+        GestureDetector(
+            onTap: () {
+              checklogin == '' || checklogin == null
+                  ? Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MemderPage()))
+                  : setState(
+                      () {
+                        showGeneralDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            barrierLabel: MaterialLocalizations.of(context)
+                                .modalBarrierDismissLabel,
+                            barrierColor: Colors.transparent,
+                            transitionDuration: Duration(milliseconds: 200),
+                            pageBuilder: (BuildContext context, Animation frist,
+                                    Animation second) =>
+                                Addmark());
+                      },
+                    );
+            },
+            child: Image.asset('images/calenda.png')),
         const SizedBox(
           height: 5,
         ),
@@ -981,7 +1082,17 @@ class _MainPageState extends State<MainPage> {
   Column myNotification() {
     return Column(
       children: [
-        Image.asset('images/noti.png'),
+        GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          checklogin == '' || checklogin == null
+                              ? NotiPage()
+                              : alert_page()));
+            },
+            child: Image.asset('images/noti.png')),
         const SizedBox(
           height: 5,
         ),
@@ -1049,7 +1160,7 @@ class _MainPageState extends State<MainPage> {
                 // Navigator.push(context,
                 //     CupertinoPageRoute(builder: (context) => SignInPage()));
                 Navigator.push(context,
-                    CupertinoPageRoute(builder: (context) => dating_page()));
+                    CupertinoPageRoute(builder: (context) => SignInPage()));
               },
               child: Container(
                 width: double.infinity,
@@ -1084,31 +1195,97 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  // CarouselSlider builBanner() {
-  //   return CarouselSlider(
-  //       items: widgets,
-  //       options: CarouselOptions(
-  //           viewportFraction: 1,
-  //           autoPlay: true,
-  //           autoPlayInterval: Duration(seconds: 3)));
-  // }
-
-  String cutWord(String detailAritcl) {
-    String resutl = detailAritcl;
-    if (resutl.length >= 150) {
-      resutl = resutl.substring(0, 75);
-      resutl = '$resutl ....';
-    }
-    return resutl;
-  }
-
-  String cutWordH(String titleAritcles) {
-    String resutl = titleAritcles;
-    if (resutl.length >= 50) {
-      resutl = resutl.substring(0, 25);
-      resutl = '$resutl ....';
-    }
-    return resutl;
+  Padding logincard() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 0, right: 0),
+      child: Card(
+        elevation: 3,
+        margin: EdgeInsets.all(3),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Column(
+          children: [
+            ListTile(
+              leading: Container(
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(10),
+                  gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(14.0),
+                  child: Container(
+                      width: 15, child: Image.asset('images/box_calenda.png')),
+                ),
+              ),
+              title: ShowTitle(
+                  title: 'Mammogram Ultrasound',
+                  textStyle: GoogleFonts.kanit(
+                      fontSize: 16, fontWeight: FontWeight.w500)),
+              subtitle: ShowTitle(
+                  title: 'วัน | เวลา',
+                  textStyle: GoogleFonts.kanit(
+                      fontSize: 14, color: Color(0xffB7B7B7))),
+              trailing: Column(
+                children: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade50,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: const Icon(
+                        Icons.navigate_next,
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                // Navigator.push(context,
+                //     CupertinoPageRoute(builder: (context) => SignInPage()));
+                Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                        builder: (context) => detailMark_page()));
+              },
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(vertical: 15),
+                margin: EdgeInsets.symmetric(horizontal: 15),
+                //width: 320,
+                //padding: EdgeInsets.symmetric(vertical: 15),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  color: Color(0xffE6EFFE),
+                  gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
+                ),
+                child: Text(
+                  "รายละเอียดการนัดหมาย",
+                  style: GoogleFonts.kanit(
+                    textStyle: Theme.of(context).textTheme.headline4,
+                    fontSize: 16,
+                    color: Color(0xffFFFFFF),
+                    // fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 15),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -1208,3 +1385,268 @@ final List<Widget> imageSliders = imgLists
           ),
         ))
     .toList();
+
+class Addmark extends StatefulWidget {
+  Addmark({Key key}) : super(key: key);
+
+  @override
+  _AddmarkState createState() => _AddmarkState();
+}
+
+class _AddmarkState extends State<Addmark> {
+  @override
+  int getAction = 1;
+  Widget build(BuildContext context) => WillPopScope(
+      child: Visibility(
+        visible: true,
+        child: Scaffold(
+          backgroundColor: Colors.black38,
+          body: Stack(
+            children: <Widget>[
+              Center(
+                child: Container(
+                    padding: const EdgeInsets.all(10),
+                    width: MediaQuery.of(context).size.width * 0.95,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            top: 30, left: 20, right: 20, bottom: 15),
+                        child: Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(bottom: 10),
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image:
+                                          AssetImage('images/Calandar.png'))),
+                              height: 80,
+                              width: 80,
+                            ),
+                            Text(
+                              "เพิ่มการนัดหมาย",
+                              style: GoogleFonts.kanit(
+                                  color: Color(0xff0088C6), fontSize: 20),
+                            ),
+                            Text(
+                              "หากท่านต้องการนัดหมายทำหัตถการ",
+                              style: GoogleFonts.kanit(
+                                  color: Colors.black, fontSize: 14),
+                            ),
+                            Text(
+                              "กับทางศูนย์ถันยรักษ์ กรุณาส่งภาพถ่าย",
+                              style: GoogleFonts.kanit(
+                                  color: Colors.black, fontSize: 14),
+                            ),
+                            Text(
+                              "ใบส่งตรวจวินิขฉัยหรือติดต่อที่เบอร์",
+                              style: GoogleFonts.kanit(
+                                  color: Colors.black, fontSize: 14),
+                            ),
+                            Text(
+                              "02 411 5657",
+                              style: GoogleFonts.kanit(
+                                  color: Colors.black, fontSize: 18),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            )
+                            //ปุ่ม
+                            ,
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        getAction = 1;
+                                      });
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 15),
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          width: 1,
+                                          color: getAction == 1
+                                              ? Color(0xff0394fc)
+                                              : Colors.grey.shade300,
+                                        ),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                        color: Colors.white,
+                                      ),
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          'นัดหมายหัตถการ',
+                                          style: GoogleFonts.kanit(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                            color: getAction == 1
+                                                ? Color(0xff0088C6)
+                                                : Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        getAction = 2;
+                                      });
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 15),
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          width: 1,
+                                          color: getAction == 2
+                                              ? Color(0xff0394fc)
+                                              : Colors.grey.shade300,
+                                        ),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                        color: Colors.white,
+                                      ),
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          'เอกซเรย์เต้านม',
+                                          style: GoogleFonts.kanit(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                            color: getAction == 2
+                                                ? Color(0xff0088C6)
+                                                : Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  if (getAction == 1) {
+                                    Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                            builder: (context) =>
+                                                mark_procedure_page()));
+                                  } else {
+                                    Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                            builder: (context) => xray_page()));
+                                  }
+                                });
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(top: 30),
+                                width: MediaQuery.of(context).size.width,
+                                padding: EdgeInsets.symmetric(vertical: 15),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                  color: Color(0xffE6EFFE),
+                                  gradient: LinearGradient(
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                      colors: [
+                                        Color(0xff0088C6),
+                                        Color(0xff43CEF8)
+                                      ]),
+                                ),
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'ยืนยัน',
+                                    style: GoogleFonts.kanit(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  Navigator.pop(context);
+                                });
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(top: 10),
+                                width: MediaQuery.of(context).size.width,
+                                padding: EdgeInsets.symmetric(vertical: 15),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    //
+                                    color: Colors.white),
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'ยกเลิก',
+                                    style: GoogleFonts.kanit(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )),
+              ),
+            ],
+          ),
+        ),
+      ),
+      onWillPop: () async {
+        Navigator.pop(context);
+        showGeneralDialog(
+            context: context,
+            barrierDismissible: false,
+            barrierLabel:
+                MaterialLocalizations.of(context).modalBarrierDismissLabel,
+            barrierColor: Colors.transparent,
+            transitionDuration: Duration(milliseconds: 200),
+            pageBuilder:
+                (BuildContext context, Animation frist, Animation second) =>
+                    dating_page());
+        return true;
+      });
+
+  // BoxShadow BoxShadow2() {
+  //   return BoxShadow(
+  //     color: Colors.white,
+  //     offset: const Offset(0.0, 0.0),
+  //     blurRadius: 0.0,
+  //     spreadRadius: 0.0,
+  //   );
+  // } //BoxShadow
+
+}

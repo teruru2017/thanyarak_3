@@ -39,8 +39,7 @@ class MarkWidget extends StatelessWidget {
           (e) => GestureDetector(
             onTap: () {},
             child: Container(
-              height: 100,
-              padding: EdgeInsets.all(5),
+              height: 90,
               margin: EdgeInsets.only(bottom: 10),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -69,13 +68,10 @@ class MarkWidget extends StatelessWidget {
                               ? Colors.greenAccent[400]
                               : Color(0xff43CEF8),
                       borderRadius: BorderRadius.all(
-                        Radius.circular(20),
+                        Radius.circular(15),
                       ),
                     ),
-                    child: Icon(
-                      Icons.date_range_outlined,
-                      color: Colors.white,
-                    ),
+                    child: Image.asset('images/history__outline.png', scale: 2),
                   ),
                   Expanded(
                     child: Container(
@@ -92,8 +88,7 @@ class MarkWidget extends StatelessWidget {
                                     alignment: Alignment.centerLeft,
                                     child: Text(e.name,
                                         style: GoogleFonts.kanit(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18,
                                           color: Colors.black,
                                         )),
                                   ),
@@ -102,12 +97,12 @@ class MarkWidget extends StatelessWidget {
                                   onPressed: () {},
                                   icon: Container(
                                     decoration: BoxDecoration(
-                                      color: Colors.grey.shade50,
+                                      color: Colors.grey.shade100,
                                       borderRadius: BorderRadius.circular(5),
                                     ),
                                     child: const Icon(
                                       Icons.navigate_next,
-                                      color: Colors.blue,
+                                      color: Color(0xff0088C6),
                                     ),
                                   ),
                                 ),
@@ -119,8 +114,8 @@ class MarkWidget extends StatelessWidget {
                               children: [
                                 Icon(
                                   Icons.access_time_filled,
-                                  size: 13,
-                                  color: Colors.blue[400],
+                                  size: 14,
+                                  color: Color(0xff0088C6),
                                 ),
                                 SizedBox(
                                   width: 5,
@@ -133,8 +128,7 @@ class MarkWidget extends StatelessWidget {
                                         e.date + ' | ' + e.time,
                                         overflow: TextOverflow.ellipsis,
                                         style: GoogleFonts.kanit(
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14,
                                           color: Colors.grey[400],
                                         ),
                                       ),
@@ -164,8 +158,7 @@ class MarkWidget extends StatelessWidget {
           (e) => GestureDetector(
             onTap: () {},
             child: Container(
-              height: 100,
-              padding: EdgeInsets.all(5),
+              height: 90,
               margin: EdgeInsets.only(bottom: 10),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -188,19 +181,31 @@ class MarkWidget extends StatelessWidget {
                     height: 60,
                     width: 60,
                     decoration: BoxDecoration(
-                      color: e.type == 'cancel'
-                          ? Colors.red
+                      gradient: e.type == 'cancel'
+                          ? LinearGradient(
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                              colors: [Colors.red, Colors.red])
                           : e.type == 'succ'
-                              ? Colors.greenAccent[400]
-                              : Color(0xff43CEF8),
+                              ? LinearGradient(
+                                  begin: Alignment.bottomCenter,
+                                  end: Alignment.topCenter,
+                                  colors: [
+                                      Color(0xFF88D31D),
+                                      Color(0xFF88D31D)
+                                    ])
+                              : LinearGradient(
+                                  begin: Alignment.bottomCenter,
+                                  end: Alignment.topCenter,
+                                  colors: [
+                                      Color(0xff0088C6),
+                                      Color(0xff43CEF8)
+                                    ]),
                       borderRadius: BorderRadius.all(
-                        Radius.circular(20),
+                        Radius.circular(15),
                       ),
                     ),
-                    child: Icon(
-                      Icons.date_range_outlined,
-                      color: Colors.white,
-                    ),
+                    child: Image.asset('images/history__outline.png', scale: 2),
                   ),
                   Expanded(
                     child: Container(
@@ -217,8 +222,7 @@ class MarkWidget extends StatelessWidget {
                                     alignment: Alignment.centerLeft,
                                     child: Text(e.name,
                                         style: GoogleFonts.kanit(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18,
                                           color: Colors.black,
                                         )),
                                   ),
@@ -232,7 +236,7 @@ class MarkWidget extends StatelessWidget {
                                     ),
                                     child: const Icon(
                                       Icons.navigate_next,
-                                      color: Colors.blue,
+                                      color: Color(0xff0088C6),
                                     ),
                                   ),
                                 ),
@@ -244,8 +248,8 @@ class MarkWidget extends StatelessWidget {
                               children: [
                                 Icon(
                                   Icons.access_time_filled,
-                                  size: 13,
-                                  color: Colors.blue[400],
+                                  size: 14,
+                                  color: Color(0xff0088C6),
                                 ),
                                 SizedBox(
                                   width: 5,
@@ -258,8 +262,7 @@ class MarkWidget extends StatelessWidget {
                                         e.date + ' | ' + e.time,
                                         overflow: TextOverflow.ellipsis,
                                         style: GoogleFonts.kanit(
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14,
                                           color: Colors.grey[400],
                                         ),
                                       ),
@@ -292,8 +295,7 @@ class MarkWidget extends StatelessWidget {
                   CupertinoPageRoute(builder: (context) => detailMark_page()));
             },
             child: Container(
-              height: 100,
-              padding: EdgeInsets.all(5),
+              height: 90,
               margin: EdgeInsets.only(bottom: 10),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -316,19 +318,31 @@ class MarkWidget extends StatelessWidget {
                     height: 60,
                     width: 60,
                     decoration: BoxDecoration(
-                      color: e.type == 'cancel'
-                          ? Colors.red
+                      gradient: e.type == 'cancel'
+                          ? LinearGradient(
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                              colors: [Colors.red, Colors.red])
                           : e.type == 'succ'
-                              ? Colors.greenAccent[400]
-                              : Color(0xff43CEF8),
+                              ? LinearGradient(
+                                  begin: Alignment.bottomCenter,
+                                  end: Alignment.topCenter,
+                                  colors: [
+                                      Color(0xFF88D31D),
+                                      Color(0xFF88D31D)
+                                    ])
+                              : LinearGradient(
+                                  begin: Alignment.bottomCenter,
+                                  end: Alignment.topCenter,
+                                  colors: [
+                                      Color(0xff0088C6),
+                                      Color(0xff43CEF8)
+                                    ]),
                       borderRadius: BorderRadius.all(
-                        Radius.circular(20),
+                        Radius.circular(15),
                       ),
                     ),
-                    child: Icon(
-                      Icons.date_range_outlined,
-                      color: Colors.white,
-                    ),
+                    child: Image.asset('images/history__outline.png', scale: 2),
                   ),
                   Expanded(
                     child: Container(
@@ -345,8 +359,7 @@ class MarkWidget extends StatelessWidget {
                                     alignment: Alignment.centerLeft,
                                     child: Text(e.name,
                                         style: GoogleFonts.kanit(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18,
                                           color: Colors.black,
                                         )),
                                   ),
@@ -360,7 +373,7 @@ class MarkWidget extends StatelessWidget {
                                     ),
                                     child: const Icon(
                                       Icons.navigate_next,
-                                      color: Colors.blue,
+                                      color: Color(0xff0088C6),
                                     ),
                                   ),
                                 ),
@@ -372,8 +385,8 @@ class MarkWidget extends StatelessWidget {
                               children: [
                                 Icon(
                                   Icons.access_time_filled,
-                                  size: 13,
-                                  color: Colors.blue[400],
+                                  size: 14,
+                                  color: Color(0xff0088C6),
                                 ),
                                 SizedBox(
                                   width: 5,
@@ -386,8 +399,7 @@ class MarkWidget extends StatelessWidget {
                                         e.date + ' | ' + e.time,
                                         overflow: TextOverflow.ellipsis,
                                         style: GoogleFonts.kanit(
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14,
                                           color: Colors.grey[400],
                                         ),
                                       ),
@@ -417,8 +429,7 @@ class MarkWidget extends StatelessWidget {
           (e) => GestureDetector(
             onTap: () {},
             child: Container(
-              height: 100,
-              padding: EdgeInsets.all(5),
+              height: 90,
               margin: EdgeInsets.only(bottom: 10),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -441,19 +452,31 @@ class MarkWidget extends StatelessWidget {
                     height: 60,
                     width: 60,
                     decoration: BoxDecoration(
-                      color: e.type == 'cancel'
-                          ? Colors.red
+                      gradient: e.type == 'cancel'
+                          ? LinearGradient(
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                              colors: [Colors.red, Colors.red])
                           : e.type == 'succ'
-                              ? Colors.greenAccent[400]
-                              : Color(0xff43CEF8),
+                              ? LinearGradient(
+                                  begin: Alignment.bottomCenter,
+                                  end: Alignment.topCenter,
+                                  colors: [
+                                      Color(0xFF88D31D),
+                                      Color(0xFF88D31D)
+                                    ])
+                              : LinearGradient(
+                                  begin: Alignment.bottomCenter,
+                                  end: Alignment.topCenter,
+                                  colors: [
+                                      Color(0xff0088C6),
+                                      Color(0xff43CEF8)
+                                    ]),
                       borderRadius: BorderRadius.all(
-                        Radius.circular(20),
+                        Radius.circular(15),
                       ),
                     ),
-                    child: Icon(
-                      Icons.date_range_outlined,
-                      color: Colors.white,
-                    ),
+                    child: Image.asset('images/history__outline.png', scale: 2),
                   ),
                   Expanded(
                     child: Container(
@@ -470,8 +493,7 @@ class MarkWidget extends StatelessWidget {
                                     alignment: Alignment.centerLeft,
                                     child: Text(e.name,
                                         style: GoogleFonts.kanit(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18,
                                           color: Colors.black,
                                         )),
                                   ),
@@ -485,7 +507,7 @@ class MarkWidget extends StatelessWidget {
                                     ),
                                     child: const Icon(
                                       Icons.navigate_next,
-                                      color: Colors.blue,
+                                      color: Color(0xff0088C6),
                                     ),
                                   ),
                                 ),
@@ -497,8 +519,8 @@ class MarkWidget extends StatelessWidget {
                               children: [
                                 Icon(
                                   Icons.access_time_filled,
-                                  size: 13,
-                                  color: Colors.blue[400],
+                                  size: 14,
+                                  color: Color(0xff0088C6),
                                 ),
                                 SizedBox(
                                   width: 5,
@@ -511,8 +533,7 @@ class MarkWidget extends StatelessWidget {
                                         e.date + ' | ' + e.time,
                                         overflow: TextOverflow.ellipsis,
                                         style: GoogleFonts.kanit(
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14,
                                           color: Colors.grey[400],
                                         ),
                                       ),

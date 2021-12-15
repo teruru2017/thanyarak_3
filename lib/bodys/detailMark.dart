@@ -48,7 +48,7 @@ class _detailMarkk_pageState extends State<detailMark_page> {
                     //พื้นหลัง
                     Container(
                       height: MediaQuery.of(context).size.height,
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.only(top: 20, left: 15, right: 15),
                       decoration: BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage('images/bg_menu.png'),
@@ -63,7 +63,7 @@ class _detailMarkk_pageState extends State<detailMark_page> {
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(top: 0),
+                                  padding: EdgeInsets.only(top: 20),
                                   child: GestureDetector(
                                     onTap: () {
                                       setState(() {
@@ -85,7 +85,7 @@ class _detailMarkk_pageState extends State<detailMark_page> {
                                 Expanded(
                                   flex: _f,
                                   child: Padding(
-                                    padding: EdgeInsets.only(top: 0),
+                                    padding: EdgeInsets.only(top: 20),
                                     child: Container(
                                       height: 40,
                                       child: Align(
@@ -115,7 +115,7 @@ class _detailMarkk_pageState extends State<detailMark_page> {
 
                     //พื้นหลังเนื้อหา
                     Padding(
-                      padding: const EdgeInsets.only(top: 70),
+                      padding: const EdgeInsets.only(top: 90),
                       child: Container(
                         //ถ้าจอดล้นมาลบ -170 ออก
                         height: MediaQuery.of(context).size.height,
@@ -133,7 +133,7 @@ class _detailMarkk_pageState extends State<detailMark_page> {
                     //เนื้อหา
                     Padding(
                       padding: const EdgeInsets.only(
-                          top: 90, left: 15, right: 15, bottom: 20),
+                          top: 110, left: 15, right: 15, bottom: 20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -149,28 +149,29 @@ class _detailMarkk_pageState extends State<detailMark_page> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
-                                      margin: EdgeInsets.only(
-                                          left: 0, bottom: 0, top: 0, right: 0),
-                                      height: 80,
-                                      width: 80,
-                                      decoration: BoxDecoration(
-                                        // color: Colors.blue[400],
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(20),
+                                        margin: EdgeInsets.only(
+                                            left: 0,
+                                            bottom: 0,
+                                            top: 0,
+                                            right: 0),
+                                        height: 80,
+                                        width: 80,
+                                        decoration: BoxDecoration(
+                                          // color: Colors.blue[400],
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(20),
+                                          ),
+                                          gradient: LinearGradient(
+                                              begin: Alignment.bottomCenter,
+                                              end: Alignment.topCenter,
+                                              colors: [
+                                                Color(0xff0088C6),
+                                                Color(0xff43CEF8)
+                                              ]),
                                         ),
-                                        gradient: LinearGradient(
-                                            begin: Alignment.bottomCenter,
-                                            end: Alignment.topCenter,
-                                            colors: [
-                                              Color(0xff0088C6),
-                                              Color(0xff43CEF8)
-                                            ]),
-                                      ),
-                                      child: Icon(
-                                        Icons.date_range_outlined,
-                                        color: Colors.white,
-                                      ),
-                                    ),
+                                        child: Image.asset(
+                                            'images/history__outline.png',
+                                            scale: 1.3)),
                                     Expanded(
                                       child: Container(
                                         padding: EdgeInsets.only(
@@ -188,7 +189,7 @@ class _detailMarkk_pageState extends State<detailMark_page> {
                                               child: Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
-                                                  'Tesหหหหหหหหหหt01',
+                                                  'Memmogram Ultrasound',
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   style: GoogleFonts.kanit(
@@ -273,11 +274,12 @@ class _detailMarkk_pageState extends State<detailMark_page> {
 
                           getText(
                               'พัฒนาวิทยาการด้านการตรวจวินิจฉัยเต้านม โดยการฝึกอบรมรังสีแพทย์และนักรังสีการแพทย์ให้มีทักษะเชี่ยวชาญทางด้านนี้',
-                              14,
+                              16,
                               Colors.black,
-                              FontWeight.normal),
+                              FontWeight.w300),
+                          SizedBox(height: 10),
                           getText('การเตรียมตัวสำหรับผู้มาตรวจเอกซเรย์เต้านม',
-                              16, Colors.black, FontWeight.normal),
+                              16, Colors.black, FontWeight.w300),
                           getTextcontent(
                             '1.สวมเสื้อผ้าแยกชิ้น (เสื้อ กางเกง หรือเสื้อ กระโปรง)ไม่สวมชุดเดรส',
                           ),
@@ -287,8 +289,9 @@ class _detailMarkk_pageState extends State<detailMark_page> {
                           getTextcontent(
                             '3.ทานอาหารตามปกติ',
                           ),
+                          SizedBox(height: 10),
                           getText('เอกสารที่เกี่ยวข้อง', 16, Colors.black,
-                              FontWeight.normal),
+                              FontWeight.w300),
                           getTextcontent(
                             '1.ใบส่งตรวจวินิจฉัย (ถ้ามี)',
                           ),
@@ -474,8 +477,8 @@ class _detailMarkk_pageState extends State<detailMark_page> {
     return Text(
       txt,
       style: GoogleFonts.kanit(
-        fontSize: 14,
-        fontWeight: FontWeight.w200,
+        fontSize: 16,
+        fontWeight: FontWeight.w300,
         color: Colors.grey,
       ),
     );
@@ -540,7 +543,7 @@ class _CancelMarkState extends State<CancelMark> {
                             Row(
                               children: [
                                 Transform.scale(
-                                  scale: 0.8,
+                                  scale: 1,
                                   child: Radio<SingingCharacter>(
                                     focusColor: Colors.amber,
                                     value: SingingCharacter.buse01,
@@ -558,7 +561,7 @@ class _CancelMarkState extends State<CancelMark> {
                                     child: Text(
                                   'ติดธุระ',
                                   style: GoogleFonts.kanit(
-                                    fontSize: 12,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                     color: Colors.grey,
                                   ),
@@ -568,7 +571,7 @@ class _CancelMarkState extends State<CancelMark> {
                             Row(
                               children: [
                                 Transform.scale(
-                                  scale: 0.8,
+                                  scale: 1,
                                   child: Radio<SingingCharacter>(
                                     activeColor: Color(0xff0088C6),
                                     value: SingingCharacter.buse02,
@@ -586,7 +589,7 @@ class _CancelMarkState extends State<CancelMark> {
                                     child: Text(
                                   'เดินทางไม่สะดวก',
                                   style: GoogleFonts.kanit(
-                                    fontSize: 12,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                     color: Colors.grey,
                                   ),
@@ -596,7 +599,7 @@ class _CancelMarkState extends State<CancelMark> {
                             Row(
                               children: [
                                 Transform.scale(
-                                  scale: 0.8,
+                                  scale: 1,
                                   child: Radio<SingingCharacter>(
                                     activeColor: Color(0xff0088C6),
                                     value: SingingCharacter.buse03,
@@ -614,7 +617,7 @@ class _CancelMarkState extends State<CancelMark> {
                                     child: Text(
                                   'เจ็บป่วย / ไม่สบาย',
                                   style: GoogleFonts.kanit(
-                                    fontSize: 12,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                     color: Colors.grey,
                                   ),
@@ -624,7 +627,7 @@ class _CancelMarkState extends State<CancelMark> {
                             Row(
                               children: [
                                 Transform.scale(
-                                  scale: 0.8,
+                                  scale: 1,
                                   child: Radio<SingingCharacter>(
                                     activeColor: Color(0xff0088C6),
                                     value: SingingCharacter.buse04,
@@ -642,7 +645,7 @@ class _CancelMarkState extends State<CancelMark> {
                                     child: Text(
                                   'สิทธิรักษาไม่ส่งตัว',
                                   style: GoogleFonts.kanit(
-                                    fontSize: 12,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                     color: Colors.grey,
                                   ),
@@ -652,7 +655,7 @@ class _CancelMarkState extends State<CancelMark> {
                             Row(
                               children: [
                                 Transform.scale(
-                                  scale: 0.8,
+                                  scale: 1,
                                   child: Radio<SingingCharacter>(
                                     activeColor: Color(0xff0088C6),
                                     value: SingingCharacter.buse05,
@@ -669,7 +672,7 @@ class _CancelMarkState extends State<CancelMark> {
                                   child: Text(
                                     'ไม่สะดวกเนื่องจาก(เช่น สถานการณ์โควิท)',
                                     style: GoogleFonts.kanit(
-                                      fontSize: 12,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w500,
                                       color: Colors.grey,
                                     ),

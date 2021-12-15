@@ -357,163 +357,156 @@ class CustomDialog extends StatefulWidget {
 
 class _CustomDialogState extends State<CustomDialog> {
   @override
-  Widget build(BuildContext context) {
-    return Visibility(
-      visible: !page1,
-      child: Scaffold(
-        backgroundColor: Colors.black38,
-        body: Stack(
-          children: <Widget>[
-            Expanded(
-              // flex: 5,
-              child: Container(
-                  width: MediaQuery.of(context).size.width - 0,
-                  padding: EdgeInsets.all(20),
-                  margin: EdgeInsets.only(top: 80),
+  // Widget build(BuildContext context) {
+  Widget build(BuildContext context) => WillPopScope(
+      child: Visibility(
+        visible: !page2,
+        child: Scaffold(
+          backgroundColor: Colors.black38,
+          body: Container(
+              child: SingleChildScrollView(
+            child: Stack(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.2),
+                  height: MediaQuery.of(context).size.height * 0.8,
                   decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 80),
+                  child: Container(
+                    padding: EdgeInsets.only(top: 50, left: 15, right: 15),
+                    // height: MediaQuery.of(context).size.height,
+                    decoration: BoxDecoration(
                       color: Colors.white,
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(40),
                         topRight: Radius.circular(40),
-                      )),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      const SizedBox(height: 20),
-                      Text(
-                        'ร่วมบริจาค',
-                        style: GoogleFonts.kanit(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff0088C6),
-                        ),
                       ),
-                      const SizedBox(height: 15),
-                      Text(
-                        'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
-                        style: GoogleFonts.kanit(
-                          fontSize: 15.5,
-                          //fontWeight: FontWeight.w400,
-                          color: Colors.black,
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          'ร่วมบริจาค',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.kanit(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff0088C6),
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 20),
-                      //โอนผ่านธนาคาร
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                          setState(
-                            () {
-                              //page1 = !page1;
-                              showGeneralDialog(
-                                  context: context,
-                                  barrierDismissible: false,
-                                  barrierLabel:
-                                      MaterialLocalizations.of(context)
-                                          .modalBarrierDismissLabel,
-                                  barrierColor: Colors.transparent,
-                                  transitionDuration:
-                                      Duration(milliseconds: 200),
-                                  pageBuilder: (BuildContext context,
-                                          Animation frist, Animation second) =>
-                                      bankDialog());
-                            },
-                          );
-                        },
-                        child: Container(
-                          width: 500,
-                          height: 50,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage("images/bank.png"),
-                                  alignment: Alignment.center)),
+                        const SizedBox(height: 15),
+                        Text(
+                          'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
+                          style: GoogleFonts.kanit(
+                            fontSize: 15.5,
+                            //fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: Container(
-                          //color: Colors.red,
-                          //width: MediaQuery.of(context).size.width - 0,
-                          // height: 210,
-                          // padding: EdgeInsets.all(20),
-                          // margin: EdgeInsets.only(top: 15),
-                          //color: Colors.white10,
+                        SizedBox(height: 20),
+                        //โอนผ่านธนาคาร
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                            setState(
+                              () {
+                                //page1 = !page1;
+                                showGeneralDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    barrierLabel:
+                                        MaterialLocalizations.of(context)
+                                            .modalBarrierDismissLabel,
+                                    barrierColor: Colors.transparent,
+                                    transitionDuration:
+                                        Duration(milliseconds: 200),
+                                    pageBuilder: (BuildContext context,
+                                            Animation frist,
+                                            Animation second) =>
+                                        bankDialog());
+                              },
+                            );
+                          },
+                          child: Container(
+                            width: 500,
+                            height: 50,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage("images/bank.png"),
+                                    alignment: Alignment.center)),
+                          ),
+                        ),
+                        Container(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Column(
-                                children: [
-                                  Text(
-                                    'ผ่านเครือข่าย TrueMove H',
-                                    style: GoogleFonts.kanit(
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ],
+                              Text(
+                                'ผ่านเครือข่าย TrueMove H',
+                                style: GoogleFonts.kanit(
+                                  fontSize: 16,
+                                ),
                               ),
                               Row(
                                 children: <Widget>[
                                   Expanded(
                                     child: Container(
-                                      //color: Colors.green,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                      child: Column(
                                         children: [
-                                          Column(
-                                            children: [
-                                              Container(
-                                                  width: 150,
-                                                  height: 70,
-                                                  decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                    image: AssetImage(
-                                                        'images/truemove.png'),
-                                                  ))),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  Navigator.pop(context);
-                                                  setState(
-                                                    () {
-                                                      showGeneralDialog(
-                                                          context: context,
-                                                          barrierDismissible:
-                                                              false,
-                                                          barrierLabel:
-                                                              MaterialLocalizations
-                                                                      .of(
-                                                                          context)
-                                                                  .modalBarrierDismissLabel,
-                                                          barrierColor:
-                                                              Colors
-                                                                  .transparent,
-                                                          transitionDuration:
-                                                              Duration(
-                                                                  milliseconds:
-                                                                      200),
-                                                          pageBuilder: (BuildContext
-                                                                      context,
-                                                                  Animation
-                                                                      frist,
-                                                                  Animation
-                                                                      second) =>
-                                                              truemoney10());
-                                                    },
-                                                  );
+                                          Container(
+                                              width: 150,
+                                              height: 70,
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                image: AssetImage(
+                                                    'images/truemove.png'),
+                                              ))),
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                              setState(
+                                                () {
+                                                  showGeneralDialog(
+                                                      context: context,
+                                                      barrierDismissible: false,
+                                                      barrierLabel:
+                                                          MaterialLocalizations
+                                                                  .of(context)
+                                                              .modalBarrierDismissLabel,
+                                                      barrierColor:
+                                                          Colors.transparent,
+                                                      transitionDuration:
+                                                          Duration(
+                                                              milliseconds:
+                                                                  200),
+                                                      pageBuilder: (BuildContext
+                                                                  context,
+                                                              Animation frist,
+                                                              Animation
+                                                                  second) =>
+                                                          truemoney10());
                                                 },
-                                                child: Container(
-                                                  width: 120,
-                                                  height: 40,
-                                                  decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                          image: AssetImage(
-                                                              "images/10bath.png"),
-                                                          alignment: Alignment
-                                                              .center)),
-                                                ),
-                                              ),
-                                            ],
+                                              );
+                                            },
+                                            child: Container(
+                                              width: 120,
+                                              height: 40,
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: AssetImage(
+                                                          "images/10bath.png"),
+                                                      alignment:
+                                                          Alignment.center)),
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -521,64 +514,53 @@ class _CustomDialogState extends State<CustomDialog> {
                                   ),
                                   Expanded(
                                     child: Container(
-                                      //color: Colors.amber,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                      child: Column(
                                         children: [
-                                          Column(
-                                            children: [
-                                              Container(
-                                                  width: 150,
-                                                  height: 70,
-                                                  decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                    image: AssetImage(
-                                                        'images/truemove.png'),
-                                                  ))),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  Navigator.pop(context);
-                                                  setState(
-                                                    () {
-                                                      showGeneralDialog(
-                                                          context: context,
-                                                          barrierDismissible:
-                                                              false,
-                                                          barrierLabel:
-                                                              MaterialLocalizations
-                                                                      .of(
-                                                                          context)
-                                                                  .modalBarrierDismissLabel,
-                                                          barrierColor:
-                                                              Colors
-                                                                  .transparent,
-                                                          transitionDuration:
-                                                              Duration(
-                                                                  milliseconds:
-                                                                      200),
-                                                          pageBuilder: (BuildContext
-                                                                      context,
-                                                                  Animation
-                                                                      frist,
-                                                                  Animation
-                                                                      second) =>
-                                                              truemoney100());
-                                                    },
-                                                  );
+                                          Container(
+                                              width: 150,
+                                              height: 70,
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                image: AssetImage(
+                                                    'images/truemove.png'),
+                                              ))),
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                              setState(
+                                                () {
+                                                  showGeneralDialog(
+                                                      context: context,
+                                                      barrierDismissible: false,
+                                                      barrierLabel:
+                                                          MaterialLocalizations
+                                                                  .of(context)
+                                                              .modalBarrierDismissLabel,
+                                                      barrierColor:
+                                                          Colors.transparent,
+                                                      transitionDuration:
+                                                          Duration(
+                                                              milliseconds:
+                                                                  200),
+                                                      pageBuilder: (BuildContext
+                                                                  context,
+                                                              Animation frist,
+                                                              Animation
+                                                                  second) =>
+                                                          truemoney100());
                                                 },
-                                                child: Container(
-                                                  width: 120,
-                                                  height: 40,
-                                                  decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                          image: AssetImage(
-                                                              "images/100bath.png"),
-                                                          alignment: Alignment
-                                                              .center)),
-                                                ),
-                                              ),
-                                            ],
+                                              );
+                                            },
+                                            child: Container(
+                                              width: 120,
+                                              height: 40,
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: AssetImage(
+                                                          "images/100bath.png"),
+                                                      alignment:
+                                                          Alignment.center)),
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -596,103 +578,115 @@ class _CustomDialogState extends State<CustomDialog> {
                             ],
                           ),
                         ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          margin: EdgeInsets.only(top: 5),
-                          // width: MediaQuery.of(context).size.width - 0,
-                          // height: 50,
+
+                        Container(
+                          padding: EdgeInsets.all(20),
+                          height: 50,
                           decoration: BoxDecoration(
                               image: DecorationImage(
                                   scale: 1.5,
                                   image: AssetImage("images/textmoney.png"),
                                   alignment: Alignment.center)),
                         ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          // width: MediaQuery.of(context).size.width - 0,
-                          // height: 100,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  scale: 1.5,
-                                  image: AssetImage("images/qrcode.png"),
-                                  alignment: Alignment.center)),
+                        Image.asset(
+                          'images/qrcode.png',
+                          scale: 1,
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                          setState(
-                            () {
-                              showGeneralDialog(
-                                  context: context,
-                                  barrierDismissible: false,
-                                  barrierLabel:
-                                      MaterialLocalizations.of(context)
-                                          .modalBarrierDismissLabel,
-                                  barrierColor: Colors.transparent,
-                                  transitionDuration:
-                                      Duration(milliseconds: 200),
-                                  pageBuilder: (BuildContext context,
-                                          Animation frist, Animation second) =>
-                                      truemoveall());
-                            },
-                          );
-                        },
-                        child: Container(
-                          width: MediaQuery.of(context).size.width - 0,
-                          height: 50,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  scale: 1.5,
-                                  image: AssetImage("images/donate01.png"),
-                                  alignment: Alignment.center)),
-                        ),
-                      ),
-                      Text(
-                        '(ทุกเครือข่าย)',
-                        style: GoogleFonts.kanit(
-                          fontSize: 16,
-                        ),
-                      )
 
-                      //SizedBox(height: 20),
-                    ],
-                  )),
-            ),
-            Positioned(
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: Container(
-                  margin: EdgeInsets.only(top: 45),
-                  width: 70,
-                  height: 70,
+                        // Container(
+                        //   height: MediaQuery.of(context).size.width * 0.5,
+                        //   decoration: BoxDecoration(
+                        //       color: Colors.red,
+                        //       image: DecorationImage(
+                        //           scale: 1,
+                        //           image: AssetImage("images/qrcode.png"),
+                        //           alignment: Alignment.center)),
+                        // ),
 
-                  //padding: EdgeInsets.all(10),
-                  //margin: EdgeInsets.only(top: 50),
-                  decoration: BoxDecoration(
-                    // color: Colors.amber,
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(25),
-                    gradient: LinearGradient(
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                        colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
-                    image: DecorationImage(
-                      image: AssetImage('images/icondonate.png'),
-                      scale: 1.5,
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                            setState(
+                              () {
+                                showGeneralDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    barrierLabel:
+                                        MaterialLocalizations.of(context)
+                                            .modalBarrierDismissLabel,
+                                    barrierColor: Colors.transparent,
+                                    transitionDuration:
+                                        Duration(milliseconds: 200),
+                                    pageBuilder: (BuildContext context,
+                                            Animation frist,
+                                            Animation second) =>
+                                        truemoveall());
+                              },
+                            );
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width - 0,
+                            height: 50,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    scale: 1.5,
+                                    image: AssetImage("images/donate01.png"),
+                                    alignment: Alignment.center)),
+                          ),
+                        ),
+                        Text(
+                          '(ทุกเครือข่าย)',
+                          style: GoogleFonts.kanit(
+                            fontSize: 16,
+                          ),
+                        ),
+
+                        //SizedBox(height: 20),
+                      ],
                     ),
                   ),
                 ),
-              ),
+                Positioned(
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(top: 50),
+                          width: 70,
+                          height: 70,
+
+                          //padding: EdgeInsets.all(10),
+                          //margin: EdgeInsets.only(top: 50),
+                          decoration: BoxDecoration(
+                            // color: Colors.amber,
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.circular(25),
+                            gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
+                            image: DecorationImage(
+                              image: AssetImage('images/icondonate.png'),
+                              scale: 1.5,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          )),
+          bottomNavigationBar: NavigagitonBar(),
         ),
-        bottomNavigationBar: NavigagitonBar(),
       ),
-    );
-  }
+      onWillPop: () async {
+        Navigator.pop(context);
+
+        return true;
+      });
 }
 
 class bankDialog extends StatefulWidget {
@@ -738,6 +732,7 @@ class _bankDialogState extends State<bankDialog> {
                       ),
                     ),
                   )),
+              //1150
               SingleChildScrollView(
                 child: Expanded(
                   child: Stack(

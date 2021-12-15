@@ -15,6 +15,7 @@ import 'package:thanyarak/bodys/article_details_page.dart';
 import 'package:thanyarak/bodys/donate_page.dart';
 import 'package:thanyarak/bodys/hitstoryCk_page.dart';
 import 'package:thanyarak/bodys/hitstoryDetail.dart';
+import 'package:thanyarak/bodys/main_page.dart';
 import 'package:thanyarak/bodys/mark_procedure.dart';
 import 'package:thanyarak/bodys/menu_page.dart';
 import 'package:thanyarak/bodys/notification_page.dart';
@@ -62,7 +63,7 @@ class _dating_pageState extends State<dating_page> {
                     //พื้นหลัง
                     Container(
                       height: MediaQuery.of(context).size.height,
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.only(top: 20, left: 15, right: 15),
                       decoration: BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage('images/bg_menu.png'),
@@ -72,68 +73,85 @@ class _dating_pageState extends State<dating_page> {
                       child: Column(
                         children: [
                           Container(
+                            padding:
+                                EdgeInsets.only(top: 0, left: 15, right: 15),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(top: 0),
+                                  padding: EdgeInsets.only(top: 25),
                                   child: Container(
-                                    width: 50,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                      scale: 1.3,
-                                      image: AssetImage("images/back01.png"),
-                                      alignment: Alignment.center,
-                                    )),
+                                    width: 30,
+                                    height: 30,
+                                    // color: Colors.amber,
+                                    margin: EdgeInsets.only(right: 10),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            CupertinoPageRoute(
+                                                builder: (context) =>
+                                                    MainPage()));
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                          scale: 1,
+                                          image:
+                                              AssetImage("images/back01.png"),
+                                          alignment: Alignment.topLeft,
+                                        )),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                                Expanded(
-                                  flex: _f,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(top: 0),
-                                    child: Container(
-                                      height: 40,
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          'ตั้งค่า',
-                                          overflow: TextOverflow.ellipsis,
-                                          style: GoogleFonts.kanit(
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.white,
-                                          ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 20),
+                                  child: Container(
+                                    height: 40,
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        'การนัดหมาย',
+                                        overflow: TextOverflow.ellipsis,
+                                        style: GoogleFonts.kanit(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.white,
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
-                                GestureDetector(
-                                  onTap: () => Navigator.push(
-                                      context,
-                                      CupertinoPageRoute(
-                                          builder: (context) =>
-                                              hitstory_pages())),
-                                  child: Expanded(
-                                    flex: _w,
+                                SizedBox(width: 10),
+                                Expanded(
+                                  flex: _w,
+                                  child: GestureDetector(
+                                    onTap: () => Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                            builder: (context) =>
+                                                hitstory_pages())),
                                     child: Padding(
-                                      padding: EdgeInsets.only(top: 0),
+                                      padding: EdgeInsets.only(top: 25),
                                       child: Container(
-                                        height: 40,
+                                        height: 30,
                                         decoration: BoxDecoration(
-                                          color: Colors.white,
+                                          color: Color(0xff43CEF8),
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(10)),
                                         ),
                                         child: FlatButton.icon(
-                                          icon: Icon(Icons.assignment_rounded),
+                                          icon: Image.asset(
+                                              'images/history__outline.png',
+                                              scale: 3),
                                           label: Flexible(
                                             child: Text(
                                               'ประวัติการตรวจ',
                                               style: GoogleFonts.kanit(
-                                                  color: Colors.black),
+                                                  fontSize: 12,
+                                                  color: Colors.white),
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
@@ -145,7 +163,7 @@ class _dating_pageState extends State<dating_page> {
                                 Expanded(
                                   flex: _w,
                                   child: Padding(
-                                    padding: EdgeInsets.only(top: 0),
+                                    padding: EdgeInsets.only(top: 25),
                                     child: GestureDetector(
                                       onTap: () {
                                         setState(
@@ -170,9 +188,9 @@ class _dating_pageState extends State<dating_page> {
                                         );
                                       },
                                       child: Container(
-                                        height: 40,
+                                        height: 30,
                                         decoration: BoxDecoration(
-                                          color: Colors.green[200],
+                                          color: Color(0xff69E6E7),
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(10)),
                                         ),
@@ -185,6 +203,7 @@ class _dating_pageState extends State<dating_page> {
                                             child: Text(
                                               'เพิ่มนัดหมาย',
                                               style: GoogleFonts.kanit(
+                                                  fontSize: 12,
                                                   color: Colors.white),
                                               overflow: TextOverflow.ellipsis,
                                             ),
@@ -202,10 +221,11 @@ class _dating_pageState extends State<dating_page> {
                           ),
                           Container(
                             height: 30,
+                            margin: EdgeInsets.only(left: 15, right: 15),
                             decoration: BoxDecoration(
                                 color: Colors.white38,
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(15))),
+                                    BorderRadius.all(Radius.circular(10))),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.max,
@@ -221,7 +241,9 @@ class _dating_pageState extends State<dating_page> {
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        color: Colors.white,
+                                        color: countMark == 1
+                                            ? Colors.white
+                                            : Colors.transparent,
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10)),
                                       ),
@@ -229,7 +251,9 @@ class _dating_pageState extends State<dating_page> {
                                         alignment: Alignment.center,
                                         child: Text('ทั้งหมด',
                                             style: GoogleFonts.kanit(
-                                                color: Colors.black)),
+                                                color: countMark == 1
+                                                    ? Color(0xff0088C6)
+                                                    : Colors.white)),
                                       ),
                                     ),
                                   ),
@@ -244,7 +268,9 @@ class _dating_pageState extends State<dating_page> {
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        color: Colors.white,
+                                        color: countMark == 2
+                                            ? Colors.white
+                                            : Colors.transparent,
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10)),
                                       ),
@@ -252,7 +278,9 @@ class _dating_pageState extends State<dating_page> {
                                         alignment: Alignment.center,
                                         child: Text('วันที่นัดล่าสุด',
                                             style: GoogleFonts.kanit(
-                                                color: Colors.black)),
+                                                color: countMark == 2
+                                                    ? Color(0xff0088C6)
+                                                    : Colors.white)),
                                       ),
                                     ),
                                   ),
@@ -267,7 +295,9 @@ class _dating_pageState extends State<dating_page> {
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        color: Colors.white,
+                                        color: countMark == 3
+                                            ? Colors.white
+                                            : Colors.transparent,
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10)),
                                       ),
@@ -275,7 +305,9 @@ class _dating_pageState extends State<dating_page> {
                                         alignment: Alignment.center,
                                         child: Text('ผ่านแล้ว',
                                             style: GoogleFonts.kanit(
-                                                color: Colors.black)),
+                                                color: countMark == 3
+                                                    ? Color(0xff0088C6)
+                                                    : Colors.white)),
                                       ),
                                     ),
                                   ),
@@ -290,7 +322,9 @@ class _dating_pageState extends State<dating_page> {
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        color: Colors.white,
+                                        color: countMark == 4
+                                            ? Colors.white
+                                            : Colors.transparent,
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10)),
                                       ),
@@ -298,7 +332,9 @@ class _dating_pageState extends State<dating_page> {
                                         alignment: Alignment.center,
                                         child: Text('ยกเลิก',
                                             style: GoogleFonts.kanit(
-                                                color: Colors.black)),
+                                                color: countMark == 4
+                                                    ? Color(0xff0088C6)
+                                                    : Colors.white)),
                                       ),
                                     ),
                                   ),
@@ -312,7 +348,7 @@ class _dating_pageState extends State<dating_page> {
 
                     //พื้นหลังเนื้อหา
                     Padding(
-                      padding: const EdgeInsets.only(top: 100),
+                      padding: const EdgeInsets.only(top: 130),
                       child: Container(
                         height: MediaQuery.of(context).size.height,
                         padding: EdgeInsets.all(10),
@@ -328,7 +364,7 @@ class _dating_pageState extends State<dating_page> {
                     //เนื้อหา
                     Padding(
                       padding: const EdgeInsets.only(
-                          top: 130, left: 30, right: 30, bottom: 20),
+                          top: 150, left: 15, right: 15, bottom: 20),
                       child: Column(
                         children: [
                           MarkWidget(
@@ -339,11 +375,6 @@ class _dating_pageState extends State<dating_page> {
                                     : countMark == 3
                                         ? 'succ'
                                         : 'cancel',
-                          ),
-                          Container(
-                            height: 50,
-                            padding: EdgeInsets.all(10),
-                            color: Colors.black,
                           ),
                         ],
                       ),
@@ -358,8 +389,6 @@ class _dating_pageState extends State<dating_page> {
       bottomNavigationBar: NavigagitonBar(),
     );
   }
-
-  BoxShadow Boxshadowget() {}
 }
 
 class Addmark extends StatefulWidget {

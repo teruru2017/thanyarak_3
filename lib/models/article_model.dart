@@ -1,49 +1,40 @@
-class Article {
-  String icon;
-  String head;
-  String details;
-  String dateTime;
-  num review;
-  List<String> imgs;
-  Article(this.icon, this.head, this.details, this.review, this.dateTime,
-      this.imgs);
-  static List<Article> generateArticle() {
+import 'package:thanyarak/bodys/article_page.dart';
+
+class article {
+  int id;
+  String name;
+  String img;
+  String contact;
+  String view;
+  String date;
+  article(this.id, this.img, this.name, this.contact, this.date, this.view);
+
+  static List<article> imgLists() {
     return [
-      Article(
-          'images/tt1.png',
-          'ศูนย์ถันยรักษ์ได้จัดกิจกรรม',
-          'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัล',
-          100,
-          '12/12/12',
-          ['assets/images/t1.jpg', 'images/t2.jpg']),
-      Article(
-          'images/tt.png',
-          'ศูนย์ถันยรักษ์ได้จัดกิจกรรม',
-          'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัล',
-          100,
-          '12/12/12',
-          ['images/t1.jpg', 'assets/images/t2.jpg']),
-      Article(
-          'images/tt.png',
-          'ศูนย์ถันยรักษ์ได้จัดกิจกรรม',
-          'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัล',
-          100,
-          '12/12/12',
-          ['assets/images/t1.jpg', 'assets/images/t2.jpg']),
-      Article(
-          'images/tt.png',
-          'ศูนย์ถันยรักษ์ได้จัดกิจกรรม',
-          'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัล',
-          100,
-          '12/12/12',
-          ['images/t1.jpg', 'assets/images/t2.jpg']),
-      Article(
-          'images/tt.png',
-          'ศูนย์ถันยรักษ์ได้จัดกิจกรรม',
-          'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัล',
-          100,
-          '12/12/12',
-          ['assets/images/t1.jpg', 'assets/images/t2.jpg'])
+      article(
+        1,
+        'https://media.discordapp.net/attachments/846108341628305468/919908065757757500/1150.png',
+        'ทำไมต้องตรวจอัลตร้าซาวนด์เต้านม',
+        'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
+        '16-06-2564',
+        '50,000',
+      ),
+      article(
+        2,
+        'https://media.discordapp.net/attachments/846108341628305468/920580629471584266/cat.png',
+        'กิจกรรม “รวมพลังเพื่อแม่ ทำความดีด้วยหัวใจ”orologi replica',
+        'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
+        '16-06-2564',
+        '50,000',
+      ),
+      article(
+        3,
+        'https://media.discordapp.net/attachments/846108341628305468/920580628959866880/all.png',
+        'ศูนย์ถันยรักษ์ได้นำเจ้าหน้าที่ไปจัดกิจกรรมให้ความรู้ ที่บริษัท ฟิลิปเวน (ประเทศไทย) จำกัด สาขาเซ็นทรัล ลาดพร้าว',
+        'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
+        '16-06-2564',
+        '900,000',
+      ),
     ];
   }
 }

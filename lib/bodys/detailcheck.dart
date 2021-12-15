@@ -55,7 +55,7 @@ class _detailcheck_pageState extends State<detailcheck_page> {
                     //พื้นหลัง
                     Container(
                       height: MediaQuery.of(context).size.height,
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.only(top: 20, left: 15, right: 15),
                       decoration: BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage('images/bg_menu.png'),
@@ -70,7 +70,7 @@ class _detailcheck_pageState extends State<detailcheck_page> {
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(top: 0),
+                                  padding: EdgeInsets.only(top: 20),
                                   child: GestureDetector(
                                     onTap: () {
                                       setState(() {
@@ -78,8 +78,8 @@ class _detailcheck_pageState extends State<detailcheck_page> {
                                       });
                                     },
                                     child: Container(
-                                      width: 50,
-                                      height: 40,
+                                      width: 30,
+                                      height: 30,
                                       decoration: BoxDecoration(
                                           image: DecorationImage(
                                         scale: 1.3,
@@ -92,13 +92,13 @@ class _detailcheck_pageState extends State<detailcheck_page> {
                                 Expanded(
                                   flex: _f,
                                   child: Padding(
-                                    padding: EdgeInsets.only(top: 0),
+                                    padding: EdgeInsets.only(top: 20),
                                     child: Container(
                                       height: 40,
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                          'รายละเอียดการนัดหมาย',
+                                          '',
                                           overflow: TextOverflow.ellipsis,
                                           style: GoogleFonts.kanit(
                                             fontSize: 22,
@@ -122,7 +122,7 @@ class _detailcheck_pageState extends State<detailcheck_page> {
 
                     //พื้นหลังเนื้อหา
                     Padding(
-                      padding: const EdgeInsets.only(top: 70),
+                      padding: const EdgeInsets.only(top: 90),
                       child: Container(
                         //ถ้าจอดล้นมาลบ -170 ออก
                         height: MediaQuery.of(context).size.height,
@@ -140,7 +140,7 @@ class _detailcheck_pageState extends State<detailcheck_page> {
                     //เนื้อหา
                     Padding(
                       padding: const EdgeInsets.only(
-                          top: 90, left: 15, right: 15, bottom: 20),
+                          top: 110, left: 15, right: 15, bottom: 20),
                       child: Column(
                         children: [
                           Container(
@@ -181,7 +181,7 @@ class _detailcheck_pageState extends State<detailcheck_page> {
                                           child: Text(
                                             'ขอผลการตรวจ',
                                             style: GoogleFonts.kanit(
-                                              fontSize: 24,
+                                              fontSize: 22,
                                               fontWeight: FontWeight.w500,
                                               color: Color(0xff0088C6),
                                             ),
@@ -204,7 +204,7 @@ class _detailcheck_pageState extends State<detailcheck_page> {
                                             Row(
                                               children: [
                                                 Transform.scale(
-                                                  scale: 0.8,
+                                                  scale: 1,
                                                   child:
                                                       Radio<SingingCharacter>(
                                                     activeColor:
@@ -226,8 +226,6 @@ class _detailcheck_pageState extends State<detailcheck_page> {
                                                     'ดาวน์โหลดผลการตรวจ',
                                                     style: GoogleFonts.kanit(
                                                       fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w500,
                                                       color: Colors.black,
                                                     ),
                                                   ),
@@ -249,7 +247,7 @@ class _detailcheck_pageState extends State<detailcheck_page> {
                                             Row(
                                               children: [
                                                 Transform.scale(
-                                                  scale: 0.8,
+                                                  scale: 1,
                                                   child:
                                                       Radio<SingingCharacter>(
                                                     activeColor:
@@ -271,8 +269,6 @@ class _detailcheck_pageState extends State<detailcheck_page> {
                                                     'Copy CD',
                                                     style: GoogleFonts.kanit(
                                                       fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w500,
                                                       color: Colors.black,
                                                     ),
                                                   ),
@@ -294,7 +290,7 @@ class _detailcheck_pageState extends State<detailcheck_page> {
                                             Row(
                                               children: [
                                                 Transform.scale(
-                                                  scale: 0.8,
+                                                  scale: 1,
                                                   child:
                                                       Radio<SingingCharacter>(
                                                     activeColor:
@@ -316,8 +312,6 @@ class _detailcheck_pageState extends State<detailcheck_page> {
                                                     'ขอผลหัตถการ',
                                                     style: GoogleFonts.kanit(
                                                       fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w500,
                                                       color: Colors.black,
                                                     ),
                                                   ),
@@ -349,7 +343,7 @@ class _detailcheck_pageState extends State<detailcheck_page> {
                                         Row(
                                           children: [
                                             Transform.scale(
-                                              scale: 0.8,
+                                              scale: 1,
                                               child: Radio<SingingCharacterV>(
                                                 activeColor: Color(0xff0088C6),
                                                 value: SingingCharacterV.email,
@@ -366,13 +360,13 @@ class _detailcheck_pageState extends State<detailcheck_page> {
                                             Text(
                                               'อีเมล์',
                                               style: GoogleFonts.kanit(
-                                                fontSize: 12,
+                                                fontSize: 14,
                                                 fontWeight: FontWeight.w500,
-                                                color: Colors.grey,
+                                                color: Colors.black,
                                               ),
                                             ),
                                             Transform.scale(
-                                              scale: 0.8,
+                                              scale: 1,
                                               child: Radio<SingingCharacterV>(
                                                 activeColor: Color(0xff0088C6),
                                                 value: SingingCharacterV.phone,
@@ -390,9 +384,9 @@ class _detailcheck_pageState extends State<detailcheck_page> {
                                                 child: Text(
                                               'เบอร์โทรศัพท์',
                                               style: GoogleFonts.kanit(
-                                                fontSize: 12,
+                                                fontSize: 14,
                                                 fontWeight: FontWeight.w500,
-                                                color: Colors.grey,
+                                                color: Colors.black,
                                               ),
                                             )),
                                           ],
@@ -400,8 +394,23 @@ class _detailcheck_pageState extends State<detailcheck_page> {
                                         FormBuilderTextField(
                                           keyboardType: TextInputType.number,
                                           name: _ck == 0 ? 'email' : 'phone',
-                                          style: GoogleFonts.kanit(),
+                                          style:
+                                              GoogleFonts.kanit(fontSize: 14),
                                           decoration: InputDecoration(
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.blue,
+                                                    width: 1),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(15)),
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.grey.shade300,
+                                                    width: 1),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(15)),
+                                              ),
                                               border: OutlineInputBorder(
                                                 borderRadius:
                                                     const BorderRadius.all(
@@ -411,6 +420,8 @@ class _detailcheck_pageState extends State<detailcheck_page> {
                                               hintText: _ck == 0
                                                   ? 'อีเมล์'
                                                   : 'เบอร์โทรศัพท์',
+                                              hintStyle:
+                                                  TextStyle(color: Colors.grey),
                                               fillColor: Color(0xfff3f3f4),
                                               filled: false),
                                         ),
@@ -443,8 +454,23 @@ class _detailcheck_pageState extends State<detailcheck_page> {
                                         FormBuilderTextField(
                                           keyboardType: TextInputType.number,
                                           name: 'address',
-                                          style: GoogleFonts.kanit(),
+                                          style:
+                                              GoogleFonts.kanit(fontSize: 14),
                                           decoration: InputDecoration(
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.blue,
+                                                    width: 1),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(15)),
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.grey.shade300,
+                                                    width: 1),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(15)),
+                                              ),
                                               border: OutlineInputBorder(
                                                 borderRadius:
                                                     const BorderRadius.all(
@@ -452,6 +478,8 @@ class _detailcheck_pageState extends State<detailcheck_page> {
                                                 ),
                                               ),
                                               hintText: 'ที่อยู่จัดส่ง',
+                                              hintStyle:
+                                                  TextStyle(color: Colors.grey),
                                               fillColor: Color(0xfff3f3f4),
                                               filled: false),
                                         ),
