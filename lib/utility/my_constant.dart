@@ -6,6 +6,7 @@ class MyConstant {
   static String routeMainHome = '/mainHome';
   static Color myBlue = const Color(0XFF71BBFC);
   static Color myBlue2 = const Color(0XFFe6effe);
+  String pathAPI = "https://truethanyarak.com/api/Ar_List.php";
   // method
   TextStyle h1StyleWhite() => GoogleFonts.kanit(
         textStyle: const TextStyle(

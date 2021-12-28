@@ -50,6 +50,10 @@ dependencies:
   flutter_calendar_carousel: ^2.1.0
   hexcolor: ^2.0.5
   shared_preferences: ^2.0.11
+  http: ^0.13.4
+  intl: ^0.17.0
+  flutter_html: ^2.2.1
+  
   
   
   # video_player: ^2.2.7
@@ -81,6 +85,7 @@ flutter_icons:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
+  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -109,12 +114,12 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: kanit
-  #     fonts:
-  #       - asset: fonts/kanit-Regular.ttf
-  #       - asset: fonts/kanit-Italic.ttf
-  #         style: italic
+  fonts:
+    - family: kanit
+      fonts:
+        - asset: font/Kanit-Regular.ttf
+        - asset: font/Kanit-Italic.ttf
+          style: italic
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

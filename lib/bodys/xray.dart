@@ -47,12 +47,14 @@ class _xray_pageState extends State<xray_page> {
                       child: Column(
                         children: [
                           Container(
+                            padding:
+                                EdgeInsets.only(top: 20, left: 15, right: 15),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(top: 20),
+                                  padding: EdgeInsets.only(top: 0),
                                   child: GestureDetector(
                                     onTap: () {
                                       setState(() {
@@ -74,9 +76,9 @@ class _xray_pageState extends State<xray_page> {
                                 Expanded(
                                   flex: _f,
                                   child: Padding(
-                                    padding: EdgeInsets.only(top: 20),
+                                    padding: EdgeInsets.only(left: 10),
                                     child: Container(
-                                      height: 40,
+                                      // height: 40,
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(

@@ -1,8 +1,14 @@
+//@dart=2.9
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
+import 'package:thanyarak/bodys/API/api_donate.dart';
 import 'package:thanyarak/bodys/alert_page.dart';
 import 'package:thanyarak/bodys/detaildonate_pages.dart';
 import 'package:thanyarak/bodys/menu_page.dart';
@@ -16,7 +22,7 @@ import 'package:thanyarak/widgets/show_circular.dart';
 import 'package:thanyarak/widgets/show_title.dart';
 
 class DonatePage extends StatefulWidget {
-  const DonatePage({Key? key}) : super(key: key);
+  DonatePage({Key key}) : super(key: key);
 
   @override
   _DonatePageState createState() => _DonatePageState();
@@ -25,6 +31,26 @@ class DonatePage extends StatefulWidget {
 String checklogin = '';
 
 class _DonatePageState extends State<DonatePage> {
+  Future<List<apiDonate>> donateData() async {
+    final response =
+        await http.get(Uri.parse('https://truethanyarak.com/api/Do_List.php'));
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      print(response.body);
+      return jsonResponse.map((data) => new apiDonate.fromJson(data)).toList();
+    } else {
+      throw Exception('Unexpected error occured!');
+    }
+  }
+
+  Future<List<apiDonate>> futureData;
+  void initState() {
+    Intl.defaultLocale = 'th';
+    initializeDateFormatting();
+    super.initState();
+    futureData = donateData();
+  }
+
   List<String> pathImageAritcles = [
     'images/donate.png',
     'images/donate.png',
@@ -198,7 +224,230 @@ class _DonatePageState extends State<DonatePage> {
                         width: MediaQuery.of(context).size.width,
                         child: Column(
                           children: [
-                            DonateWidget()
+                            FutureBuilder<List<apiDonate>>(
+                              future: futureData,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  List<apiDonate> donateData = snapshot.data;
+                                  return Container(
+                                    child: Column(
+                                      children: donateData
+                                          .map(
+                                            (e) => GestureDetector(
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    CupertinoPageRoute(
+                                                        builder: (context) =>
+                                                            detaildonate_pages(
+                                                              urlget:
+                                                                  'https://truethanyarak.com/api/Ar_Detail.php?id=${e.id}',
+                                                            )));
+                                              },
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    // width: 380,
+                                                    decoration: BoxDecoration(
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                            color: Colors.grey
+                                                                .withOpacity(
+                                                                    0.2),
+                                                            spreadRadius: 1,
+                                                            blurRadius: 10,
+                                                            offset:
+                                                                Offset(0, 8),
+                                                          )
+                                                        ],
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    40))),
+                                                    child: Column(
+                                                      children: [
+                                                        Container(
+                                                          width: MediaQuery.of(
+                                                                  context)
+                                                              .size
+                                                              .width,
+                                                          height: 160,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            // color: Colors.white,
+                                                            image: DecorationImage(
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                                image: NetworkImage(
+                                                                    e.urlpicpath)),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .only(
+                                                              topLeft: Radius
+                                                                  .circular(40),
+                                                              topRight: Radius
+                                                                  .circular(40),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                            width:
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width,
+                                                            height: 150,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color:
+                                                                  Colors.white,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .only(
+                                                                bottomLeft: Radius
+                                                                    .circular(
+                                                                        40),
+                                                                bottomRight:
+                                                                    Radius
+                                                                        .circular(
+                                                                            40),
+                                                              ),
+                                                            ),
+                                                            child: Container(
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      top: 10,
+                                                                      left: 20,
+                                                                      right:
+                                                                          20),
+                                                              child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(e.subject,
+                                                                      maxLines:
+                                                                          2,
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
+                                                                      style: GoogleFonts.kanit(
+                                                                          fontSize:
+                                                                              16,
+                                                                          fontWeight: FontWeight
+                                                                              .w500,
+                                                                          color:
+                                                                              Color(0xff0088C6))),
+                                                                  SizedBox(
+                                                                      height:
+                                                                          5),
+                                                                  Text(e.title,
+                                                                      maxLines:
+                                                                          2,
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
+                                                                      style: GoogleFonts.kanit(
+                                                                          fontSize:
+                                                                              14,
+                                                                          color:
+                                                                              Colors.black)),
+                                                                  SizedBox(
+                                                                      height:
+                                                                          5),
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      FaIcon(
+                                                                        FontAwesomeIcons
+                                                                            .solidClock,
+                                                                        size:
+                                                                            12,
+                                                                        color: Color(
+                                                                            0xff0088C6),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            5,
+                                                                      ),
+                                                                      Text(
+                                                                          DateFormat('dd/MM/').format(e
+                                                                                  .createdate) +
+                                                                              DateFormat('yyyy')
+                                                                                  .format(
+                                                                                e.createdate.add(
+                                                                                  Duration(days: 198195),
+                                                                                ),
+                                                                              ),
+                                                                          overflow: TextOverflow
+                                                                              .ellipsis,
+                                                                          style:
+                                                                              GoogleFonts.kanit(
+                                                                            fontSize:
+                                                                                12,
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
+                                                                            color:
+                                                                                Colors.grey,
+                                                                          )),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            10,
+                                                                      ),
+                                                                      FaIcon(
+                                                                        FontAwesomeIcons
+                                                                            .solidEye,
+                                                                        size:
+                                                                            12,
+                                                                        color: Color(
+                                                                            0xff0088C6),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            5,
+                                                                      ),
+                                                                      Text(
+                                                                        '10',
+                                                                        overflow:
+                                                                            TextOverflow.ellipsis,
+                                                                        style: GoogleFonts
+                                                                            .kanit(
+                                                                          fontSize:
+                                                                              12,
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                          color:
+                                                                              Colors.grey,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            )),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 20,
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                          .toList(),
+                                    ),
+                                  );
+                                } else if (snapshot.hasError) {
+                                  return Text("${snapshot.error}");
+                                }
+                                // By default show a loading spinner.
+                                return CircularProgressIndicator();
+                              },
+                            ),
+                            // DonateWidget()
                             // GestureDetector(
                             //   onTap: () => Navigator.push(
                             //       context,

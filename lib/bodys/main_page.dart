@@ -1,12 +1,18 @@
 // ignore_for_file: prefer_const_constructors
 //@dart=2.9
+import 'dart:convert';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:thanyarak/bodys/API/api_banner.dart';
+import 'package:thanyarak/bodys/API/api_main_article.dart';
 import 'package:thanyarak/bodys/CarouselWithDotsPage.dart';
 import 'package:thanyarak/bodys/about_page.dart';
 import 'package:thanyarak/bodys/alert_page.dart';
@@ -34,17 +40,16 @@ import 'package:thanyarak/widgets/show_title_head.dart';
 //import 'package:thanyarak/states/main_home.dart';
 import 'package:avatar_view/avatar_view.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
 
 class MainPage extends StatefulWidget {
-  const MainPage({Key key}) : super(key: key);
+  MainPage({Key key}) : super(key: key);
 
   @override
   _MainPageState createState() => _MainPageState();
 }
 
-// Map<String, WidgetBuilder> map = {
-//   '/mainHome': (BuildContext context) => const MainHome(),
-// };
 String checklogin = '';
 
 void results() {
@@ -126,11 +131,22 @@ class _MainPageState extends State<MainPage> {
   int _volume = 0;
   int counter = 0;
   double setbottom = 600;
+  SharedPreferences prefs;
+  bool isLoading = false;
+  List<dynamic> banner = [];
+  String tokendata = "";
   @override
   void initState() {
-    getDATA();
+    Intl.defaultLocale = 'th';
+    initializeDateFormatting();
     super.initState();
+    futureData = fetchData();
+    articleData = artData();
+    getDATA();
   }
+
+  Future<List<apibanner>> futureData;
+  Future<List<apiarticle>> articleData;
 
   Future getDATA() async {
     final SharedPreferences per = await SharedPreferences.getInstance();
@@ -138,6 +154,30 @@ class _MainPageState extends State<MainPage> {
       checklogin = per.getString('id');
       print(checklogin);
     });
+  }
+
+  Future<List<apibanner>> fetchData() async {
+    final response = await http
+        .get(Uri.parse('https://truethanyarak.com/api/topgraphic.php'));
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+
+      return jsonResponse.map((data) => new apibanner.fromJson(data)).toList();
+    } else {
+      throw Exception('Unexpected error occured!');
+    }
+  }
+
+  Future<List<apiarticle>> artData() async {
+    final response =
+        await http.get(Uri.parse('https://truethanyarak.com/api/Ar_List.php'));
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+
+      return jsonResponse.map((data) => new apiarticle.fromJson(data)).toList();
+    } else {
+      throw Exception('Unexpected error occured!');
+    }
   }
 
   //Widget createBannerWidget(String path) => Image.asset(path);
@@ -336,54 +376,132 @@ class _MainPageState extends State<MainPage> {
                       child: Column(
                         children: [
                           Container(
-                              padding: EdgeInsets.all(15),
-                              decoration: BoxDecoration(
-                                color: Colors.grey.shade100,
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(40.0),
-                                  topRight: Radius.circular(40.0),
-                                ),
+                            padding: EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade100,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(40.0),
+                                topRight: Radius.circular(40.0),
                               ),
-                              child: Column(
-                                children: [
-                                  CarouselSlider(
-                                    items: imageSliders,
-                                    carouselController: _controller,
-                                    options: CarouselOptions(
-                                        viewportFraction: 1,
-                                        autoPlay: true,
-                                        enlargeCenterPage: true,
-                                        autoPlayInterval: Duration(seconds: 15),
-                                        aspectRatio: 2.0,
-                                        onPageChanged: (index, reason) {
-                                          setState(() {
-                                            _currents = index;
-                                          });
-                                        }),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children:
-                                        imgLists.asMap().entries.map((entry) {
-                                      return GestureDetector(
-                                        onTap: () => _controller
-                                            .animateToPage(entry.key),
-                                        child: Container(
-                                          width: 9.0,
-                                          height: 9.0,
-                                          margin: EdgeInsets.symmetric(
-                                              vertical: 5.0, horizontal: 2.0),
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: _currents == entry.key
-                                                  ? Colors.pink[200]
-                                                  : Colors.blue),
-                                        ),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ],
-                              )),
+                            ),
+                            child: FutureBuilder<List<apibanner>>(
+                              future: futureData,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  List<apibanner> bannerapi = snapshot.data;
+                                  List<Widget> imageSliders = bannerapi
+                                      .map((item) => Container(
+                                            child: Container(
+                                              margin: EdgeInsets.all(5.0),
+                                              child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              30.0)),
+                                                  child: Stack(
+                                                    children: <Widget>[
+                                                      Image.network(
+                                                          item.urlpath,
+                                                          fit: BoxFit.cover,
+                                                          width: 1000.0),
+                                                      Positioned(
+                                                        bottom: 0.0,
+                                                        left: 0.0,
+                                                        right: 0.0,
+                                                        child: Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            gradient:
+                                                                LinearGradient(
+                                                              colors: [
+                                                                Color.fromARGB(
+                                                                    0, 0, 0, 0),
+                                                                Color.fromARGB(
+                                                                    0, 0, 0, 0)
+                                                              ],
+                                                              begin: Alignment
+                                                                  .bottomCenter,
+                                                              end: Alignment
+                                                                  .topCenter,
+                                                            ),
+                                                          ),
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  vertical:
+                                                                      10.0,
+                                                                  horizontal:
+                                                                      20.0),
+                                                          child: Text(
+                                                            '',
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 20.0,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  )),
+                                            ),
+                                          ))
+                                      .toList();
+                                  return Column(
+                                    children: [
+                                      CarouselSlider(
+                                        items: imageSliders,
+                                        carouselController: _controller,
+                                        options: CarouselOptions(
+                                            viewportFraction: 1,
+                                            autoPlay: true,
+                                            enlargeCenterPage: true,
+                                            autoPlayInterval:
+                                                Duration(seconds: 15),
+                                            aspectRatio: 2.0,
+                                            onPageChanged: (index, reason) {
+                                              setState(() {
+                                                _currents = index;
+                                              });
+                                            }),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: bannerapi
+                                            .asMap()
+                                            .entries
+                                            .map((entry) {
+                                          return GestureDetector(
+                                            onTap: () => _controller
+                                                .animateToPage(entry.key),
+                                            child: Container(
+                                              width: 9.0,
+                                              height: 9.0,
+                                              margin: EdgeInsets.symmetric(
+                                                  vertical: 5.0,
+                                                  horizontal: 2.0),
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: _currents == entry.key
+                                                      ? Colors.pink[200]
+                                                      : Colors.blue),
+                                            ),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ],
+                                  );
+                                } else if (snapshot.hasError) {
+                                  return Text("${snapshot.error}");
+                                }
+                                // By default show a loading spinner.
+                                return CircularProgressIndicator();
+                              },
+                            ),
+                          ),
                           Container(
                             padding: EdgeInsets.all(15),
                             decoration: BoxDecoration(
@@ -423,427 +541,357 @@ class _MainPageState extends State<MainPage> {
                               ),
                             ],
                           ),
-
-                          //cardบทความ
                           Container(
-                            width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.only(
-                              left: 15,
-                            ),
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Container(
-                                // width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.only(
-                                    top: 10, right: 10, left: 10, bottom: 20),
-                                //color: Colors.red,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      width: 330,
-                                      decoration: BoxDecoration(
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.2),
-                                              spreadRadius: 1,
-                                              blurRadius: 10,
-                                              offset: Offset(0, 8),
-                                            )
-                                          ],
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(40))),
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            height: 130,
-                                            decoration: BoxDecoration(
-                                              // color: Colors.white,
-                                              image: DecorationImage(
-                                                  fit: BoxFit.cover,
-                                                  image: AssetImage(
-                                                      'images/1150.png')),
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(30),
-                                                topRight: Radius.circular(30),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              height: 100,
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.only(
-                                                  bottomLeft:
-                                                      Radius.circular(30),
-                                                  bottomRight:
-                                                      Radius.circular(30),
-                                                ),
-                                              ),
-                                              child: Container(
-                                                padding: EdgeInsets.only(
-                                                    left: 15, right: 15),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                        'ทำไมต้องตรวจอัลตราซาวเต้านม',
-                                                        style: GoogleFonts.kanit(
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            color: Color(
-                                                                0xff0088C6))),
-                                                    Text(
-                                                        'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
-                                                        maxLines: 2,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style:
-                                                            GoogleFonts.kanit(
-                                                                fontSize: 14,
-                                                                color: Colors
-                                                                    .black)),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        FaIcon(
-                                                          FontAwesomeIcons
-                                                              .solidClock,
-                                                          size: 12,
-                                                          color:
-                                                              Color(0xff0088C6),
-                                                        ),
-                                                        SizedBox(
-                                                          width: 5,
-                                                        ),
-                                                        Text(
-                                                          "16-06-2564",
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style:
-                                                              GoogleFonts.kanit(
-                                                            fontSize: 12,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            color: Colors.grey,
-                                                          ),
-                                                        ),
-                                                        SizedBox(
-                                                          width: 10,
-                                                        ),
-                                                        FaIcon(
-                                                          FontAwesomeIcons
-                                                              .solidEye,
-                                                          size: 12,
-                                                          color:
-                                                              Color(0xff0088C6),
-                                                        ),
-                                                        SizedBox(
-                                                          width: 5,
-                                                        ),
-                                                        Text(
-                                                          "50,000",
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style:
-                                                              GoogleFonts.kanit(
-                                                            fontSize: 12,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            color: Colors.grey,
-                                                          ),
-                                                        ),
-                                                      ],
+                            //height: MediaQuery.of(context).size.height,
+
+                            // color: Colors.amber,
+                            child: FutureBuilder<List<apiarticle>>(
+                              future: articleData,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  List<apiarticle> articleDatas = snapshot.data;
+                                  return SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Container(
+                                      child: new Row(
+                                          children: articleDatas
+                                              .map((item) => new Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    padding: EdgeInsets.only(
+                                                      left: 15,
                                                     ),
-                                                  ],
-                                                ),
-                                              )),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(width: 20),
-                                    Container(
-                                      width: 330,
-                                      decoration: BoxDecoration(
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.2),
-                                              spreadRadius: 1,
-                                              blurRadius: 10,
-                                              offset: Offset(0, 8),
-                                            )
-                                          ],
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(40))),
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            height: 150,
-                                            decoration: BoxDecoration(
-                                              // color: Colors.white,
-                                              image: DecorationImage(
-                                                  fit: BoxFit.cover,
-                                                  image: AssetImage(
-                                                      'images/1150.png')),
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(30),
-                                                topRight: Radius.circular(30),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              height: 100,
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.only(
-                                                  bottomLeft:
-                                                      Radius.circular(30),
-                                                  bottomRight:
-                                                      Radius.circular(30),
-                                                ),
-                                              ),
-                                              child: Container(
-                                                padding: EdgeInsets.only(
-                                                    left: 15, right: 15),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                        'ทำไมต้องตรวจอัลตราซาวเต้านม',
-                                                        style: GoogleFonts.kanit(
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            color: Color(
-                                                                0xff0088C6))),
-                                                    Text(
-                                                        'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
-                                                        maxLines: 2,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style:
-                                                            GoogleFonts.kanit(
-                                                                fontSize: 14,
-                                                                color: Colors
-                                                                    .black)),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        FaIcon(
-                                                          FontAwesomeIcons
-                                                              .solidClock,
-                                                          size: 12,
-                                                          color:
-                                                              Color(0xff0088C6),
+                                                    child:
+                                                        SingleChildScrollView(
+                                                      scrollDirection:
+                                                          Axis.horizontal,
+                                                      child: Container(
+                                                        // width: MediaQuery.of(context).size.width,
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                top: 10,
+                                                                right: 10,
+                                                                left: 10,
+                                                                bottom: 20),
+                                                        //color: Colors.red,
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            GestureDetector(
+                                                              onDoubleTap: () {
+                                                                setState(() {
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      CupertinoPageRoute(
+                                                                          builder: (context) => ArticleDetailsPage(
+                                                                                urlget: 'https://truethanyarak.com/api/Ar_Detail.php?id=${item.id}',
+                                                                              )));
+                                                                });
+                                                              },
+                                                              child: Container(
+                                                                width: 330,
+                                                                decoration: BoxDecoration(
+                                                                    boxShadow: [
+                                                                      BoxShadow(
+                                                                        color: Colors
+                                                                            .grey
+                                                                            .withOpacity(0.2),
+                                                                        spreadRadius:
+                                                                            1,
+                                                                        blurRadius:
+                                                                            10,
+                                                                        offset: Offset(
+                                                                            0,
+                                                                            8),
+                                                                      )
+                                                                    ],
+                                                                    borderRadius:
+                                                                        BorderRadius.all(
+                                                                            Radius.circular(40))),
+                                                                child: Column(
+                                                                  children: [
+                                                                    Container(
+                                                                      width: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width,
+                                                                      height:
+                                                                          130,
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        // color: Colors.white,
+                                                                        image: DecorationImage(
+                                                                            fit:
+                                                                                BoxFit.cover,
+                                                                            image: NetworkImage(item.urlpicpath)),
+                                                                        borderRadius:
+                                                                            BorderRadius.only(
+                                                                          topLeft:
+                                                                              Radius.circular(30),
+                                                                          topRight:
+                                                                              Radius.circular(30),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    Container(
+                                                                        width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width,
+                                                                        height:
+                                                                            100,
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          color:
+                                                                              Colors.white,
+                                                                          borderRadius:
+                                                                              BorderRadius.only(
+                                                                            bottomLeft:
+                                                                                Radius.circular(30),
+                                                                            bottomRight:
+                                                                                Radius.circular(30),
+                                                                          ),
+                                                                        ),
+                                                                        child:
+                                                                            Container(
+                                                                          padding: EdgeInsets.only(
+                                                                              left: 15,
+                                                                              right: 15),
+                                                                          child:
+                                                                              Column(
+                                                                            crossAxisAlignment:
+                                                                                CrossAxisAlignment.start,
+                                                                            children: [
+                                                                              Text(item.subject, maxLines: 1, style: GoogleFonts.kanit(fontSize: 16, fontWeight: FontWeight.w500, color: Color(0xff0088C6))),
+                                                                              Text(item.title, maxLines: 2, overflow: TextOverflow.ellipsis, style: GoogleFonts.kanit(fontSize: 14, color: Colors.black)),
+                                                                              Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                                                children: [
+                                                                                  FaIcon(
+                                                                                    FontAwesomeIcons.solidClock,
+                                                                                    size: 12,
+                                                                                    color: Color(0xff0088C6),
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                    width: 5,
+                                                                                  ),
+                                                                                  Text(
+                                                                                    DateFormat('dd/MM/').format(item.createdate) +
+                                                                                        DateFormat('yyyy').format(
+                                                                                          item.createdate.add(
+                                                                                            Duration(days: 198195),
+                                                                                          ),
+                                                                                        ),
+                                                                                    overflow: TextOverflow.ellipsis,
+                                                                                    style: GoogleFonts.kanit(
+                                                                                      fontSize: 12,
+                                                                                      fontWeight: FontWeight.w500,
+                                                                                      color: Colors.grey,
+                                                                                    ),
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                    width: 10,
+                                                                                  ),
+                                                                                  FaIcon(
+                                                                                    FontAwesomeIcons.solidEye,
+                                                                                    size: 12,
+                                                                                    color: Color(0xff0088C6),
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                    width: 5,
+                                                                                  ),
+                                                                                  Text(
+                                                                                    "50,000",
+                                                                                    overflow: TextOverflow.ellipsis,
+                                                                                    style: GoogleFonts.kanit(
+                                                                                      fontSize: 12,
+                                                                                      fontWeight: FontWeight.w500,
+                                                                                      color: Colors.grey,
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        )),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            SizedBox(width: 20),
+                                                          ],
                                                         ),
-                                                        SizedBox(
-                                                          width: 5,
-                                                        ),
-                                                        Text(
-                                                          "16-06-2564",
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style:
-                                                              GoogleFonts.kanit(
-                                                            fontSize: 12,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            color: Colors.grey,
-                                                          ),
-                                                        ),
-                                                        SizedBox(
-                                                          width: 10,
-                                                        ),
-                                                        FaIcon(
-                                                          FontAwesomeIcons
-                                                              .solidEye,
-                                                          size: 12,
-                                                          color:
-                                                              Color(0xff0088C6),
-                                                        ),
-                                                        SizedBox(
-                                                          width: 5,
-                                                        ),
-                                                        Text(
-                                                          "50,000",
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style:
-                                                              GoogleFonts.kanit(
-                                                            fontSize: 12,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            color: Colors.grey,
-                                                          ),
-                                                        ),
-                                                      ],
+                                                      ),
                                                     ),
-                                                  ],
-                                                ),
-                                              )),
-                                        ],
-                                      ),
+                                                  ))
+                                              .toList()),
                                     ),
-                                    SizedBox(width: 20),
-                                    Container(
-                                      width: 330,
-                                      decoration: BoxDecoration(
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.2),
-                                              spreadRadius: 1,
-                                              blurRadius: 10,
-                                              offset: Offset(0, 8),
-                                            )
-                                          ],
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(40))),
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            height: 150,
-                                            decoration: BoxDecoration(
-                                              // color: Colors.white,
-                                              image: DecorationImage(
-                                                  fit: BoxFit.cover,
-                                                  image: AssetImage(
-                                                      'images/1150.png')),
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(30),
-                                                topRight: Radius.circular(30),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              height: 100,
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.only(
-                                                  bottomLeft:
-                                                      Radius.circular(30),
-                                                  bottomRight:
-                                                      Radius.circular(30),
-                                                ),
-                                              ),
-                                              child: Container(
-                                                padding: EdgeInsets.only(
-                                                    left: 15, right: 15),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                        'ทำไมต้องตรวจอัลตราซาวเต้านม',
-                                                        style: GoogleFonts.kanit(
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            color: Color(
-                                                                0xff0088C6))),
-                                                    Text(
-                                                        'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
-                                                        maxLines: 2,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style:
-                                                            GoogleFonts.kanit(
-                                                                fontSize: 14,
-                                                                color: Colors
-                                                                    .black)),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        FaIcon(
-                                                          FontAwesomeIcons
-                                                              .solidClock,
-                                                          size: 12,
-                                                          color:
-                                                              Color(0xff0088C6),
-                                                        ),
-                                                        SizedBox(
-                                                          width: 5,
-                                                        ),
-                                                        Text(
-                                                          "16-06-2564",
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style:
-                                                              GoogleFonts.kanit(
-                                                            fontSize: 12,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            color: Colors.grey,
-                                                          ),
-                                                        ),
-                                                        SizedBox(
-                                                          width: 10,
-                                                        ),
-                                                        FaIcon(
-                                                          FontAwesomeIcons
-                                                              .solidEye,
-                                                          size: 12,
-                                                          color:
-                                                              Color(0xff0088C6),
-                                                        ),
-                                                        SizedBox(
-                                                          width: 5,
-                                                        ),
-                                                        Text(
-                                                          "50,000",
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style:
-                                                              GoogleFonts.kanit(
-                                                            fontSize: 12,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            color: Colors.grey,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              )),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(width: 10),
-                                  ],
-                                ),
-                              ),
+                                  );
+                                } else if (snapshot.hasError) {
+                                  return Text("${snapshot.error}");
+                                }
+                                // By default show a loading spinner.
+                                return CircularProgressIndicator();
+                              },
                             ),
                           ),
+                          //cardบทความ
+                          // Container(
+                          //   width: MediaQuery.of(context).size.width,
+                          //   padding: EdgeInsets.only(
+                          //     left: 15,
+                          //   ),
+                          //   child: SingleChildScrollView(
+                          //     scrollDirection: Axis.horizontal,
+                          //     child: Container(
+                          //       // width: MediaQuery.of(context).size.width,
+                          //       padding: EdgeInsets.only(
+                          //           top: 10, right: 10, left: 10, bottom: 20),
+                          //       //color: Colors.red,
+                          //       child: Row(
+                          //         mainAxisAlignment: MainAxisAlignment.start,
+                          //         children: [
+                          //           Container(
+                          //             width: 330,
+                          //             decoration: BoxDecoration(
+                          //                 boxShadow: [
+                          //                   BoxShadow(
+                          //                     color:
+                          //                         Colors.grey.withOpacity(0.2),
+                          //                     spreadRadius: 1,
+                          //                     blurRadius: 10,
+                          //                     offset: Offset(0, 8),
+                          //                   )
+                          //                 ],
+                          //                 borderRadius: BorderRadius.all(
+                          //                     Radius.circular(40))),
+                          //             child: Column(
+                          //               children: [
+                          //                 Container(
+                          //                   width: MediaQuery.of(context)
+                          //                       .size
+                          //                       .width,
+                          //                   height: 130,
+                          //                   decoration: BoxDecoration(
+                          //                     // color: Colors.white,
+                          //                     image: DecorationImage(
+                          //                         fit: BoxFit.cover,
+                          //                         image: AssetImage(
+                          //                             'images/1150.png')),
+                          //                     borderRadius: BorderRadius.only(
+                          //                       topLeft: Radius.circular(30),
+                          //                       topRight: Radius.circular(30),
+                          //                     ),
+                          //                   ),
+                          //                 ),
+                          //                 Container(
+                          //                     width: MediaQuery.of(context)
+                          //                         .size
+                          //                         .width,
+                          //                     height: 100,
+                          //                     decoration: BoxDecoration(
+                          //                       color: Colors.white,
+                          //                       borderRadius: BorderRadius.only(
+                          //                         bottomLeft:
+                          //                             Radius.circular(30),
+                          //                         bottomRight:
+                          //                             Radius.circular(30),
+                          //                       ),
+                          //                     ),
+                          //                     child: Container(
+                          //                       padding: EdgeInsets.only(
+                          //                           left: 15, right: 15),
+                          //                       child: Column(
+                          //                         crossAxisAlignment:
+                          //                             CrossAxisAlignment.start,
+                          //                         children: [
+                          //                           Text(
+                          //                               'ทำไมต้องตรวจอัลตราซาวเต้านม',
+                          //                               style: GoogleFonts.kanit(
+                          //                                   fontSize: 16,
+                          //                                   fontWeight:
+                          //                                       FontWeight.w500,
+                          //                                   color: Color(
+                          //                                       0xff0088C6))),
+                          //                           Text(
+                          //                               'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
+                          //                               maxLines: 2,
+                          //                               overflow: TextOverflow
+                          //                                   .ellipsis,
+                          //                               style:
+                          //                                   GoogleFonts.kanit(
+                          //                                       fontSize: 14,
+                          //                                       color: Colors
+                          //                                           .black)),
+                          //                           Row(
+                          //                             mainAxisAlignment:
+                          //                                 MainAxisAlignment
+                          //                                     .start,
+                          //                             children: [
+                          //                               FaIcon(
+                          //                                 FontAwesomeIcons
+                          //                                     .solidClock,
+                          //                                 size: 12,
+                          //                                 color:
+                          //                                     Color(0xff0088C6),
+                          //                               ),
+                          //                               SizedBox(
+                          //                                 width: 5,
+                          //                               ),
+                          //                               Text(
+                          //                                 "16-06-2564",
+                          //                                 overflow: TextOverflow
+                          //                                     .ellipsis,
+                          //                                 style:
+                          //                                     GoogleFonts.kanit(
+                          //                                   fontSize: 12,
+                          //                                   fontWeight:
+                          //                                       FontWeight.w500,
+                          //                                   color: Colors.grey,
+                          //                                 ),
+                          //                               ),
+                          //                               SizedBox(
+                          //                                 width: 10,
+                          //                               ),
+                          //                               FaIcon(
+                          //                                 FontAwesomeIcons
+                          //                                     .solidEye,
+                          //                                 size: 12,
+                          //                                 color:
+                          //                                     Color(0xff0088C6),
+                          //                               ),
+                          //                               SizedBox(
+                          //                                 width: 5,
+                          //                               ),
+                          //                               Text(
+                          //                                 "50,000",
+                          //                                 overflow: TextOverflow
+                          //                                     .ellipsis,
+                          //                                 style:
+                          //                                     GoogleFonts.kanit(
+                          //                                   fontSize: 12,
+                          //                                   fontWeight:
+                          //                                       FontWeight.w500,
+                          //                                   color: Colors.grey,
+                          //                                 ),
+                          //                               ),
+                          //                             ],
+                          //                           ),
+                          //                         ],
+                          //                       ),
+                          //                     )),
+                          //               ],
+                          //             ),
+                          //           ),
+                          //           SizedBox(width: 20),
+                          //         ],
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                           SizedBox(height: 20),
                           const ShowHead(
                               title: 'มูลนิธิถันยรักษ์',

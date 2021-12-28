@@ -19,12 +19,14 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel;
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
-import 'package:intl/intl.dart' show DateFormat;
+import 'package:intl/intl.dart' show DateFormat, Intl;
+import 'package:intl/date_symbol_data_local.dart';
 
 DateTime _currentDate = DateTime.now();
 DateTime _targetDateTime = DateTime.now();
-String _currentMonth = DateFormat.yMMM().format(DateTime.now());
+String _currentMonth = DateFormat.MMMM().format(DateTime.now());
 String _daysel = DateFormat.yMd().format(_currentDate);
+bool _ckVisittime = false;
 List<DateTime> absentDates = [
   DateTime(2021, 12, 2),
   DateTime(2021, 12, 7),
@@ -36,7 +38,7 @@ List<DateTime> absentDates = [
   DateTime(2021, 12, 17),
   DateTime(2021, 12, 18),
   DateTime(2021, 12, 19),
-  DateTime(2021, 12, 20),
+  DateTime(2021, 12, 31),
 ];
 
 EventList<Event> _markedDateMap = new EventList<Event>(
@@ -60,25 +62,26 @@ SingingCharacterV _characterV2 = SingingCharacterV.have;
 SingingCharacterCD _characterCD = SingingCharacterCD.have;
 
 class _xrayMark_pageState extends State<xrayMark_page> {
+  initState() {
+    Intl.defaultLocale = 'th';
+    initializeDateFormatting();
+    super.initState();
+  }
+
   var len = min(absentDates?.length, absentDates.length);
   double cHeight;
   String ck;
   CalendarCarousel _calendarCarouselNoHeader;
-  static Widget _absentIcon(String day) => ClipRRect(
-        borderRadius: BorderRadius.circular(0.0), //or 15.0
-        child: Container(
-          height: 50.0,
-          width: 50.0,
+  static Widget _absentIcon(String day) => Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
           color: Colors.red[100],
-          child: Align(
-            alignment: Alignment.center,
-            child: Text(
-              day,
-              style: TextStyle(
-                color: Colors.red,
-              ),
-            ),
-          ),
+        ),
+        padding: EdgeInsets.all(1),
+        child: Text(
+          day,
+          style: TextStyle(color: Colors.red, fontSize: 14),
         ),
       );
   Widget build(BuildContext context) {
@@ -90,7 +93,6 @@ class _xrayMark_pageState extends State<xrayMark_page> {
       _f = 1;
     }
     cHeight = MediaQuery.of(context).size.height;
-
     for (int i = 0; i < len; i++) {
       _markedDateMap.add(
         absentDates[i],
@@ -105,14 +107,54 @@ class _xrayMark_pageState extends State<xrayMark_page> {
     }
 
     _calendarCarouselNoHeader = CalendarCarousel<Event>(
+      customGridViewPhysics: NeverScrollableScrollPhysics(),
+      onCalendarChanged: (DateTime date) {
+        this.setState(() {
+          _targetDateTime = date;
+          _currentMonth = DateFormat.MMMM('th_Th').format(_targetDateTime);
+        });
+      },
+      markedDateIconBorderColor: Colors.red,
+      markedDateIconOffset: 2,
+      markedDateIconMargin: 0,
+      markedDateIconMaxShown: 1,
+      showHeader: false,
+      showHeaderButton: true,
+      // headerTextStyle: TextStyle(color: Colors.red),
+
+      weekDayMargin: const EdgeInsets.only(bottom: 4.0),
       todayBorderColor: Colors.grey[200],
       todayButtonColor: Colors.grey[200],
+      targetDateTime: _targetDateTime,
       daysHaveCircularBorder: false,
       // thisMonthDayBorderColor: Colors.grey,
       todayTextStyle: TextStyle(
         color: Colors.black,
       ),
 
+      customWeekDayBuilder: (weekday, weekdayName) => customDay(weekday),
+      // weekDayBackgroundColor: Colors.amber,
+      weekendTextStyle: TextStyle(
+        color: Colors.red,
+      ),
+
+      showWeekDays: true,
+      selectedDayButtonColor: Colors.blue,
+      dayPadding: 10,
+
+      selectedDayBorderColor: Colors.blue,
+
+      markedDatesMap: _markedDateMap,
+      markedDateShowIcon: true,
+
+      markedDateMoreShowTotal:
+          null, // null for not showing hidden events indicator
+      markedDateIconBuilder: (event) {
+        return event.icon;
+      },
+      minSelectedDate: _currentDate.subtract(Duration(days: 0)),
+      maxSelectedDate: _currentDate.add(Duration(days: 360)),
+      selectedDateTime: _currentDate,
       onDayPressed: (date, events) {
         ck = '';
         events.forEach(
@@ -121,30 +163,20 @@ class _xrayMark_pageState extends State<xrayMark_page> {
 
         print(_targetDateTime);
         print(_daysel);
+        print('----');
 
         if (ck == '') {
           this.setState(() => _currentDate = date);
+          _ckVisittime = true;
           print('ว่าง');
         } else {
           print('ไม่ว่าง');
         }
       },
-      weekendTextStyle: TextStyle(
-        color: Colors.red,
-      ),
-      selectedDayButtonColor: Colors.blue,
-
-      selectedDayBorderColor: Colors.blue,
-
-      markedDatesMap: _markedDateMap,
-      markedDateShowIcon: true,
-      markedDateIconMaxShown: 1,
-      markedDateMoreShowTotal:
-          null, // null for not showing hidden events indicator
-      markedDateIconBuilder: (event) {
-        return event.icon;
-      },
-      selectedDateTime: _currentDate,
+      scrollDirection: Axis.horizontal,
+      // markedDateCustomShapeBorder: RoundedRectangleBorder(
+      //     side: BorderSide(color: Colors.black),
+      //     borderRadius: BorderRadius.all(Radius.circular(15))),
     );
     return Scaffold(
       backgroundColor: Colors.white,
@@ -246,1282 +278,237 @@ class _xrayMark_pageState extends State<xrayMark_page> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Container(
-                            //color: Colors.amber,
+                            height: MediaQuery.of(context).size.height * 0.08,
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10),
+                                  child: GestureDetector(
+                                    child: Icon(
+                                      Icons.navigate_before,
+                                      color: Colors.blue,
+                                      size: 30,
+                                    ),
+                                    onTap: () {
+                                      setState(() {
+                                        _targetDateTime = DateTime(
+                                            _targetDateTime.year,
+                                            _targetDateTime.month - 1);
+                                        _currentMonth = DateFormat.MMMM('th_TH')
+                                            .format(_targetDateTime);
+                                      });
+                                    },
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(_currentMonth,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 20, color: Colors.blue)),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10),
+                                  child: GestureDetector(
+                                    child: Icon(
+                                      Icons.navigate_next,
+                                      color: Colors.blue,
+                                      size: 30,
+                                    ),
+                                    onTap: () {
+                                      setState(() {
+                                        _targetDateTime = DateTime(
+                                            _targetDateTime.year,
+                                            _targetDateTime.month + 1);
+                                        _currentMonth = DateFormat.MMMM('th_TH')
+                                            .format(_targetDateTime);
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            // color: Colors.amber,
                             width: MediaQuery.of(context).size.width,
-                            height: 400,
+                            height: MediaQuery.of(context).size.height * 0.4,
                             child: _calendarCarouselNoHeader,
                           ),
-                          Text(
-                            'เวลานัด',
-                            style: GoogleFonts.kanit(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black,
+                          Visibility(
+                            visible: _ckVisittime,
+                            child: Text(
+                              'เวลานัด',
+                              style: GoogleFonts.kanit(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
-                          Container(
-                            height: 50,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                          // Container(
+                          //   height: 50,
+                          //   child: Row(
+                          //     crossAxisAlignment: CrossAxisAlignment.center,
+                          //     children: [
+                          //Expad
+                          //       txtTime(1, false, '07:30 น.'),
+                          //       txtTime(2, true, '07:45 น.'),
+                          //       txtTime(3, false, '07:30 น.'),
+                          //       txtTime(4, false, '07:30 น.'),
+                          //     ],
+                          //   ),
+                          // ),
+                          Visibility(
+                            visible: _ckVisittime,
+                            child: Wrap(
+                              direction: Axis.horizontal,
+                              alignment: WrapAlignment.spaceBetween,
+                              runAlignment: WrapAlignment.center,
+                              runSpacing: 3.0,
+                              spacing: 3.0,
                               children: [
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {});
-                                    },
-                                    child: Container(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.red[100],
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0),
-                                          ),
-                                        ),
-                                        padding: EdgeInsets.all(10),
-                                        margin: EdgeInsets.all(5),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            '10:00 น.',
-                                            style: GoogleFonts.kanit(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.red,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        if (bt2 == false) {
-                                        } else {
-                                          btck = 2;
-
-                                          print(btck);
-                                        }
-                                      });
-                                    },
-                                    child: Container(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border: bt2 == false
-                                              ? Border.all(
-                                                  color: Colors.transparent)
-                                              : Border.all(color: Colors.grey),
-                                          color: bt2 == false
-                                              ? Colors.red[100]
-                                              : btck == 2
-                                                  ? Colors.blue
-                                                  : Colors.white,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0),
-                                          ),
-                                        ),
-                                        margin: EdgeInsets.all(5),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            '10:30 น.',
-                                            style: GoogleFonts.kanit(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500,
-                                              color: bt2 == false
-                                                  ? Colors.red
-                                                  : btck == 2
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        // if (bt2 == false) {
-                                        // } else {
-                                        //   btck = 2;
-
-                                        //   print(btck);
-                                        // }
-                                      });
-                                    },
-                                    child: Container(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border:
-                                              // bt2 == false
-                                              //     ? Border.all(
-                                              //         color: Colors.transparent)
-                                              //     : Border.all(color: Colors.grey)
-                                              Border.all(color: Colors.grey),
-                                          color: Colors.white,
-                                          // bt2 == false
-                                          //     ? Colors.red[100]
-                                          //     : btck == 2
-                                          //         ? Colors.blue
-                                          //         : Colors.white,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0),
-                                          ),
-                                        ),
-                                        margin: EdgeInsets.all(5),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            '10:30 น.',
-                                            style: GoogleFonts.kanit(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black
-                                                // bt2 == false
-                                                //     ? Colors.red
-                                                //     : btck == 2
-                                                //         ? Colors.white
-                                                //         : Colors.black,
-                                                ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        // if (bt2 == false) {
-                                        // } else {
-                                        //   btck = 2;
-
-                                        //   print(btck);
-                                        // }
-                                      });
-                                    },
-                                    child: Container(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border:
-                                              // bt2 == false
-                                              //     ? Border.all(
-                                              //         color: Colors.transparent)
-                                              //     : Border.all(color: Colors.grey)
-                                              Border.all(color: Colors.grey),
-                                          color: Colors.white,
-                                          // bt2 == false
-                                          //     ? Colors.red[100]
-                                          //     : btck == 2
-                                          //         ? Colors.blue
-                                          //         : Colors.white,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0),
-                                          ),
-                                        ),
-                                        margin: EdgeInsets.all(5),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            '10:30 น.',
-                                            style: GoogleFonts.kanit(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black
-                                                // bt2 == false
-                                                //     ? Colors.red
-                                                //     : btck == 2
-                                                //         ? Colors.white
-                                                //         : Colors.black,
-                                                ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            height: 50,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {});
-                                    },
-                                    child: Container(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.red[100],
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0),
-                                          ),
-                                        ),
-                                        padding: EdgeInsets.all(10),
-                                        margin: EdgeInsets.all(5),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            '10:00 น.',
-                                            style: GoogleFonts.kanit(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.red,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        // if (bt2 == false) {
-                                        // } else {
-                                        //   btck = 2;
-
-                                        //   print(btck);
-                                        // }
-                                      });
-                                    },
-                                    child: Container(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border:
-                                              // bt2 == false
-                                              //     ? Border.all(
-                                              //         color: Colors.transparent)
-                                              //     : Border.all(color: Colors.grey)
-                                              Border.all(color: Colors.grey),
-                                          color: Colors.white,
-                                          // bt2 == false
-                                          //     ? Colors.red[100]
-                                          //     : btck == 2
-                                          //         ? Colors.blue
-                                          //         : Colors.white,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0),
-                                          ),
-                                        ),
-                                        margin: EdgeInsets.all(5),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            '10:30 น.',
-                                            style: GoogleFonts.kanit(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black
-                                                // bt2 == false
-                                                //     ? Colors.red
-                                                //     : btck == 2
-                                                //         ? Colors.white
-                                                //         : Colors.black,
-                                                ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        // if (bt2 == false) {
-                                        // } else {
-                                        //   btck = 2;
-
-                                        //   print(btck);
-                                        // }
-                                      });
-                                    },
-                                    child: Container(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border:
-                                              // bt2 == false
-                                              //     ? Border.all(
-                                              //         color: Colors.transparent)
-                                              //     : Border.all(color: Colors.grey)
-                                              Border.all(color: Colors.grey),
-                                          color: Colors.white,
-                                          // bt2 == false
-                                          //     ? Colors.red[100]
-                                          //     : btck == 2
-                                          //         ? Colors.blue
-                                          //         : Colors.white,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0),
-                                          ),
-                                        ),
-                                        margin: EdgeInsets.all(5),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            '10:30 น.',
-                                            style: GoogleFonts.kanit(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black
-                                                // bt2 == false
-                                                //     ? Colors.red
-                                                //     : btck == 2
-                                                //         ? Colors.white
-                                                //         : Colors.black,
-                                                ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        // if (bt2 == false) {
-                                        // } else {
-                                        //   btck = 2;
-
-                                        //   print(btck);
-                                        // }
-                                      });
-                                    },
-                                    child: Container(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border:
-                                              // bt2 == false
-                                              //     ? Border.all(
-                                              //         color: Colors.transparent)
-                                              //     : Border.all(color: Colors.grey)
-                                              Border.all(color: Colors.grey),
-                                          color: Colors.white,
-                                          // bt2 == false
-                                          //     ? Colors.red[100]
-                                          //     : btck == 2
-                                          //         ? Colors.blue
-                                          //         : Colors.white,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0),
-                                          ),
-                                        ),
-                                        margin: EdgeInsets.all(5),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            '10:30 น.',
-                                            style: GoogleFonts.kanit(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black
-                                                // bt2 == false
-                                                //     ? Colors.red
-                                                //     : btck == 2
-                                                //         ? Colors.white
-                                                //         : Colors.black,
-                                                ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            height: 50,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {});
-                                    },
-                                    child: Container(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.red[100],
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0),
-                                          ),
-                                        ),
-                                        padding: EdgeInsets.all(10),
-                                        margin: EdgeInsets.all(5),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            '10:00 น.',
-                                            style: GoogleFonts.kanit(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.red,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        // if (bt2 == false) {
-                                        // } else {
-                                        //   btck = 2;
-
-                                        //   print(btck);
-                                        // }
-                                      });
-                                    },
-                                    child: Container(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border:
-                                              // bt2 == false
-                                              //     ? Border.all(
-                                              //         color: Colors.transparent)
-                                              //     : Border.all(color: Colors.grey)
-                                              Border.all(color: Colors.grey),
-                                          color: Colors.white,
-                                          // bt2 == false
-                                          //     ? Colors.red[100]
-                                          //     : btck == 2
-                                          //         ? Colors.blue
-                                          //         : Colors.white,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0),
-                                          ),
-                                        ),
-                                        margin: EdgeInsets.all(5),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            '10:30 น.',
-                                            style: GoogleFonts.kanit(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black
-                                                // bt2 == false
-                                                //     ? Colors.red
-                                                //     : btck == 2
-                                                //         ? Colors.white
-                                                //         : Colors.black,
-                                                ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        // if (bt2 == false) {
-                                        // } else {
-                                        //   btck = 2;
-
-                                        //   print(btck);
-                                        // }
-                                      });
-                                    },
-                                    child: Container(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border:
-                                              // bt2 == false
-                                              //     ? Border.all(
-                                              //         color: Colors.transparent)
-                                              //     : Border.all(color: Colors.grey)
-                                              Border.all(color: Colors.grey),
-                                          color: Colors.white,
-                                          // bt2 == false
-                                          //     ? Colors.red[100]
-                                          //     : btck == 2
-                                          //         ? Colors.blue
-                                          //         : Colors.white,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0),
-                                          ),
-                                        ),
-                                        margin: EdgeInsets.all(5),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            '10:30 น.',
-                                            style: GoogleFonts.kanit(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black
-                                                // bt2 == false
-                                                //     ? Colors.red
-                                                //     : btck == 2
-                                                //         ? Colors.white
-                                                //         : Colors.black,
-                                                ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        // if (bt2 == false) {
-                                        // } else {
-                                        //   btck = 2;
-
-                                        //   print(btck);
-                                        // }
-                                      });
-                                    },
-                                    child: Container(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border:
-                                              // bt2 == false
-                                              //     ? Border.all(
-                                              //         color: Colors.transparent)
-                                              //     : Border.all(color: Colors.grey)
-                                              Border.all(color: Colors.grey),
-                                          color: Colors.white,
-                                          // bt2 == false
-                                          //     ? Colors.red[100]
-                                          //     : btck == 2
-                                          //         ? Colors.blue
-                                          //         : Colors.white,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0),
-                                          ),
-                                        ),
-                                        margin: EdgeInsets.all(5),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            '10:30 น.',
-                                            style: GoogleFonts.kanit(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black
-                                                // bt2 == false
-                                                //     ? Colors.red
-                                                //     : btck == 2
-                                                //         ? Colors.white
-                                                //         : Colors.black,
-                                                ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            height: 50,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {});
-                                    },
-                                    child: Container(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.red[100],
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0),
-                                          ),
-                                        ),
-                                        padding: EdgeInsets.all(10),
-                                        margin: EdgeInsets.all(5),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            '10:00 น.',
-                                            style: GoogleFonts.kanit(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.red,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        // if (bt2 == false) {
-                                        // } else {
-                                        //   btck = 2;
-
-                                        //   print(btck);
-                                        // }
-                                      });
-                                    },
-                                    child: Container(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border:
-                                              // bt2 == false
-                                              //     ? Border.all(
-                                              //         color: Colors.transparent)
-                                              //     : Border.all(color: Colors.grey)
-                                              Border.all(color: Colors.grey),
-                                          color: Colors.white,
-                                          // bt2 == false
-                                          //     ? Colors.red[100]
-                                          //     : btck == 2
-                                          //         ? Colors.blue
-                                          //         : Colors.white,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0),
-                                          ),
-                                        ),
-                                        margin: EdgeInsets.all(5),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            '10:30 น.',
-                                            style: GoogleFonts.kanit(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black
-                                                // bt2 == false
-                                                //     ? Colors.red
-                                                //     : btck == 2
-                                                //         ? Colors.white
-                                                //         : Colors.black,
-                                                ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        // if (bt2 == false) {
-                                        // } else {
-                                        //   btck = 2;
-
-                                        //   print(btck);
-                                        // }
-                                      });
-                                    },
-                                    child: Container(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border:
-                                              // bt2 == false
-                                              //     ? Border.all(
-                                              //         color: Colors.transparent)
-                                              //     : Border.all(color: Colors.grey)
-                                              Border.all(color: Colors.grey),
-                                          color: Colors.white,
-                                          // bt2 == false
-                                          //     ? Colors.red[100]
-                                          //     : btck == 2
-                                          //         ? Colors.blue
-                                          //         : Colors.white,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0),
-                                          ),
-                                        ),
-                                        margin: EdgeInsets.all(5),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            '10:30 น.',
-                                            style: GoogleFonts.kanit(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black
-                                                // bt2 == false
-                                                //     ? Colors.red
-                                                //     : btck == 2
-                                                //         ? Colors.white
-                                                //         : Colors.black,
-                                                ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        // if (bt2 == false) {
-                                        // } else {
-                                        //   btck = 2;
-
-                                        //   print(btck);
-                                        // }
-                                      });
-                                    },
-                                    child: Container(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border:
-                                              // bt2 == false
-                                              //     ? Border.all(
-                                              //         color: Colors.transparent)
-                                              //     : Border.all(color: Colors.grey)
-                                              Border.all(color: Colors.grey),
-                                          color: Colors.white,
-                                          // bt2 == false
-                                          //     ? Colors.red[100]
-                                          //     : btck == 2
-                                          //         ? Colors.blue
-                                          //         : Colors.white,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0),
-                                          ),
-                                        ),
-                                        margin: EdgeInsets.all(5),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            '10:30 น.',
-                                            style: GoogleFonts.kanit(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black
-                                                // bt2 == false
-                                                //     ? Colors.red
-                                                //     : btck == 2
-                                                //         ? Colors.white
-                                                //         : Colors.black,
-                                                ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            height: 50,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {});
-                                    },
-                                    child: Container(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.red[100],
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0),
-                                          ),
-                                        ),
-                                        padding: EdgeInsets.all(10),
-                                        margin: EdgeInsets.all(5),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            '10:00 น.',
-                                            style: GoogleFonts.kanit(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.red,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        // if (bt2 == false) {
-                                        // } else {
-                                        //   btck = 2;
-
-                                        //   print(btck);
-                                        // }
-                                      });
-                                    },
-                                    child: Container(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border:
-                                              // bt2 == false
-                                              //     ? Border.all(
-                                              //         color: Colors.transparent)
-                                              //     : Border.all(color: Colors.grey)
-                                              Border.all(color: Colors.grey),
-                                          color: Colors.white,
-                                          // bt2 == false
-                                          //     ? Colors.red[100]
-                                          //     : btck == 2
-                                          //         ? Colors.blue
-                                          //         : Colors.white,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0),
-                                          ),
-                                        ),
-                                        margin: EdgeInsets.all(5),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            '10:30 น.',
-                                            style: GoogleFonts.kanit(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black
-                                                // bt2 == false
-                                                //     ? Colors.red
-                                                //     : btck == 2
-                                                //         ? Colors.white
-                                                //         : Colors.black,
-                                                ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        // if (bt2 == false) {
-                                        // } else {
-                                        //   btck = 2;
-
-                                        //   print(btck);
-                                        // }
-                                      });
-                                    },
-                                    child: Container(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border:
-                                              // bt2 == false
-                                              //     ? Border.all(
-                                              //         color: Colors.transparent)
-                                              //     : Border.all(color: Colors.grey)
-                                              Border.all(color: Colors.grey),
-                                          color: Colors.white,
-                                          // bt2 == false
-                                          //     ? Colors.red[100]
-                                          //     : btck == 2
-                                          //         ? Colors.blue
-                                          //         : Colors.white,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0),
-                                          ),
-                                        ),
-                                        margin: EdgeInsets.all(5),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            '10:30 น.',
-                                            style: GoogleFonts.kanit(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black
-                                                // bt2 == false
-                                                //     ? Colors.red
-                                                //     : btck == 2
-                                                //         ? Colors.white
-                                                //         : Colors.black,
-                                                ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        // if (bt2 == false) {
-                                        // } else {
-                                        //   btck = 2;
-
-                                        //   print(btck);
-                                        // }
-                                      });
-                                    },
-                                    child: Container(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border:
-                                              // bt2 == false
-                                              //     ? Border.all(
-                                              //         color: Colors.transparent)
-                                              //     : Border.all(color: Colors.grey)
-                                              Border.all(color: Colors.grey),
-                                          color: Colors.white,
-                                          // bt2 == false
-                                          //     ? Colors.red[100]
-                                          //     : btck == 2
-                                          //         ? Colors.blue
-                                          //         : Colors.white,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0),
-                                          ),
-                                        ),
-                                        margin: EdgeInsets.all(5),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            '10:30 น.',
-                                            style: GoogleFonts.kanit(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black
-                                                // bt2 == false
-                                                //     ? Colors.red
-                                                //     : btck == 2
-                                                //         ? Colors.white
-                                                //         : Colors.black,
-                                                ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            height: 50,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {});
-                                    },
-                                    child: Container(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.red[100],
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0),
-                                          ),
-                                        ),
-                                        padding: EdgeInsets.all(10),
-                                        margin: EdgeInsets.all(5),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            '10:00 น.',
-                                            style: GoogleFonts.kanit(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.red,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        // if (bt2 == false) {
-                                        // } else {
-                                        //   btck = 2;
-
-                                        //   print(btck);
-                                        // }
-                                      });
-                                    },
-                                    child: Container(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border:
-                                              // bt2 == false
-                                              //     ? Border.all(
-                                              //         color: Colors.transparent)
-                                              //     : Border.all(color: Colors.grey)
-                                              Border.all(color: Colors.grey),
-                                          color: Colors.white,
-                                          // bt2 == false
-                                          //     ? Colors.red[100]
-                                          //     : btck == 2
-                                          //         ? Colors.blue
-                                          //         : Colors.white,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0),
-                                          ),
-                                        ),
-                                        margin: EdgeInsets.all(5),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            '10:30 น.',
-                                            style: GoogleFonts.kanit(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black
-                                                // bt2 == false
-                                                //     ? Colors.red
-                                                //     : btck == 2
-                                                //         ? Colors.white
-                                                //         : Colors.black,
-                                                ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        // if (bt2 == false) {
-                                        // } else {
-                                        //   btck = 2;
-
-                                        //   print(btck);
-                                        // }
-                                      });
-                                    },
-                                    child: Container(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border:
-                                              // bt2 == false
-                                              //     ? Border.all(
-                                              //         color: Colors.transparent)
-                                              //     : Border.all(color: Colors.grey)
-                                              Border.all(color: Colors.grey),
-                                          color: Colors.white,
-                                          // bt2 == false
-                                          //     ? Colors.red[100]
-                                          //     : btck == 2
-                                          //         ? Colors.blue
-                                          //         : Colors.white,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0),
-                                          ),
-                                        ),
-                                        margin: EdgeInsets.all(5),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            '10:30 น.',
-                                            style: GoogleFonts.kanit(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black
-                                                // bt2 == false
-                                                //     ? Colors.red
-                                                //     : btck == 2
-                                                //         ? Colors.white
-                                                //         : Colors.black,
-                                                ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        // if (bt2 == false) {
-                                        // } else {
-                                        //   btck = 2;
-
-                                        //   print(btck);
-                                        // }
-                                      });
-                                    },
-                                    child: Container(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border:
-                                              // bt2 == false
-                                              //     ? Border.all(
-                                              //         color: Colors.transparent)
-                                              //     : Border.all(color: Colors.grey)
-                                              Border.all(color: Colors.grey),
-                                          color: Colors.white,
-                                          // bt2 == false
-                                          //     ? Colors.red[100]
-                                          //     : btck == 2
-                                          //         ? Colors.blue
-                                          //         : Colors.white,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0),
-                                          ),
-                                        ),
-                                        margin: EdgeInsets.all(5),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            '10:30 น.',
-                                            style: GoogleFonts.kanit(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black
-                                                // bt2 == false
-                                                //     ? Colors.red
-                                                //     : btck == 2
-                                                //         ? Colors.white
-                                                //         : Colors.black,
-                                                ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                txtTime(1, false, '07:30 น.'),
+                                txtTime(2, true, '07:45 น.'),
+                                txtTime(3, true, '08:00 น.'),
+                                txtTime(4, true, '08:20 น.'),
+                                txtTime(5, true, '08:40 น.'),
+                                txtTime(6, true, '09:00 น.'),
+                                txtTime(7, false, '09:20 น.'),
+                                txtTime(8, false, '09:40 น.'),
+                                txtTime(9, false, '10:00 น.'),
+                                txtTime(10, true, '10:20 น.'),
+                                txtTime(11, false, '10:40 น.'),
+                                txtTime(12, false, '11:00 น.'),
+                                txtTime(13, true, '11:30 น.'),
+                                txtTime(14, true, '11:45 น.'),
+                                txtTime(15, true, '12:00 น.'),
+                                txtTime(16, false, '12:20 น.'),
+                                txtTime(17, false, '12:40 น.'),
+                                txtTime(18, true, '13:00 น.'),
+                                txtTime(19, false, '13:20 น.'),
+                                txtTime(20, false, '13:40 น.'),
+                                txtTime(21, false, '14:00 น.'),
+                                txtTime(22, true, '14:20 น.'),
+                                txtTime(23, true, '14:40 น.'),
+                                txtTime(24, true, '15:00 น.'),
                               ],
                             ),
                           ),
                           SizedBox(height: 20),
-                          Text(
-                            'เบอร์ติดต่อ',
-                            style: GoogleFonts.kanit(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black,
+                          Visibility(
+                            visible: _ckVisittime,
+                            child: Text(
+                              'เบอร์ติดต่อ',
+                              style: GoogleFonts.kanit(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
-                          FormBuilderTextField(
-                            inputFormatters: [
-                              LengthLimitingTextInputFormatter(10),
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            keyboardType: TextInputType.number,
-                            name: 'phnoe',
-                            style: GoogleFonts.kanit(fontSize: 14),
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(10),
+                          Visibility(
+                            visible: _ckVisittime,
+                            child: FormBuilderTextField(
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(10),
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              keyboardType: TextInputType.number,
+                              name: 'phnoe',
+                              style: GoogleFonts.kanit(fontSize: 14),
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: const BorderRadius.all(
+                                      const Radius.circular(10),
+                                    ),
                                   ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.blue, width: 1),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(15)),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.grey.shade300, width: 1),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(15)),
-                                ),
-                                prefixIcon: Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: Image.asset(
-                                    'images/phone.png',
-                                    alignment: Alignment.center,
-                                    scale: 1.3,
-                                    color: Colors.grey,
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blue, width: 1),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(15)),
                                   ),
-                                ),
-                                hintText: 'เบอร์โทรศัพท์',
-                                hintStyle: TextStyle(color: Colors.grey),
-                                fillColor: Color(0xfff3f3f4),
-                                filled: false),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.grey.shade300, width: 1),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(15)),
+                                  ),
+                                  prefixIcon: Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: Image.asset(
+                                      'images/phone.png',
+                                      alignment: Alignment.center,
+                                      scale: 1.3,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                  hintText: 'เบอร์โทรศัพท์',
+                                  hintStyle: TextStyle(color: Colors.grey),
+                                  fillColor: Color(0xfff3f3f4),
+                                  filled: false),
+                            ),
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                showGeneralDialog(
-                                    context: context,
-                                    barrierDismissible: false,
-                                    barrierLabel:
-                                        MaterialLocalizations.of(context)
-                                            .modalBarrierDismissLabel,
-                                    barrierColor: Colors.transparent,
-                                    transitionDuration:
-                                        Duration(milliseconds: 200),
-                                    pageBuilder: (BuildContext context,
-                                            Animation frist,
-                                            Animation second) =>
-                                        CustomDialog());
-                              });
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(top: 30),
-                              width: MediaQuery.of(context).size.width,
-                              padding: EdgeInsets.symmetric(vertical: 15),
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10)),
-                                color: Color(0xffE6EFFE),
-                                gradient: btck == 0
-                                    ? LinearGradient(
-                                        begin: Alignment.centerLeft,
-                                        end: Alignment.centerRight,
-                                        colors: [
-                                          Colors.grey[100],
-                                          Colors.grey[100]
-                                        ],
-                                      )
-                                    : LinearGradient(
-                                        begin: Alignment.centerLeft,
-                                        end: Alignment.centerRight,
-                                        colors: [
-                                          Color(0xff0088C6),
-                                          Color(0xff43CEF8)
-                                        ],
-                                      ),
-                              ),
-                              child: Align(
+                          Visibility(
+                            visible: _ckVisittime,
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  showGeneralDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      barrierLabel:
+                                          MaterialLocalizations.of(context)
+                                              .modalBarrierDismissLabel,
+                                      barrierColor: Colors.transparent,
+                                      transitionDuration:
+                                          Duration(milliseconds: 200),
+                                      pageBuilder: (BuildContext context,
+                                              Animation frist,
+                                              Animation second) =>
+                                          CustomDialog());
+                                });
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(top: 30),
+                                width: MediaQuery.of(context).size.width,
+                                padding: EdgeInsets.symmetric(vertical: 15),
                                 alignment: Alignment.center,
-                                child: Text(
-                                  'นัดหมาย',
-                                  style: GoogleFonts.kanit(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color:
-                                        btck == 0 ? Colors.grey : Colors.white,
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                  color: Color(0xffE6EFFE),
+                                  gradient: btck == 0
+                                      ? LinearGradient(
+                                          begin: Alignment.centerLeft,
+                                          end: Alignment.centerRight,
+                                          colors: [
+                                            Colors.grey[100],
+                                            Colors.grey[100]
+                                          ],
+                                        )
+                                      : LinearGradient(
+                                          begin: Alignment.centerLeft,
+                                          end: Alignment.centerRight,
+                                          colors: [
+                                            Color(0xff0088C6),
+                                            Color(0xff43CEF8)
+                                          ],
+                                        ),
+                                ),
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'นัดหมาย',
+                                    style: GoogleFonts.kanit(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      color: btck == 0
+                                          ? Colors.grey
+                                          : Colors.white,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -1539,6 +526,90 @@ class _xrayMark_pageState extends State<xrayMark_page> {
       ),
       bottomNavigationBar: NavigagitonBar(),
     );
+  }
+
+  Container txtTime(int id, bool ckStatus, String txt) {
+    return Container(
+      width: MediaQuery.of(context).size.width / 4.5,
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            if (ckStatus == true) {
+            } else {
+              btck = id;
+
+              print(btck);
+            }
+          });
+        },
+        child: Container(
+          child: Container(
+            decoration: BoxDecoration(
+              border: ckStatus == true
+                  ? Border.all(color: Colors.transparent)
+                  : btck == id
+                      ? Border.all(color: Colors.blue)
+                      : Border.all(color: Colors.grey),
+              color: ckStatus == true
+                  ? Colors.red[100]
+                  : btck == id
+                      ? Colors.blue
+                      : Colors.white,
+              borderRadius: BorderRadius.all(
+                Radius.circular(10.0),
+              ),
+            ),
+            padding: EdgeInsets.all(10),
+            margin: EdgeInsets.all(5),
+            child: Align(
+              alignment: Alignment.center,
+              child: Text(
+                txt,
+                style: GoogleFonts.kanit(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: ckStatus == true
+                        ? Colors.red
+                        : btck == id
+                            ? Colors.white
+                            : Colors.black),
+              ),
+
+              // bt2 == false
+              //     ? Colors.red
+              //     : btck == 2
+              //         ? Colors.white
+              //         : Colors.black,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Expanded customDay(weekday) {
+    return Expanded(
+        child: Text(
+      weekday == 0
+          ? 'อา.'
+          : weekday == 1
+              ? 'จ.'
+              : weekday == 2
+                  ? 'อ.'
+                  : weekday == 3
+                      ? 'พ.'
+                      : weekday == 4
+                          ? 'พฤ.'
+                          : weekday == 5
+                              ? 'ศ.'
+                              : 'ส.',
+      textAlign: TextAlign.center,
+      style: TextStyle(),
+    )
+
+        //
+
+        );
   }
 }
 

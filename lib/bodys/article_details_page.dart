@@ -1,3 +1,7 @@
+//@dart = 2.9
+import 'dart:convert';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:http/http.dart' as http;
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +9,9 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
+import 'package:thanyarak/bodys/API/api_article_detail.dart';
 import 'package:thanyarak/bodys/menu_page.dart';
 import 'package:thanyarak/bodys/notification_page.dart';
 import 'package:thanyarak/utility/my_constant.dart';
@@ -12,13 +19,35 @@ import 'package:thanyarak/widgets/NavigationBar.dart';
 import 'package:thanyarak/widgets/show_title.dart';
 
 class ArticleDetailsPage extends StatefulWidget {
-  ArticleDetailsPage({Key? key}) : super(key: key);
+  final String urlget;
+  ArticleDetailsPage({Key key, this.urlget}) : super(key: key);
 
   @override
   _ArticleDetailsPageState createState() => _ArticleDetailsPageState();
 }
 
+String url;
+
 class _ArticleDetailsPageState extends State<ArticleDetailsPage> {
+  Future<List<ardetail>> fetchData() async {
+    final response = await http.get(Uri.parse('${widget.urlget}'));
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      print(response.body);
+      return jsonResponse.map((data) => new ardetail.fromJson(data)).toList();
+    } else {
+      throw Exception('Unexpected error occured!');
+    }
+  }
+
+  Future<List<ardetail>> futureData;
+  void initState() {
+    Intl.defaultLocale = 'th';
+    initializeDateFormatting();
+    super.initState();
+    futureData = fetchData();
+  }
+
   List<String> banners = [
     'images/tt1.png',
     'images/tt1.png.png',
@@ -222,177 +251,213 @@ class _ArticleDetailsPageState extends State<ArticleDetailsPage> {
                     Padding(
                       padding: const EdgeInsets.only(
                           top: 110, left: 15, right: 15, bottom: 20),
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            height: 200,
-                            decoration: const BoxDecoration(
-                                color: Colors.amber,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(40)),
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage('images/1150.png'),
-                                  alignment: Alignment.center,
-                                )),
-                          ),
-                          SizedBox(height: 20),
-                          Align(
-                            child: Text(
-                              'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
-                              maxLines: 2,
-                              style: GoogleFonts.kanit(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xff0088C6),
-                              ),
-                            ),
-                            alignment: Alignment(-2, -1),
-                          ),
-                          SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              FaIcon(
-                                FontAwesomeIcons.solidClock,
-                                size: 12,
-                                color: Color(0xff0088C6),
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                "16-06-2564",
-                                overflow: TextOverflow.ellipsis,
-                                style: GoogleFonts.kanit(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              FaIcon(
-                                FontAwesomeIcons.solidEye,
-                                size: 12,
-                                color: Color(0xff0088C6),
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                "50,000",
-                                overflow: TextOverflow.ellipsis,
-                                style: GoogleFonts.kanit(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 20),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                                'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะหลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะหลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมม',
-                                maxLines: txt ? 10 : 5,
-                                style: GoogleFonts.kanit(
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                )),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                txt = !txt;
-                              });
-                            },
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(txt ? 'ย่อลง' : 'อ่านต่อ',
-                                  style: GoogleFonts.kanit(
-                                    fontSize: 16,
-                                    color: Colors.red.shade300,
-                                  )),
-                            ),
-                          ),
-                          SizedBox(height: 20),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text('แกลอรี่',
-                                style: GoogleFonts.kanit(
-                                  fontSize: 18,
-                                  color: Colors.black,
-                                )),
-                          ),
-                          SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Container(
-                                  // width: MediaQuery.of(context).size.width,
-                                  padding: EdgeInsets.only(
-                                    top: 10,
-                                    right: 10,
+                      child: FutureBuilder<List<ardetail>>(
+                        future: futureData,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            List<ardetail> ardetaildata = snapshot.data;
+                            return Column(
+                              children: <Widget>[
+                                Container(
+                                  height: 200,
+                                  decoration: BoxDecoration(
+                                    //color: Colors.amber,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(40)),
+
+                                    image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: NetworkImage(
+                                            ardetaildata[index].urlpicpath)),
                                   ),
-                                  //color: Colors.red,
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          width: 150,
-                                          height: 150,
-                                          decoration: BoxDecoration(
-                                              color: Colors.amber,
-                                              image: DecorationImage(
-                                                  fit: BoxFit.cover,
-                                                  image: AssetImage(
-                                                      'images/1150.png')),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(20))),
+                                ),
+                                SizedBox(height: 20),
+                                Align(
+                                    child: Text(
+                                      '${ardetaildata[index].subject}',
+                                      // 'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
+                                      maxLines: 2,
+
+                                      style: GoogleFonts.kanit(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                        color: Color(0xff0088C6),
+                                      ),
+                                    ),
+                                    alignment: Alignment.centerLeft),
+                                SizedBox(height: 10),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    FaIcon(
+                                      FontAwesomeIcons.solidClock,
+                                      size: 12,
+                                      color: Color(0xff0088C6),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      DateFormat('dd/MM/').format(
+                                              ardetaildata[index].createdate) +
+                                          DateFormat('yyyy').format(
+                                            ardetaildata[index].createdate.add(
+                                                  Duration(days: 198195),
+                                                ),
+                                          ),
+                                      overflow: TextOverflow.ellipsis,
+                                      style: GoogleFonts.kanit(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    FaIcon(
+                                      FontAwesomeIcons.solidEye,
+                                      size: 12,
+                                      color: Color(0xff0088C6),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      ardetaildata[index].view,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: GoogleFonts.kanit(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 20),
+                                Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Html(
+                                      data:
+                                          '<body>${ardetaildata[index].html}</body>',
+                                      style: {
+                                        // "h3": Style(
+                                        //     maxLines: txt ? 10 : 5,
+                                        //     backgroundColor: Color.fromARGB(
+                                        //         0x50, 0xee, 0xee, 0xee),
+                                        //     fontSize: FontSize.em(2)),
+                                        "body": Style(
+                                          maxLines: txt ? 10 : 5,
+                                          fontFamily: 'kanit',
+                                          fontWeight: FontWeight.w500,
                                         ),
-                                        SizedBox(width: 10),
-                                        Container(
-                                          width: 150,
-                                          height: 150,
-                                          decoration: BoxDecoration(
-                                              color: Colors.amber,
-                                              image: DecorationImage(
-                                                  fit: BoxFit.cover,
-                                                  image: AssetImage(
-                                                      'images/1150.png')),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(20))),
+                                      },
+                                    )),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      txt = !txt;
+                                    });
+                                  },
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(txt ? 'ย่อลง' : 'อ่านต่อ',
+                                        style: GoogleFonts.kanit(
+                                          fontSize: 16,
+                                          color: Colors.red.shade300,
+                                        )),
+                                  ),
+                                ),
+                                SizedBox(height: 20),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text('แกลอรี่',
+                                      style: GoogleFonts.kanit(
+                                        fontSize: 18,
+                                        color: Colors.black,
+                                      )),
+                                ),
+                                SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Container(
+                                        // width: MediaQuery.of(context).size.width,
+                                        padding: EdgeInsets.only(
+                                          top: 10,
+                                          right: 10,
                                         ),
-                                        SizedBox(width: 10),
-                                        Container(
-                                          width: 150,
-                                          height: 150,
-                                          decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              image: DecorationImage(
-                                                  fit: BoxFit.cover,
-                                                  image: AssetImage(
-                                                      'images/1150.png')),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(20))),
-                                        ),
-                                        SizedBox(width: 10),
-                                        Container(
-                                          width: 150,
-                                          height: 150,
-                                          decoration: BoxDecoration(
-                                              color: Colors.amber,
-                                              image: DecorationImage(
-                                                  fit: BoxFit.cover,
-                                                  image: AssetImage(
-                                                      'images/1150.png')),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(20))),
-                                        ),
-                                      ])))
-                        ],
+                                        //color: Colors.red,
+                                        child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                width: 150,
+                                                height: 150,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.amber,
+                                                    image: DecorationImage(
+                                                        fit: BoxFit.cover,
+                                                        image: AssetImage(
+                                                            'images/1150.png')),
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                20))),
+                                              ),
+                                              SizedBox(width: 10),
+                                              Container(
+                                                width: 150,
+                                                height: 150,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.amber,
+                                                    image: DecorationImage(
+                                                        fit: BoxFit.cover,
+                                                        image: AssetImage(
+                                                            'images/1150.png')),
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                20))),
+                                              ),
+                                              SizedBox(width: 10),
+                                              Container(
+                                                width: 150,
+                                                height: 150,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    image: DecorationImage(
+                                                        fit: BoxFit.cover,
+                                                        image: AssetImage(
+                                                            'images/1150.png')),
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                20))),
+                                              ),
+                                              SizedBox(width: 10),
+                                              Container(
+                                                width: 150,
+                                                height: 150,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.amber,
+                                                    image: DecorationImage(
+                                                        fit: BoxFit.cover,
+                                                        image: AssetImage(
+                                                            'images/1150.png')),
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                20))),
+                                              ),
+                                            ])))
+                              ],
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text("${snapshot.error}");
+                          }
+                          // By default show a loading spinner.
+                          return CircularProgressIndicator();
+                        },
                       ),
                     ),
                   ],

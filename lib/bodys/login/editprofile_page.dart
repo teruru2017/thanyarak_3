@@ -1,14 +1,18 @@
+//@dart=2.9
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:thanyarak/bodys/menu_page.dart';
 import 'package:thanyarak/bodys/notification_page.dart';
 import 'package:thanyarak/widgets/NavigationBar.dart';
 
 class editprofile_page extends StatefulWidget {
-  editprofile_page({Key? key}) : super(key: key);
+  editprofile_page({Key key}) : super(key: key);
 
   @override
   _editprofile_pageState createState() => _editprofile_pageState();
@@ -18,9 +22,28 @@ class _editprofile_pageState extends State<editprofile_page> {
   final double topWidgetHeight = 120.0;
 
   bool txt = true;
+  File imageFile;
+  final picker = ImagePicker();
+  chooseImage(ImageSource source) async {
+    final pickedFile = await picker.getImage(source: source);
+
+    setState(() {
+      imageFile = File(pickedFile.path);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    File imageFile;
+    final picker = ImagePicker();
+    chooseImage(ImageSource source) async {
+      final pickedFile = await picker.getImage(source: source);
+
+      setState(() {
+        imageFile = File(pickedFile.path);
+      });
+    }
+
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     final double avatarRadius = 70.0;
@@ -249,9 +272,9 @@ class _editprofile_pageState extends State<editprofile_page> {
                                           padding: EdgeInsets.only(right: 10),
                                           child: FormBuilderTextField(
                                             controller: TextEditingController(
-                                                text: 'test'),
-                                            readOnly: true,
-                                            name: 'name',
+                                                text: '25/12/64'),
+                                            readOnly: txt,
+                                            name: 'hbd',
 
                                             style: GoogleFonts.kanit(),
 
@@ -299,9 +322,9 @@ class _editprofile_pageState extends State<editprofile_page> {
                                         child: Container(
                                           child: FormBuilderTextField(
                                             controller: TextEditingController(
-                                                text: 'test'),
-                                            readOnly: true,
-                                            name: 'name',
+                                                text: '18'),
+                                            readOnly: txt,
+                                            name: 'age',
 
                                             style: GoogleFonts.kanit(),
 
@@ -377,8 +400,8 @@ class _editprofile_pageState extends State<editprofile_page> {
                                           child: FormBuilderTextField(
                                             controller: TextEditingController(
                                                 text: '012 345 6789'),
-                                            readOnly: true,
-                                            name: 'name',
+                                            readOnly: txt,
+                                            name: 'tel',
 
                                             style: GoogleFonts.kanit(),
 
@@ -455,8 +478,8 @@ class _editprofile_pageState extends State<editprofile_page> {
                                             controller: TextEditingController(
                                                 text:
                                                     '555 สายไหม 99 ถนนสายไหม แขวงสายไหม เขต...'),
-                                            readOnly: true,
-                                            name: 'name',
+                                            readOnly: txt,
+                                            name: 'address',
 
                                             style: GoogleFonts.kanit(),
 
@@ -532,8 +555,8 @@ class _editprofile_pageState extends State<editprofile_page> {
                                           child: FormBuilderTextField(
                                             controller: TextEditingController(
                                                 text: 'Johnathan@gmail.com'),
-                                            readOnly: true,
-                                            name: 'name',
+                                            readOnly: txt,
+                                            name: 'mail',
 
                                             style: GoogleFonts.kanit(),
 
@@ -639,9 +662,15 @@ class _editprofile_pageState extends State<editprofile_page> {
                     ),
                     Positioned(
                       child: ClipRRect(
-                        child: Container(
-                          child: Align(
-                            child: Image.asset('images/camera.png', scale: 1.3),
+                        child: GestureDetector(
+                          onTap: () {
+                            chooseImage(ImageSource.gallery);
+                          },
+                          child: Container(
+                            child: Align(
+                              child:
+                                  Image.asset('images/camera.png', scale: 1.3),
+                            ),
                           ),
                         ),
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),

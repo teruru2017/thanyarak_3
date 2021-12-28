@@ -28,7 +28,7 @@ class menumember_pages extends StatefulWidget {
 }
 
 Map<String, WidgetBuilder> map = {
-  '/mainHome': (BuildContext context) => const MainPage(),
+  '/mainHome': (BuildContext context) => MainPage(),
 };
 String firstState;
 void main() {

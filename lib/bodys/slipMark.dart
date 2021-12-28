@@ -44,7 +44,7 @@ class _slipMark_pageState extends State<slipMark_page> {
                     //พื้นหลัง
                     Container(
                       height: MediaQuery.of(context).size.height,
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.only(top: 20, left: 15, right: 15),
                       decoration: BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage('images/bg_menu.png'),
@@ -54,6 +54,8 @@ class _slipMark_pageState extends State<slipMark_page> {
                       child: Column(
                         children: [
                           Container(
+                            padding:
+                                EdgeInsets.only(top: 20, left: 15, right: 15),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.max,
@@ -67,8 +69,8 @@ class _slipMark_pageState extends State<slipMark_page> {
                                       });
                                     },
                                     child: Container(
-                                      width: 50,
-                                      height: 40,
+                                      width: 30,
+                                      height: 30,
                                       decoration: BoxDecoration(
                                           image: DecorationImage(
                                         scale: 1.3,

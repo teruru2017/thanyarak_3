@@ -1,12 +1,17 @@
 //@dart=2.9
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
+import 'package:thanyarak/bodys/API/api_donate_detail.dart';
 import 'package:thanyarak/bodys/article_details_page.dart';
 import 'package:thanyarak/bodys/donate_page.dart';
 import 'package:thanyarak/bodys/otp_pages.dart';
@@ -16,6 +21,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:developer' as developer;
 
 import 'package:thanyarak/widgets/NavigationBar.dart';
+import 'package:http/http.dart' as http;
 
 bool page1 = false; //truemove&bank
 bool success = false; //popupsuccess
@@ -29,13 +35,33 @@ bool page8 = false; //สรุปยอดบริจาคทรู 100 บ�
 bool page9 = false; //สรุปยอดบริจาคทรูระบุเงิน
 
 class detaildonate_pages extends StatefulWidget {
-  detaildonate_pages({Key key}) : super(key: key);
+  final String urlget;
+  detaildonate_pages({Key key, this.urlget}) : super(key: key);
 
   @override
   _detaildonate_pagesState createState() => _detaildonate_pagesState();
 }
 
 class _detaildonate_pagesState extends State<detaildonate_pages> {
+  Future<List<dndetail>> donateData() async {
+    final response = await http.get(Uri.parse('${widget.urlget}'));
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      print(response.body);
+      return jsonResponse.map((data) => new dndetail.fromJson(data)).toList();
+    } else {
+      throw Exception('Unexpected error occured!');
+    }
+  }
+
+  Future<List<dndetail>> futureData;
+  void initState() {
+    Intl.defaultLocale = 'th';
+    initializeDateFormatting();
+    super.initState();
+    futureData = donateData();
+  }
+
   int _selectedchoice = 0;
   int choice = 0;
   int _current = 0;
@@ -196,142 +222,176 @@ class _detaildonate_pagesState extends State<detaildonate_pages> {
                     Padding(
                       padding: const EdgeInsets.only(
                           top: 110, left: 15, right: 15, bottom: 20),
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            height: 200,
-                            decoration: const BoxDecoration(
-                                image: DecorationImage(
-                              scale: 1.3,
-                              image: AssetImage('images/member1.png'),
-                              alignment: Alignment.center,
-                            )),
-                          ),
-                          SizedBox(height: 20),
-                          Align(
-                            child: Text(
-                              'บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้ายภัยมะเร็งเต้านม',
-                              style: GoogleFonts.kanit(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xff0088C6),
-                              ),
-                            ),
-                            alignment: Alignment(-2, -1),
-                          ),
-                          SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              FaIcon(
-                                FontAwesomeIcons.solidClock,
-                                size: 12,
-                                color: Color(0xff0088C6),
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                "16-06-2564",
-                                overflow: TextOverflow.ellipsis,
-                                style: GoogleFonts.kanit(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.grey,
+                      child: FutureBuilder<List<dndetail>>(
+                        future: futureData,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            List<dndetail> donatedetailData = snapshot.data;
+                            return Column(
+                              children: <Widget>[
+                                Container(
+                                  height: 200,
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(20)),
+                                      //color: Colors.amber,
+                                      image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: NetworkImage(
+                                            donatedetailData[0].urlpicpath),
+                                        alignment: Alignment.center,
+                                      )),
                                 ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              FaIcon(
-                                FontAwesomeIcons.solidEye,
-                                size: 12,
-                                color: Color(0xff0088C6),
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                "50,000",
-                                overflow: TextOverflow.ellipsis,
-                                style: GoogleFonts.kanit(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.grey,
+                                SizedBox(height: 20),
+                                Align(
+                                  child: Text(
+                                    donatedetailData[0].subject,
+                                    style: GoogleFonts.kanit(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xff0088C6),
+                                    ),
+                                  ),
+                                  alignment: Alignment.centerLeft,
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 20),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text('รายละเอียด',
-                                style: GoogleFonts.kanit(
-                                  fontSize: 18,
-                                )),
-                          ),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                                'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะหลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะหลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
-                                style: GoogleFonts.kanit(
-                                  fontSize: 16,
-                                  color: Colors.black38,
-                                )),
-                          ),
-                          Container(
-                            //color: Colors.green,
-                            margin: EdgeInsets.only(top: 40),
-                            child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  print(page1);
-                                  showGeneralDialog(
-                                      context: context,
-                                      barrierDismissible: false,
-                                      barrierLabel:
-                                          MaterialLocalizations.of(context)
-                                              .modalBarrierDismissLabel,
-                                      barrierColor: Colors.transparent,
-                                      transitionDuration:
-                                          Duration(milliseconds: 200),
-                                      pageBuilder: (BuildContext context,
-                                              Animation frist,
-                                              Animation second) =>
-                                          CustomDialog());
-                                });
-                              },
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.symmetric(vertical: 15),
-                                alignment: Alignment.center,
-                                decoration: const BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                  color: Color(0xffE6EFFE),
-                                  gradient: LinearGradient(
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                      colors: [
-                                        Color(0xff0088C6),
-                                        Color(0xff43CEF8)
-                                      ]),
+                                SizedBox(height: 10),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    FaIcon(
+                                      FontAwesomeIcons.solidClock,
+                                      size: 12,
+                                      color: Color(0xff0088C6),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      DateFormat('dd/MM/').format(
+                                              donatedetailData[0].createdate) +
+                                          DateFormat('yyyy').format(
+                                            donatedetailData[0].createdate.add(
+                                                  Duration(days: 198195),
+                                                ),
+                                          ),
+                                      overflow: TextOverflow.ellipsis,
+                                      style: GoogleFonts.kanit(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    FaIcon(
+                                      FontAwesomeIcons.solidEye,
+                                      size: 12,
+                                      color: Color(0xff0088C6),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      donatedetailData[0].view,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: GoogleFonts.kanit(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                child: Text(
-                                  "บริจาค",
-                                  style: GoogleFonts.kanit(
-                                    textStyle:
-                                        Theme.of(context).textTheme.headline4,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xffFFFFFF),
-                                    // fontStyle: FontStyle.italic,
+                                SizedBox(height: 20),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text('รายละเอียด',
+                                      style: GoogleFonts.kanit(
+                                        fontSize: 18,
+                                      )),
+                                ),
+                                Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Html(
+                                      data:
+                                          '<body>${donatedetailData[0].html}</body>',
+                                      style: {
+                                        // "h3": Style(
+                                        //     maxLines: txt ? 10 : 5,
+                                        //     backgroundColor: Color.fromARGB(
+                                        //         0x50, 0xee, 0xee, 0xee),
+                                        //     fontSize: FontSize.em(2)),
+                                        "body": Style(
+                                          fontSize: FontSize.em(1),
+                                          fontFamily: 'kanit',
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      },
+                                    )),
+                                Container(
+                                  //color: Colors.green,
+                                  margin: EdgeInsets.only(top: 40),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        print(page1);
+                                        showGeneralDialog(
+                                            context: context,
+                                            barrierDismissible: false,
+                                            barrierLabel:
+                                                MaterialLocalizations.of(
+                                                        context)
+                                                    .modalBarrierDismissLabel,
+                                            barrierColor: Colors.transparent,
+                                            transitionDuration:
+                                                Duration(milliseconds: 200),
+                                            pageBuilder: (BuildContext context,
+                                                    Animation frist,
+                                                    Animation second) =>
+                                                CustomDialog());
+                                      });
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 15),
+                                      alignment: Alignment.center,
+                                      decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                        color: Color(0xffE6EFFE),
+                                        gradient: LinearGradient(
+                                            begin: Alignment.centerLeft,
+                                            end: Alignment.centerRight,
+                                            colors: [
+                                              Color(0xff0088C6),
+                                              Color(0xff43CEF8)
+                                            ]),
+                                      ),
+                                      child: Text(
+                                        "บริจาค",
+                                        style: GoogleFonts.kanit(
+                                          textStyle: Theme.of(context)
+                                              .textTheme
+                                              .headline4,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500,
+                                          color: Color(0xffFFFFFF),
+                                          // fontStyle: FontStyle.italic,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          ),
-                        ],
+                              ],
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text("${snapshot.error}");
+                          }
+                          // By default show a loading spinner.
+                          return CircularProgressIndicator();
+                        },
                       ),
                     ),
                   ],

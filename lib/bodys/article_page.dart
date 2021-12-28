@@ -1,3 +1,7 @@
+//@dart = 2.9
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,11 +14,75 @@ import 'package:thanyarak/bodys/notification_page.dart';
 import 'package:thanyarak/models/article_model.dart';
 import 'package:thanyarak/widgets/NavigationBar.dart';
 import 'package:thanyarak/widgets/article_widget.dart';
+import 'package:intl/intl.dart' show DateFormat, Intl;
+import 'package:intl/date_symbol_data_local.dart';
 
 class Article_page extends StatefulWidget {
-  Article_page({Key? key}) : super(key: key);
+  Article_page({Key key}) : super(key: key);
   @override
   _Article_pageState createState() => _Article_pageState();
+}
+
+double x;
+Future<List<Data>> fetchData() async {
+  final response =
+      await http.get(Uri.parse('https://truethanyarak.com/api/Ar_List.php'));
+  if (response.statusCode == 200) {
+    List jsonResponse = json.decode(response.body);
+    x = jsonResponse.length.toDouble();
+    // print(x);
+
+    return jsonResponse.map((data) => new Data.fromJson(data)).toList();
+  } else {
+    throw Exception('Unexpected error occured!');
+  }
+}
+
+class Data {
+  String id;
+  String subject;
+  String title;
+  String htmlname;
+  String urlhtmlpath;
+  String picname;
+  String urlpicpath;
+  String createby;
+  DateTime createdate;
+  DateTime lastmoddate;
+  String lastmodby;
+  Data({
+    this.id,
+    this.subject,
+    this.title,
+    this.htmlname,
+    this.urlhtmlpath,
+    this.picname,
+    this.urlpicpath,
+    this.createby,
+    this.createdate,
+    this.lastmoddate,
+    this.lastmodby,
+  });
+
+  factory Data.fromJson(Map<String, dynamic> json) {
+    return Data(
+      id: json["id"] == null ? null : json["id"],
+      subject: json["subject"] == null ? null : json["subject"],
+      title: json["title"] == null ? null : json["title"],
+      htmlname: json["htmlname"] == null ? null : json["htmlname"],
+      urlhtmlpath: json["urlhtmlpath"] == null ? null : json["urlhtmlpath"],
+      picname: json["picname"] == null ? null : json["picname"],
+      urlpicpath: json["urlpicpath"] == null ? null : json["urlpicpath"],
+      createby: json["createby"] == null ? null : json["createby"],
+      createdate: json["createdate"] == null
+          ? null
+          : DateTime.parse(json["createdate"]),
+      lastmoddate: json["lastmoddate"] == null
+          ? null
+          : DateTime.parse(json["lastmoddate"]),
+      lastmodby: json["lastmodby"] == null ? null : json["lastmodby"],
+    );
+  }
 }
 
 final List<String> imgLists = [
@@ -31,6 +99,14 @@ final CarouselController _controller = CarouselController();
 String checklogin = '';
 
 class _Article_pageState extends State<Article_page> {
+  Future<List<Data>> futureData;
+  void initState() {
+    Intl.defaultLocale = 'th';
+    initializeDateFormatting();
+    super.initState();
+    futureData = fetchData();
+  }
+
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     int _w = 1, _f = 2;
@@ -180,56 +256,211 @@ class _Article_pageState extends State<Article_page> {
                               ),
                               child: Column(
                                 children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.1),
-                                            spreadRadius: 1,
-                                            blurRadius: 10,
-                                            offset: Offset(8, 0),
-                                          )
-                                        ],
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(30))),
-                                    child: CarouselSlider(
-                                      items: imageSliderBanner,
-                                      carouselController: _controller,
-                                      options: CarouselOptions(
-                                          height: 250,
-                                          viewportFraction: 1,
-                                          autoPlay: true,
-                                          enlargeCenterPage: true,
-                                          autoPlayInterval:
-                                              Duration(seconds: 15),
-                                          aspectRatio: 2.0,
-                                          onPageChanged: (index, reason) {
-                                            setState(() {
-                                              _currents = index;
-                                            });
-                                          }),
-                                    ),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children:
-                                        imgListss.asMap().entries.map((entry) {
-                                      return GestureDetector(
-                                        onTap: () => _controller
-                                            .animateToPage(entry.key),
-                                        child: Container(
-                                          width: 9.0,
-                                          height: 9.0,
-                                          margin: EdgeInsets.symmetric(
-                                              vertical: 5.0, horizontal: 2.0),
+                                  FutureBuilder<List<Data>>(
+                                    future: futureData,
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasData) {
+                                        List<Data> data = snapshot.data;
+                                        List<Widget> imageSliderBanner = data
+                                            .map((item) => Container(
+                                                  child: Container(
+                                                    margin: EdgeInsets.all(5.0),
+                                                    child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    30.0)),
+                                                        child: Stack(
+                                                          children: <Widget>[
+                                                            Container(
+                                                              child: Column(
+                                                                children: [
+                                                                  Expanded(
+                                                                    child:
+                                                                        Container(
+                                                                      height:
+                                                                          130,
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        // color: Colors.white,
+                                                                        image: DecorationImage(
+                                                                            fit:
+                                                                                BoxFit.cover,
+                                                                            image: NetworkImage(item.urlpicpath)),
+                                                                        borderRadius:
+                                                                            BorderRadius.only(
+                                                                          topLeft:
+                                                                              Radius.circular(30),
+                                                                          topRight:
+                                                                              Radius.circular(30),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                      height:
+                                                                          100,
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        borderRadius:
+                                                                            BorderRadius.only(
+                                                                          bottomLeft:
+                                                                              Radius.circular(30),
+                                                                          bottomRight:
+                                                                              Radius.circular(30),
+                                                                        ),
+                                                                      ),
+                                                                      child:
+                                                                          Container(
+                                                                        padding: EdgeInsets.only(
+                                                                            left:
+                                                                                15,
+                                                                            right:
+                                                                                15),
+                                                                        child:
+                                                                            Column(
+                                                                          crossAxisAlignment:
+                                                                              CrossAxisAlignment.start,
+                                                                          children: [
+                                                                            Text(item.subject,
+                                                                                maxLines: 1,
+                                                                                overflow: TextOverflow.ellipsis,
+                                                                                style: GoogleFonts.kanit(fontSize: 16, fontWeight: FontWeight.w500, color: Color(0xff0088C6))),
+                                                                            Text(item.title,
+                                                                                maxLines: 2,
+                                                                                overflow: TextOverflow.ellipsis,
+                                                                                style: GoogleFonts.kanit(fontSize: 14, color: Colors.black)),
+                                                                            Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                                              children: [
+                                                                                FaIcon(
+                                                                                  FontAwesomeIcons.solidClock,
+                                                                                  size: 12,
+                                                                                  color: Color(0xff0088C6),
+                                                                                ),
+                                                                                SizedBox(
+                                                                                  width: 5,
+                                                                                ),
+                                                                                Text(
+                                                                                  DateFormat('dd/MM/').format(item.createdate) +
+                                                                                      DateFormat('yyyy').format(
+                                                                                        item.createdate.add(
+                                                                                          Duration(days: 198195),
+                                                                                        ),
+                                                                                      ),
+                                                                                  overflow: TextOverflow.ellipsis,
+                                                                                  style: GoogleFonts.kanit(
+                                                                                    fontSize: 12,
+                                                                                    fontWeight: FontWeight.w500,
+                                                                                    color: Colors.grey,
+                                                                                  ),
+                                                                                ),
+                                                                                SizedBox(
+                                                                                  width: 10,
+                                                                                ),
+                                                                                FaIcon(
+                                                                                  FontAwesomeIcons.solidEye,
+                                                                                  size: 12,
+                                                                                  color: Color(0xff0088C6),
+                                                                                ),
+                                                                                SizedBox(
+                                                                                  width: 5,
+                                                                                ),
+                                                                                Text(
+                                                                                  '64',
+                                                                                  overflow: TextOverflow.ellipsis,
+                                                                                  style: GoogleFonts.kanit(
+                                                                                    fontSize: 12,
+                                                                                    fontWeight: FontWeight.w500,
+                                                                                    color: Colors.grey,
+                                                                                  ),
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      )),
+                                                                ],
+                                                              ),
+                                                            )
+                                                          ],
+                                                        )),
+                                                  ),
+                                                ))
+                                            .toList();
+                                        return Container(
                                           decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: _currents == entry.key
-                                                  ? Colors.pink[200]
-                                                  : Colors.blue),
-                                        ),
-                                      );
-                                    }).toList(),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.1),
+                                                  spreadRadius: 1,
+                                                  blurRadius: 10,
+                                                  offset: Offset(8, 0),
+                                                )
+                                              ],
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(30))),
+                                          child: Column(
+                                            children: [
+                                              CarouselSlider(
+                                                items: imageSliderBanner,
+                                                carouselController: _controller,
+                                                options: CarouselOptions(
+                                                    height: 250,
+                                                    viewportFraction: 1,
+                                                    autoPlay: true,
+                                                    enlargeCenterPage: true,
+                                                    autoPlayInterval:
+                                                        Duration(seconds: 15),
+                                                    aspectRatio: 2.0,
+                                                    onPageChanged:
+                                                        (index, reason) {
+                                                      setState(() {
+                                                        _currents = index;
+                                                      });
+                                                    }),
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: imageSliderBanner
+                                                    .asMap()
+                                                    .entries
+                                                    .map((entry) {
+                                                  return GestureDetector(
+                                                    onTap: () => _controller
+                                                        .animateToPage(
+                                                            entry.key),
+                                                    child: Container(
+                                                      width: 9.0,
+                                                      height: 9.0,
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 5.0,
+                                                              horizontal: 2.0),
+                                                      decoration: BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          color: _currents ==
+                                                                  entry.key
+                                                              ? Colors.pink[200]
+                                                              : Colors.blue),
+                                                    ),
+                                                  );
+                                                }).toList(),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      } else if (snapshot.hasError) {
+                                        return Text("${snapshot.error}");
+                                      }
+                                      // By default show a loading spinner.
+                                      return CircularProgressIndicator();
+                                    },
                                   ),
                                 ],
                               )),
@@ -245,378 +476,218 @@ class _Article_pageState extends State<Article_page> {
                               ),
                             ),
                           ),
-                          articleWidget()
-                          // SizedBox(height: 10),
-                          // GestureDetector(
-                          //   onTap: () => Navigator.push(
-                          //       context,
-                          //       CupertinoPageRoute(
-                          //           builder: (context) =>
-                          //               ArticleDetailsPage())),
-                          //   child: Container(
-                          //     padding: EdgeInsets.only(
-                          //         top: 10, bottom: 10, left: 10),
-                          //     decoration: BoxDecoration(
-                          //         color: Colors.white,
-                          //         boxShadow: [
-                          //           BoxShadow(
-                          //             color: Colors.grey.withOpacity(0.1),
-                          //             spreadRadius: 2,
-                          //             blurRadius: 2,
-                          //             offset: Offset(0, 2),
-                          //           )
-                          //         ],
-                          //         borderRadius:
-                          //             BorderRadius.all(Radius.circular(20))),
-                          //     height: 130,
-                          //     child: Row(
-                          //       children: <Widget>[
-                          //         Container(
-                          //           width: 150,
-                          //           padding: EdgeInsets.all(20),
-                          //           decoration: BoxDecoration(
-                          //               image: DecorationImage(
-                          //                   fit: BoxFit.cover,
-                          //                   image:
-                          //                       AssetImage('images/1150.png')),
-                          //               color: Colors.amber,
-                          //               borderRadius: BorderRadius.all(
-                          //                   Radius.circular(20))),
-                          //         ),
-                          //         Expanded(
-                          //           child: Container(
-                          //             // padding: EdgeInsets.only(left: 10),
-                          //             decoration: BoxDecoration(
-                          //                 //color: Colors.red,
-                          //                 ),
-                          //             padding:
-                          //                 EdgeInsets.only(left: 10, right: 10),
-                          //             child: Column(
-                          //               crossAxisAlignment:
-                          //                   CrossAxisAlignment.start,
-                          //               mainAxisAlignment:
-                          //                   MainAxisAlignment.center,
-                          //               children: [
-                          //                 Text('ทำไมต้องตรวจอัลตราซาวเต้านม',
-                          //                     maxLines: 1,
-                          //                     overflow: TextOverflow.ellipsis,
-                          //                     style: GoogleFonts.kanit(
-                          //                         fontSize: 16,
-                          //                         fontWeight: FontWeight.w500,
-                          //                         color: Color(0xff0088C6))),
-                          //                 SizedBox(height: 5),
-                          //                 Text(
-                          //                     'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
-                          //                     maxLines: 2,
-                          //                     overflow: TextOverflow.ellipsis,
-                          //                     style: GoogleFonts.kanit(
-                          //                         fontSize: 14,
-                          //                         color: Colors.black)),
-                          //                 SizedBox(height: 10),
-                          //                 Row(
-                          //                   mainAxisAlignment:
-                          //                       MainAxisAlignment.start,
-                          //                   children: [
-                          //                     Flexible(
-                          //                       child: FaIcon(
-                          //                         FontAwesomeIcons.solidClock,
-                          //                         size: 12,
-                          //                         color: Color(0xff0088C6),
-                          //                       ),
-                          //                     ),
-                          //                     SizedBox(
-                          //                       width: 5,
-                          //                     ),
-                          //                     Flexible(
-                          //                       child: Text(
-                          //                         "16-06-2564",
-                          //                         maxLines: 1,
-                          //                         overflow:
-                          //                             TextOverflow.ellipsis,
-                          //                         style: GoogleFonts.kanit(
-                          //                           fontSize: 12,
-                          //                           fontWeight: FontWeight.w500,
-                          //                           color: Colors.grey,
-                          //                         ),
-                          //                       ),
-                          //                     ),
-                          //                     SizedBox(
-                          //                       width: 10,
-                          //                     ),
-                          //                     Flexible(
-                          //                       child: FaIcon(
-                          //                         FontAwesomeIcons.solidEye,
-                          //                         size: 12,
-                          //                         color: Color(0xff0088C6),
-                          //                       ),
-                          //                     ),
-                          //                     SizedBox(
-                          //                       width: 5,
-                          //                     ),
-                          //                     Flexible(
-                          //                       child: Text(
-                          //                         "50,000",
-                          //                         maxLines: 1,
-                          //                         overflow:
-                          //                             TextOverflow.ellipsis,
-                          //                         style: GoogleFonts.kanit(
-                          //                           fontSize: 12,
-                          //                           fontWeight: FontWeight.w500,
-                          //                           color: Colors.grey,
-                          //                         ),
-                          //                       ),
-                          //                     ),
-                          //                   ],
-                          //                 ),
-                          //               ],
-                          //             ),
-                          //           ),
-                          //         ),
-                          //       ],
-                          //     ),
-                          //   ),
-                          // ),
-                          // SizedBox(height: 20),
-                          // Container(
-                          //   padding:
-                          //       EdgeInsets.only(top: 10, bottom: 10, left: 10),
-                          //   decoration: BoxDecoration(
-                          //       color: Colors.white,
-                          //       boxShadow: [
-                          //         BoxShadow(
-                          //           color: Colors.grey.withOpacity(0.1),
-                          //           spreadRadius: 2,
-                          //           blurRadius: 2,
-                          //           offset: Offset(0, 2),
-                          //         )
-                          //       ],
-                          //       borderRadius:
-                          //           BorderRadius.all(Radius.circular(20))),
-                          //   height: 130,
-                          //   child: Row(
-                          //     children: <Widget>[
-                          //       Container(
-                          //         width: 150,
-                          //         padding: EdgeInsets.all(20),
-                          //         decoration: BoxDecoration(
-                          //             image: DecorationImage(
-                          //                 fit: BoxFit.cover,
-                          //                 image: AssetImage('images/1150.png')),
-                          //             color: Colors.amber,
-                          //             borderRadius: BorderRadius.all(
-                          //                 Radius.circular(20))),
-                          //       ),
-                          //       Expanded(
-                          //         child: Container(
-                          //           // padding: EdgeInsets.only(left: 10),
-                          //           decoration: BoxDecoration(
-                          //               //color: Colors.red,
-                          //               ),
-                          //           padding:
-                          //               EdgeInsets.only(left: 10, right: 10),
-                          //           child: Column(
-                          //             crossAxisAlignment:
-                          //                 CrossAxisAlignment.start,
-                          //             mainAxisAlignment:
-                          //                 MainAxisAlignment.center,
-                          //             children: [
-                          //               Text('ทำไมต้องตรวจอัลตราซาวเต้านม',
-                          //                   maxLines: 1,
-                          //                   overflow: TextOverflow.ellipsis,
-                          //                   style: GoogleFonts.kanit(
-                          //                       fontSize: 16,
-                          //                       fontWeight: FontWeight.w500,
-                          //                       color: Color(0xff0088C6))),
-                          //               SizedBox(height: 5),
-                          //               Text(
-                          //                   'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
-                          //                   maxLines: 2,
-                          //                   overflow: TextOverflow.ellipsis,
-                          //                   style: GoogleFonts.kanit(
-                          //                       fontSize: 14,
-                          //                       color: Colors.black)),
-                          //               SizedBox(height: 10),
-                          //               Row(
-                          //                 mainAxisAlignment:
-                          //                     MainAxisAlignment.start,
-                          //                 children: [
-                          //                   Flexible(
-                          //                     child: FaIcon(
-                          //                       FontAwesomeIcons.solidClock,
-                          //                       size: 12,
-                          //                       color: Color(0xff0088C6),
-                          //                     ),
-                          //                   ),
-                          //                   SizedBox(
-                          //                     width: 5,
-                          //                   ),
-                          //                   Flexible(
-                          //                     child: Text(
-                          //                       "16-06-2564",
-                          //                       maxLines: 1,
-                          //                       overflow: TextOverflow.ellipsis,
-                          //                       style: GoogleFonts.kanit(
-                          //                         fontSize: 12,
-                          //                         fontWeight: FontWeight.w500,
-                          //                         color: Colors.grey,
-                          //                       ),
-                          //                     ),
-                          //                   ),
-                          //                   SizedBox(
-                          //                     width: 10,
-                          //                   ),
-                          //                   Flexible(
-                          //                     child: FaIcon(
-                          //                       FontAwesomeIcons.solidEye,
-                          //                       size: 12,
-                          //                       color: Color(0xff0088C6),
-                          //                     ),
-                          //                   ),
-                          //                   SizedBox(
-                          //                     width: 5,
-                          //                   ),
-                          //                   Flexible(
-                          //                     child: Text(
-                          //                       "50,000",
-                          //                       maxLines: 1,
-                          //                       overflow: TextOverflow.ellipsis,
-                          //                       style: GoogleFonts.kanit(
-                          //                         fontSize: 12,
-                          //                         fontWeight: FontWeight.w500,
-                          //                         color: Colors.grey,
-                          //                       ),
-                          //                     ),
-                          //                   ),
-                          //                 ],
-                          //               ),
-                          //             ],
-                          //           ),
-                          //         ),
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
-                          // SizedBox(height: 20),
-                          // Container(
-                          //   padding:
-                          //       EdgeInsets.only(top: 10, bottom: 10, left: 10),
-                          //   decoration: BoxDecoration(
-                          //       color: Colors.white,
-                          //       boxShadow: [
-                          //         BoxShadow(
-                          //           color: Colors.grey.withOpacity(0.1),
-                          //           spreadRadius: 2,
-                          //           blurRadius: 2,
-                          //           offset: Offset(0, 2),
-                          //         )
-                          //       ],
-                          //       borderRadius:
-                          //           BorderRadius.all(Radius.circular(20))),
-                          //   height: 130,
-                          //   child: Row(
-                          //     children: <Widget>[
-                          //       Container(
-                          //         width: 150,
-                          //         padding: EdgeInsets.all(20),
-                          //         decoration: BoxDecoration(
-                          //             image: DecorationImage(
-                          //                 fit: BoxFit.cover,
-                          //                 image: AssetImage('images/1150.png')),
-                          //             color: Colors.amber,
-                          //             borderRadius: BorderRadius.all(
-                          //                 Radius.circular(20))),
-                          //       ),
-                          //       Expanded(
-                          //         child: Container(
-                          //           // padding: EdgeInsets.only(left: 10),
-                          //           decoration: BoxDecoration(
-                          //               //color: Colors.red,
-                          //               ),
-                          //           padding:
-                          //               EdgeInsets.only(left: 10, right: 10),
-                          //           child: Column(
-                          //             crossAxisAlignment:
-                          //                 CrossAxisAlignment.start,
-                          //             mainAxisAlignment:
-                          //                 MainAxisAlignment.center,
-                          //             children: [
-                          //               Text('ทำไมต้องตรวจอัลตราซาวเต้านม',
-                          //                   maxLines: 1,
-                          //                   overflow: TextOverflow.ellipsis,
-                          //                   style: GoogleFonts.kanit(
-                          //                       fontSize: 16,
-                          //                       fontWeight: FontWeight.w500,
-                          //                       color: Color(0xff0088C6))),
-                          //               SizedBox(height: 5),
-                          //               Text(
-                          //                   'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
-                          //                   maxLines: 2,
-                          //                   overflow: TextOverflow.ellipsis,
-                          //                   style: GoogleFonts.kanit(
-                          //                       fontSize: 14,
-                          //                       color: Colors.black)),
-                          //               SizedBox(height: 10),
-                          //               Row(
-                          //                 mainAxisAlignment:
-                          //                     MainAxisAlignment.start,
-                          //                 children: [
-                          //                   Flexible(
-                          //                     child: FaIcon(
-                          //                       FontAwesomeIcons.solidClock,
-                          //                       size: 12,
-                          //                       color: Color(0xff0088C6),
-                          //                     ),
-                          //                   ),
-                          //                   SizedBox(
-                          //                     width: 5,
-                          //                   ),
-                          //                   Flexible(
-                          //                     child: Text(
-                          //                       "16-06-2564",
-                          //                       maxLines: 1,
-                          //                       overflow: TextOverflow.ellipsis,
-                          //                       style: GoogleFonts.kanit(
-                          //                         fontSize: 12,
-                          //                         fontWeight: FontWeight.w500,
-                          //                         color: Colors.grey,
-                          //                       ),
-                          //                     ),
-                          //                   ),
-                          //                   SizedBox(
-                          //                     width: 10,
-                          //                   ),
-                          //                   Flexible(
-                          //                     child: FaIcon(
-                          //                       FontAwesomeIcons.solidEye,
-                          //                       size: 12,
-                          //                       color: Color(0xff0088C6),
-                          //                     ),
-                          //                   ),
-                          //                   SizedBox(
-                          //                     width: 5,
-                          //                   ),
-                          //                   Flexible(
-                          //                     child: Text(
-                          //                       "50,000",
-                          //                       maxLines: 1,
-                          //                       overflow: TextOverflow.ellipsis,
-                          //                       style: GoogleFonts.kanit(
-                          //                         fontSize: 12,
-                          //                         fontWeight: FontWeight.w500,
-                          //                         color: Colors.grey,
-                          //                       ),
-                          //                     ),
-                          //                   ),
-                          //                 ],
-                          //               ),
-                          //             ],
-                          //           ),
-                          //         ),
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
-                          // SizedBox(height: 20),
+
+                          //articleWidget()
+                          Container(
+                            //height: MediaQuery.of(context).size.height,
+
+                            // color: Colors.amber,
+                            child: FutureBuilder<List<Data>>(
+                              future: futureData,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  List<Data> data = snapshot.data;
+                                  return ListView.separated(
+                                      separatorBuilder:
+                                          (BuildContext context, int index) {
+                                        return SizedBox(
+                                          height: 20,
+                                        );
+                                      },
+                                      controller: ScrollController(),
+                                      shrinkWrap: true,
+                                      itemCount: data.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return GestureDetector(
+                                          onTap: () => setState(() {
+                                            Navigator.push(
+                                                context,
+                                                CupertinoPageRoute(
+                                                    builder: (context) =>
+                                                        ArticleDetailsPage(
+                                                          urlget:
+                                                              'https://truethanyarak.com/api/Ar_Detail.php?id=${data[index].id}',
+                                                        )));
+                                            // print(
+                                            //     'https://truethanyarak.com/api/Ar_Detail.php?id=${data[index].id}');
+                                          }),
+                                          child: Container(
+                                            padding: EdgeInsets.only(
+                                                top: 10, bottom: 10, left: 10),
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.grey
+                                                        .withOpacity(0.1),
+                                                    spreadRadius: 2,
+                                                    blurRadius: 2,
+                                                    offset: Offset(0, 2),
+                                                  )
+                                                ],
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(20))),
+                                            height: 130,
+                                            child: Row(
+                                              children: <Widget>[
+                                                Container(
+                                                  width: 150,
+                                                  padding: EdgeInsets.all(20),
+                                                  decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                          fit: BoxFit.cover,
+                                                          image: NetworkImage(
+                                                              data[index]
+                                                                  .urlpicpath)),
+                                                      color: Colors.amber,
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  20))),
+                                                ),
+                                                Expanded(
+                                                  child: Container(
+                                                    // padding: EdgeInsets.only(left: 10),
+                                                    decoration: BoxDecoration(
+                                                        //color: Colors.red,
+                                                        ),
+                                                    padding: EdgeInsets.only(
+                                                        left: 10, right: 10),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Text(
+                                                            data[index].subject,
+                                                            maxLines: 1,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            style: GoogleFonts.kanit(
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color: Color(
+                                                                    0xff0088C6))),
+                                                        SizedBox(height: 5),
+                                                        Text(data[index].title,
+                                                            maxLines: 2,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            style: GoogleFonts
+                                                                .kanit(
+                                                                    fontSize:
+                                                                        14,
+                                                                    color: Colors
+                                                                        .black)),
+                                                        SizedBox(height: 10),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Flexible(
+                                                              child: FaIcon(
+                                                                FontAwesomeIcons
+                                                                    .solidClock,
+                                                                size: 12,
+                                                                color: Color(
+                                                                    0xff0088C6),
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              width: 5,
+                                                            ),
+                                                            Flexible(
+                                                              child: Text(
+                                                                DateFormat('dd/MM/').format(
+                                                                        data[index]
+                                                                            .createdate) +
+                                                                    DateFormat(
+                                                                            'yyyy')
+                                                                        .format(
+                                                                      data[index]
+                                                                          .createdate
+                                                                          .add(
+                                                                            Duration(days: 198195),
+                                                                          ),
+                                                                    ),
+                                                                maxLines: 1,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                style:
+                                                                    GoogleFonts
+                                                                        .kanit(
+                                                                  fontSize: 12,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  color: Colors
+                                                                      .grey,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              width: 10,
+                                                            ),
+                                                            Flexible(
+                                                              child: FaIcon(
+                                                                FontAwesomeIcons
+                                                                    .solidEye,
+                                                                size: 12,
+                                                                color: Color(
+                                                                    0xff0088C6),
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              width: 5,
+                                                            ),
+                                                            Flexible(
+                                                              child: Text(
+                                                                ' e.view',
+                                                                maxLines: 1,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                style:
+                                                                    GoogleFonts
+                                                                        .kanit(
+                                                                  fontSize: 12,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  color: Colors
+                                                                      .grey,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      });
+                                } else if (snapshot.hasError) {
+                                  return Text("${snapshot.error}");
+                                }
+                                // By default show a loading spinner.
+                                return CircularProgressIndicator();
+                              },
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -668,111 +739,6 @@ final List<Widget> imageSliders = imgLists
                         ),
                       ),
                     ),
-                  ],
-                )),
-          ),
-        ))
-    .toList();
-final List<article> imgListss = article.imgLists();
-final List<Widget> imageSliderBanner = imgListss
-    .map((item) => Container(
-          child: Container(
-            margin: EdgeInsets.all(5.0),
-            child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                child: Stack(
-                  children: <Widget>[
-                    Container(
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              height: 130,
-                              decoration: BoxDecoration(
-                                // color: Colors.white,
-                                image: DecorationImage(
-                                    fit: BoxFit.fill,
-                                    image: NetworkImage(item.img)),
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(30),
-                                  topRight: Radius.circular(30),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                              height: 100,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(30),
-                                  bottomRight: Radius.circular(30),
-                                ),
-                              ),
-                              child: Container(
-                                padding: EdgeInsets.only(left: 15, right: 15),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(item.name,
-                                        style: GoogleFonts.kanit(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500,
-                                            color: Color(0xff0088C6))),
-                                    Text(item.contact,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: GoogleFonts.kanit(
-                                            fontSize: 14, color: Colors.black)),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        FaIcon(
-                                          FontAwesomeIcons.solidClock,
-                                          size: 12,
-                                          color: Color(0xff0088C6),
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text(
-                                          item.date,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: GoogleFonts.kanit(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        FaIcon(
-                                          FontAwesomeIcons.solidEye,
-                                          size: 12,
-                                          color: Color(0xff0088C6),
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text(
-                                          item.view,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: GoogleFonts.kanit(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              )),
-                        ],
-                      ),
-                    )
                   ],
                 )),
           ),

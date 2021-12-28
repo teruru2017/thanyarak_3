@@ -38,7 +38,7 @@ class _mark_procedure_pageState extends State<mark_procedure_page> {
                     //พื้นหลัง
                     Container(
                       height: MediaQuery.of(context).size.height,
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.only(top: 20, left: 15, right: 15),
                       decoration: BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage('images/bg_menu.png'),
@@ -48,6 +48,8 @@ class _mark_procedure_pageState extends State<mark_procedure_page> {
                       child: Column(
                         children: [
                           Container(
+                            padding:
+                                EdgeInsets.only(top: 20, left: 15, right: 15),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.max,
@@ -61,8 +63,8 @@ class _mark_procedure_pageState extends State<mark_procedure_page> {
                                       });
                                     },
                                     child: Container(
-                                      width: 50,
-                                      height: 40,
+                                      width: 30,
+                                      height: 30,
                                       decoration: BoxDecoration(
                                           image: DecorationImage(
                                         scale: 1.3,
@@ -75,9 +77,9 @@ class _mark_procedure_pageState extends State<mark_procedure_page> {
                                 Expanded(
                                   flex: _f,
                                   child: Padding(
-                                    padding: EdgeInsets.only(top: 0),
+                                    padding: EdgeInsets.only(left: 10),
                                     child: Container(
-                                      height: 40,
+                                      // height: 40,
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
@@ -105,7 +107,7 @@ class _mark_procedure_pageState extends State<mark_procedure_page> {
 
                     //พื้นหลังเนื้อหา
                     Padding(
-                      padding: const EdgeInsets.only(top: 70),
+                      padding: const EdgeInsets.only(top: 90),
                       child: Container(
                         height: MediaQuery.of(context).size.height,
                         padding: EdgeInsets.all(10),
@@ -121,7 +123,7 @@ class _mark_procedure_pageState extends State<mark_procedure_page> {
                     //เนื้อหา
                     Padding(
                       padding: const EdgeInsets.only(
-                          top: 90, left: 30, right: 30, bottom: 20),
+                          top: 110, left: 15, right: 15, bottom: 20),
                       child: Column(
                         children: <Widget>[
                           Container(
