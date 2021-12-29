@@ -794,7 +794,7 @@ class _bankDialogState extends State<bankDialog> {
                   )),
               //1150
               SingleChildScrollView(
-                child: Expanded(
+                child: Container(
                   child: Stack(
                     children: [
                       Container(
@@ -813,261 +813,238 @@ class _bankDialogState extends State<bankDialog> {
 
                         child: Stack(
                           children: [
-                            Expanded(
-                              child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    const SizedBox(height: 20),
-                                    Row(
-                                      children: [
-                                        SizedBox(width: 25),
-                                        GestureDetector(
-                                          onTap: () {
-                                            Navigator.pop(context);
-                                            setState(
-                                              () {
-                                                showGeneralDialog(
-                                                    context: context,
-                                                    barrierDismissible: false,
-                                                    barrierLabel:
-                                                        MaterialLocalizations
-                                                                .of(context)
-                                                            .modalBarrierDismissLabel,
-                                                    barrierColor:
-                                                        Colors.transparent,
-                                                    transitionDuration:
-                                                        Duration(
-                                                            milliseconds: 200),
-                                                    pageBuilder: (BuildContext
-                                                                context,
-                                                            Animation frist,
-                                                            Animation second) =>
-                                                        CustomDialog());
-                                              },
-                                            );
-                                          },
-                                          child: Icon(
-                                            Icons.arrow_back_ios_new_rounded,
-                                            color: Colors.black54,
-                                            size: 18,
-                                          ),
-                                        ),
-                                      ],
+                            Column(children: <Widget>[
+                              const SizedBox(height: 20),
+                              Row(
+                                children: [
+                                  SizedBox(width: 25),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      setState(
+                                        () {
+                                          showGeneralDialog(
+                                              context: context,
+                                              barrierDismissible: false,
+                                              barrierLabel:
+                                                  MaterialLocalizations.of(
+                                                          context)
+                                                      .modalBarrierDismissLabel,
+                                              barrierColor: Colors.transparent,
+                                              transitionDuration:
+                                                  Duration(milliseconds: 200),
+                                              pageBuilder:
+                                                  (BuildContext context,
+                                                          Animation frist,
+                                                          Animation second) =>
+                                                      CustomDialog());
+                                        },
+                                      );
+                                    },
+                                    child: Icon(
+                                      Icons.arrow_back_ios_new_rounded,
+                                      color: Colors.black54,
+                                      size: 18,
                                     ),
-                                    const SizedBox(height: 15),
-                                    Text(
-                                      'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
-                                      style: GoogleFonts.kanit(
-                                        fontSize: 15.5,
-                                        //fontWeight: FontWeight.w400,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    SizedBox(height: 15),
-                                    Container(
-                                      width:
-                                          MediaQuery.of(context).size.width - 0,
-                                      height: 60,
-                                      decoration: BoxDecoration(
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 15),
+                              Text(
+                                'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
+                                style: GoogleFonts.kanit(
+                                  fontSize: 15.5,
+                                  //fontWeight: FontWeight.w400,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              SizedBox(height: 15),
+                              Container(
+                                width: MediaQuery.of(context).size.width - 0,
+                                height: 60,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                  image: AssetImage('images/scb.png'),
+                                  scale: 0.5,
+                                )),
+                              ),
+                              Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'ธนาคารไทยพาณิชย์',
+                                  style: GoogleFonts.kanit(
+                                    fontSize: 15.5,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'ชื่อบัญชี : มูลนิธิถันยรักษ์ในพระราชูประถัมภ์\nสมเด็จพระศรีนครินทราบรมราชชนนี\nเลขบัญชี : 016-2-66644-1',
+                                  style: GoogleFonts.kanit(
+                                    fontSize: 15.5,
+                                    color: Colors.black45,
+                                  ),
+                                ),
+                              ),
+
+                              //แนบสลิป
+                              Container(
+                                child: imageFile != null
+                                    ? Container(
+                                        //_h = 2,
+                                        height: 200,
+                                        width: 200,
+                                        decoration: BoxDecoration(
                                           image: DecorationImage(
-                                        image: AssetImage('images/scb.png'),
-                                        scale: 0.5,
-                                      )),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        'ธนาคารไทยพาณิชย์',
-                                        style: GoogleFonts.kanit(
-                                          fontSize: 15.5,
-                                          color: Colors.black,
+                                              image: FileImage(imageFile)),
                                         ),
+                                      )
+                                    : Container(
+                                        decoration:
+                                            BoxDecoration(color: Colors.amber),
                                       ),
-                                    ),
-                                    SizedBox(height: 5),
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        'ชื่อบัญชี : มูลนิธิถันยรักษ์ในพระราชูประถัมภ์\nสมเด็จพระศรีนครินทราบรมราชชนนี\nเลขบัญชี : 016-2-66644-1',
-                                        style: GoogleFonts.kanit(
-                                          fontSize: 15.5,
-                                          color: Colors.black45,
-                                        ),
-                                      ),
-                                    ),
+                              ),
 
-                                    //แนบสลิป
-                                    Container(
-                                      child: imageFile != null
-                                          ? Container(
-                                              //_h = 2,
-                                              height: 200,
-                                              width: 200,
-                                              decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                    image:
-                                                        FileImage(imageFile)),
-                                              ),
-                                            )
-                                          : Container(
-                                              decoration: BoxDecoration(
-                                                  color: Colors.amber),
-                                            ),
-                                    ),
-
-                                    SizedBox(height: 20),
-                                    Align(
-                                      alignment: Alignment(-1, 1),
-                                      child: Text(
-                                        'วัตถุประสงค์ในการบริจาค',
-                                        style: GoogleFonts.kanit(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400,
-                                        ),
+                              SizedBox(height: 20),
+                              Align(
+                                alignment: Alignment(-1, 1),
+                                child: Text(
+                                  'วัตถุประสงค์ในการบริจาค',
+                                  style: GoogleFonts.kanit(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              FormBuilderTextField(
+                                name: 'objective',
+                                obscureText: true,
+                                style: GoogleFonts.kanit(),
+                                decoration: InputDecoration(
+                                    labelText: 'วัตถุประสงค์',
+                                    border: OutlineInputBorder(
+                                        borderRadius: const BorderRadius.all(
+                                            const Radius.circular(10))),
+                                    fillColor: Color(0xfff3f3f4),
+                                    filled: false),
+                              ),
+                              SizedBox(height: 15),
+                              Align(
+                                alignment: Alignment(-1, 1),
+                                child: Text(
+                                  'ที่อยู่จัดส่งใบเสร็จรับเงิน',
+                                  style: GoogleFonts.kanit(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              FormBuilderTextField(
+                                name: 'addresscheck',
+                                obscureText: true,
+                                style: GoogleFonts.kanit(),
+                                decoration: InputDecoration(
+                                    labelText: 'ที่อยู่',
+                                    border: OutlineInputBorder(
+                                        borderRadius: const BorderRadius.all(
+                                            const Radius.circular(10))),
+                                    fillColor: Color(0xfff3f3f4),
+                                    filled: false),
+                              ),
+                              SizedBox(height: 10),
+                              GestureDetector(
+                                onTap: () {
+                                  chooseImage(ImageSource.gallery);
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.symmetric(vertical: 15),
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    gradient: LinearGradient(
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                        colors: [
+                                          Color(0xffffffff),
+                                          Color(0xffffffff)
+                                        ]),
+                                    border: Border.all(
+                                        color: Colors.blueAccent.shade100),
+                                  ),
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    padding: EdgeInsets.symmetric(vertical: 15),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage('images/check.png'),
+                                        scale: 1.5,
                                       ),
                                     ),
-                                    SizedBox(height: 10),
-                                    FormBuilderTextField(
-                                      name: 'objective',
-                                      obscureText: true,
-                                      style: GoogleFonts.kanit(),
-                                      decoration: InputDecoration(
-                                          labelText: 'วัตถุประสงค์',
-                                          border: OutlineInputBorder(
-                                              borderRadius: const BorderRadius
-                                                      .all(
-                                                  const Radius.circular(10))),
-                                          fillColor: Color(0xfff3f3f4),
-                                          filled: false),
-                                    ),
-                                    SizedBox(height: 15),
-                                    Align(
-                                      alignment: Alignment(-1, 1),
-                                      child: Text(
-                                        'ที่อยู่จัดส่งใบเสร็จรับเงิน',
-                                        style: GoogleFonts.kanit(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400,
-                                        ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              //รายละเอียดการบริจาค
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  setState(
+                                    () {
+                                      showGeneralDialog(
+                                          context: context,
+                                          barrierDismissible: false,
+                                          barrierLabel:
+                                              MaterialLocalizations.of(context)
+                                                  .modalBarrierDismissLabel,
+                                          barrierColor: Colors.transparent,
+                                          transitionDuration:
+                                              Duration(milliseconds: 200),
+                                          pageBuilder: (BuildContext context,
+                                                  Animation frist,
+                                                  Animation second) =>
+                                              detailbankDialog());
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.symmetric(vertical: 15),
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    color: Color(0xffE6EFFE),
+                                    gradient: LinearGradient(
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                        colors: [
+                                          Color(0xff0088C6),
+                                          Color(0xff43CEF8)
+                                        ]),
+                                  ),
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    padding: EdgeInsets.symmetric(vertical: 15),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image:
+                                            AssetImage('images/donate02.png'),
+                                        scale: 1.5,
                                       ),
                                     ),
-                                    SizedBox(height: 10),
-                                    FormBuilderTextField(
-                                      name: 'addresscheck',
-                                      obscureText: true,
-                                      style: GoogleFonts.kanit(),
-                                      decoration: InputDecoration(
-                                          labelText: 'ที่อยู่',
-                                          border: OutlineInputBorder(
-                                              borderRadius: const BorderRadius
-                                                      .all(
-                                                  const Radius.circular(10))),
-                                          fillColor: Color(0xfff3f3f4),
-                                          filled: false),
-                                    ),
-                                    SizedBox(height: 10),
-                                    GestureDetector(
-                                      onTap: () {
-                                        chooseImage(ImageSource.gallery);
-                                      },
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 15),
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          gradient: LinearGradient(
-                                              begin: Alignment.centerLeft,
-                                              end: Alignment.centerRight,
-                                              colors: [
-                                                Color(0xffffffff),
-                                                Color(0xffffffff)
-                                              ]),
-                                          border: Border.all(
-                                              color:
-                                                  Colors.blueAccent.shade100),
-                                        ),
-                                        child: Container(
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 15),
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                              image: AssetImage(
-                                                  'images/check.png'),
-                                              scale: 1.5,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(height: 5),
-                                    //รายละเอียดการบริจาค
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                        setState(
-                                          () {
-                                            showGeneralDialog(
-                                                context: context,
-                                                barrierDismissible: false,
-                                                barrierLabel:
-                                                    MaterialLocalizations.of(
-                                                            context)
-                                                        .modalBarrierDismissLabel,
-                                                barrierColor:
-                                                    Colors.transparent,
-                                                transitionDuration:
-                                                    Duration(milliseconds: 200),
-                                                pageBuilder:
-                                                    (BuildContext context,
-                                                            Animation frist,
-                                                            Animation second) =>
-                                                        detailbankDialog());
-                                          },
-                                        );
-                                      },
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 15),
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          color: Color(0xffE6EFFE),
-                                          gradient: LinearGradient(
-                                              begin: Alignment.centerLeft,
-                                              end: Alignment.centerRight,
-                                              colors: [
-                                                Color(0xff0088C6),
-                                                Color(0xff43CEF8)
-                                              ]),
-                                        ),
-                                        child: Container(
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 15),
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                              image: AssetImage(
-                                                  'images/donate02.png'),
-                                              scale: 1.5,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ]),
-                            ),
+                                  ),
+                                ),
+                              ),
+                            ])
                           ],
                         ),
                       ),
@@ -1321,7 +1298,7 @@ class _detailbankDialogState extends State<detailbankDialog> {
                     ),
                   ),
                 )),
-            Expanded(
+            Container(
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
