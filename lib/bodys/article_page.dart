@@ -1,5 +1,6 @@
 //@dart = 2.9
 import 'dart:convert';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:carousel_slider/carousel_slider.dart';
@@ -7,6 +8,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:thanyarak/bodys/API/api_main_article.dart';
 import 'package:thanyarak/bodys/alert_page.dart';
 import 'package:thanyarak/bodys/article_details_page.dart';
 import 'package:thanyarak/bodys/menu_page.dart';
@@ -14,8 +17,9 @@ import 'package:thanyarak/bodys/notification_page.dart';
 import 'package:thanyarak/models/article_model.dart';
 import 'package:thanyarak/widgets/NavigationBar.dart';
 import 'package:thanyarak/widgets/article_widget.dart';
-import 'package:intl/intl.dart' show DateFormat, Intl;
+import 'package:intl/intl.dart' show DateFormat, Intl, NumberFormat;
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Article_page extends StatefulWidget {
   Article_page({Key key}) : super(key: key);
@@ -24,7 +28,7 @@ class Article_page extends StatefulWidget {
 }
 
 double x;
-Future<List<Data>> fetchData() async {
+Future<List<apiarticle>> fetchData() async {
   final response =
       await http.get(Uri.parse('https://truethanyarak.com/api/Ar_List.php'));
   if (response.statusCode == 200) {
@@ -32,56 +36,9 @@ Future<List<Data>> fetchData() async {
     x = jsonResponse.length.toDouble();
     // print(x);
 
-    return jsonResponse.map((data) => new Data.fromJson(data)).toList();
+    return jsonResponse.map((data) => new apiarticle.fromJson(data)).toList();
   } else {
     throw Exception('Unexpected error occured!');
-  }
-}
-
-class Data {
-  String id;
-  String subject;
-  String title;
-  String htmlname;
-  String urlhtmlpath;
-  String picname;
-  String urlpicpath;
-  String createby;
-  DateTime createdate;
-  DateTime lastmoddate;
-  String lastmodby;
-  Data({
-    this.id,
-    this.subject,
-    this.title,
-    this.htmlname,
-    this.urlhtmlpath,
-    this.picname,
-    this.urlpicpath,
-    this.createby,
-    this.createdate,
-    this.lastmoddate,
-    this.lastmodby,
-  });
-
-  factory Data.fromJson(Map<String, dynamic> json) {
-    return Data(
-      id: json["id"] == null ? null : json["id"],
-      subject: json["subject"] == null ? null : json["subject"],
-      title: json["title"] == null ? null : json["title"],
-      htmlname: json["htmlname"] == null ? null : json["htmlname"],
-      urlhtmlpath: json["urlhtmlpath"] == null ? null : json["urlhtmlpath"],
-      picname: json["picname"] == null ? null : json["picname"],
-      urlpicpath: json["urlpicpath"] == null ? null : json["urlpicpath"],
-      createby: json["createby"] == null ? null : json["createby"],
-      createdate: json["createdate"] == null
-          ? null
-          : DateTime.parse(json["createdate"]),
-      lastmoddate: json["lastmoddate"] == null
-          ? null
-          : DateTime.parse(json["lastmoddate"]),
-      lastmodby: json["lastmodby"] == null ? null : json["lastmodby"],
-    );
   }
 }
 
@@ -99,12 +56,21 @@ final CarouselController _controller = CarouselController();
 String checklogin = '';
 
 class _Article_pageState extends State<Article_page> {
-  Future<List<Data>> futureData;
+  Future<List<apiarticle>> futureData;
   void initState() {
     Intl.defaultLocale = 'th';
     initializeDateFormatting();
     super.initState();
+    getDATA();
     futureData = fetchData();
+  }
+
+  Future getDATA() async {
+    final SharedPreferences per = await SharedPreferences.getInstance();
+    setState(() {
+      checklogin = per.getString('id');
+      print(checklogin);
+    });
   }
 
   Widget build(BuildContext context) {
@@ -188,12 +154,38 @@ class _Article_pageState extends State<Article_page> {
                                                               ? NotiPage()
                                                               : alert_page()));
                                             },
-                                            child: Container(
-                                              width: 20,
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          'images/notimenu.png'))),
+                                            child: Stack(
+                                              children: [
+                                                Container(
+                                                  padding: EdgeInsets.all(10),
+                                                  decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                          image: AssetImage(
+                                                              'images/notimenu.png'))),
+                                                ),
+                                                Visibility(
+                                                  child: Positioned(
+                                                    left: 10,
+                                                    top: 6,
+                                                    child: Container(
+                                                      height: 10,
+                                                      width: 10,
+                                                      decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            width: 1,
+                                                            color: HexColor(
+                                                                '#31BCEB')),
+                                                        color:
+                                                            HexColor('#F291A3'),
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(50),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
                                             ),
                                           ),
                                           SizedBox(width: 20),
@@ -256,11 +248,11 @@ class _Article_pageState extends State<Article_page> {
                               ),
                               child: Column(
                                 children: [
-                                  FutureBuilder<List<Data>>(
+                                  FutureBuilder<List<apiarticle>>(
                                     future: futureData,
                                     builder: (context, snapshot) {
                                       if (snapshot.hasData) {
-                                        List<Data> data = snapshot.data;
+                                        List<apiarticle> data = snapshot.data;
                                         List<Widget> imageSliderBanner = data
                                             .map((item) => Container(
                                                   child: Container(
@@ -482,11 +474,11 @@ class _Article_pageState extends State<Article_page> {
                             //height: MediaQuery.of(context).size.height,
 
                             // color: Colors.amber,
-                            child: FutureBuilder<List<Data>>(
+                            child: FutureBuilder<List<apiarticle>>(
                               future: futureData,
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
-                                  List<Data> data = snapshot.data;
+                                  List<apiarticle> data = snapshot.data;
                                   return ListView.separated(
                                       separatorBuilder:
                                           (BuildContext context, int index) {
@@ -607,6 +599,8 @@ class _Article_pageState extends State<Article_page> {
                                                             ),
                                                             Flexible(
                                                               child: Text(
+                                                                // data[index]
+                                                                //     .createdate,
                                                                 DateFormat('dd/MM/').format(
                                                                         data[index]
                                                                             .createdate) +
@@ -652,7 +646,11 @@ class _Article_pageState extends State<Article_page> {
                                                             ),
                                                             Flexible(
                                                               child: Text(
-                                                                ' e.view',
+                                                                NumberFormat
+                                                                        .decimalPattern()
+                                                                    .format(data[
+                                                                            index]
+                                                                        .view),
                                                                 maxLines: 1,
                                                                 overflow:
                                                                     TextOverflow
@@ -698,7 +696,9 @@ class _Article_pageState extends State<Article_page> {
           ),
         ],
       ),
-      bottomNavigationBar: NavigagitonBar(),
+      bottomNavigationBar: NavigagitonBar(
+        actionGet: 2,
+      ),
     );
   }
 }

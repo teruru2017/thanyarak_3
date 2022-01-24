@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 class dndetail {
-  String id;
+  int id;
   String masterkey;
   String subject;
   String title;
@@ -15,7 +15,7 @@ class dndetail {
   DateTime createdate;
   DateTime lastmoddate;
   String lastmodby;
-  String view;
+  int view;
 
   dndetail({
     this.id,

@@ -205,10 +205,10 @@ class _NotiPageState extends State<NotiPage> {
                     color: Colors.white,
                     child: GestureDetector(
                       onTap: () {
-                        // Navigator.push(
-                        //     context,
-                        //     CupertinoPageRoute(
-                        //         builder: (context) => otp_pages()));
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) => SignInPage()));
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width,

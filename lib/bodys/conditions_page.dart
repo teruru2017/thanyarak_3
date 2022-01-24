@@ -258,7 +258,9 @@ class _ConditionsPageState extends State<ConditionsPage> {
           ),
         ],
       ),
-      bottomNavigationBar: NavigagitonBar(),
+      bottomNavigationBar: NavigagitonBar(
+        actionGet: 5,
+      ),
     );
   }
 

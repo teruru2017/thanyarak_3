@@ -73,8 +73,7 @@ class _dating_pageState extends State<dating_page> {
                       child: Column(
                         children: [
                           Container(
-                            padding:
-                                EdgeInsets.only(top: 0, left: 15, right: 15),
+                            padding: EdgeInsets.only(top: 0, left: 0, right: 0),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.max,
@@ -136,27 +135,47 @@ class _dating_pageState extends State<dating_page> {
                                     child: Padding(
                                       padding: EdgeInsets.only(top: 25),
                                       child: Container(
-                                        height: 30,
-                                        decoration: BoxDecoration(
-                                          color: Color(0xff43CEF8),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                        ),
-                                        child: FlatButton.icon(
-                                          icon: Image.asset(
-                                              'images/history__outline.png',
-                                              scale: 3),
-                                          label: Flexible(
-                                            child: Text(
-                                              'ประวัติการตรวจ',
-                                              style: GoogleFonts.kanit(
-                                                  fontSize: 12,
-                                                  color: Colors.white),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
+                                          height: 30,
+                                          decoration: BoxDecoration(
+                                            color: Color(0xff43CEF8),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10)),
                                           ),
-                                        ),
-                                      ),
+                                          // child: FlatButton.icon(
+                                          //   icon: Image.asset(
+                                          //       'images/history__outline.png',
+                                          //       scale: 3),
+                                          //   label: Flexible(
+                                          //     child: Text(
+                                          //       'ประวัติการตรวจ',
+                                          //       style: GoogleFonts.kanit(
+                                          //           fontSize: 12,
+                                          //           color: Colors.white),
+                                          //       overflow: TextOverflow.ellipsis,
+                                          //     ),
+                                          //   ),
+                                          // ),
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: Wrap(
+                                              spacing: 2,
+                                              crossAxisAlignment:
+                                                  WrapCrossAlignment.center,
+                                              children: [
+                                                Image.asset(
+                                                    'images/history__outline.png',
+                                                    scale: 3),
+                                                Text(
+                                                  'ประวัติการตรวจ',
+                                                  style: GoogleFonts.kanit(
+                                                      fontSize: 12,
+                                                      color: Colors.white),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ],
+                                            ),
+                                          )),
                                     ),
                                   ),
                                 ),
@@ -188,28 +207,49 @@ class _dating_pageState extends State<dating_page> {
                                         );
                                       },
                                       child: Container(
-                                        height: 30,
-                                        decoration: BoxDecoration(
-                                          color: Color(0xff69E6E7),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                        ),
-                                        child: FlatButton.icon(
-                                          icon: Icon(
-                                            Icons.add_circle_outline_outlined,
-                                            color: Colors.white,
+                                          height: 30,
+                                          decoration: BoxDecoration(
+                                            color: Color(0xff69E6E7),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10)),
                                           ),
-                                          label: Flexible(
-                                            child: Text(
-                                              'เพิ่มนัดหมาย',
-                                              style: GoogleFonts.kanit(
-                                                  fontSize: 12,
-                                                  color: Colors.white),
-                                              overflow: TextOverflow.ellipsis,
+                                          // child: FlatButton.icon(
+                                          //   icon: Icon(
+                                          //     Icons.add_circle_outline_outlined,
+                                          //     color: Colors.white,
+                                          //   ),
+                                          //   label: Flexible(
+                                          // child: Text(
+                                          //   'เพิ่มนัดหมาย',
+                                          //   style: GoogleFonts.kanit(
+                                          //       fontSize: 12,
+                                          //       color: Colors.white),
+                                          //   overflow: TextOverflow.ellipsis,
+                                          // ),
+                                          //   ),
+                                          // ),
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: Wrap(
+                                              spacing: 2,
+                                              crossAxisAlignment:
+                                                  WrapCrossAlignment.center,
+                                              children: [
+                                                Icon(
+                                                    Icons
+                                                        .add_circle_outline_outlined,
+                                                    color: Colors.white),
+                                                Text(
+                                                  'เพิ่มนัดหมาย',
+                                                  style: GoogleFonts.kanit(
+                                                      fontSize: 12,
+                                                      color: Colors.white),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ],
                                             ),
-                                          ),
-                                        ),
-                                      ),
+                                          )),
                                     ),
                                   ),
                                 ),
@@ -221,7 +261,7 @@ class _dating_pageState extends State<dating_page> {
                           ),
                           Container(
                             height: 30,
-                            margin: EdgeInsets.only(left: 15, right: 15),
+                            margin: EdgeInsets.only(left: 0, right: 0),
                             decoration: BoxDecoration(
                                 color: Colors.white38,
                                 borderRadius:
@@ -249,11 +289,13 @@ class _dating_pageState extends State<dating_page> {
                                       ),
                                       child: Align(
                                         alignment: Alignment.center,
-                                        child: Text('ทั้งหมด',
-                                            style: GoogleFonts.kanit(
-                                                color: countMark == 1
-                                                    ? Color(0xff0088C6)
-                                                    : Colors.white)),
+                                        child: Text(
+                                          'ทั้งหมด',
+                                          style: GoogleFonts.kanit(
+                                              color: countMark == 1
+                                                  ? Color(0xff0088C6)
+                                                  : Colors.white),
+                                        ),
                                       ),
                                     ),
                                   ),

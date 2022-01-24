@@ -347,7 +347,9 @@ class _alert_pageState extends State<alert_page> {
           ),
         ],
       ),
-      bottomNavigationBar: NavigagitonBar(),
+      bottomNavigationBar: NavigagitonBar(
+        actionGet: 3,
+      ),
     );
   }
 }

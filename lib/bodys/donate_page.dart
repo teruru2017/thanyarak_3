@@ -1,5 +1,6 @@
 //@dart=2.9
 import 'dart:convert';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:thanyarak/bodys/API/api_donate.dart';
 import 'package:thanyarak/bodys/alert_page.dart';
 import 'package:thanyarak/bodys/detaildonate_pages.dart';
@@ -43,11 +45,20 @@ class _DonatePageState extends State<DonatePage> {
     }
   }
 
+  Future getDATA() async {
+    final SharedPreferences per = await SharedPreferences.getInstance();
+    setState(() {
+      checklogin = per.getString('id');
+      print(checklogin);
+    });
+  }
+
   Future<List<apiDonate>> futureData;
   void initState() {
     Intl.defaultLocale = 'th';
     initializeDateFormatting();
     super.initState();
+    getDATA();
     futureData = donateData();
   }
 
@@ -163,12 +174,42 @@ class _DonatePageState extends State<DonatePage> {
                                                               ? NotiPage()
                                                               : alert_page()));
                                             },
-                                            child: Container(
-                                              width: 20,
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          'images/notimenu.png'))),
+                                            child: Stack(
+                                              children: [
+                                                Container(
+                                                  padding: EdgeInsets.all(10),
+                                                  decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                          image: AssetImage(
+                                                              'images/notimenu.png'))),
+                                                ),
+                                                Visibility(
+                                                  visible: checklogin == '' ||
+                                                          checklogin == null
+                                                      ? false
+                                                      : true,
+                                                  child: Positioned(
+                                                    left: 10,
+                                                    top: 6,
+                                                    child: Container(
+                                                      height: 10,
+                                                      width: 10,
+                                                      decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            width: 1,
+                                                            color: HexColor(
+                                                                '#31BCEB')),
+                                                        color:
+                                                            HexColor('#F291A3'),
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(50),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
                                             ),
                                           ),
                                           SizedBox(width: 20),
@@ -849,7 +890,7 @@ class _DonatePageState extends State<DonatePage> {
           ),
         ],
       ),
-      bottomNavigationBar: NavigagitonBar(),
+      bottomNavigationBar: NavigagitonBar(actionGet: 3),
     );
   }
 }

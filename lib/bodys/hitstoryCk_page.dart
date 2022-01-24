@@ -14,6 +14,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:thanyarak/bodys/article_details_page.dart';
 import 'package:thanyarak/bodys/dating_page.dart';
+import 'package:thanyarak/bodys/detailcheck.dart';
 import 'package:thanyarak/bodys/donate_page.dart';
 import 'package:thanyarak/bodys/hitstoryDetail.dart';
 import 'package:thanyarak/bodys/mark_procedure.dart';
@@ -81,7 +82,7 @@ class _hitstory_pages_pagesState extends State<hitstory_pages> {
                         children: [
                           Container(
                             padding:
-                                EdgeInsets.only(top: 20, left: 15, right: 15),
+                                EdgeInsets.only(top: 20, left: 0, right: 0),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.max,
@@ -140,16 +141,35 @@ class _hitstory_pages_pagesState extends State<hitstory_pages> {
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(10)),
                                         ),
-                                        child: FlatButton.icon(
-                                          icon: Image.asset('images/calen.png',
-                                              scale: 1.2),
-                                          label: Flexible(
-                                            child: Text(
-                                              'ตารางนัดหมาย',
-                                              overflow: TextOverflow.ellipsis,
-                                              style: GoogleFonts.kanit(
-                                                  color: Colors.white),
-                                            ),
+                                        // child: FlatButton.icon(
+                                        //   icon: Image.asset('images/calen.png',
+                                        //       scale: 1.2),
+                                        //   label: Flexible(
+                                        //     child: Text(
+                                        //       'ตารางนัดหมาย',
+                                        //       overflow: TextOverflow.ellipsis,
+                                        //       style: GoogleFonts.kanit(
+                                        //           color: Colors.white),
+                                        //     ),
+                                        //   ),
+                                        // ),
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Wrap(
+                                            spacing: 2,
+                                            crossAxisAlignment:
+                                                WrapCrossAlignment.center,
+                                            children: [
+                                              Image.asset('images/calen.png',
+                                                  scale: 2),
+                                              Text(
+                                                'ประวัติการตรวจ',
+                                                style: GoogleFonts.kanit(
+                                                    fontSize: 12,
+                                                    color: Colors.white),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
@@ -157,7 +177,6 @@ class _hitstory_pages_pagesState extends State<hitstory_pages> {
                                   ),
                                 ),
                                 Expanded(
-                                  flex: _w,
                                   child: Padding(
                                     padding: EdgeInsets.only(top: 5),
                                     child: GestureDetector(
@@ -177,29 +196,35 @@ class _hitstory_pages_pagesState extends State<hitstory_pages> {
                                         );
                                       },
                                       child: Container(
-                                        height: 30,
-                                        decoration: BoxDecoration(
-                                          color: Color(0xff69E6E7),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                        ),
-                                        child: FlatButton.icon(
-                                          icon: Icon(
-                                            Icons.check_box_outlined,
-                                            color: Colors.white,
-                                            size: 20,
+                                          height: 30,
+                                          decoration: BoxDecoration(
+                                            color: Color(0xff69E6E7),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10)),
                                           ),
-                                          label: Flexible(
-                                            child: Text(
-                                              'เลือก',
-                                              style: GoogleFonts.kanit(
-                                                  color: Colors.white),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: Wrap(
+                                              spacing: 2,
+                                              crossAxisAlignment:
+                                                  WrapCrossAlignment.center,
+                                              children: [
+                                                Icon(
+                                                  Icons.check_box_outlined,
+                                                  color: Colors.white,
+                                                  size: 20,
+                                                ),
+                                                Text(
+                                                  'เลือก',
+                                                  style: GoogleFonts.kanit(
+                                                      fontSize: 12,
+                                                      color: Colors.white),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ],
                                             ),
-                                          ),
-                                        ),
-                                      ),
+                                          )),
                                     ),
                                   ),
                                 ),
@@ -467,7 +492,12 @@ class _hitstory_pages_pagesState extends State<hitstory_pages> {
                     child: GestureDetector(
                       //หน้ายิงยังผิด
                       onTap: () {
-                        setState(() {});
+                        setState(() {
+                          Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) => detailcheck_page()));
+                        });
                       },
                       child: Container(
                         margin: EdgeInsets.only(top: 5),

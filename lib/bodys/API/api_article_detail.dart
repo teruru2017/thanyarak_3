@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 class ardetail {
-  String id;
+  int id;
   String masterkey;
   String subject;
   String title;
@@ -14,8 +14,10 @@ class ardetail {
   String createby;
   DateTime createdate;
   DateTime lastmoddate;
+  int createdateStt;
+  int lastmoddateStt;
   String lastmodby;
-  String view;
+  int view;
 
   ardetail({
     this.id,
@@ -30,6 +32,8 @@ class ardetail {
     this.createby,
     this.createdate,
     this.lastmoddate,
+    this.createdateStt,
+    this.lastmoddateStt,
     this.lastmodby,
     this.view,
   });
@@ -52,6 +56,10 @@ class ardetail {
       lastmoddate: json["lastmoddate"] == null
           ? null
           : DateTime.parse(json["lastmoddate"]),
+      createdateStt:
+          json["createdate_stt"] == null ? null : json["createdate_stt"],
+      lastmoddateStt:
+          json["lastmoddate_stt"] == null ? null : json["lastmoddate_stt"],
       lastmodby: json["lastmodby"] == null ? null : json["lastmodby"],
       view: json["view"] == null ? null : json["view"],
     );

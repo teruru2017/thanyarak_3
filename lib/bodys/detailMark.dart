@@ -501,299 +501,303 @@ class _CancelMarkState extends State<CancelMark> {
   @override
   int getAction = 1;
   Widget build(BuildContext context) => WillPopScope(
-      child: Visibility(
-        visible: true,
-        child: Scaffold(
-          backgroundColor: Colors.black38,
-          body: Stack(
-            children: <Widget>[
-              Center(
-                child: Container(
-                    padding: const EdgeInsets.all(10),
-                    width: MediaQuery.of(context).size.width * 0.95,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: SingleChildScrollView(
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            top: 30, left: 20, right: 20, bottom: 15),
-                        child: Column(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(bottom: 10),
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage('images/cancel.png'))),
-                              height: 80,
-                              width: 80,
-                            ),
-                            Text(
-                              "ยกเลิกนัดหมาย",
-                              style: GoogleFonts.kanit(
-                                  color: Colors.red, fontSize: 20),
-                            ),
-                            Text(
-                              "คุณแน่ใจหรือไม่ว่าต้องการลบการนัดหมายนี้",
-                              style: GoogleFonts.kanit(
-                                  color: Colors.black, fontSize: 16),
-                            ),
-                            Row(
-                              children: [
-                                Transform.scale(
-                                  scale: 1,
-                                  child: Radio<SingingCharacter>(
-                                    focusColor: Colors.amber,
-                                    value: SingingCharacter.buse01,
-                                    groupValue: _character,
-                                    onChanged: (SingingCharacter value) {
-                                      setState(() {
-                                        _character = value;
-                                        txtck = false;
-                                        _mark.text = '';
-                                      });
-                                    },
+        child: Visibility(
+          visible: true,
+          child: Scaffold(
+            backgroundColor: Colors.black38,
+            body: Stack(
+              children: <Widget>[
+                Center(
+                  child: Container(
+                      padding: const EdgeInsets.all(10),
+                      width: MediaQuery.of(context).size.width * 0.95,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              top: 30, left: 20, right: 20, bottom: 15),
+                          child: Column(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(bottom: 10),
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image:
+                                            AssetImage('images/cancel.png'))),
+                                height: 80,
+                                width: 80,
+                              ),
+                              Text(
+                                "ยกเลิกนัดหมาย",
+                                style: GoogleFonts.kanit(
+                                    color: Colors.red, fontSize: 20),
+                              ),
+                              Text(
+                                "คุณแน่ใจหรือไม่ว่าต้องการลบการนัดหมายนี้",
+                                style: GoogleFonts.kanit(
+                                    color: Colors.black, fontSize: 16),
+                              ),
+                              Row(
+                                children: [
+                                  Transform.scale(
+                                    scale: 1,
+                                    child: Radio<SingingCharacter>(
+                                      focusColor: Colors.amber,
+                                      value: SingingCharacter.buse01,
+                                      groupValue: _character,
+                                      onChanged: (SingingCharacter value) {
+                                        setState(() {
+                                          _character = value;
+                                          txtck = false;
+                                          _mark.text = '';
+                                        });
+                                      },
+                                    ),
                                   ),
-                                ),
-                                Expanded(
-                                    child: Text(
-                                  'ติดธุระ',
-                                  style: GoogleFonts.kanit(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.grey,
-                                  ),
-                                )),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Transform.scale(
-                                  scale: 1,
-                                  child: Radio<SingingCharacter>(
-                                    activeColor: Color(0xff0088C6),
-                                    value: SingingCharacter.buse02,
-                                    groupValue: _character,
-                                    onChanged: (SingingCharacter value) {
-                                      setState(() {
-                                        _character = value;
-                                        txtck = false;
-                                        _mark.text = '';
-                                      });
-                                    },
-                                  ),
-                                ),
-                                Expanded(
-                                    child: Text(
-                                  'เดินทางไม่สะดวก',
-                                  style: GoogleFonts.kanit(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.grey,
-                                  ),
-                                )),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Transform.scale(
-                                  scale: 1,
-                                  child: Radio<SingingCharacter>(
-                                    activeColor: Color(0xff0088C6),
-                                    value: SingingCharacter.buse03,
-                                    groupValue: _character,
-                                    onChanged: (SingingCharacter value) {
-                                      setState(() {
-                                        _character = value;
-                                        txtck = false;
-                                        _mark.text = '';
-                                      });
-                                    },
-                                  ),
-                                ),
-                                Expanded(
-                                    child: Text(
-                                  'เจ็บป่วย / ไม่สบาย',
-                                  style: GoogleFonts.kanit(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.grey,
-                                  ),
-                                )),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Transform.scale(
-                                  scale: 1,
-                                  child: Radio<SingingCharacter>(
-                                    activeColor: Color(0xff0088C6),
-                                    value: SingingCharacter.buse04,
-                                    groupValue: _character,
-                                    onChanged: (SingingCharacter value) {
-                                      setState(() {
-                                        _character = value;
-                                        txtck = false;
-                                        _mark.text = '';
-                                      });
-                                    },
-                                  ),
-                                ),
-                                Expanded(
-                                    child: Text(
-                                  'สิทธิรักษาไม่ส่งตัว',
-                                  style: GoogleFonts.kanit(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.grey,
-                                  ),
-                                )),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Transform.scale(
-                                  scale: 1,
-                                  child: Radio<SingingCharacter>(
-                                    activeColor: Color(0xff0088C6),
-                                    value: SingingCharacter.buse05,
-                                    groupValue: _character,
-                                    onChanged: (SingingCharacter value) {
-                                      setState(() {
-                                        _character = value;
-                                        txtck = !txtck;
-                                      });
-                                    },
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    'ไม่สะดวกเนื่องจาก(เช่น สถานการณ์โควิท)',
+                                  Expanded(
+                                      child: Text(
+                                    'ติดธุระ',
                                     style: GoogleFonts.kanit(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
                                       color: Colors.grey,
                                     ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            FormBuilderTextField(
-                              enabled: txtck,
-                              name: 'mark',
-                              controller: _mark,
-                              style: GoogleFonts.kanit(),
-                              decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(10),
+                                  )),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Transform.scale(
+                                    scale: 1,
+                                    child: Radio<SingingCharacter>(
+                                      activeColor: Color(0xff0088C6),
+                                      value: SingingCharacter.buse02,
+                                      groupValue: _character,
+                                      onChanged: (SingingCharacter value) {
+                                        setState(() {
+                                          _character = value;
+                                          txtck = false;
+                                          _mark.text = '';
+                                        });
+                                      },
                                     ),
                                   ),
-                                  hintText: 'โปรดระบุสาเหตุ*',
-                                  fillColor: Color(0xfff3f3f4),
-                                  filled: false),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        PageTransition(
-                                            type: PageTransitionType.fade,
-                                            child: dating_page()),
-                                      );
-                                    },
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 15),
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10)),
-                                        color: Color(0xffE6EFFE),
-                                        gradient: LinearGradient(
-                                            begin: Alignment.centerLeft,
-                                            end: Alignment.centerRight,
-                                            colors: [
-                                              Color(0xff0088C6),
-                                              Color(0xff43CEF8)
-                                            ]),
+                                  Expanded(
+                                      child: Text(
+                                    'เดินทางไม่สะดวก',
+                                    style: GoogleFonts.kanit(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey,
+                                    ),
+                                  )),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Transform.scale(
+                                    scale: 1,
+                                    child: Radio<SingingCharacter>(
+                                      activeColor: Color(0xff0088C6),
+                                      value: SingingCharacter.buse03,
+                                      groupValue: _character,
+                                      onChanged: (SingingCharacter value) {
+                                        setState(() {
+                                          _character = value;
+                                          txtck = false;
+                                          _mark.text = '';
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  Expanded(
+                                      child: Text(
+                                    'เจ็บป่วย / ไม่สบาย',
+                                    style: GoogleFonts.kanit(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey,
+                                    ),
+                                  )),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Transform.scale(
+                                    scale: 1,
+                                    child: Radio<SingingCharacter>(
+                                      activeColor: Color(0xff0088C6),
+                                      value: SingingCharacter.buse04,
+                                      groupValue: _character,
+                                      onChanged: (SingingCharacter value) {
+                                        setState(() {
+                                          _character = value;
+                                          txtck = false;
+                                          _mark.text = '';
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  Expanded(
+                                      child: Text(
+                                    'สิทธิรักษาไม่ส่งตัว',
+                                    style: GoogleFonts.kanit(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey,
+                                    ),
+                                  )),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Transform.scale(
+                                    scale: 1,
+                                    child: Radio<SingingCharacter>(
+                                      activeColor: Color(0xff0088C6),
+                                      value: SingingCharacter.buse05,
+                                      groupValue: _character,
+                                      onChanged: (SingingCharacter value) {
+                                        setState(() {
+                                          _character = value;
+                                          txtck = !txtck;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      'ไม่สะดวกเนื่องจาก(เช่น สถานการณ์โควิท)',
+                                      style: GoogleFonts.kanit(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.grey,
                                       ),
-                                      child: Align(
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              FormBuilderTextField(
+                                enabled: txtck,
+                                name: 'mark',
+                                controller: _mark,
+                                style: GoogleFonts.kanit(),
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderRadius: const BorderRadius.all(
+                                        const Radius.circular(10),
+                                      ),
+                                    ),
+                                    hintText: 'โปรดระบุสาเหตุ*',
+                                    fillColor: Color(0xfff3f3f4),
+                                    filled: false),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          PageTransition(
+                                              type: PageTransitionType.fade,
+                                              child: dating_page()),
+                                        );
+                                      },
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 15),
                                         alignment: Alignment.center,
-                                        child: Text(
-                                          'ยืนยัน',
-                                          style: GoogleFonts.kanit(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.white,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10)),
+                                          color: Color(0xffE6EFFE),
+                                          gradient: LinearGradient(
+                                              begin: Alignment.centerLeft,
+                                              end: Alignment.centerRight,
+                                              colors: [
+                                                Color(0xff0088C6),
+                                                Color(0xff43CEF8)
+                                              ]),
+                                        ),
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            'ยืนยัน',
+                                            style: GoogleFonts.kanit(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.white,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        Navigator.pop(context);
-                                      });
-                                    },
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 15),
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10)),
-                                        color: Color(0xffE6EFFE),
-                                      ),
-                                      child: Align(
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          Navigator.pop(context);
+                                        });
+                                      },
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 15),
                                         alignment: Alignment.center,
-                                        child: Text(
-                                          'ยกเลิก',
-                                          style: GoogleFonts.kanit(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10)),
+                                          color: Color(0xffE6EFFE),
+                                        ),
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            'ยกเลิก',
+                                            style: GoogleFonts.kanit(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    )),
-              ),
-            ],
+                      )),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-      onWillPop: () async {
-        Navigator.pop(context);
+        onWillPop: () async {
+          Navigator.pop(context);
 
-        return true;
-      });
+          return true;
+        },
+      );
   BoxShadow BoxShadow1(double _offset1, _offset2, _blur, _spread) {
     return BoxShadow(
       color: Colors.blue[100],

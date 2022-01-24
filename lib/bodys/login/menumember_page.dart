@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:thanyarak/bodys/alert_page.dart';
 import 'package:thanyarak/bodys/conditions_page.dart';
@@ -37,7 +38,7 @@ void main() {
   runApp(menumember_pages());
 }
 
-String checklogin = '';
+String cid = '';
 SessionManager ssr = SessionManager();
 
 class _menumember_pagesState extends State<menumember_pages> {
@@ -47,8 +48,8 @@ class _menumember_pagesState extends State<menumember_pages> {
   Future getDATA() async {
     final SharedPreferences per = await SharedPreferences.getInstance();
     setState(() {
-      checklogin = per.getString('id');
-      print(checklogin);
+      cid = per.getString('cid');
+      print(cid);
     });
   }
 
@@ -124,18 +125,47 @@ class _menumember_pagesState extends State<menumember_pages> {
                                                   context,
                                                   CupertinoPageRoute(
                                                       builder: (context) =>
-                                                          checklogin == '' ||
-                                                                  checklogin ==
-                                                                      null
+                                                          cid == '' ||
+                                                                  cid == null
                                                               ? NotiPage()
                                                               : alert_page()));
                                             },
-                                            child: Container(
-                                              width: 20,
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          'images/notimenu.png'))),
+                                            child: Stack(
+                                              children: [
+                                                Container(
+                                                  padding: EdgeInsets.all(10),
+                                                  decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                          image: AssetImage(
+                                                              'images/notimenu.png'))),
+                                                ),
+                                                Visibility(
+                                                  visible:
+                                                      cid == '' || cid == null
+                                                          ? false
+                                                          : true,
+                                                  child: Positioned(
+                                                    left: 10,
+                                                    top: 6,
+                                                    child: Container(
+                                                      height: 10,
+                                                      width: 10,
+                                                      decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            width: 1,
+                                                            color: HexColor(
+                                                                '#31BCEB')),
+                                                        color:
+                                                            HexColor('#F291A3'),
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(50),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
                                             ),
                                           ),
                                           SizedBox(width: 20),
@@ -562,13 +592,15 @@ class _menumember_pagesState extends State<menumember_pages> {
                                         GestureDetector(
                                           onTap: () {
                                             setState(() {
-                                              ssr.setID('');
+                                              ssr.setCID('');
+                                              ssr.setPassword('');
                                             });
                                             //Navigator.pop(context);
-                                            Navigator.push(
+                                            Navigator.pushReplacement(
                                                 context,
                                                 MaterialPageRoute(
-                                                    builder: (context) =>
+                                                    builder: (BuildContext
+                                                            context) =>
                                                         MainPage()));
                                           },
                                           child: Container(
@@ -670,7 +702,7 @@ class _menumember_pagesState extends State<menumember_pages> {
             ),
           ),
         ),
-        bottomNavigationBar: NavigagitonBar(),
+        bottomNavigationBar: NavigagitonBar(actionGet: 5),
       ),
     );
   }

@@ -18,7 +18,7 @@ class _estimate_pageState extends State<estimate_page> {
   final double topWidgetHeight = 90.0;
   final double avatarRadius = 70.0;
   final double cameraRadius = 20.0;
-  final double her = 10, herBottom = 150;
+  final double her = 10, herBottom = 150, herbt = 20;
   ScrollController _controller = new ScrollController();
 
   bool txt = true;
@@ -43,7 +43,8 @@ class _estimate_pageState extends State<estimate_page> {
       fair04 = false,
       fair05 = false,
       fair06 = false,
-      fair07 = false;
+      fair07 = false,
+      fair08 = false;
   bool bad01 = false,
       bad02 = false,
       bad03 = false,
@@ -1379,7 +1380,12 @@ class _estimate_pageState extends State<estimate_page> {
                                                 Expanded(
                                                   child: GestureDetector(
                                                     onTap: () {
-                                                      setState(() {});
+                                                      setState(() {
+                                                        fair06 = !fair06;
+                                                        good06 = false;
+                                                        well06 = false;
+                                                        bad06 = false;
+                                                      });
                                                     },
                                                     child: Container(
                                                       alignment:
@@ -1388,7 +1394,7 @@ class _estimate_pageState extends State<estimate_page> {
                                                       height: 50,
                                                       decoration: BoxDecoration(
                                                           image: DecorationImage(
-                                                              image: AssetImage(fair01
+                                                              image: AssetImage(fair06
                                                                   ? textfaircolor
                                                                   : textfair))),
                                                     ),
@@ -1528,6 +1534,7 @@ class _estimate_pageState extends State<estimate_page> {
                               ),
                             ),
                           ),
+                          SizedBox(height: herbt),
                         ],
                       ),
                     ),

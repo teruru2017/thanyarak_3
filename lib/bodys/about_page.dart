@@ -1,8 +1,14 @@
+//@dart=2.9
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:thanyarak/bodys/alert_page.dart';
 import 'package:thanyarak/bodys/menu_page.dart';
 import 'package:thanyarak/bodys/notification_page.dart';
 import 'package:thanyarak/utility/my_constant.dart';
@@ -11,15 +17,32 @@ import 'package:thanyarak/widgets/about_widget.dart';
 import 'package:thanyarak/widgets/show_title.dart';
 
 class AboutPage extends StatefulWidget {
-  AboutPage({Key? key}) : super(key: key);
+  AboutPage({Key key}) : super(key: key);
 
   @override
   _AboutPageState createState() => _AboutPageState();
 }
 
+String checklogin = '';
+
 double topWidgetHeight = 70;
 
 class _AboutPageState extends State<AboutPage> {
+  void initState() {
+    Intl.defaultLocale = 'th';
+    initializeDateFormatting();
+    super.initState();
+    getDATA();
+  }
+
+  Future getDATA() async {
+    final SharedPreferences per = await SharedPreferences.getInstance();
+    setState(() {
+      checklogin = per.getString('id');
+      print(checklogin);
+    });
+  }
+
   List<String> pathImageAritcles = [
     'images/about_h.png',
   ];
@@ -105,6 +128,57 @@ class _AboutPageState extends State<AboutPage> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
                                         children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  CupertinoPageRoute(
+                                                      builder: (context) =>
+                                                          checklogin == '' ||
+                                                                  checklogin ==
+                                                                      null
+                                                              ? NotiPage()
+                                                              : alert_page()));
+                                            },
+                                            child: Stack(
+                                              children: [
+                                                Container(
+                                                  padding: EdgeInsets.all(10),
+                                                  decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                          image: AssetImage(
+                                                              'images/notimenu.png'))),
+                                                ),
+                                                Visibility(
+                                                  visible: checklogin == '' ||
+                                                          checklogin == null
+                                                      ? false
+                                                      : true,
+                                                  child: Positioned(
+                                                    left: 10,
+                                                    top: 6,
+                                                    child: Container(
+                                                      height: 10,
+                                                      width: 10,
+                                                      decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            width: 1,
+                                                            color: HexColor(
+                                                                '#31BCEB')),
+                                                        color:
+                                                            HexColor('#F291A3'),
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(50),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(width: 20),
                                           GestureDetector(
                                             onTap: () {
                                               Navigator.push(
@@ -596,7 +670,9 @@ class _AboutPageState extends State<AboutPage> {
           ),
         ],
       ),
-      bottomNavigationBar: NavigagitonBar(),
+      bottomNavigationBar: NavigagitonBar(
+        actionGet: 4,
+      ),
     );
   }
 }

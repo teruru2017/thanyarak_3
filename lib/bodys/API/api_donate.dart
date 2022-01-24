@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 class apiDonate {
-  String id;
+  int id;
   String subject;
   String title;
   String htmlname;

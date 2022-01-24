@@ -53,6 +53,8 @@ dependencies:
   http: ^0.13.4
   intl: ^0.17.0
   flutter_html: ^2.2.1
+  cached_network_image: ^3.2.0
+  flutter_lock_screen: ^2.0.1
   
   
   

@@ -33,14 +33,14 @@ class MenuPage extends StatefulWidget {
   _MenuPageState createState() => _MenuPageState();
 }
 
-String checklogin = '';
+String cid = '';
 
 class _MenuPageState extends State<MenuPage> {
   Future getDATA() async {
     final SharedPreferences per = await SharedPreferences.getInstance();
     setState(() {
-      checklogin = per.getString('id');
-      print(checklogin);
+      cid = per.getString('cid');
+      print(cid);
     });
   }
 
@@ -180,9 +180,7 @@ class _MenuPageState extends State<MenuPage> {
                                 ],
                               ),
                               SizedBox(height: 10),
-                              checklogin == '' || checklogin == null
-                                  ? login()
-                                  : getlogin(),
+                              cid == '' || cid == null ? login() : getlogin(),
                               SizedBox(height: 5),
                               Expanded(
                                 child: GestureDetector(
@@ -365,8 +363,7 @@ class _MenuPageState extends State<MenuPage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                checklogin == '' ||
-                                                        checklogin == null
+                                                cid == '' || cid == null
                                                     ? MemderPage()
                                                     : menumember_pages()));
                                   },
@@ -545,7 +542,7 @@ class _MenuPageState extends State<MenuPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => checklogin == ''
+                                  builder: (context) => cid == ''
                                       ? MemderPage()
                                       : setting_page()));
                         },
@@ -670,10 +667,9 @@ class _MenuPageState extends State<MenuPage> {
                               //color: Colors.green,
                               shape: CircleBorder(),
                               image: DecorationImage(
-                                image: AssetImage(
-                                    checklogin == '' || checklogin == null
-                                        ? 'images/avatar.png'
-                                        : 'images/loginuser.png'),
+                                image: AssetImage(cid == '' || cid == null
+                                    ? 'images/avatar.png'
+                                    : 'images/loginuser.png'),
                               )),
                           // child: Image(
                           //   image: AssetImage('images/avatar.png'),
@@ -724,7 +720,7 @@ class _MenuPageState extends State<MenuPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => checklogin == ''
+                                  builder: (context) => cid == ''
                                       ? MemderPage()
                                       : setting_page()));
                         },
@@ -757,8 +753,8 @@ class _MenuPageState extends State<MenuPage> {
                     ssr.setID('');
                   });
                   //Navigator.pop(context);
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MainPage()));
+                  // Navigator.pop(context,
+                  //     MaterialPageRoute(builder: (context) => MainPage()));
                 },
                 child: Container(
                   margin: EdgeInsets.only(top: 0),
@@ -788,9 +784,8 @@ class _MenuPageState extends State<MenuPage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => checklogin == ''
-                              ? MemderPage()
-                              : hitstory_pages()));
+                          builder: (context) =>
+                              cid == '' ? MemderPage() : hitstory_pages()));
                 },
                 child: Container(
                   child: Row(
@@ -829,7 +824,7 @@ class _MenuPageState extends State<MenuPage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              checklogin == '' ? MemderPage() : dating_page()));
+                              cid == '' ? MemderPage() : dating_page()));
                 },
                 child: Container(
                   child: Row(

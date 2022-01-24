@@ -15,22 +15,25 @@ import 'package:thanyarak/models/article_model.dart';
 
 class NavigagitonBar extends StatefulWidget {
   @override
+  //ddddd
+  final int actionGet;
+  NavigagitonBar({Key key, this.actionGet}) : super(key: key);
   _NavigagitonBarState createState() => _NavigagitonBarState();
 }
 
-bool homeck = true;
+bool homeck = false;
 bool articleck = false;
 bool doneck = false;
 bool detailck = false;
 bool memberck = false;
-String checklogin = '';
+String cid = '';
 
 class _NavigagitonBarState extends State<NavigagitonBar> {
   Future getDATA() async {
     final SharedPreferences per = await SharedPreferences.getInstance();
     setState(() {
-      checklogin = per.getString('id');
-      print(checklogin);
+      cid = per.getString('cid');
+      print(cid);
     });
   }
 
@@ -38,13 +41,66 @@ class _NavigagitonBarState extends State<NavigagitonBar> {
   void initState() {
     getDATA();
     super.initState();
+    if (widget.actionGet == 1) {
+      print('home');
+      homeck = true;
+      articleck = false;
+      doneck = false;
+      detailck = false;
+      memberck = false;
+    } else if (widget.actionGet == 2) {
+      homeck = false;
+      articleck = true;
+      doneck = false;
+      detailck = false;
+      memberck = false;
+
+      print('article');
+    } else if (widget.actionGet == 3) {
+      homeck = false;
+      articleck = false;
+      doneck = true;
+      detailck = false;
+      memberck = false;
+      print('doneck');
+    } else if (widget.actionGet == 4) {
+      homeck = false;
+      articleck = false;
+      doneck = false;
+      detailck = true;
+      memberck = false;
+      print('detailck');
+    } else if (widget.actionGet == 5) {
+      homeck = false;
+      articleck = false;
+      doneck = false;
+      detailck = false;
+      memberck = true;
+      print('memberck');
+    } else {
+      homeck = false;
+      articleck = false;
+      doneck = false;
+      detailck = false;
+      memberck = false;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 90,
-      color: Colors.white,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 3,
+            blurRadius: 7,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
+        ],
+      ),
       child: Row(
         children: [
           Expanded(
@@ -59,13 +115,7 @@ class _NavigagitonBarState extends State<NavigagitonBar> {
                   ),
                 );
 
-                setState(() {
-                  homeck = true;
-                  articleck = false;
-                  doneck = false;
-                  detailck = false;
-                  memberck = false;
-                });
+                setState(() {});
               },
               child: Container(
                 color: Colors.white,
@@ -157,13 +207,7 @@ class _NavigagitonBarState extends State<NavigagitonBar> {
                     child: DonatePage(),
                   ),
                 );
-                setState(() {
-                  doneck = true;
-                  articleck = false;
-                  homeck = false;
-                  detailck = false;
-                  memberck = false;
-                });
+                setState(() {});
               },
               child: Container(
                 color: Colors.white,
@@ -207,13 +251,7 @@ class _NavigagitonBarState extends State<NavigagitonBar> {
                     child: AboutPage(),
                   ),
                 );
-                setState(() {
-                  detailck = true;
-                  doneck = false;
-                  articleck = false;
-                  homeck = false;
-                  memberck = false;
-                });
+                setState(() {});
               },
               child: Container(
                 color: Colors.white,
@@ -254,17 +292,11 @@ class _NavigagitonBarState extends State<NavigagitonBar> {
                   context,
                   PageTransition(
                       type: PageTransitionType.fade,
-                      child: checklogin == '' || checklogin == null
+                      child: cid == '' || cid == null
                           ? MemderPage()
                           : menumember_pages()),
                 );
-                setState(() {
-                  memberck = true;
-                  detailck = false;
-                  doneck = false;
-                  articleck = false;
-                  homeck = false;
-                });
+                setState(() {});
               },
               child: Container(
                 child: Column(

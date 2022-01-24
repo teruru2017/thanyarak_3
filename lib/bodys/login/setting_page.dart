@@ -14,13 +14,15 @@ class setting_page extends StatefulWidget {
   _setting_pageState createState() => _setting_pageState();
 }
 
+bool value = true;
+
 class _setting_pageState extends State<setting_page> {
   final double topWidgetHeight = 90.0;
   final double avatarRadius = 70.0;
   final double cameraRadius = 20.0;
 
   bool txt = true;
-  bool value = true;
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -373,7 +375,7 @@ class _setting_pageState extends State<setting_page> {
           ),
         ],
       ),
-      bottomNavigationBar: NavigagitonBar(),
+      bottomNavigationBar: NavigagitonBar(actionGet: 5),
     );
   }
 
@@ -386,7 +388,7 @@ class _setting_pageState extends State<setting_page> {
           inactiveTrackColor: Colors.grey,
           splashRadius: 20,
           value: value,
-          onChanged: (value) => setState(() => value = value),
+          onChanged: (value) => setState(() {}),
         ),
       );
 }

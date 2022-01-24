@@ -324,7 +324,7 @@ class _ArticleDetailsPageState extends State<ArticleDetailsPage> {
                                       width: 5,
                                     ),
                                     Text(
-                                      ardetaildata[index].view,
+                                      ardetaildata[index].view.toString(),
                                       overflow: TextOverflow.ellipsis,
                                       style: GoogleFonts.kanit(
                                         fontSize: 12,
@@ -467,7 +467,9 @@ class _ArticleDetailsPageState extends State<ArticleDetailsPage> {
           ),
         ],
       ),
-      bottomNavigationBar: NavigagitonBar(),
+      bottomNavigationBar: NavigagitonBar(
+        actionGet: 3,
+      ),
     );
   }
   // CarouselSlider builBanner() {

@@ -249,7 +249,9 @@ class _MemderPageState extends State<MemderPage> {
           ],
         ),
       ),
-      bottomNavigationBar: NavigagitonBar(),
+      bottomNavigationBar: NavigagitonBar(
+        actionGet: 5,
+      ),
     );
   }
 }

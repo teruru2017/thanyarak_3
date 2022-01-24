@@ -685,7 +685,7 @@ class _editprofile_pageState extends State<editprofile_page> {
           ),
         ],
       ),
-      bottomNavigationBar: NavigagitonBar(),
+      bottomNavigationBar: NavigagitonBar(actionGet: 5),
     );
   }
 }

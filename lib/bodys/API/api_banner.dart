@@ -2,11 +2,10 @@
 import 'dart:convert';
 
 class apibanner {
-  String id;
+  int id;
   String name;
   String file;
   String urlpath;
-
   apibanner({
     this.id,
     this.name,

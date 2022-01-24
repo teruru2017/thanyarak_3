@@ -293,7 +293,8 @@ class _detaildonate_pagesState extends State<detaildonate_pages> {
                                       width: 5,
                                     ),
                                     Text(
-                                      donatedetailData[0].view,
+                                      NumberFormat.decimalPattern()
+                                          .format(donatedetailData[0].view),
                                       overflow: TextOverflow.ellipsis,
                                       style: GoogleFonts.kanit(
                                         fontSize: 12,
@@ -401,7 +402,9 @@ class _detaildonate_pagesState extends State<detaildonate_pages> {
           ),
         ],
       ),
-      bottomNavigationBar: NavigagitonBar(),
+      bottomNavigationBar: NavigagitonBar(
+        actionGet: 3,
+      ),
     );
   }
 }
@@ -739,7 +742,7 @@ class _CustomDialogState extends State<CustomDialog> {
               ],
             ),
           )),
-          bottomNavigationBar: NavigagitonBar(),
+          bottomNavigationBar: NavigagitonBar(actionGet: 3),
         ),
       ),
       onWillPop: () async {
@@ -1096,7 +1099,9 @@ class _bankDialogState extends State<bankDialog> {
               ),
             ],
           ),
-          bottomNavigationBar: NavigagitonBar(),
+          bottomNavigationBar: NavigagitonBar(
+            actionGet: 3,
+          ),
         ),
       ),
       onWillPop: () async {
@@ -1558,7 +1563,7 @@ class _detailbankDialogState extends State<detailbankDialog> {
               ),
             ),
           ]),
-          bottomNavigationBar: NavigagitonBar(),
+          bottomNavigationBar: NavigagitonBar(actionGet: 3),
         ),
       ),
       onWillPop: () async {
@@ -1840,7 +1845,7 @@ class _truemoney10State extends State<truemoney10> {
               )
             ],
           ),
-          bottomNavigationBar: NavigagitonBar(),
+          bottomNavigationBar: NavigagitonBar(actionGet: 3),
         ),
       ),
       onWillPop: () async {
@@ -2122,7 +2127,7 @@ class _truemoney100State extends State<truemoney100> {
               ))
             ],
           ),
-          bottomNavigationBar: NavigagitonBar(),
+          bottomNavigationBar: NavigagitonBar(actionGet: 3),
         ),
       ),
       onWillPop: () async {
@@ -2417,7 +2422,7 @@ class _detailtrue10DialogState extends State<detailtrue10Dialog> {
               )
             ],
           ),
-          bottomNavigationBar: NavigagitonBar(),
+          bottomNavigationBar: NavigagitonBar(actionGet: 3),
         ),
       ),
       onWillPop: () async {
@@ -2713,7 +2718,7 @@ class _detailtrue100DialogState extends State<detailtrue100Dialog> {
               ))
             ],
           ),
-          bottomNavigationBar: NavigagitonBar(),
+          bottomNavigationBar: NavigagitonBar(actionGet: 3),
         ),
       ),
       onWillPop: () async {
@@ -2987,7 +2992,7 @@ class _truemoveallState extends State<truemoveall> {
               ))
             ],
           ),
-          bottomNavigationBar: NavigagitonBar(),
+          bottomNavigationBar: NavigagitonBar(actionGet: 3),
         ),
       ),
       onWillPop: () async {
@@ -3273,7 +3278,7 @@ class _detailtrueallDialogState extends State<detailtrueallDialog> {
               ))
             ],
           ),
-          bottomNavigationBar: NavigagitonBar(),
+          bottomNavigationBar: NavigagitonBar(actionGet: 3),
         ),
       ),
       onWillPop: () async {

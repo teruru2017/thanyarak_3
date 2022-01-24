@@ -230,7 +230,7 @@ class _editpassword_pageState extends State<editpassword_page> {
                                           child: FormBuilderTextField(
                                             controller: TextEditingController(
                                                 text: '987654321'),
-                                            readOnly: true,
+                                            readOnly: false,
                                             name: 'newpassword',
 
                                             style: GoogleFonts.kanit(),
@@ -278,7 +278,7 @@ class _editpassword_pageState extends State<editpassword_page> {
                                   ),
                                 ),
                                 Container(
-                                  padding: EdgeInsets.only(top: 15),
+                                  padding: EdgeInsets.only(top: 10),
                                   child: Row(
                                     children: [
                                       Expanded(
@@ -305,8 +305,10 @@ class _editpassword_pageState extends State<editpassword_page> {
                                         flex: 1,
                                         child: Container(
                                           child: FormBuilderTextField(
-                                            readOnly: true,
-                                            name: 'confirmpassword',
+                                            controller: TextEditingController(
+                                                text: '987654321'),
+                                            readOnly: false,
+                                            name: 're-newpassword',
 
                                             style: GoogleFonts.kanit(),
 
@@ -339,7 +341,7 @@ class _editpassword_pageState extends State<editpassword_page> {
                                                     const Radius.circular(10),
                                                   ),
                                                 ),
-                                                fillColor: Colors.white,
+                                                fillColor: Colors.grey[50],
                                                 filled: true),
                                             // valueTransformer: (text) => num.tryParse(text),
                                             // validator: FormBuilderValidators.compose([
@@ -351,6 +353,9 @@ class _editpassword_pageState extends State<editpassword_page> {
                                       )
                                     ],
                                   ),
+                                ),
+                                SizedBox(
+                                  height: 20,
                                 ),
                                 Container(
                                   // color: Colors.green,
@@ -415,7 +420,7 @@ class _editpassword_pageState extends State<editpassword_page> {
           ),
         ],
       ),
-      bottomNavigationBar: NavigagitonBar(),
+      bottomNavigationBar: NavigagitonBar(actionGet: 5),
     );
   }
 }

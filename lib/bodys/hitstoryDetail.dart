@@ -62,7 +62,7 @@ class _hitstorydetail_pageState extends State<hitstorydetail_page> {
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(top: 0),
+                                  padding: EdgeInsets.only(top: 5),
                                   child: GestureDetector(
                                     onTap: () {
                                       setState(() {
@@ -84,9 +84,8 @@ class _hitstorydetail_pageState extends State<hitstorydetail_page> {
                                 Expanded(
                                   flex: _f,
                                   child: Padding(
-                                    padding: EdgeInsets.only(top: 0),
+                                    padding: EdgeInsets.only(top: 0, left: 10),
                                     child: Container(
-                                      height: 40,
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(

@@ -22,18 +22,17 @@ import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:thanyarak/widgets/msgBox_widget.dart';
 
-class registerdata_pages extends StatefulWidget {
+class registerdataold_pages extends StatefulWidget {
   String checktype;
   int checkstatus;
-  registerdata_pages({Key key, this.checktype, this.checkstatus})
+  registerdataold_pages({Key key, this.checktype, this.checkstatus})
       : super(key: key);
 
   @override
-  _registerdata_pagesState createState() => _registerdata_pagesState();
+  _registerdataold_pagesState createState() => _registerdataold_pagesState();
 }
 
 bool id = false;
-bool _id = false;
 bool prefix = false;
 bool _prefixerr = false;
 bool name = false;
@@ -41,7 +40,6 @@ bool _nameerr = false;
 bool hbd = false;
 bool _hbderr = false;
 bool tel = false;
-bool _tel = false;
 bool address = false;
 bool _addresserr = false;
 bool email = false;
@@ -83,7 +81,7 @@ TextEditingController input_district = TextEditingController();
 var now = DateTime.now();
 var format = new DateFormat('yyyy');
 
-class _registerdata_pagesState extends State<registerdata_pages> {
+class _registerdataold_pagesState extends State<registerdataold_pages> {
   int _selectedchoice = 0;
   int choice = 0;
   final double topWidgetHeight = 180.0;
@@ -97,9 +95,92 @@ class _registerdata_pagesState extends State<registerdata_pages> {
     getToken();
   }
 
-  Future<void> postnewuser(var data) async {
-    var Strings = data['birthday'].toString().split('-');
-    var url = '${apiurl().url}/patient';
+  Future<void> gethn(String txtHN) async {
+    var url = '${apiurl().url}/patient/findByHN/${txtHN}';
+    final response = await http.get(Uri.parse(url), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ${Token}',
+    });
+    if (response.statusCode == 200) {
+      //List jsonResponse = json.decode(response.body);
+      jsonRes = convert.jsonDecode(response.body);
+      apiStatus = response.statusCode.toString();
+      pid = jsonRes['pid'];
+      print(pid);
+      input_id.text = jsonRes['citizenId'];
+      input_prefix.text = jsonRes['prefix'];
+      input_name.text = jsonRes['name'];
+      input_surname.text = jsonRes['surname'];
+      input_tel.text = jsonRes['mobile'];
+      input_address.text = jsonRes['address'];
+      input_district.text = jsonRes['district'];
+      input_sub_district.text = jsonRes['sub_district'];
+      input_province.text = jsonRes['province'];
+      input_zip.text = jsonRes['zip'];
+      input_email.text = jsonRes['email'];
+
+      var str = jsonRes['dob'];
+      var arrey = str.split("-");
+
+      var age = int.parse(format.format(now)) - int.parse(arrey[0]);
+      var age2 = DateTime.parse(jsonRes['dob']);
+      var formathbd = new DateFormat('dd-M-yyyy');
+
+      input_hbd.text = formathbd.format(age2);
+      input_age.text = age.toString();
+    } else {
+      print(response.statusCode);
+
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => register1_pages()));
+    }
+  }
+
+  Future<void> getcid(String txtcid) async {
+    var url = '${apiurl().url}/patient/findByCitizenId/${txtcid}';
+    final response = await http.get(Uri.parse(url), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ${Token}',
+    });
+    if (response.statusCode == 200) {
+      //List jsonResponse = json.decode(response.body);
+      jsonRes = convert.jsonDecode(response.body);
+      apiStatus = response.statusCode.toString();
+      pid = jsonRes['pid'];
+      print(pid);
+      input_id.text = jsonRes['citizenId'];
+      input_prefix.text = jsonRes['prefix'];
+      input_name.text = jsonRes['name'];
+      input_surname.text = jsonRes['surname'];
+      input_tel.text = jsonRes['mobile'];
+      input_address.text = jsonRes['address'];
+      input_district.text = jsonRes['district'];
+      input_sub_district.text = jsonRes['sub_district'];
+      input_province.text = jsonRes['province'];
+      input_zip.text = jsonRes['zip'];
+      input_email.text = jsonRes['email'];
+
+      var str = jsonRes['dob'];
+      var arrey = str.split("-");
+
+      var age = int.parse(format.format(now)) - int.parse(arrey[0]);
+      var age2 = DateTime.parse(jsonRes['dob']);
+      var formathbd = new DateFormat('dd-M-yyyy');
+
+      input_hbd.text = formathbd.format(age2);
+      input_age.text = age.toString();
+    } else {
+      print(response.statusCode);
+
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => register1_pages()));
+    }
+  }
+
+  Future<void> postupdateuser(String txtpid, var data) async {
+    var url = '${apiurl().url}/patient/${txtpid}';
     final response = await http.post(
       Uri.parse(url),
       headers: {
@@ -108,11 +189,9 @@ class _registerdata_pagesState extends State<registerdata_pages> {
         'Authorization': 'Bearer ${Token}',
       },
       body: jsonEncode(<String, String>{
-        "citizenId": data['id'],
         "prefix": data['prefixname'],
         "name": data['name'],
         "surname": data['surname'],
-        "dob": '${Strings[2]}-${Strings[1]}-${Strings[0]}',
         "address": data['address'],
         "sub_district": data['sub_district'],
         "district": data['district'],
@@ -123,9 +202,10 @@ class _registerdata_pagesState extends State<registerdata_pages> {
       }),
     );
     if (response.statusCode == 200) {
-      print(response.body);
-
-      jsonRes = convert.jsonDecode(response.body);
+      //List jsonResponse = json.decode(response.body);
+      // jsonRes = convert.jsonDecode(response.body);
+      // apiStatus = response.statusCode.toString();
+      print(response.statusCode);
 
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => password_pages()));
@@ -141,6 +221,24 @@ class _registerdata_pagesState extends State<registerdata_pages> {
     final SharedPreferences per = await SharedPreferences.getInstance();
     setState(() {
       Token = per.getString('tokens');
+      getlogin();
+    });
+  }
+
+  Future getlogin() async {
+    final SharedPreferences per = await SharedPreferences.getInstance();
+    setState(() {
+      hn = per.getString('hn');
+      cid = per.getString('cid');
+      cklogin = per.getString('cklogin');
+      if (cklogin == '1') {
+        gethn(hn);
+      } else if (cklogin == '2') {
+        getcid(cid);
+      } else {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => newtype_pages()));
+      }
     });
   }
 
@@ -322,7 +420,6 @@ class _registerdata_pagesState extends State<registerdata_pages> {
                                           onFocusChange: (hasfocus) {
                                             setState(() {
                                               id = hasfocus;
-                                              _id = false;
                                             });
                                           },
                                           child: FormBuilderTextField(
@@ -330,31 +427,8 @@ class _registerdata_pagesState extends State<registerdata_pages> {
                                             style:
                                                 GoogleFonts.kanit(fontSize: 14),
                                             controller: input_id,
-                                            keyboardType: TextInputType.number,
-                                            maxLength: 13,
+                                            readOnly: true,
                                             decoration: InputDecoration(
-                                                counterText: '',
-                                                focusedErrorBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: Colors.blue,
-                                                      width: 1),
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(15)),
-                                                ),
-                                                errorStyle: TextStyle(
-                                                  color: Colors.red,
-                                                  fontSize: 14,
-                                                ),
-                                                errorBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: Colors.red,
-                                                      width: 1),
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(15)),
-                                                ),
                                                 focusedBorder:
                                                     OutlineInputBorder(
                                                   borderSide: BorderSide(
@@ -380,46 +454,21 @@ class _registerdata_pagesState extends State<registerdata_pages> {
                                                     'images/barcode.png',
                                                     alignment: Alignment.center,
                                                     scale: 1.5,
-                                                    color: _id == true
-                                                        ? Colors.red
-                                                        : id == true
-                                                            ? Colors.blue
-                                                            : Colors
-                                                                .grey.shade300,
+                                                    color: id
+                                                        ? Colors.blue
+                                                        : Colors.grey.shade300,
                                                   ),
                                                 ),
                                                 hintText:
                                                     'เลขประจำตัวบัตรประชาชน',
                                                 hintStyle: TextStyle(
-                                                  color: _id == true
-                                                      ? Colors.red
-                                                      : id == true
-                                                          ? Colors.blue
-                                                          : Colors
-                                                              .grey.shade300,
-                                                ),
-                                                fillColor: _id == true
-                                                    ? Colors.red[50]
-                                                    : id == true
-                                                        ? Colors.blue[50]
-                                                        : Colors.white,
+                                                    color: id
+                                                        ? Colors.blue
+                                                        : Colors.grey.shade300),
+                                                fillColor: id
+                                                    ? Colors.blue[50]
+                                                    : Colors.white,
                                                 filled: true),
-                                            validator: (value) {
-                                              if (value == null ||
-                                                  value.isEmpty) {
-                                                setState(() {
-                                                  _id = true;
-                                                });
-                                                return 'กรุณาระบุเลขประจำตัวบัตรประชาชน';
-                                              } else if (value.length != 13) {
-                                                setState(() {
-                                                  _id = true;
-                                                });
-
-                                                return 'กรุณาระบุเลขประจำตัวบัตรประชาชนให้ถูกต้อง';
-                                              }
-                                              return null;
-                                            },
                                           ),
                                         ),
                                         SizedBox(height: 10),
@@ -951,36 +1000,15 @@ class _registerdata_pagesState extends State<registerdata_pages> {
                                           onFocusChange: (hasfocus) {
                                             setState(() {
                                               tel = hasfocus;
-                                              _tel = false;
                                             });
                                           },
                                           child: FormBuilderTextField(
                                             name: 'tel',
+                                            readOnly: true,
                                             controller: input_tel,
                                             style:
                                                 GoogleFonts.kanit(fontSize: 14),
                                             decoration: InputDecoration(
-                                                focusedErrorBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: Colors.blue,
-                                                      width: 1),
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(15)),
-                                                ),
-                                                errorStyle: TextStyle(
-                                                  color: Colors.red,
-                                                  fontSize: 14,
-                                                ),
-                                                errorBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: Colors.red,
-                                                      width: 1),
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(15)),
-                                                ),
                                                 focusedBorder:
                                                     OutlineInputBorder(
                                                   borderSide: BorderSide(
@@ -1006,46 +1034,20 @@ class _registerdata_pagesState extends State<registerdata_pages> {
                                                     'images/phone.png',
                                                     alignment: Alignment.center,
                                                     scale: 1.5,
-                                                    color: _tel == true
-                                                        ? Colors.red
-                                                        : tel == true
-                                                            ? Colors.blue
-                                                            : Colors
-                                                                .grey.shade300,
+                                                    color: tel
+                                                        ? Colors.blue
+                                                        : Colors.grey.shade300,
                                                   ),
                                                 ),
                                                 hintText: 'เบอร์โทรศัพท์',
                                                 hintStyle: TextStyle(
-                                                  color: _tel == true
-                                                      ? Colors.red
-                                                      : tel == true
-                                                          ? Colors.blue
-                                                          : Colors
-                                                              .grey.shade300,
-                                                ),
-                                                fillColor: _tel == true
-                                                    ? Colors.red[50]
-                                                    : tel == true
-                                                        ? Colors.blue[50]
-                                                        : Colors.white,
+                                                    color: tel
+                                                        ? Colors.blue
+                                                        : Colors.grey.shade300),
+                                                fillColor: tel
+                                                    ? Colors.blue[50]
+                                                    : Colors.white,
                                                 filled: true),
-                                            validator: (value) {
-                                              if (value == null ||
-                                                  value.isEmpty) {
-                                                setState(() {
-                                                  _tel = true;
-                                                });
-
-                                                return 'กรุณาระบุเบอร์โทรศัพท์';
-                                              } else if (value.length != 10) {
-                                                setState(() {
-                                                  _tel = true;
-                                                });
-
-                                                return 'กรุณาระบุเบอร์โทรศัพท์ให้ถูกต้อง';
-                                              }
-                                              return null;
-                                            },
                                           ),
                                         ),
                                         SizedBox(height: 10),
@@ -1742,8 +1744,7 @@ class _registerdata_pagesState extends State<registerdata_pages> {
                                         var jsonEn = jsonEncode(
                                             _formKey.currentState.value);
                                         var jsonDe = jsonDecode(jsonEn);
-
-                                        postnewuser(jsonDe);
+                                        postupdateuser(pid, jsonDe);
                                       } else {
                                         print("validation failed");
                                       }
