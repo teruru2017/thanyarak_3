@@ -52,7 +52,7 @@ class _alert_pageState extends State<alert_page> {
       _w = 2;
       _f = 1;
     }
-    print(_w);
+    // print(_w);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -348,8 +348,8 @@ class _alert_pageState extends State<alert_page> {
         ],
       ),
       bottomNavigationBar: NavigagitonBar(
-        actionGet: 3,
-      ),
+          // actionGet: 3,
+          ),
     );
   }
 }

@@ -1,4 +1,6 @@
 //@dart = 2.9
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -6,8 +8,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:thanyarak/bodys/loading.dart';
+import 'package:thanyarak/bodys/registerdata_pages.dart';
 import 'package:thanyarak/bodys/success_pages.dart';
 import 'package:thanyarak/models/session.dart';
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
+import 'API/api_url.dart';
 
 class password_pages extends StatefulWidget {
   password_pages({Key key}) : super(key: key);
@@ -22,13 +32,110 @@ bool showpassword = false;
 bool showcfpassword = false;
 bool _password = false;
 bool _cfpassword = false;
-final _formKey = GlobalKey<FormBuilderState>();
 
 TextEditingController password1 = TextEditingController();
 TextEditingController password2 = TextEditingController();
 SessionManager ssr = SessionManager();
+String cid_login, phone;
 
 class _password_pagesState extends State<password_pages> {
+  SessionManager ssr = SessionManager();
+  GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
+  void initState() {
+    Intl.defaultLocale = 'th';
+    initializeDateFormatting();
+    super.initState();
+    setState(() {
+      password1.clear();
+      password2.clear();
+    });
+    getlogin();
+  }
+
+  Future getlogin() async {
+    final SharedPreferences per = await SharedPreferences.getInstance();
+    setState(() {
+      cid_login = per.getString('CID_LOGIN');
+      phone = per.getString('PHONE_LOGIN');
+      // print('cid_login : ' + cid_login);
+
+      // print('phone_login : ' + phone);
+    });
+  }
+
+  Future<void> adduserPassword(String txtpid, txtphone, txtpass) async {
+    var url = '${apiurl().urlapi}/user.php';
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode(<String, String>{
+        "userId": "${txtpid}",
+        "password": "${txtpass}",
+        "phoneNumber": "${txtphone}"
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+        ssr.setCID("${txtpid}");
+        ssr.setCID_LOGIN("");
+        ssr.setPHONE_LOGIN("");
+      });
+      Future.delayed(Duration(seconds: 1), () {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => success_pages()));
+      });
+    } else if (response.statusCode == 422) {
+      UpdateuserPassword(txtpid, txtphone, txtpass);
+    } else {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => loadingPage()));
+    }
+    print('adduserPassword Status APi: ' + response.statusCode.toString());
+  }
+
+  Future<void> UpdateuserPassword(String txtpid, txtphone, txtpass) async {
+    var url = '${apiurl().urlapi}/user.php';
+    final response = await http.patch(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode(<String, String>{
+        "userId": "${txtpid}",
+        "newPassword": "${txtpass}",
+        "phoneNumber": "${txtphone}"
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+        ssr.setCID("${txtpid}");
+        ssr.setCID_LOGIN("");
+        ssr.setPHONE_LOGIN("");
+      });
+      Future.delayed(Duration(seconds: 1), () {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => success_pages()));
+      });
+    } else if (response.statusCode == 422) {
+    } else {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => loadingPage()));
+    }
+    // print(response.body);
+    // print(txtpid + '/' + txtpass + '/' + txtphone);
+    print('UpdateuserPassword Status APi: ' + response.statusCode.toString());
+  }
+
   int _selectedchoice = 0;
   int choice = 0;
   FocusNode myFocusNode = new FocusNode();
@@ -414,14 +521,12 @@ class _password_pagesState extends State<password_pages> {
                             onTap: () {
                               _formKey.currentState.save();
                               if (_formKey.currentState.validate()) {
-                                print(_formKey.currentState.value);
+                                // print(_formKey.currentState.value);
                                 setState(() {
-                                  ssr.setPassword(password1.text);
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              success_pages()));
+                                  adduserPassword(
+                                      cid_login, phone, password1.text);
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
                                 });
                               } else {
                                 print("validation failed");
@@ -468,3 +573,5 @@ class _password_pagesState extends State<password_pages> {
     );
   }
 }
+
+mixin Token {}

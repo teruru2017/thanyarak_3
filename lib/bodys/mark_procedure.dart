@@ -1,13 +1,23 @@
 //@dart=2.9
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:thanyarak/bodys/API/api_url.dart';
 import 'package:thanyarak/bodys/dating_page.dart';
 import 'package:thanyarak/widgets/NavigationBar.dart';
 import 'package:flutter/services.dart';
+import 'package:thanyarak/widgets/msgBox_widget.dart';
 
 class mark_procedure_page extends StatefulWidget {
   mark_procedure_page({Key key}) : super(key: key);
@@ -15,9 +25,106 @@ class mark_procedure_page extends StatefulWidget {
   _mark_procedure_pageState createState() => _mark_procedure_pageState();
 }
 
-int textPhone;
+String textPhone, nameProcedure, imgBase64, cidProcedure;
 
 class _mark_procedure_pageState extends State<mark_procedure_page> {
+  TextEditingController phoninput = TextEditingController();
+
+  void initState() {
+    imgBase64 = "";
+    Intl.defaultLocale = 'th';
+    initializeDateFormatting();
+    super.initState();
+    getDATA();
+  }
+
+  Future<void> Markprocedure({
+    String nameMARK,
+    cidMARK,
+    phoneMARK,
+    imgMARK,
+  }) async {
+    var url = '${apiurl().urlapi}/donate.php';
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          "type": "procedure",
+          "cmsId": 0,
+          "fullname": "${nameMARK}",
+          "remark": "${cidMARK}",
+          "address": "${phoneMARK}",
+          "amount": "procedure",
+          "slipImage": "${imgMARK}"
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      print('UpdateuserPassword Status APi: ' + response.statusCode.toString());
+      showGeneralDialog(
+          context: context,
+          barrierDismissible: false,
+          barrierLabel:
+              MaterialLocalizations.of(context).modalBarrierDismissLabel,
+          barrierColor: Colors.transparent,
+          transitionDuration: Duration(milliseconds: 200),
+          pageBuilder:
+              (BuildContext context, Animation frist, Animation second) =>
+                  Succes(phonenumber: textPhone));
+    } else {
+      print('UpdateuserPassword Status APi: ' + response.statusCode.toString());
+      showGeneralDialog(
+        context: context,
+        barrierDismissible: false,
+        barrierLabel:
+            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierColor: Colors.transparent,
+        transitionDuration: Duration(milliseconds: 200),
+        pageBuilder:
+            (BuildContext context, Animation frist, Animation second) =>
+                MSGBoxWidget(
+          title: 'เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้ง',
+          detail: '',
+        ),
+      );
+    }
+  }
+
+  Future getDATA() async {
+    final SharedPreferences per = await SharedPreferences.getInstance();
+    setState(() {
+      cidProcedure = per.getString('cid');
+      nameProcedure = per.getString('name');
+    });
+  }
+
+  final ImagePicker imgpicker = ImagePicker();
+
+  String imagepath = "";
+  String imageName = "";
+  @override
+  _getFromGallery() async {
+    var pickedFile = await imgpicker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      imageName = pickedFile.name;
+      imagepath = pickedFile.path;
+      File imagefile = File(imagepath);
+      Uint8List imagebytes = await imagefile.readAsBytes();
+      String base64string = base64.encode(imagebytes);
+      setState(() {
+        imgBase64 = base64string;
+      });
+      Uint8List decodedbytes = base64.decode(base64string);
+    } else {
+      print("No image is selected.");
+    }
+  }
+
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     int _w = 1, _f = 2;
@@ -162,116 +269,139 @@ class _mark_procedure_pageState extends State<mark_procedure_page> {
                                   height: MediaQuery.of(context).size.width / 2,
                                   decoration: BoxDecoration(
                                       image: DecorationImage(
-                                          image:
-                                              AssetImage('images/NoPath.png'))),
+                                          image: imagepath == ""
+                                              ? AssetImage('images/NoPath.png')
+                                              : AssetImage(imagepath))),
                                 ),
                                 SizedBox(
                                   height: 10,
                                 ),
-                                Container(
-                                  height: 40,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.5,
-                                  decoration: BoxDecoration(
-                                    color: Color.fromARGB(173, 209, 221, 255),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(8.0),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 40,
-                                        child: IconButton(
-                                          icon: FaIcon(
-                                            FontAwesomeIcons.fileCsv,
-                                            size: 15,
-                                            color: Colors.blue[300],
-                                          ),
-                                          color: Colors.blue,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Text(
-                                          "idcard.pdf",
-                                          overflow: TextOverflow.ellipsis,
-                                          style: GoogleFonts.kanit(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400,
-                                            color: Color(0xff0088C6),
+                                imageName != ""
+                                    ? Container(
+                                        height: 40,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.5,
+                                        decoration: BoxDecoration(
+                                          color: Color.fromARGB(
+                                              173, 209, 221, 255),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(8.0),
                                           ),
                                         ),
-                                      ),
-                                      Container(
-                                        width: 40,
-                                        child: Icon(
-                                          Icons.cancel,
-                                          color: Colors.blue,
-                                          size: 25.0,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Container(
-                                  height: 40,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.4,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      width: 1,
-                                      color: Color(0xff0088C6),
-                                    ),
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(8.0),
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black12,
-                                        offset: Offset(
-                                          1.0,
-                                          2.0,
-                                        ),
-                                        blurRadius: 5.0,
-                                        spreadRadius: 0.01,
-                                      ),
-                                    ],
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              FaIcon(
-                                                FontAwesomeIcons.upload,
-                                                size: 12,
-                                                color: Colors.blue[300],
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 40,
+                                              child: IconButton(
+                                                icon: FaIcon(
+                                                  FontAwesomeIcons.fileCsv,
+                                                  size: 15,
+                                                  color: Colors.blue[300],
+                                                ),
+                                                color: Colors.blue,
                                               ),
-                                              SizedBox(
-                                                width: 10,
-                                              ),
-                                              Text(
-                                                "อัพโหลดไฟล์",
+                                            ),
+                                            Expanded(
+                                              child: Text(
+                                                "${imageName}",
                                                 overflow: TextOverflow.ellipsis,
                                                 style: GoogleFonts.kanit(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w400,
                                                   color: Color(0xff0088C6),
                                                 ),
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  imgBase64 = "";
+                                                  imagepath = "";
+                                                  imageName = "";
+                                                });
+                                              },
+                                              child: Container(
+                                                width: 40,
+                                                child: Icon(
+                                                  Icons.cancel,
+                                                  color: Colors.blue,
+                                                  size: 25.0,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
+                                      )
+                                    : Container(),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      _getFromGallery();
+                                    },
+                                    child: Container(
+                                      height: 40,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.4,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          width: 1,
+                                          color: Color(0xff0088C6),
+                                        ),
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(8.0),
+                                        ),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black12,
+                                            offset: Offset(
+                                              1.0,
+                                              2.0,
+                                            ),
+                                            blurRadius: 5.0,
+                                            spreadRadius: 0.01,
+                                          ),
+                                        ],
                                       ),
-                                    ],
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  FaIcon(
+                                                    FontAwesomeIcons.upload,
+                                                    size: 12,
+                                                    color: Colors.blue[300],
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Text(
+                                                    "อัพโหลดไฟล์",
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: GoogleFonts.kanit(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Color(0xff0088C6),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ),
                                 ),
                                 SizedBox(
@@ -307,6 +437,7 @@ class _mark_procedure_pageState extends State<mark_procedure_page> {
                                           FilteringTextInputFormatter.digitsOnly
                                         ],
                                         keyboardType: TextInputType.number,
+                                        controller: phoninput,
                                         name: 'phnoe',
                                         style: GoogleFonts.kanit(),
                                         decoration: InputDecoration(
@@ -329,19 +460,18 @@ class _mark_procedure_pageState extends State<mark_procedure_page> {
                           GestureDetector(
                             onTap: () {
                               setState(() {
-                                showGeneralDialog(
-                                    context: context,
-                                    barrierDismissible: false,
-                                    barrierLabel:
-                                        MaterialLocalizations.of(context)
-                                            .modalBarrierDismissLabel,
-                                    barrierColor: Colors.transparent,
-                                    transitionDuration:
-                                        Duration(milliseconds: 200),
-                                    pageBuilder: (BuildContext context,
-                                            Animation frist,
-                                            Animation second) =>
-                                        Succes(phonenumber: textPhone));
+                                textPhone = phoninput.text;
+                                if (textPhone.length < 10) {
+                                  _Dialog('กรุณาใส่เบอร์ให้ถูกต้อง');
+                                } else if (imgBase64.length <= 0) {
+                                  _Dialog('กรุณาเลือกรูปภาพ');
+                                } else {
+                                  Markprocedure(
+                                      cidMARK: cidProcedure,
+                                      imgMARK: imgBase64,
+                                      nameMARK: nameProcedure,
+                                      phoneMARK: textPhone);
+                                }
                               });
                             },
                             child: Container(
@@ -387,10 +517,26 @@ class _mark_procedure_pageState extends State<mark_procedure_page> {
       bottomNavigationBar: NavigagitonBar(),
     );
   }
+
+  Widget _Dialog(txt) {
+    showGeneralDialog(
+        context: context,
+        barrierDismissible: false,
+        barrierLabel:
+            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierColor: Colors.transparent,
+        transitionDuration: Duration(milliseconds: 200),
+        pageBuilder:
+            (BuildContext context, Animation frist, Animation second) =>
+                MSGBoxWidget(
+                  title: txt,
+                  detail: '',
+                ));
+  }
 }
 
 class Succes extends StatefulWidget {
-  Succes({Key key, int phonenumber}) : super(key: key);
+  Succes({Key key, String phonenumber}) : super(key: key);
 
   @override
   _SuccesState createState() => _SuccesState();
@@ -443,7 +589,7 @@ class _SuccesState extends State<Succes> {
                                 color: Colors.black, fontSize: 14),
                           ),
                           Text(
-                            "00000000",
+                            "${textPhone}",
                             style: GoogleFonts.kanit(
                                 color: Colors.black, fontSize: 14),
                           ),
@@ -455,18 +601,18 @@ class _SuccesState extends State<Succes> {
                           SizedBox(
                             height: 10,
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                Navigator.pop(context);
-                              });
-                            },
-                            child: Text(
-                              "แก้ไขเบอร์โทรศัพท์",
-                              style: GoogleFonts.kanit(
-                                  color: Color(0xff0088C6), fontSize: 16),
-                            ),
-                          ),
+                          // GestureDetector(
+                          //   onTap: () {
+                          //     setState(() {
+                          //       Navigator.pop(context);
+                          //     });
+                          //   },
+                          //   child: Text(
+                          //     "แก้ไขเบอร์โทรศัพท์",
+                          //     style: GoogleFonts.kanit(
+                          //         color: Color(0xff0088C6), fontSize: 16),
+                          //   ),
+                          // ),
 
                           //ปุ่ม
 

@@ -2,6 +2,7 @@
 //@dart=2.9
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,6 +15,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:thanyarak/bodys/API/api_appointments.dart';
 import 'package:thanyarak/bodys/API/api_banner.dart';
 import 'package:thanyarak/bodys/API/api_main_article.dart';
 import 'package:thanyarak/bodys/API/api_url.dart';
@@ -25,6 +27,7 @@ import 'package:thanyarak/bodys/article_page.dart';
 import 'package:thanyarak/bodys/dating_page.dart';
 import 'package:thanyarak/bodys/detailMark.dart';
 import 'package:thanyarak/bodys/detailcheck.dart';
+import 'package:thanyarak/bodys/hitstoryCk_page.dart';
 import 'package:thanyarak/bodys/hitstoryDetail.dart';
 import 'package:thanyarak/bodys/loading.dart';
 import 'package:thanyarak/bodys/mark_procedure.dart';
@@ -36,6 +39,7 @@ import 'package:thanyarak/bodys/menu_page.dart';
 import 'package:thanyarak/bodys/signin_page.dart';
 import 'package:thanyarak/bodys/xray.dart';
 import 'package:thanyarak/models/article_model.dart';
+import 'package:thanyarak/models/session.dart';
 import 'package:thanyarak/utility/my_constant.dart';
 import 'package:thanyarak/widgets/NavigationBar.dart';
 import 'package:thanyarak/widgets/article_widget.dart';
@@ -58,6 +62,7 @@ class MainPage extends StatefulWidget {
 
 String cid = '';
 String name;
+var ii = new List<Appointments>();
 
 void results() {
   SignInPage();
@@ -72,7 +77,7 @@ final List<String> imgLists = [
   'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
 ];
 int _currents = 0;
-String Token;
+String Token, imgPro = '';
 var jsonRes;
 String apiStatus, hn, cklogin;
 final CarouselController _controller = CarouselController();
@@ -80,63 +85,10 @@ final CarouselController _controller = CarouselController();
 class _MainPageState extends State<MainPage> {
   int i = 0;
 
-  CarouselSlider builBannerPro() {
-    return CarouselSlider(
-        items: widgets,
-        options: CarouselOptions(
-            viewportFraction: 1,
-            autoPlay: true,
-            autoPlayInterval: Duration(seconds: 3)));
-  }
-
   int x = 10000;
   final controller = PageController(viewportFraction: 0.8, keepPage: true);
   int _current = 0;
-  List<String> imgListPro = [
-    'images/topgraphic.png',
-    'images/topgraphic.png',
-    'images/topgraphic.png',
-  ];
 
-  List<String> imgList = [
-    'images/shopping.png',
-    'images/shopping.png',
-  ];
-
-  List<Widget> widgets = [];
-
-  List<Widget> widgetsPro = [];
-
-  List<String> pathImageAritcles = [
-    'images/t1.jpg',
-    'images/t2.jpg',
-    'images/t1.jpg',
-    'images/t2.jpg'
-  ];
-  List<String> titleAritcles = [
-    'Lorem Ipsum คือ เนื้อหาจำลองแบบเรียบๆ111',
-    'Lorem Ipsum คือ เนื้อหาจำลองแบบเรียบๆ222',
-    'Lorem Ipsum คือ เนื้อหาจำลองแบบเรียบๆ333',
-    'Lorem Ipsum คือ เนื้อหาจำลองแบบเรียบๆ444',
-  ];
-  List<String> detailAritcles = [
-    'Lorem Ipsum คือ เนื้อหาจำลองแบบเรียบๆ ที่ใช้กันในธุรกิจงานพิมพ์หรืองานเรียงพิมพ์ มันได้กลายมาเป็นเนื้อหาจำลองมาตรฐานของธุรกิจดังกล่าวมาตั้งแต่ศตวรรษที่ 16',
-    'Lorem Ipsum คือ เนื้อหาจำลองแบบเรียบๆ ที่ใช้กันในธุรกิจงานพิมพ์หรืองานเรียงพิมพ์ Lorem Ipsum คือ เนื้อหาจำลองแบบเรียบๆ ที่ใช้กันในธุรกิจงานพิมพ์หรืองานเรียงพิมพ์ Lorem Ipsum คือ เนื้อหาจำลองแบบเรียบๆ ที่ใช้กันในธุรกิจงานพิมพ์หรืองานเรียงพิมพ์ มันได้กลายมาเป็นเนื้อหาจำลองมาตรฐานของธุรกิจดังกล่าวมาตั้งแต่ศตวรรษที่ 16',
-    'Lorem Ipsum คือ เนื้อหาจำลองแบบเรียบๆ ที่ใช้กันในธุรกิจงานพิมพ์หรืองานเรียงพิมพ์ มันได้กลายมาเป็นเนื้อหาจำลองมาตรฐานของธุรกิจดังกล่าวมาตั้งแต่ศตวรรษที่ 16',
-    'Lorem Ipsum คือ เนื้อหาจำลองแบบเรียบๆ ที่ใช้กันในธุรกิจงานพิมพ์หรืองานเรียงพิมพ์ มันได้กลายมาเป็นเนื้อหาจำลองมาตรฐานของธุรกิจดังกล่าวมาตั้งแต่ศตวรรษที่ 16'
-  ];
-  List<String> dataAritcles = [
-    '16-6-25564',
-    '17-6-25564',
-    '18-6-25564',
-    '18-6-25564'
-  ];
-  List<String> viewAritcles = [
-    'ผู้เข้าชม 123k',
-    'ผู้เข้าชม 123k',
-    'ผู้เข้าชม 123k',
-    'ผู้เข้าชม 123k'
-  ];
   int _currentIndex = 0;
   double topWidgetHeight = 100;
   int _volume = 0;
@@ -146,7 +98,8 @@ class _MainPageState extends State<MainPage> {
   bool isLoading = false;
   List<dynamic> banner = [];
   String tokendata = "";
-  String cid;
+  String cid, pid;
+  File _img;
 
   @override
   void initState() {
@@ -155,9 +108,11 @@ class _MainPageState extends State<MainPage> {
     super.initState();
     futureData = fetchData();
     articleData = artData();
+
     getDATA();
   }
 
+  Appointments arm;
   Future<List<apibanner>> futureData;
   Future<List<apiarticle>> articleData;
 
@@ -165,7 +120,12 @@ class _MainPageState extends State<MainPage> {
     final SharedPreferences per = await SharedPreferences.getInstance();
     setState(() {
       cid = per.getString('cid');
-      print(cid);
+      imgPro = per.getString('img');
+      if (imgPro == '' || imgPro == null) {
+      } else {
+        _img = File(imgPro.toString());
+      }
+      print('img : ${imgPro}');
       getToken();
     });
   }
@@ -174,11 +134,39 @@ class _MainPageState extends State<MainPage> {
     final SharedPreferences per = await SharedPreferences.getInstance();
     setState(() {
       Token = per.getString('tokens');
-      getcid(cid);
+      if (cid != '' && cid != null) {
+        getcid(cid);
+      }
     });
   }
 
+  Future<List<Appointments>> fetchAppointmentsData;
+  Future<List<Appointments>> fetchAppointments(String pidSET) async {
+    var url = '${apiurl().url}/patient/appointments/${pidSET}';
+    final response = await http.get(Uri.parse(url), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ${Token}',
+    });
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      // print(response.body);
+
+      return jsonResponse
+          .map((data) => new Appointments.fromJson(data))
+          .toList();
+    } else if (response.statusCode == 401) {
+      print('Status Getcid : ${response.statusCode}');
+
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => loadingPage()));
+    } else {
+      print(response.statusCode);
+    }
+  }
+
   Future<void> getcid(String txtcid) async {
+    SessionManager ssr = SessionManager();
     var url = '${apiurl().url}/patient/findByCitizenId/${txtcid}';
     final response = await http.get(Uri.parse(url), headers: {
       'Content-Type': 'application/json',
@@ -191,32 +179,13 @@ class _MainPageState extends State<MainPage> {
       apiStatus = response.statusCode.toString();
       setState(() {
         name = jsonRes['name'] + '  ' + jsonRes['surname'];
-        print(name);
+        pid = jsonRes['pid'];
+        ssr.setNAME('${name}');
+        ssr.setPID('${pid}');
+        print('pid : ${pid}');
+        print('${name}');
+        fetchAppointmentsData = fetchAppointments(pid);
       });
-
-      // pid = jsonRes['pid'];
-      // print(pid);
-      // input_id.text = jsonRes['citizenId'];
-      // input_prefix.text = jsonRes['prefix'];
-      // input_name.text = jsonRes['name'];
-      // input_surname.text = jsonRes['surname'];
-      // input_tel.text = jsonRes['mobile'];
-      // input_address.text = jsonRes['address'];
-      // input_district.text = jsonRes['district'];
-      // input_sub_district.text = jsonRes['sub_district'];
-      // input_province.text = jsonRes['province'];
-      // input_zip.text = jsonRes['zip'];
-      // input_email.text = jsonRes['email'];
-
-      // var str = jsonRes['dob'];
-      // var arrey = str.split("-");
-
-      // var age = int.parse(format.format(now)) - int.parse(arrey[0]);
-      // var age2 = DateTime.parse(jsonRes['dob']);
-      // var formathbd = new DateFormat('dd-M-yyyy');
-
-      // input_hbd.text = formathbd.format(age2);
-      // input_age.text = age.toString();
     } else {
       print(response.statusCode);
 
@@ -290,22 +259,27 @@ class _MainPageState extends State<MainPage> {
                                       //color: Colors.red,
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(50),
-                                        child: Container(
-                                          width: 30,
-                                          height: 30,
-                                          decoration: ShapeDecoration(
-                                              //color: Colors.green,
-                                              shape: CircleBorder(),
-                                              image: DecorationImage(
-                                                image: AssetImage(cid == '' ||
-                                                        cid == null
-                                                    ? 'images/avatar.png'
-                                                    : 'images/loginuser.png'),
-                                              )),
-                                          // child: Image(
-                                          //   image: AssetImage('images/avatar.png'),
-                                          // ),
-                                        ),
+                                        child: _img == null || _img == ''
+                                            ? Container(
+                                                width: 30,
+                                                height: 30,
+                                                decoration: ShapeDecoration(
+                                                  //color: Colors.green,
+                                                  shape: CircleBorder(),
+                                                  image: DecorationImage(
+                                                    image: AssetImage(
+                                                        'images/avatar.png'),
+                                                  ),
+                                                ),
+                                              )
+                                            : ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(50),
+                                                child: Image.file(
+                                                  _img,
+                                                  fit: BoxFit.fill,
+                                                ),
+                                              ),
                                       ),
                                     ),
                                   ),
@@ -321,6 +295,15 @@ class _MainPageState extends State<MainPage> {
                                         //alignment: Alignment.topLeft,
                                         child: Column(
                                           children: [
+                                            // FutureBuilder(
+                                            //   future: appointData,
+                                            //   builder: (context, snapshot) {
+                                            //     if (snapshot.hasData) {
+                                            //       return Text(
+                                            //           snapshot.data['status']);
+                                            //     }
+                                            //   },
+                                            // ),
                                             Align(
                                               alignment: Alignment.topLeft,
                                               child: Text(
@@ -1020,8 +1003,34 @@ class _MainPageState extends State<MainPage> {
         ),
       ),
       onWillPop: () {
-        SystemNavigator.pop();
-        exit(0);
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(
+                'ปิดโปรแกรม',
+                style: GoogleFonts.kanit(),
+              ),
+              content: Text(
+                'คุณต้องการที่จะปิดโปรแกรม หรือไม่',
+                style: GoogleFonts.kanit(),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: Text('ยกเลิก', style: GoogleFonts.kanit()),
+                ),
+                TextButton(
+                  onPressed: () => setState(() {
+                    SystemNavigator.pop();
+                    exit(0);
+                  }),
+                  child: Text('ตกลง', style: GoogleFonts.kanit()),
+                ),
+              ],
+            );
+          },
+        );
       },
     );
   }
@@ -1160,7 +1169,9 @@ class _MainPageState extends State<MainPage> {
                     ),
             ],
           ),
-          cid == '' || cid == null ? buildNonAppointCard() : logincard(),
+          cid == '' || cid == null
+              ? buildNonAppointCard()
+              : buildNonAppointCardAPI(),
           groupIcon(),
         ],
       ),
@@ -1189,7 +1200,7 @@ class _MainPageState extends State<MainPage> {
                   MaterialPageRoute(
                       builder: (context) => cid == '' || cid == null
                           ? MemderPage()
-                          : detailcheck_page()));
+                          : hitstory_pages()));
             },
             child: Image.asset('images/list.png')),
         const SizedBox(
@@ -1350,6 +1361,142 @@ class _MainPageState extends State<MainPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildNonAppointCardAPI() {
+    return FutureBuilder<List<Appointments>>(
+      future: fetchAppointmentsData,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<Appointments> apps = snapshot.data;
+          List<int> sect = [];
+          for (var x = 0; x < apps.length; x++) {
+            if (apps[x].status == null) {
+              sect.add(x);
+            }
+          }
+          if (sect.length <= 0) {
+            return Container();
+          } else {
+            print(sect.reduce(min));
+            int getSET = sect.reduce(min);
+            final splitted = apps[getSET].datetime.split(' ');
+            print(splitted[0]);
+            final dateMM = splitted[0].split('-');
+            print(splitted[1]);
+
+            String strDAY =
+                "${dateMM[2].toString()}-${dateMM[1].toString()}-${dateMM[0].toString()}";
+            String strTIME = "${splitted[1]}";
+            return Padding(
+              padding: const EdgeInsets.only(left: 0, right: 0),
+              child: Card(
+                elevation: 3,
+                margin: EdgeInsets.all(3),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(10),
+                          gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(14.0),
+                          child: Container(
+                              width: 15,
+                              child: Image.asset('images/box_calenda.png')),
+                        ),
+                      ),
+                      title: ShowTitle(
+                          title: '',
+                          textStyle: GoogleFonts.kanit(
+                              fontSize: 16, fontWeight: FontWeight.w500)),
+                      subtitle: ShowTitle(
+                          title: '${strDAY} | ${strTIME}',
+                          textStyle: GoogleFonts.kanit(
+                              fontSize: 14, color: Color(0xffB7B7B7))),
+                      trailing: Column(
+                        children: [
+                          IconButton(
+                            onPressed: () {},
+                            icon: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade50,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: const Icon(
+                                Icons.navigate_next,
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        // Navigator.push(context,
+                        //     CupertinoPageRoute(builder: (context) => SignInPage()));
+
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => detailMark_page(
+                                dateTimeGET: strTIME,
+                                dateDAYGET: strDAY,
+                                idGET: apps[getSET].id,
+                                statusGET: apps[getSET].status,
+                              ),
+                            ));
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                        margin: EdgeInsets.symmetric(horizontal: 15),
+                        //width: 320,
+                        //padding: EdgeInsets.symmetric(vertical: 15),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          color: Color(0xffE6EFFE),
+                          gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
+                        ),
+                        child: Text(
+                          "รายละเอียดการนัดหมาย",
+                          style: GoogleFonts.kanit(
+                            textStyle: Theme.of(context).textTheme.headline4,
+                            fontSize: 16,
+                            color: Color(0xffFFFFFF),
+                            // fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 15),
+                  ],
+                ),
+              ),
+            );
+          }
+        } else if (snapshot.hasError) {
+          return Text("${snapshot.error}");
+        } else if (snapshot.hasData == false) {
+          return Container();
+        }
+        // By default show a loading spinner.
+        return CircularProgressIndicator();
+      },
     );
   }
 
@@ -1797,14 +1944,4 @@ class _AddmarkState extends State<Addmark> {
                     dating_page());
         return true;
       });
-
-  // BoxShadow BoxShadow2() {
-  //   return BoxShadow(
-  //     color: Colors.white,
-  //     offset: const Offset(0.0, 0.0),
-  //     blurRadius: 0.0,
-  //     spreadRadius: 0.0,
-  //   );
-  // } //BoxShadow
-
 }

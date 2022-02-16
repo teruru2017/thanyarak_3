@@ -1,4 +1,6 @@
 //@dart = 2.9
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -14,8 +16,10 @@ import 'package:thanyarak/bodys/menu_page.dart';
 import 'package:thanyarak/bodys/newtype_pages.dart';
 import 'package:thanyarak/bodys/notification_page.dart';
 import 'package:thanyarak/models/session.dart';
-
+import 'package:url_launcher/link.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:thanyarak/states/main_home.dart';
+import 'package:external_app_launcher/external_app_launcher.dart';
 
 class Testtext extends StatefulWidget {
   Testtext({Key key}) : super(key: key);
@@ -25,6 +29,38 @@ class Testtext extends StatefulWidget {
 }
 
 class _TesttextState extends State<Testtext> {
+  Future<void> _launched;
+  String phoneNumber = '';
+
+  // String toLaunch = 'https://tmn.app.link/?deeplink=ascendmoney';
+
+  String toLaunch =
+      'https://www.facebook.com/sharer?u=https%3A%2F%2Ftruethanyarak.com%2Fupload%2Far%2Fpictures%2Fpic-20221502-1644915753-778-1.jpg';
+  Future<void> _launchInBrowser(String url) async {
+    if (!await launch(
+      url,
+      forceSafariVC: false,
+      forceWebView: false,
+      headers: <String, String>{'my_header_key': 'my_header_value'},
+    )) {
+      throw 'Could not launch $url';
+    }
+  }
+
+  String fbProtocolUrl = "fb://page/sharer";
+  String fallbackUrl =
+      'https://www.facebook.com/sharer?u=https%3A%2F%2Ftruethanyarak.com%2Fupload%2Far%2Fpictures%2Fpic-20221502-1644915753-778-1.jpg';
+  void _callFacebook(BuildContext context) async {
+    try {
+      bool launched = await launch(fbProtocolUrl, forceSafariVC: false);
+      if (!launched) {
+        await launch(fallbackUrl, forceSafariVC: false);
+      }
+    } catch (e) {
+      await launch(fallbackUrl, forceSafariVC: false);
+    }
+  }
+
   final _formKey = GlobalKey<FormBuilderState>();
   @override
   Widget build(BuildContext context) {
@@ -44,11 +80,15 @@ class _TesttextState extends State<Testtext> {
                 name: "name3",
               ),
               GestureDetector(
-                onTap: () {
-                  print(_formKey.currentContext);
-                },
+                onTap: () {},
                 child: Text('กดๆๆๆๆๆๆ'),
-              )
+              ),
+              ElevatedButton(
+                onPressed: () => setState(() {
+                  _callFacebook(context);
+                }),
+                child: const Text('sssss in browser'),
+              ),
             ],
           ),
         ),

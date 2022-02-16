@@ -1,27 +1,24 @@
 //@dart = 2.9
+import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:thanyarak/bodys/forgetpassword_pages.dart';
-import 'package:thanyarak/bodys/login/main_login_page.dart';
+import 'package:thanyarak/bodys/API/api_url.dart';
 import 'package:thanyarak/bodys/main_page.dart';
-import 'package:thanyarak/bodys/menu_page.dart';
-import 'package:thanyarak/bodys/newtype_pages.dart';
-import 'package:thanyarak/bodys/notification_page.dart';
-import 'package:thanyarak/models/session.dart';
+import 'package:thanyarak/bodys/pinlogin/otp_login.dart';
 
-import 'package:thanyarak/states/main_home.dart';
+import 'package:thanyarak/models/session.dart';
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
 import 'package:thanyarak/widgets/msgBox_widget.dart';
+
+SessionManager ssr = SessionManager();
 
 class PinPage extends StatefulWidget {
   PinPage({Key key, this.length, this.onChange}) : super(key: key);
@@ -34,7 +31,7 @@ class PinPage extends StatefulWidget {
 
 bool num1 = false;
 String txt;
-String pin;
+String pin, cid;
 
 class _PinPageState extends State<PinPage> {
   void initState() {
@@ -46,10 +43,70 @@ class _PinPageState extends State<PinPage> {
 
   Future getpin() async {
     final SharedPreferences per = await SharedPreferences.getInstance();
+
     setState(() {
-      pin = per.getString('password');
-      print(pin);
+      cid = per.getString('cid');
+
+      print('cid : ${cid}');
     });
+  }
+
+  Future<void> ValidateUser({String cid, pass}) async {
+    var url = '${apiurl().urlapi}/user.php';
+    final response = await http.put(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode(
+          <String, String>{"userId": "${cid}", "password": "${pass}"}),
+    );
+
+    if (response.statusCode == 200) {
+      print('Status APi: ' + response.statusCode.toString());
+      Navigator.push(
+          context, CupertinoPageRoute(builder: (context) => MainPage()));
+    } else if (response.statusCode == 401) {
+      print('Status APi: ' + response.statusCode.toString());
+      showGeneralDialog(
+          context: context,
+          barrierDismissible: false,
+          barrierLabel:
+              MaterialLocalizations.of(context).modalBarrierDismissLabel,
+          barrierColor: Colors.transparent,
+          transitionDuration: Duration(milliseconds: 200),
+          pageBuilder:
+              (BuildContext context, Animation frist, Animation second) =>
+                  MSGBoxWidget(
+                    title: 'รหัสผ่านไม่ถูกต้อง กรุณากรอกใหม่อีกครัั้ง',
+                    detail: '',
+                  ));
+      setState(() {
+        number = "";
+      });
+    } else if (response.statusCode == 403) {
+      print('Status APi: ' + response.statusCode.toString());
+      showGeneralDialog(
+          context: context,
+          barrierDismissible: false,
+          barrierLabel:
+              MaterialLocalizations.of(context).modalBarrierDismissLabel,
+          barrierColor: Colors.transparent,
+          transitionDuration: Duration(milliseconds: 200),
+          pageBuilder:
+              (BuildContext context, Animation frist, Animation second) =>
+                  MSGBoxWidget(
+                    title:
+                        'กรอกรหัสผ่านผิดเกินจำนวนที่กำหนด กรุณาลืมรหัสผ่านเพื่อตั้งรหัสผ่านใหม่',
+                    detail: '',
+                  ));
+      setState(() {
+        number = "";
+      });
+    } else {
+      print('Status APi: ' + response.statusCode.toString());
+    }
   }
 
   String number = '';
@@ -58,27 +115,7 @@ class _PinPageState extends State<PinPage> {
       setState(() {
         number += val;
         if (number.length == 4) {
-          if (number == pin) {
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => MainPage()));
-          } else if (number != pin) {
-            showGeneralDialog(
-                context: context,
-                barrierDismissible: false,
-                barrierLabel:
-                    MaterialLocalizations.of(context).modalBarrierDismissLabel,
-                barrierColor: Colors.transparent,
-                transitionDuration: Duration(milliseconds: 200),
-                pageBuilder:
-                    (BuildContext context, Animation frist, Animation second) =>
-                        MSGBoxWidget(
-                          title: 'รหัสผ่านไม่ถูกต้อง',
-                          detail: '',
-                        ));
-            number = "";
-          }
+          ValidateUser(cid: cid, pass: number);
         }
       });
     }
@@ -195,8 +232,16 @@ class _PinPageState extends State<PinPage> {
                               ),
                             ],
                           ),
+                          SizedBox(
+                            height: 10,
+                          ),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                      builder: (context) => OtpLoging_pages()));
+                            },
                             child: Text('ลืมรหัสผ่าน',
                                 style: GoogleFonts.kanit(
                                     fontSize: 14,
@@ -228,7 +273,7 @@ class _PinPageState extends State<PinPage> {
                                   onPressed: () {
                                     setState(() {
                                       setValue('1');
-                                      print(number);
+                                      //print(number);
                                     });
                                   },
                                   child: Align(
@@ -253,7 +298,7 @@ class _PinPageState extends State<PinPage> {
                                   onPressed: () {
                                     setState(() {
                                       setValue('2');
-                                      print(number);
+                                      //print(number);
                                     });
                                   },
                                   child: Align(
@@ -278,7 +323,7 @@ class _PinPageState extends State<PinPage> {
                                   onPressed: () {
                                     setState(() {
                                       setValue('3');
-                                      print(number);
+                                      //print(number);
                                     });
                                   },
                                   child: Align(
@@ -308,7 +353,7 @@ class _PinPageState extends State<PinPage> {
                                   onPressed: () {
                                     setState(() {
                                       setValue('4');
-                                      print(number);
+                                      //print(number);
                                     });
                                   },
                                   child: Align(
@@ -333,7 +378,7 @@ class _PinPageState extends State<PinPage> {
                                   onPressed: () {
                                     setState(() {
                                       setValue('5');
-                                      print(number);
+                                      //print(number);
                                     });
                                   },
                                   child: Align(
@@ -358,7 +403,7 @@ class _PinPageState extends State<PinPage> {
                                   onPressed: () {
                                     setState(() {
                                       setValue('6');
-                                      print(number);
+                                      //print(number);
                                     });
                                   },
                                   child: Align(
@@ -388,7 +433,7 @@ class _PinPageState extends State<PinPage> {
                                   onPressed: () {
                                     setState(() {
                                       setValue('7');
-                                      print(number);
+                                      //print(number);
                                     });
                                   },
                                   child: Align(
@@ -413,7 +458,7 @@ class _PinPageState extends State<PinPage> {
                                   onPressed: () {
                                     setState(() {
                                       setValue('8');
-                                      print(number);
+                                      //print(number);
                                     });
                                   },
                                   child: Align(
@@ -438,7 +483,7 @@ class _PinPageState extends State<PinPage> {
                                   onPressed: () {
                                     setState(() {
                                       setValue('9');
-                                      print(number);
+                                      //print(number);
                                     });
                                   },
                                   child: Align(
@@ -473,7 +518,7 @@ class _PinPageState extends State<PinPage> {
                                   onPressed: () {
                                     setState(() {
                                       setValue('0');
-                                      print(number);
+                                      //print(number);
                                     });
                                   },
                                   child: Align(
@@ -498,7 +543,7 @@ class _PinPageState extends State<PinPage> {
                                   shape: CircleBorder(),
                                   onPressed: () {
                                     backspace(number);
-                                    print(number);
+                                    //print(number);
                                   },
                                   child: Align(
                                       alignment: Alignment.center,

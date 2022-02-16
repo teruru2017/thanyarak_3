@@ -1,8 +1,10 @@
 //@dart=2.9
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,7 +13,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:thanyarak/bodys/API/api_donate_detail.dart';
+import 'package:thanyarak/bodys/API/api_url.dart';
 import 'package:thanyarak/bodys/article_details_page.dart';
 import 'package:thanyarak/bodys/donate_page.dart';
 import 'package:thanyarak/bodys/otp_pages.dart';
@@ -22,6 +26,8 @@ import 'dart:developer' as developer;
 
 import 'package:thanyarak/widgets/NavigationBar.dart';
 import 'package:http/http.dart' as http;
+import 'package:thanyarak/widgets/msgBox_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 bool page1 = false; //truemove&bank
 bool success = false; //popupsuccess
@@ -33,18 +39,22 @@ bool page6 = false; //บริจาคแบบทรูระบุเงิ�
 bool page7 = false; //สรุปยอดบริจาคทรู 10 บาท
 bool page8 = false; //สรุปยอดบริจาคทรู 100 บาท
 bool page9 = false; //สรุปยอดบริจาคทรูระบุเงิน
+String cid;
+bool Favorite;
+String subJectDoNate, remakDo, addressDo, imgDo, amountDo, typeDo, nameDo;
+int cmsIdDO;
 
 class detaildonate_pages extends StatefulWidget {
-  final String urlget;
   detaildonate_pages({Key key, this.urlget}) : super(key: key);
-
+  String urlget;
   @override
   _detaildonate_pagesState createState() => _detaildonate_pagesState();
 }
 
 class _detaildonate_pagesState extends State<detaildonate_pages> {
   Future<List<dndetail>> donateData() async {
-    final response = await http.get(Uri.parse('${widget.urlget}'));
+    var url = '${apiurl().urlapi}/Ar_Detail.php?id=${widget.urlget}';
+    final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
       print(response.body);
@@ -60,6 +70,86 @@ class _detaildonate_pagesState extends State<detaildonate_pages> {
     initializeDateFormatting();
     super.initState();
     futureData = donateData();
+    getDATA();
+  }
+
+  Future getDATA() async {
+    final SharedPreferences per = await SharedPreferences.getInstance();
+    setState(() {
+      cid = per.getString('cid');
+      nameDo = per.getString('name');
+      cmsIdDO = int.parse(widget.urlget);
+      checkFavorites(cmsId: widget.urlget, userid: cid);
+    });
+  }
+
+  Future<void> checkFavorites({String userid, cmsId}) async {
+    var url = '${apiurl().urlapi}/favorite.php?userId=${userid}&cmsId=${cmsId}';
+    final response = await http.get(Uri.parse(url), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    });
+    if (response.statusCode == 200) {
+      print("checkFavorite Status API :${response.statusCode}");
+      //บันทึก
+      setState(() {
+        Favorite = true;
+      });
+    } else if (response.statusCode == 404) {
+      setState(() {
+        Favorite = false;
+      });
+      print("checkFavorite Status API :${response.statusCode}");
+      //ไม่บันทึก
+    } else {
+      print("checkFavorite Status API :${response.statusCode}");
+      // print(url);
+    }
+  }
+
+  Future<void> addFavorite({String userid, cmsId}) async {
+    var url = '${apiurl().urlapi}/favorite.php';
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode(
+          <String, String>{"userId": "${userid}", "cmsId": "${cmsId}"}),
+    );
+    if (response.statusCode == 200) {
+      print("checkFavorite Status API :${response.statusCode}");
+      setState(() {
+        Favorite = true;
+      });
+    } else {
+      print("checkFavorite Status API :${response.statusCode}");
+    }
+  }
+
+  Future<void> delFavorite({String userid, cmsId}) async {
+    var url = '${apiurl().urlapi}/favorite.php';
+    final response = await http.delete(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "userId": "${userid}",
+        "listCmsId": "${cmsId}",
+      }),
+    );
+    if (response.statusCode == 200) {
+      print("delFavorite Status API :${response.statusCode}");
+      setState(() {
+        Favorite = false;
+      });
+    } else {
+      print("delFavorite Status API :${response.statusCode}");
+    }
+    // print(response.body);
   }
 
   int _selectedchoice = 0;
@@ -157,38 +247,48 @@ class _detaildonate_pagesState extends State<detaildonate_pages> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
                                         children: [
-                                          GestureDetector(
-                                            onTap: () {
-                                              // Navigator.push(
-                                              //     context,
-                                              //     CupertinoPageRoute(
-                                              //         builder: (context) =>
-                                              //             NotiPage()));
-                                            },
-                                            child: Container(
-                                              width: 20,
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          'images/Share.png'))),
-                                            ),
-                                          ),
+                                          // GestureDetector(
+                                          //   onTap: () {
+                                          //     // Navigator.push(
+                                          //     //     context,
+                                          //     //     CupertinoPageRoute(
+                                          //     //         builder: (context) =>
+                                          //     //             NotiPage()));
+                                          //   },
+                                          //   child: Container(
+                                          //     width: 20,
+                                          //     decoration: BoxDecoration(
+                                          //         image: DecorationImage(
+                                          //             image: AssetImage(
+                                          //                 'images/Share.png'))),
+                                          //   ),
+                                          // ),
                                           SizedBox(width: 20),
                                           GestureDetector(
                                             onTap: () {
-                                              // Navigator.push(
-                                              //     context,
-                                              //     CupertinoPageRoute(
-                                              //         builder: (context) =>
-                                              //             MenuPage()));
+                                              if (Favorite == false) {
+                                                addFavorite(
+                                                  cmsId: widget.urlget,
+                                                  userid: cid,
+                                                );
+                                              } else if (Favorite == true) {
+                                                delFavorite(
+                                                  cmsId: widget.urlget,
+                                                  userid: cid,
+                                                );
+                                              }
                                             },
                                             child: Container(
                                               width: 20,
                                               height: 20,
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          'images/fav.png'))),
+                                              child: Icon(
+                                                // bookmark_outlined
+                                                Favorite == false
+                                                    ? Icons
+                                                        .bookmark_border_outlined
+                                                    : Icons.bookmark_outlined,
+                                                color: Colors.white,
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -227,6 +327,7 @@ class _detaildonate_pagesState extends State<detaildonate_pages> {
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             List<dndetail> donatedetailData = snapshot.data;
+                            subJectDoNate = donatedetailData[0].subject;
                             return Column(
                               children: <Widget>[
                                 Container(
@@ -245,7 +346,7 @@ class _detaildonate_pagesState extends State<detaildonate_pages> {
                                 SizedBox(height: 20),
                                 Align(
                                   child: Text(
-                                    donatedetailData[0].subject,
+                                    '${donatedetailData[0].subject}',
                                     style: GoogleFonts.kanit(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w500,
@@ -336,7 +437,7 @@ class _detaildonate_pagesState extends State<detaildonate_pages> {
                                   child: GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        print(page1);
+                                        //ปุ่มบริจาค
                                         showGeneralDialog(
                                             context: context,
                                             barrierDismissible: false,
@@ -419,6 +520,18 @@ class CustomDialog extends StatefulWidget {
 }
 
 class _CustomDialogState extends State<CustomDialog> {
+  String toLaunch = 'https://tmn.app.link/?deeplink=ascendmoney';
+  Future<void> _launchInBrowser(String url) async {
+    if (!await launch(
+      url,
+      forceSafariVC: false,
+      forceWebView: false,
+      headers: <String, String>{'my_header_key': 'my_header_value'},
+    )) {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   // Widget build(BuildContext context) {
   Widget build(BuildContext context) => WillPopScope(
@@ -469,12 +582,14 @@ class _CustomDialogState extends State<CustomDialog> {
                         ),
                         const SizedBox(height: 15),
                         Text(
-                          'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
+                          // 'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
+                          '${subJectDoNate}',
                           style: GoogleFonts.kanit(
                             fontSize: 15.5,
                             //fontWeight: FontWeight.w400,
                             color: Colors.black,
                           ),
+                          textAlign: TextAlign.center,
                         ),
                         SizedBox(height: 20),
                         //โอนผ่านธนาคาร
@@ -642,14 +757,19 @@ class _CustomDialogState extends State<CustomDialog> {
                           ),
                         ),
 
-                        Container(
-                          padding: EdgeInsets.all(20),
-                          height: 50,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  scale: 1.5,
-                                  image: AssetImage("images/textmoney.png"),
-                                  alignment: Alignment.center)),
+                        GestureDetector(
+                          onTap: () {
+                            _launchInBrowser(toLaunch);
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(20),
+                            height: 50,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    scale: 1.5,
+                                    image: AssetImage("images/textmoney.png"),
+                                    alignment: Alignment.center)),
+                          ),
                         ),
                         Image.asset(
                           'images/qrcode.png',
@@ -762,13 +882,38 @@ class bankDialog extends StatefulWidget {
 class _bankDialogState extends State<bankDialog> {
   File imageFile;
   final picker = ImagePicker();
+  final ImagePicker imgpicker = ImagePicker();
+  TextEditingController remark_bank = TextEditingController();
+  TextEditingController address_bank = TextEditingController();
+  TextEditingController amount_bank = TextEditingController();
+  String imagepath = "";
 
-  chooseImage(ImageSource source) async {
-    final pickedFile = await picker.getImage(source: source);
+  void initState() {
+    Intl.defaultLocale = 'th';
+    initializeDateFormatting();
+    super.initState();
+    imgDo = '';
+  }
 
-    setState(() {
-      imageFile = File(pickedFile.path);
-    });
+  _getFromGallery() async {
+    var pickedFile = await imgpicker.pickImage(source: ImageSource.gallery);
+    //you can use ImageCourse.camera for Camera capture
+    if (pickedFile != null) {
+      imagepath = pickedFile.path;
+      // print(imagepath);
+
+      File imagefile = File(imagepath);
+      Uint8List imagebytes = await imagefile.readAsBytes();
+      String base64string = base64.encode(imagebytes);
+      setState(() {
+        imgDo = base64string;
+      });
+      // print(imgBase64);
+
+      Uint8List decodedbytes = base64.decode(base64string);
+    } else {
+      print("No image is selected.");
+    }
   }
 
   int _h = 1;
@@ -854,12 +999,13 @@ class _bankDialogState extends State<bankDialog> {
                               ),
                               const SizedBox(height: 15),
                               Text(
-                                'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
+                                '${subJectDoNate}',
                                 style: GoogleFonts.kanit(
                                   fontSize: 15.5,
                                   //fontWeight: FontWeight.w400,
                                   color: Colors.black,
                                 ),
+                                textAlign: TextAlign.center,
                               ),
                               SizedBox(height: 15),
                               Container(
@@ -915,6 +1061,32 @@ class _bankDialogState extends State<bankDialog> {
                               Align(
                                 alignment: Alignment(-1, 1),
                                 child: Text(
+                                  'จำนวนเงิน',
+                                  style: GoogleFonts.kanit(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              FormBuilderTextField(
+                                name: 'amount',
+                                controller: amount_bank,
+                                // //obscureText: true,
+                                keyboardType: TextInputType.number,
+                                style: GoogleFonts.kanit(),
+                                decoration: InputDecoration(
+                                    labelText: 'จำนวนเงิน',
+                                    border: OutlineInputBorder(
+                                        borderRadius: const BorderRadius.all(
+                                            const Radius.circular(10))),
+                                    fillColor: Color(0xfff3f3f4),
+                                    filled: false),
+                              ),
+                              SizedBox(height: 15),
+                              Align(
+                                alignment: Alignment(-1, 1),
+                                child: Text(
                                   'วัตถุประสงค์ในการบริจาค',
                                   style: GoogleFonts.kanit(
                                     fontSize: 16,
@@ -925,7 +1097,8 @@ class _bankDialogState extends State<bankDialog> {
                               SizedBox(height: 10),
                               FormBuilderTextField(
                                 name: 'objective',
-                                obscureText: true,
+                                controller: remark_bank,
+                                // //obscureText: true,
                                 style: GoogleFonts.kanit(),
                                 decoration: InputDecoration(
                                     labelText: 'วัตถุประสงค์',
@@ -949,7 +1122,8 @@ class _bankDialogState extends State<bankDialog> {
                               SizedBox(height: 10),
                               FormBuilderTextField(
                                 name: 'addresscheck',
-                                obscureText: true,
+                                controller: address_bank,
+                                //obscureText: true,
                                 style: GoogleFonts.kanit(),
                                 decoration: InputDecoration(
                                     labelText: 'ที่อยู่',
@@ -960,9 +1134,10 @@ class _bankDialogState extends State<bankDialog> {
                                     filled: false),
                               ),
                               SizedBox(height: 10),
+
                               GestureDetector(
                                 onTap: () {
-                                  chooseImage(ImageSource.gallery);
+                                  _getFromGallery();
                                 },
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
@@ -998,22 +1173,40 @@ class _bankDialogState extends State<bankDialog> {
                               //รายละเอียดการบริจาค
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.pop(context);
                                   setState(
                                     () {
-                                      showGeneralDialog(
-                                          context: context,
-                                          barrierDismissible: false,
-                                          barrierLabel:
-                                              MaterialLocalizations.of(context)
-                                                  .modalBarrierDismissLabel,
-                                          barrierColor: Colors.transparent,
-                                          transitionDuration:
-                                              Duration(milliseconds: 200),
-                                          pageBuilder: (BuildContext context,
-                                                  Animation frist,
-                                                  Animation second) =>
-                                              detailbankDialog());
+                                      remakDo = remark_bank.text;
+                                      addressDo = address_bank.text;
+                                      amountDo = amount_bank.text;
+
+                                      if (amountDo.length <= 0) {
+                                        _Dialog('กรุณาใส่จำนวนเงินที่ บริจาค',
+                                            context);
+                                      } else if (remakDo.length <= 0) {
+                                        _Dialog(
+                                            'กรุณาใส่วัตถุประสงค์', context);
+                                      } else if (addressDo.length <= 0) {
+                                        _Dialog('กรุณาใส่ที่อยู่', context);
+                                      } else if (imgDo.length <= 0) {
+                                        _Dialog(
+                                            'กรุณาแนบสลิปการบริจาค', context);
+                                      } else {
+                                        Navigator.pop(context);
+                                        showGeneralDialog(
+                                            context: context,
+                                            barrierDismissible: false,
+                                            barrierLabel:
+                                                MaterialLocalizations.of(
+                                                        context)
+                                                    .modalBarrierDismissLabel,
+                                            barrierColor: Colors.transparent,
+                                            transitionDuration:
+                                                Duration(milliseconds: 200),
+                                            pageBuilder: (BuildContext context,
+                                                    Animation frist,
+                                                    Animation second) =>
+                                                detailbankDialog());
+                                      }
                                     },
                                   );
                                 },
@@ -1120,6 +1313,20 @@ class _bankDialogState extends State<bankDialog> {
       });
 }
 
+Widget _Dialog(txt, BuildContext context) {
+  showGeneralDialog(
+      context: context,
+      barrierDismissible: false,
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      barrierColor: Colors.transparent,
+      transitionDuration: Duration(milliseconds: 200),
+      pageBuilder: (BuildContext context, Animation frist, Animation second) =>
+          MSGBoxWidget(
+            title: txt,
+            detail: '',
+          ));
+}
+
 class successDialog extends StatefulWidget {
   successDialog({Key key}) : super(key: key);
 
@@ -1191,29 +1398,24 @@ class _successDialogState extends State<successDialog> {
                     Align(
                       alignment: Alignment(0, 0),
                       child: Text(
-                        '555 สายไหม 87 ถนนสายไหม แขวงสายไหม',
+                        '${addressDo}',
                         style: GoogleFonts.kanit(
                           fontSize: 15.5,
                           color: Colors.black,
                         ),
                       ),
                     ),
-                    Align(
-                      alignment: Alignment(0, 0),
-                      child: Text(
-                        'เขตสายไหม กทม. 10220',
-                        style: GoogleFonts.kanit(
-                          fontSize: 15.5,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
+
                     SizedBox(height: 45),
                     //เสร็จสิ้น
                     GestureDetector(
                       onTap: () {
                         setState(() {
                           Navigator.pop(context);
+                          addressDo = '';
+                          amountDo = '';
+                          remakDo = '';
+                          imgDo = '';
                           // showGeneralDialog(
                           //     context: context,
                           //     barrierDismissible: false,
@@ -1278,6 +1480,65 @@ class detailbankDialog extends StatefulWidget {
 
   @override
   _detailbankDialogState createState() => _detailbankDialogState();
+}
+
+Future<void> Adddonatetransaction(
+    {BuildContext context,
+    String subJectDoNate,
+    remakDo,
+    nameDo,
+    addressDo,
+    amountDo,
+    imgDo,
+    typeDo,
+    int cmsIdDO}) async {
+  var url = '${apiurl().urlapi}/donate.php';
+  final response = await http.post(
+    Uri.parse(url),
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    body: jsonEncode(<String, dynamic>{
+      "type": "${typeDo}",
+      "cmsId": cmsIdDO,
+      "fullname": "${nameDo}",
+      "remark": "${remakDo}",
+      "address": "${addressDo}",
+      "amount": "${amountDo}",
+      "slipImage": "${imgDo}"
+    }),
+  );
+
+  if (response.statusCode == 200) {
+    print('UpdateuserPassword Status APi: ' + response.statusCode.toString());
+    Navigator.pop(context);
+    showGeneralDialog(
+        context: context,
+        barrierDismissible: false,
+        barrierLabel:
+            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierColor: Colors.transparent,
+        transitionDuration: Duration(milliseconds: 200),
+        pageBuilder:
+            (BuildContext context, Animation frist, Animation second) =>
+                successDialog());
+  } else {
+    print('UpdateuserPassword Status APi: ' + response.statusCode.toString());
+    showGeneralDialog(
+        context: context,
+        barrierDismissible: false,
+        barrierLabel:
+            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierColor: Colors.transparent,
+        transitionDuration: Duration(milliseconds: 200),
+        pageBuilder:
+            (BuildContext context, Animation frist, Animation second) =>
+                MSGBoxWidget(
+                  title: 'เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้ง',
+                  detail: '',
+                ));
+  }
 }
 
 class _detailbankDialogState extends State<detailbankDialog> {
@@ -1362,12 +1623,13 @@ class _detailbankDialogState extends State<detailbankDialog> {
                           ),
                           const SizedBox(height: 15),
                           Text(
-                            'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
+                            '${subJectDoNate}',
                             style: GoogleFonts.kanit(
                               fontSize: 15.5,
                               //fontWeight: FontWeight.w400,
                               color: Colors.black,
                             ),
+                            textAlign: TextAlign.center,
                           ),
                           SizedBox(height: 30),
                           Row(children: [
@@ -1407,7 +1669,7 @@ class _detailbankDialogState extends State<detailbankDialog> {
                           Align(
                             alignment: Alignment(-0.62, 0),
                             child: Text(
-                              '100 บาท',
+                              '${amountDo} บาท',
                               style: GoogleFonts.kanit(
                                 fontSize: 15.5,
                                 color: Color(0xff0088C6),
@@ -1432,7 +1694,7 @@ class _detailbankDialogState extends State<detailbankDialog> {
                           Align(
                             alignment: Alignment(-1, 1),
                             child: Text(
-                              'ทำบุญ',
+                              '${remakDo}',
                               style: GoogleFonts.kanit(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400,
@@ -1455,7 +1717,7 @@ class _detailbankDialogState extends State<detailbankDialog> {
                           Align(
                             alignment: Alignment(-1, 1),
                             child: Text(
-                              '555 สายไหม 87 ถนนสายไหม แขวงสายไหม',
+                              '${addressDo}',
                               style: GoogleFonts.kanit(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400,
@@ -1466,22 +1728,19 @@ class _detailbankDialogState extends State<detailbankDialog> {
                           SizedBox(height: 20),
                           GestureDetector(
                             onTap: () {
-                              Navigator.pop(context);
                               setState(
                                 () {
-                                  showGeneralDialog(
-                                      context: context,
-                                      barrierDismissible: false,
-                                      barrierLabel:
-                                          MaterialLocalizations.of(context)
-                                              .modalBarrierDismissLabel,
-                                      barrierColor: Colors.transparent,
-                                      transitionDuration:
-                                          Duration(milliseconds: 200),
-                                      pageBuilder: (BuildContext context,
-                                              Animation frist,
-                                              Animation second) =>
-                                          successDialog());
+                                  print(
+                                      "${addressDo}/${amountDo}/${cmsIdDO}/${remakDo}/${nameDo}/${imgDo}");
+                                  Adddonatetransaction(
+                                      addressDo: addressDo,
+                                      amountDo: amountDo,
+                                      cmsIdDO: cmsIdDO,
+                                      imgDo: imgDo,
+                                      nameDo: nameDo,
+                                      remakDo: remakDo,
+                                      typeDo: 'BANK',
+                                      context: context);
                                 },
                               );
                             },
@@ -1590,6 +1849,9 @@ class truemoney10 extends StatefulWidget {
 }
 
 class _truemoney10State extends State<truemoney10> {
+  TextEditingController remark_true10 = TextEditingController();
+  TextEditingController address_true10 = TextEditingController();
+
   @override
   Widget build(BuildContext context) => WillPopScope(
       child: Visibility(
@@ -1667,12 +1929,12 @@ class _truemoney10State extends State<truemoney10> {
                           ),
                           const SizedBox(height: 15),
                           Text(
-                            'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
+                            '${subJectDoNate}',
                             style: GoogleFonts.kanit(
-                              fontSize: 15.5,
-                              //fontWeight: FontWeight.w400,
-                              color: Colors.black,
-                            ),
+                                fontSize: 15.5,
+                                //fontWeight: FontWeight.w400,
+                                color: Colors.black),
+                            textAlign: TextAlign.center,
                           ),
                           SizedBox(height: 15),
                           Container(
@@ -1711,7 +1973,8 @@ class _truemoney10State extends State<truemoney10> {
                           SizedBox(height: 10),
                           FormBuilderTextField(
                             name: 'objective',
-                            obscureText: true,
+                            controller: remark_true10,
+                            //obscureText: true,
                             style: GoogleFonts.kanit(),
                             decoration: InputDecoration(
                                 labelText: 'วัตถุประสงค์',
@@ -1735,7 +1998,8 @@ class _truemoney10State extends State<truemoney10> {
                           SizedBox(height: 10),
                           FormBuilderTextField(
                             name: 'addresscheck',
-                            obscureText: true,
+                            controller: address_true10,
+                            //obscureText: true,
                             style: GoogleFonts.kanit(),
                             decoration: InputDecoration(
                                 labelText: 'ที่อยู่',
@@ -1748,22 +2012,32 @@ class _truemoney10State extends State<truemoney10> {
                           SizedBox(height: 25),
                           GestureDetector(
                             onTap: () {
-                              Navigator.pop(context);
                               setState(
                                 () {
-                                  showGeneralDialog(
-                                      context: context,
-                                      barrierDismissible: false,
-                                      barrierLabel:
-                                          MaterialLocalizations.of(context)
-                                              .modalBarrierDismissLabel,
-                                      barrierColor: Colors.transparent,
-                                      transitionDuration:
-                                          Duration(milliseconds: 200),
-                                      pageBuilder: (BuildContext context,
-                                              Animation frist,
-                                              Animation second) =>
-                                          detailtrue10Dialog());
+                                  remakDo = remark_true10.text;
+                                  addressDo = address_true10.text;
+                                  amountDo = '10';
+
+                                  if (remakDo.length <= 0) {
+                                    _Dialog('กรุณาใส่วัตถุประสงค์', context);
+                                  } else if (addressDo.length <= 0) {
+                                    _Dialog('กรุณาใส่ที่อยู่', context);
+                                  } else {
+                                    Navigator.pop(context);
+                                    showGeneralDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        barrierLabel:
+                                            MaterialLocalizations.of(context)
+                                                .modalBarrierDismissLabel,
+                                        barrierColor: Colors.transparent,
+                                        transitionDuration:
+                                            Duration(milliseconds: 200),
+                                        pageBuilder: (BuildContext context,
+                                                Animation frist,
+                                                Animation second) =>
+                                            detailtrue10Dialog());
+                                  }
                                 },
                               );
                             },
@@ -1872,6 +2146,9 @@ class truemoney100 extends StatefulWidget {
 }
 
 class _truemoney100State extends State<truemoney100> {
+  TextEditingController remark_True100 = TextEditingController();
+  TextEditingController address_True100 = TextEditingController();
+
   @override
   Widget build(BuildContext context) => WillPopScope(
       child: Visibility(
@@ -1950,12 +2227,13 @@ class _truemoney100State extends State<truemoney100> {
                             ),
                             const SizedBox(height: 15),
                             Text(
-                              'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
+                              '${subJectDoNate}',
                               style: GoogleFonts.kanit(
                                 fontSize: 15.5,
                                 //fontWeight: FontWeight.w400,
                                 color: Colors.black,
                               ),
+                              textAlign: TextAlign.center,
                             ),
                             SizedBox(height: 15),
                             Container(
@@ -1994,7 +2272,8 @@ class _truemoney100State extends State<truemoney100> {
                             SizedBox(height: 10),
                             FormBuilderTextField(
                               name: 'objective',
-                              obscureText: true,
+                              controller: remark_True100,
+                              //obscureText: true,
                               style: GoogleFonts.kanit(),
                               decoration: InputDecoration(
                                   labelText: 'วัตถุประสงค์',
@@ -2018,7 +2297,8 @@ class _truemoney100State extends State<truemoney100> {
                             SizedBox(height: 10),
                             FormBuilderTextField(
                               name: 'addresscheck',
-                              obscureText: true,
+                              controller: address_True100,
+                              //obscureText: true,
                               style: GoogleFonts.kanit(),
                               decoration: InputDecoration(
                                   labelText: 'ที่อยู่',
@@ -2031,22 +2311,32 @@ class _truemoney100State extends State<truemoney100> {
                             SizedBox(height: 25),
                             GestureDetector(
                               onTap: () {
-                                Navigator.pop(context);
                                 setState(
                                   () {
-                                    showGeneralDialog(
-                                        context: context,
-                                        barrierDismissible: false,
-                                        barrierLabel:
-                                            MaterialLocalizations.of(context)
-                                                .modalBarrierDismissLabel,
-                                        barrierColor: Colors.transparent,
-                                        transitionDuration:
-                                            Duration(milliseconds: 200),
-                                        pageBuilder: (BuildContext context,
-                                                Animation frist,
-                                                Animation second) =>
-                                            detailtrue100Dialog());
+                                    remakDo = remark_True100.text;
+                                    addressDo = address_True100.text;
+                                    amountDo = '100';
+
+                                    if (remakDo.length <= 0) {
+                                      _Dialog('กรุณาใส่วัตถุประสงค์', context);
+                                    } else if (addressDo.length <= 0) {
+                                      _Dialog('กรุณาใส่ที่อยู่', context);
+                                    } else {
+                                      Navigator.pop(context);
+                                      showGeneralDialog(
+                                          context: context,
+                                          barrierDismissible: false,
+                                          barrierLabel:
+                                              MaterialLocalizations.of(context)
+                                                  .modalBarrierDismissLabel,
+                                          barrierColor: Colors.transparent,
+                                          transitionDuration:
+                                              Duration(milliseconds: 200),
+                                          pageBuilder: (BuildContext context,
+                                                  Animation frist,
+                                                  Animation second) =>
+                                              detailtrue100Dialog());
+                                    }
                                   },
                                 );
                               },
@@ -2231,12 +2521,13 @@ class _detailtrue10DialogState extends State<detailtrue10Dialog> {
                           ),
                           const SizedBox(height: 15),
                           Text(
-                            'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
+                            '${subJectDoNate}',
                             style: GoogleFonts.kanit(
                               fontSize: 15.5,
                               //fontWeight: FontWeight.w400,
                               color: Colors.black,
                             ),
+                            textAlign: TextAlign.center,
                           ),
                           SizedBox(height: 30),
                           Row(children: [
@@ -2291,7 +2582,7 @@ class _detailtrue10DialogState extends State<detailtrue10Dialog> {
                           Align(
                             alignment: Alignment(-1, 1),
                             child: Text(
-                              'ทำบุญ',
+                              '${remakDo}',
                               style: GoogleFonts.kanit(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400,
@@ -2314,7 +2605,7 @@ class _detailtrue10DialogState extends State<detailtrue10Dialog> {
                           Align(
                             alignment: Alignment(-1, 1),
                             child: Text(
-                              '555 สายไหม 87 ถนนสายไหม แขวงสายไหม',
+                              '${addressDo}',
                               style: GoogleFonts.kanit(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400,
@@ -2325,22 +2616,19 @@ class _detailtrue10DialogState extends State<detailtrue10Dialog> {
                           SizedBox(height: 20),
                           GestureDetector(
                             onTap: () {
-                              Navigator.pop(context);
                               setState(
                                 () {
-                                  showGeneralDialog(
-                                      context: context,
-                                      barrierDismissible: false,
-                                      barrierLabel:
-                                          MaterialLocalizations.of(context)
-                                              .modalBarrierDismissLabel,
-                                      barrierColor: Colors.transparent,
-                                      transitionDuration:
-                                          Duration(milliseconds: 200),
-                                      pageBuilder: (BuildContext context,
-                                              Animation frist,
-                                              Animation second) =>
-                                          successDialog());
+                                  print(
+                                      "${addressDo}/${amountDo}/${cmsIdDO}/${remakDo}/${nameDo}/${imgDo}");
+                                  Adddonatetransaction(
+                                      addressDo: addressDo,
+                                      amountDo: amountDo,
+                                      cmsIdDO: cmsIdDO,
+                                      imgDo: imgDo,
+                                      nameDo: nameDo,
+                                      remakDo: remakDo,
+                                      typeDo: 'TRUE10',
+                                      context: context);
                                 },
                               );
                             },
@@ -2528,12 +2816,13 @@ class _detailtrue100DialogState extends State<detailtrue100Dialog> {
                             ),
                             const SizedBox(height: 15),
                             Text(
-                              'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
+                              '${subJectDoNate}',
                               style: GoogleFonts.kanit(
                                 fontSize: 15.5,
                                 //fontWeight: FontWeight.w400,
                                 color: Colors.black,
                               ),
+                              textAlign: TextAlign.center,
                             ),
                             SizedBox(height: 30),
                             Row(children: [
@@ -2588,7 +2877,7 @@ class _detailtrue100DialogState extends State<detailtrue100Dialog> {
                             Align(
                               alignment: Alignment(-1, 1),
                               child: Text(
-                                'ทำบุญ',
+                                '${remakDo}',
                                 style: GoogleFonts.kanit(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
@@ -2611,7 +2900,7 @@ class _detailtrue100DialogState extends State<detailtrue100Dialog> {
                             Align(
                               alignment: Alignment(-1, 1),
                               child: Text(
-                                '555 สายไหม 87 ถนนสายไหม แขวงสายไหม',
+                                '${addressDo}',
                                 style: GoogleFonts.kanit(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
@@ -2622,22 +2911,20 @@ class _detailtrue100DialogState extends State<detailtrue100Dialog> {
                             SizedBox(height: 20),
                             GestureDetector(
                               onTap: () {
-                                Navigator.pop(context);
+                                // Navigator.pop(context);
                                 setState(
                                   () {
-                                    showGeneralDialog(
-                                        context: context,
-                                        barrierDismissible: false,
-                                        barrierLabel:
-                                            MaterialLocalizations.of(context)
-                                                .modalBarrierDismissLabel,
-                                        barrierColor: Colors.transparent,
-                                        transitionDuration:
-                                            Duration(milliseconds: 200),
-                                        pageBuilder: (BuildContext context,
-                                                Animation frist,
-                                                Animation second) =>
-                                            successDialog());
+                                    print(
+                                        "${addressDo}/${amountDo}/${cmsIdDO}/${remakDo}/${nameDo}/${imgDo}");
+                                    Adddonatetransaction(
+                                        addressDo: addressDo,
+                                        amountDo: amountDo,
+                                        cmsIdDO: cmsIdDO,
+                                        imgDo: imgDo,
+                                        nameDo: nameDo,
+                                        remakDo: remakDo,
+                                        typeDo: 'TRUE100',
+                                        context: context);
                                   },
                                 );
                               },
@@ -2745,6 +3032,9 @@ class truemoveall extends StatefulWidget {
 }
 
 class _truemoveallState extends State<truemoveall> {
+  TextEditingController remark_Truewall = TextEditingController();
+  TextEditingController address_Truewall = TextEditingController();
+  TextEditingController amount_Truewall = TextEditingController();
   @override
   Widget build(BuildContext context) => WillPopScope(
       child: Visibility(
@@ -2769,226 +3059,288 @@ class _truemoveallState extends State<truemoveall> {
                     ),
                   )),
               SingleChildScrollView(
-                  child: Stack(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width - 0,
-                    height: 570,
-                    padding: EdgeInsets.all(20),
-                    margin: EdgeInsets.only(top: 95),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(40),
-                        topRight: Radius.circular(40),
+                  child: Container(
+                child: Stack(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width - 0,
+                      // height: 570,
+                      padding: EdgeInsets.all(20),
+                      margin: EdgeInsets.only(top: 95),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(40),
+                          topRight: Radius.circular(40),
+                        ),
                       ),
-                    ),
-                    child: Column(mainAxisSize: MainAxisSize.min, children: <
-                        Widget>[
-                      const SizedBox(height: 20),
-                      Row(
+                      child: Stack(
                         children: [
-                          SizedBox(width: 25),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context);
-                              setState(
-                                () {
-                                  showGeneralDialog(
-                                      context: context,
-                                      barrierDismissible: false,
-                                      barrierLabel:
-                                          MaterialLocalizations.of(context)
-                                              .modalBarrierDismissLabel,
-                                      barrierColor: Colors.transparent,
-                                      transitionDuration:
-                                          Duration(milliseconds: 200),
-                                      pageBuilder: (BuildContext context,
-                                              Animation frist,
-                                              Animation second) =>
-                                          CustomDialog());
-                                },
-                              );
-                            },
-                            child: Icon(
-                              Icons.arrow_back_ios_new_rounded,
-                              color: Colors.black54,
-                              size: 18,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 15),
-                      Text(
-                        'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
-                        style: GoogleFonts.kanit(
-                          fontSize: 15.5,
-                          //fontWeight: FontWeight.w400,
-                          color: Colors.black,
-                        ),
-                      ),
-                      SizedBox(height: 15),
-                      Container(
-                        width: MediaQuery.of(context).size.width - 0,
-                        height: 60,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                          image: AssetImage('images/truemoveh.png'),
-                          scale: 0.5,
-                        )),
-                      ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          'บริจาคผ่านเครือข่าย TrueMove H',
-                          style: GoogleFonts.kanit(
-                            fontSize: 16,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      Container(
-                          //image picker
-                          ),
-                      SizedBox(height: 20),
-                      Align(
-                        alignment: Alignment(-1, 1),
-                        child: Text(
-                          'วัตถุประสงค์ในการบริจาค',
-                          style: GoogleFonts.kanit(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      FormBuilderTextField(
-                        name: 'objective',
-                        obscureText: true,
-                        style: GoogleFonts.kanit(),
-                        decoration: InputDecoration(
-                            labelText: 'วัตถุประสงค์',
-                            border: OutlineInputBorder(
-                                borderRadius: const BorderRadius.all(
-                                    const Radius.circular(10))),
-                            fillColor: Color(0xfff3f3f4),
-                            filled: false),
-                      ),
-                      SizedBox(height: 15),
-                      Align(
-                        alignment: Alignment(-1, 1),
-                        child: Text(
-                          'ที่อยู่จัดส่งใบเสร็จรับเงิน',
-                          style: GoogleFonts.kanit(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      FormBuilderTextField(
-                        name: 'addresscheck',
-                        obscureText: true,
-                        style: GoogleFonts.kanit(),
-                        decoration: InputDecoration(
-                            labelText: 'ที่อยู่',
-                            border: OutlineInputBorder(
-                                borderRadius: const BorderRadius.all(
-                                    const Radius.circular(10))),
-                            fillColor: Color(0xfff3f3f4),
-                            filled: false),
-                      ),
-                      SizedBox(height: 25),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                          setState(
-                            () {
-                              showGeneralDialog(
-                                  context: context,
-                                  barrierDismissible: false,
-                                  barrierLabel:
-                                      MaterialLocalizations.of(context)
-                                          .modalBarrierDismissLabel,
-                                  barrierColor: Colors.transparent,
-                                  transitionDuration:
-                                      Duration(milliseconds: 200),
-                                  pageBuilder: (BuildContext context,
-                                          Animation frist, Animation second) =>
-                                      detailtrueallDialog());
-                            },
-                          );
-                        },
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.symmetric(vertical: 15),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            color: Color(0xffE6EFFE),
-                            gradient: LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                colors: [Color(0xff0088C6), Color(0xff43CEF8)]),
-                          ),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.symmetric(vertical: 15),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage('images/donate02.png'),
-                                scale: 1.5,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ]),
-                  ),
-                  Positioned(
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: Column(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(top: 65),
-                            width: 70,
-                            height: 70,
+                          Column(
+                              // mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                const SizedBox(height: 20),
+                                Row(
+                                  children: [
+                                    SizedBox(width: 25),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                        setState(
+                                          () {
+                                            showGeneralDialog(
+                                                context: context,
+                                                barrierDismissible: false,
+                                                barrierLabel:
+                                                    MaterialLocalizations.of(
+                                                            context)
+                                                        .modalBarrierDismissLabel,
+                                                barrierColor:
+                                                    Colors.transparent,
+                                                transitionDuration:
+                                                    Duration(milliseconds: 200),
+                                                pageBuilder:
+                                                    (BuildContext context,
+                                                            Animation frist,
+                                                            Animation second) =>
+                                                        CustomDialog());
+                                          },
+                                        );
+                                      },
+                                      child: Icon(
+                                        Icons.arrow_back_ios_new_rounded,
+                                        color: Colors.black54,
+                                        size: 18,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 15),
+                                Text(
+                                  '${subJectDoNate}',
+                                  style: GoogleFonts.kanit(
+                                    fontSize: 15.5,
+                                    //fontWeight: FontWeight.w400,
+                                    color: Colors.black,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(height: 15),
+                                Container(
+                                  width: MediaQuery.of(context).size.width - 0,
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                    image: AssetImage('images/truewall.jpg'),
+                                    scale: 0.5,
+                                  )),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'บริจาคผ่านแอปพลิเคชั่น ทรูมันนี่ วอลเล็ท',
+                                    style: GoogleFonts.kanit(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                    //image picker
+                                    ),
+                                SizedBox(height: 20),
+                                Align(
+                                  alignment: Alignment(-1, 1),
+                                  child: Text(
+                                    'จำนวนเงิน',
+                                    style: GoogleFonts.kanit(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                FormBuilderTextField(
+                                  name: 'amount',
+                                  controller: amount_Truewall,
+                                  keyboardType: TextInputType.number,
+                                  //obscureText: true,
+                                  style: GoogleFonts.kanit(),
+                                  decoration: InputDecoration(
+                                      labelText: 'จำนวนเงิน',
+                                      border: OutlineInputBorder(
+                                          borderRadius: const BorderRadius.all(
+                                              const Radius.circular(10))),
+                                      fillColor: Color(0xfff3f3f4),
+                                      filled: false),
+                                ),
+                                SizedBox(height: 15),
+                                Align(
+                                  alignment: Alignment(-1, 1),
+                                  child: Text(
+                                    'วัตถุประสงค์ในการบริจาค',
+                                    style: GoogleFonts.kanit(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                FormBuilderTextField(
+                                  name: 'objective',
+                                  controller: remark_Truewall,
+                                  //obscureText: true,
+                                  style: GoogleFonts.kanit(),
+                                  decoration: InputDecoration(
+                                      labelText: 'วัตถุประสงค์',
+                                      border: OutlineInputBorder(
+                                          borderRadius: const BorderRadius.all(
+                                              const Radius.circular(10))),
+                                      fillColor: Color(0xfff3f3f4),
+                                      filled: false),
+                                ),
+                                SizedBox(height: 15),
+                                Align(
+                                  alignment: Alignment(-1, 1),
+                                  child: Text(
+                                    'ที่อยู่จัดส่งใบเสร็จรับเงิน',
+                                    style: GoogleFonts.kanit(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                FormBuilderTextField(
+                                  name: 'addresscheck',
+                                  controller: address_Truewall,
+                                  //obscureText: true,
+                                  style: GoogleFonts.kanit(),
+                                  decoration: InputDecoration(
+                                      labelText: 'ที่อยู่',
+                                      border: OutlineInputBorder(
+                                          borderRadius: const BorderRadius.all(
+                                              const Radius.circular(10))),
+                                      fillColor: Color(0xfff3f3f4),
+                                      filled: false),
+                                ),
+                                SizedBox(height: 25),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(
+                                      () {
+                                        remakDo = remark_Truewall.text;
+                                        addressDo = address_Truewall.text;
+                                        amountDo = amount_Truewall.text;
 
-                            //padding: EdgeInsets.all(10),
-                            //margin: EdgeInsets.only(top: 50),
-                            decoration: BoxDecoration(
-                              // color: Colors.amber,
-                              shape: BoxShape.rectangle,
-                              borderRadius: BorderRadius.circular(25),
-                              gradient: LinearGradient(
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                  colors: [
-                                    Color(0xff0088C6),
-                                    Color(0xff43CEF8)
-                                  ]),
-                              image: DecorationImage(
-                                image: AssetImage('images/icondonate.png'),
-                                scale: 1.5,
-                              ),
-                            ),
-                          ),
-                          Text(
-                            'ร่วมบริจาค',
-                            style: GoogleFonts.kanit(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xff0088C6),
-                            ),
-                          ),
+                                        if (amountDo.length <= 0) {
+                                          _Dialog('กรุณาใส่จำนวนเงินที่ บริจาค',
+                                              context);
+                                        } else if (remakDo.length <= 0) {
+                                          _Dialog(
+                                              'กรุณาใส่วัตถุประสงค์', context);
+                                        } else if (addressDo.length <= 0) {
+                                          _Dialog('กรุณาใส่ที่อยู่', context);
+                                        } else {
+                                          Navigator.pop(context);
+                                          showGeneralDialog(
+                                              context: context,
+                                              barrierDismissible: false,
+                                              barrierLabel:
+                                                  MaterialLocalizations.of(
+                                                          context)
+                                                      .modalBarrierDismissLabel,
+                                              barrierColor: Colors.transparent,
+                                              transitionDuration:
+                                                  Duration(milliseconds: 200),
+                                              pageBuilder:
+                                                  (BuildContext context,
+                                                          Animation frist,
+                                                          Animation second) =>
+                                                      detailtrueallDialog());
+                                        }
+                                      },
+                                    );
+                                  },
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    padding: EdgeInsets.symmetric(vertical: 15),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                      color: Color(0xffE6EFFE),
+                                      gradient: LinearGradient(
+                                          begin: Alignment.centerLeft,
+                                          end: Alignment.centerRight,
+                                          colors: [
+                                            Color(0xff0088C6),
+                                            Color(0xff43CEF8)
+                                          ]),
+                                    ),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 15),
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image:
+                                              AssetImage('images/donate02.png'),
+                                          scale: 1.5,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ]),
                         ],
                       ),
                     ),
-                  ),
-                ],
+                    Positioned(
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        child: Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(top: 65),
+                              width: 70,
+                              height: 70,
+
+                              //padding: EdgeInsets.all(10),
+                              //margin: EdgeInsets.only(top: 50),
+                              decoration: BoxDecoration(
+                                // color: Colors.amber,
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.circular(25),
+                                gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: [
+                                      Color(0xff0088C6),
+                                      Color(0xff43CEF8)
+                                    ]),
+                                image: DecorationImage(
+                                  image: AssetImage('images/icondonate.png'),
+                                  scale: 1.5,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              'ร่วมบริจาค',
+                              style: GoogleFonts.kanit(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xff0088C6),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ))
             ],
           ),
@@ -3080,7 +3432,7 @@ class _detailtrueallDialogState extends State<detailtrueallDialog> {
                                       pageBuilder: (BuildContext context,
                                               Animation frist,
                                               Animation second) =>
-                                          detailtrueallDialog());
+                                          truemoveall());
                                 },
                               );
                             },
@@ -3094,12 +3446,13 @@ class _detailtrueallDialogState extends State<detailtrueallDialog> {
                       ),
                       const SizedBox(height: 15),
                       Text(
-                        'โครงการ บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิ',
+                        '${subJectDoNate}',
                         style: GoogleFonts.kanit(
                           fontSize: 15.5,
                           //fontWeight: FontWeight.w400,
                           color: Colors.black,
                         ),
+                        textAlign: TextAlign.center,
                       ),
                       SizedBox(height: 30),
                       Row(children: [
@@ -3108,7 +3461,7 @@ class _detailtrueallDialogState extends State<detailtrueallDialog> {
                           height: 40,
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage('images/iconmoney.png'),
+                              image: AssetImage('images/truewall.jpg'),
                               scale: 1.5,
                             ),
                           ),
@@ -3117,7 +3470,7 @@ class _detailtrueallDialogState extends State<detailtrueallDialog> {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            'บริจาคผ่านเครือข่าย TrueMoveH',
+                            'บริจาคผ่าน  True Money wallet',
                             style: GoogleFonts.kanit(
                               fontSize: 15.5,
                               color: Colors.black,
@@ -3129,7 +3482,7 @@ class _detailtrueallDialogState extends State<detailtrueallDialog> {
                       Align(
                         alignment: Alignment(-0.62, 0),
                         child: Text(
-                          'จำนวนเงินที่ระบุ',
+                          "${amountDo} บาท",
                           style: GoogleFonts.kanit(
                             fontSize: 15.5,
                             color: Color(0xff0088C6),
@@ -3154,7 +3507,7 @@ class _detailtrueallDialogState extends State<detailtrueallDialog> {
                       Align(
                         alignment: Alignment(-1, 1),
                         child: Text(
-                          'ทำบุญ',
+                          '${remakDo}',
                           style: GoogleFonts.kanit(
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
@@ -3177,7 +3530,7 @@ class _detailtrueallDialogState extends State<detailtrueallDialog> {
                       Align(
                         alignment: Alignment(-1, 1),
                         child: Text(
-                          '555 สายไหม 87 ถนนสายไหม แขวงสายไหม',
+                          '${addressDo}',
                           style: GoogleFonts.kanit(
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
@@ -3188,21 +3541,19 @@ class _detailtrueallDialogState extends State<detailtrueallDialog> {
                       SizedBox(height: 20),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pop(context);
                           setState(
                             () {
-                              showGeneralDialog(
-                                  context: context,
-                                  barrierDismissible: false,
-                                  barrierLabel:
-                                      MaterialLocalizations.of(context)
-                                          .modalBarrierDismissLabel,
-                                  barrierColor: Colors.transparent,
-                                  transitionDuration:
-                                      Duration(milliseconds: 200),
-                                  pageBuilder: (BuildContext context,
-                                          Animation frist, Animation second) =>
-                                      successDialog());
+                              print(
+                                  "${addressDo}/${amountDo}/${cmsIdDO}/${remakDo}/${nameDo}/${imgDo}");
+                              Adddonatetransaction(
+                                  addressDo: addressDo,
+                                  amountDo: amountDo,
+                                  cmsIdDO: cmsIdDO,
+                                  imgDo: imgDo,
+                                  nameDo: nameDo,
+                                  remakDo: remakDo,
+                                  typeDo: 'TrueMoneywallet',
+                                  context: context);
                             },
                           );
                         },

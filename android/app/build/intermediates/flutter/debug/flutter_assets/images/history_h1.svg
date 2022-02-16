@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="146" height="75" viewBox="0 0 146 75">
+  <defs>
+    <filter id="Rectangle_441" x="0" y="0" width="146" height="75" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="7.5" result="blur"/>
+      <feFlood flood-color="#0477ab" flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_2233" data-name="Group 2233" transform="translate(-225.5 -30.5)">
+    <g transform="matrix(1, 0, 0, 1, 225.5, 30.5)" filter="url(#Rectangle_441)">
+      <rect id="Rectangle_441-2" data-name="Rectangle 441" width="101" height="30" rx="10" transform="translate(22.5 19.5)" fill="#43cef8"/>
+    </g>
+    <text id="ตารางนัดหมาย" transform="translate(271 68)" fill="#fff" font-size="12" font-family="Kanit-Regular, Kanit"><tspan x="0" y="0">ตารางนัดหมาย</tspan></text>
+    <g id="Group_2086" data-name="Group 2086" transform="translate(-1531 10)">
+      <path id="Path_857" data-name="Path 857" d="M1793.986,48.424h-.494v-.712a.712.712,0,0,0-1.424,0v.712h-3.559v-.712a.712.712,0,0,0-1.424,0v.712h-.494a2.59,2.59,0,0,0-2.59,2.59v7.4a2.59,2.59,0,0,0,2.59,2.59h7.4a2.59,2.59,0,0,0,2.59-2.59v-7.4A2.59,2.59,0,0,0,1793.986,48.424Zm-7.4,1.424h.494a.712.712,0,0,0,1.424,0h3.559a.712.712,0,0,0,1.424,0h.494a1.168,1.168,0,0,1,1.167,1.167v.732h-9.729v-.732A1.168,1.168,0,0,1,1786.59,49.847Zm7.4,9.729h-7.4a1.168,1.168,0,0,1-1.167-1.167v-5.24h9.729v5.24A1.168,1.168,0,0,1,1793.986,59.576Z" fill="#fff"/>
+      <path id="Path_858" data-name="Path 858" d="M1811.322,78h-2.61a.712.712,0,0,0,0,1.424h2.61a.712.712,0,0,0,0-1.424Z" transform="translate(-18.305 -23.644)" fill="#fff"/>
+      <circle id="Ellipse_48" data-name="Ellipse 48" cx="0.712" cy="0.712" r="0.712" transform="translate(1786.847 54.356)" fill="#fff"/>
+      <path id="Path_859" data-name="Path 859" d="M1811.322,88h-2.61a.712.712,0,0,0,0,1.424h2.61a.712.712,0,0,0,0-1.424Z" transform="translate(-18.305 -31.271)" fill="#fff"/>
+      <circle id="Ellipse_49" data-name="Ellipse 49" cx="0.712" cy="0.712" r="0.712" transform="translate(1786.847 56.729)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

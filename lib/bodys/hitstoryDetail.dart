@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:thanyarak/bodys/detailcheck.dart';
 import 'package:thanyarak/bodys/slipMark.dart';
 import 'package:thanyarak/widgets/NavigationBar.dart';
@@ -15,16 +16,28 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel;
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
-import 'package:intl/intl.dart' show DateFormat;
+import 'package:intl/intl.dart' show DateFormat, Intl;
 
 class hitstorydetail_page extends StatefulWidget {
-  hitstorydetail_page({Key key}) : super(key: key);
+  hitstorydetail_page(
+      {Key key, this.idSETDATA, this.nameSETDATA, this.timeSETDATA})
+      : super(key: key);
+  int idSETDATA;
+  String nameSETDATA;
+  String timeSETDATA;
   @override
   _hitstorydetail_pageState createState() => _hitstorydetail_pageState();
 }
 
 class _hitstorydetail_pageState extends State<hitstorydetail_page> {
 //
+  void initState() {
+    print('_____________________________');
+    print('this.page : hitstorydetail');
+    Intl.defaultLocale = 'th';
+    initializeDateFormatting();
+    super.initState();
+  }
 
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -189,7 +202,7 @@ class _hitstorydetail_pageState extends State<hitstorydetail_page> {
                                               child: Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
-                                                  'Mammogram Ultrasound',
+                                                  "${widget.nameSETDATA}",
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   style: GoogleFonts.kanit(
@@ -214,7 +227,7 @@ class _hitstorydetail_pageState extends State<hitstorydetail_page> {
                                                   Flexible(
                                                     child: Container(
                                                       child: Text(
-                                                        '11:30 | 12:30 น',
+                                                        "${widget.timeSETDATA}",
                                                         overflow: TextOverflow
                                                             .ellipsis,
                                                         style:
@@ -247,7 +260,7 @@ class _hitstorydetail_pageState extends State<hitstorydetail_page> {
                                                     Flexible(
                                                       child: Container(
                                                         child: Text(
-                                                          '16-06-2564',
+                                                          "${widget.timeSETDATA}",
                                                           overflow: TextOverflow
                                                               .ellipsis,
                                                           style:
@@ -310,8 +323,9 @@ class _hitstorydetail_pageState extends State<hitstorydetail_page> {
                                 Navigator.push(
                                     context,
                                     CupertinoPageRoute(
-                                        builder: (context) =>
-                                            detailcheck_page()));
+                                        builder: (context) => detailcheck_page(
+                                              list_id: [widget.idSETDATA],
+                                            )));
                               });
                             },
                             child: Container(

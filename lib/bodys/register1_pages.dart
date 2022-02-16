@@ -48,6 +48,7 @@ class _register1_pagesState extends State<register1_pages> {
     super.initState();
     checkstatus = 1;
     _character = SingingCharacter.HN;
+
     getToken();
   }
 
@@ -70,10 +71,14 @@ class _register1_pagesState extends State<register1_pages> {
       jsonRes = convert.jsonDecode(response.body);
       apiStatus = response.statusCode.toString();
       ssr.setHN(txtHN);
+      ssr.setCID_LOGIN(jsonRes['citizenId']);
+      ssr.setCIDOTP('${jsonRes['citizenId']}');
+      ssr.setPhoneOTP('${jsonRes['mobile']}');
       Navigator.push(
           context, CupertinoPageRoute(builder: (context) => otpuserold()));
     } else if (response.statusCode == 401) {
-      gentoken();
+      Navigator.push(
+          context, CupertinoPageRoute(builder: (context) => loadingPage()));
     } else {
       print(response.statusCode);
       showGeneralDialog(
@@ -92,45 +97,6 @@ class _register1_pagesState extends State<register1_pages> {
     }
   }
 
-  Future<void> gentoken() async {
-    final response = await http.post(
-      Uri.parse('http://118.174.183.82:52354/api/login'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'username': 'test',
-        'password': 'test123',
-        'name': 'test'
-      }),
-    );
-    print(response.statusCode);
-    if (response.statusCode == 200) {
-      print('new tok');
-      final Map<String, dynamic> dashboarddata =
-          convert.jsonDecode(response.body);
-
-      print(dashboarddata['access_token']);
-      setState(() {
-        ssr.setToken(dashboarddata['access_token']);
-
-        if (checkstatus == 1) {
-          gethn(input_id.text);
-          ssr.setcklogin('1');
-        } else if (checkstatus == 2) {
-          getcid(input_id.text);
-          ssr.setcklogin('2');
-        }
-      });
-
-      // print(response.body);
-
-    } else {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => loadingPage()));
-    }
-  }
-
   Future<void> getcid(String txtcid) async {
     var url = '${apiurl().url}/patient/findByCitizenId/${txtcid}';
     final response = await http.get(Uri.parse(url), headers: {
@@ -142,11 +108,14 @@ class _register1_pagesState extends State<register1_pages> {
       //List jsonResponse = json.decode(response.body);
       jsonRes = convert.jsonDecode(response.body);
       apiStatus = response.statusCode.toString();
-      ssr.setCID(txtcid);
+      ssr.setCID_LOGIN(txtcid);
+      ssr.setCIDOTP('${jsonRes['citizenId']}');
+      ssr.setPhoneOTP('${jsonRes['mobile']}');
       Navigator.push(
           context, CupertinoPageRoute(builder: (context) => otpuserold()));
     } else if (response.statusCode == 401) {
-      gentoken();
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => loadingPage()));
     } else {
       print(response.statusCode);
       showGeneralDialog(

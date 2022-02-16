@@ -118,6 +118,7 @@ class _newtype_pagesState extends State<newtype_pages> {
                               padding: const EdgeInsets.only(top: 40, left: 20),
                               child: GestureDetector(
                                 onTap: () {
+                                  // Navigator.pop(context);
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
@@ -362,6 +363,7 @@ class _newtype_pagesState extends State<newtype_pages> {
         ),
       ),
       onWillPop: () {
+        // Navigator.pop(context);
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (BuildContext context) => SignInPage()));
       },

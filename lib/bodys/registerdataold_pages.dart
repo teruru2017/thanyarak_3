@@ -13,6 +13,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:thanyarak/bodys/API/api_url.dart';
 import 'package:thanyarak/bodys/API/gettoken.dart';
+import 'package:thanyarak/bodys/loading.dart';
 import 'package:thanyarak/bodys/login/setting_page.dart';
 import 'package:thanyarak/bodys/newtype_pages.dart';
 import 'package:thanyarak/bodys/password_pages.dart';
@@ -20,6 +21,7 @@ import 'package:thanyarak/bodys/register1_pages.dart';
 import 'package:thanyarak/bodys/signin_page.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
+import 'package:thanyarak/models/session.dart';
 import 'package:thanyarak/widgets/msgBox_widget.dart';
 
 class registerdataold_pages extends StatefulWidget {
@@ -78,6 +80,8 @@ TextEditingController input_zip = TextEditingController();
 TextEditingController input_email = TextEditingController();
 TextEditingController input_surname = TextEditingController();
 TextEditingController input_district = TextEditingController();
+TextEditingController input_congenital = TextEditingController();
+TextEditingController input_allergic = TextEditingController();
 var now = DateTime.now();
 var format = new DateFormat('yyyy');
 
@@ -88,9 +92,12 @@ class _registerdataold_pagesState extends State<registerdataold_pages> {
   final _formKey = GlobalKey<FormBuilderState>();
 
   void initState() {
+    input_congenital.clear();
+    input_allergic.clear();
     Intl.defaultLocale = 'th';
     initializeDateFormatting();
     super.initState();
+
     if (widget.checkstatus == 1) {}
     getToken();
   }
@@ -107,7 +114,7 @@ class _registerdataold_pagesState extends State<registerdataold_pages> {
       jsonRes = convert.jsonDecode(response.body);
       apiStatus = response.statusCode.toString();
       pid = jsonRes['pid'];
-      print(pid);
+      // print(pid);
       input_id.text = jsonRes['citizenId'];
       input_prefix.text = jsonRes['prefix'];
       input_name.text = jsonRes['name'];
@@ -129,9 +136,20 @@ class _registerdataold_pagesState extends State<registerdataold_pages> {
 
       input_hbd.text = formathbd.format(age2);
       input_age.text = age.toString();
+
+      var url_true =
+          '${apiurl().urlapi}/disease.php?userId=${jsonRes['citizenId']}';
+      final response_true = await http.get(Uri.parse(url_true), headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      });
+      if (response_true.statusCode == 200) {
+        jsonRes = convert.jsonDecode(response_true.body);
+        input_congenital.text = jsonRes['congenitalDisease'];
+        input_allergic.text = jsonRes['allergic'];
+      } else {}
     } else {
       print(response.statusCode);
-
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => register1_pages()));
     }
@@ -149,7 +167,7 @@ class _registerdataold_pagesState extends State<registerdataold_pages> {
       jsonRes = convert.jsonDecode(response.body);
       apiStatus = response.statusCode.toString();
       pid = jsonRes['pid'];
-      print(pid);
+      // print(pid);
       input_id.text = jsonRes['citizenId'];
       input_prefix.text = jsonRes['prefix'];
       input_name.text = jsonRes['name'];
@@ -171,6 +189,18 @@ class _registerdataold_pagesState extends State<registerdataold_pages> {
 
       input_hbd.text = formathbd.format(age2);
       input_age.text = age.toString();
+      //get
+      var url_true = '${apiurl().urlapi}/disease.php?userId=${txtcid}';
+      final response_true = await http.get(Uri.parse(url_true), headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      });
+      if (response_true.statusCode == 200) {
+        jsonRes = convert.jsonDecode(response_true.body);
+        input_congenital.text = jsonRes['congenitalDisease'];
+        input_allergic.text = jsonRes['allergic'];
+      } else {}
+      //end get
     } else {
       print(response.statusCode);
 
@@ -201,19 +231,34 @@ class _registerdataold_pagesState extends State<registerdataold_pages> {
         "email": data['email'],
       }),
     );
-    if (response.statusCode == 200) {
-      //List jsonResponse = json.decode(response.body);
-      // jsonRes = convert.jsonDecode(response.body);
-      // apiStatus = response.statusCode.toString();
-      print(response.statusCode);
 
+    if (response.statusCode == 200) {
+      setState(() {
+        SessionManager ssr = SessionManager();
+        ssr.setPHONE_LOGIN(data['tel'].toString());
+        // print(data['tel'].toString());
+      });
+      var urlapi = '${apiurl().urlapi}/disease.php';
+      final responseapi = await http.post(
+        Uri.parse(urlapi),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode(<String, String>{
+          "userId": "${data['id']}",
+          "congenitalDisease": "${data['congenital']}",
+          "allergic": "${data['allergy']}"
+        }),
+      );
+      print('APITURE statusCode:' + responseapi.statusCode.toString());
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => password_pages()));
     } else {
       print(response.statusCode);
 
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => newtype_pages()));
+          context, MaterialPageRoute(builder: (context) => loadingPage()));
     }
   }
 
@@ -229,7 +274,7 @@ class _registerdataold_pagesState extends State<registerdataold_pages> {
     final SharedPreferences per = await SharedPreferences.getInstance();
     setState(() {
       hn = per.getString('hn');
-      cid = per.getString('cid');
+      cid = per.getString('CID_LOGIN');
       cklogin = per.getString('cklogin');
       if (cklogin == '1') {
         gethn(hn);
@@ -537,12 +582,6 @@ class _registerdataold_pagesState extends State<registerdataold_pages> {
                                                             ? Colors.blue
                                                             : Colors
                                                                 .grey.shade300,
-                                                    // ? Colors.red
-                                                    // : _prefixerr == false ||
-                                                    //         prefix
-                                                    //     ? Colors.blue
-                                                    //     : Colors
-                                                    //         .grey.shade300,
                                                   ),
                                                 ),
                                                 hintText: 'คำนำหน้าชื่อ',
@@ -565,7 +604,7 @@ class _registerdataold_pagesState extends State<registerdataold_pages> {
                                                   value.isEmpty) {
                                                 setState(() {
                                                   _prefixerr = true;
-                                                  print(_prefixerr);
+                                                  // print(_prefixerr);
                                                 });
                                                 return 'กรุณาระบุคำนำหน้าชื่อ';
                                               }
@@ -1629,6 +1668,7 @@ class _registerdataold_pagesState extends State<registerdataold_pages> {
                                           },
                                           child: FormBuilderTextField(
                                             name: 'congenital',
+                                            controller: input_congenital,
                                             style:
                                                 GoogleFonts.kanit(fontSize: 14),
                                             decoration: InputDecoration(
@@ -1683,6 +1723,7 @@ class _registerdataold_pagesState extends State<registerdataold_pages> {
                                           },
                                           child: FormBuilderTextField(
                                             name: 'allergy',
+                                            controller: input_allergic,
                                             style:
                                                 GoogleFonts.kanit(fontSize: 14),
                                             decoration: InputDecoration(
@@ -1733,14 +1774,9 @@ class _registerdataold_pagesState extends State<registerdataold_pages> {
                                   SizedBox(height: 10),
                                   GestureDetector(
                                     onTap: () {
-                                      // Navigator.push(
-                                      //     context,
-                                      //     CupertinoPageRoute(
-                                      //         builder: (context) =>
-                                      //             password_pages()));
                                       _formKey.currentState.save();
                                       if (_formKey.currentState.validate()) {
-                                        print(_formKey.currentState.value);
+                                        // print(_formKey.currentState.value);
                                         var jsonEn = jsonEncode(
                                             _formKey.currentState.value);
                                         var jsonDe = jsonDecode(jsonEn);

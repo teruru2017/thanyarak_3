@@ -15,11 +15,13 @@ import 'package:thanyarak/bodys/API/api_url.dart';
 import 'package:thanyarak/bodys/API/gettoken.dart';
 import 'package:thanyarak/bodys/login/setting_page.dart';
 import 'package:thanyarak/bodys/newtype_pages.dart';
+import 'package:thanyarak/bodys/passwordNewUser_page.dart';
 import 'package:thanyarak/bodys/password_pages.dart';
 import 'package:thanyarak/bodys/register1_pages.dart';
 import 'package:thanyarak/bodys/signin_page.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
+import 'package:thanyarak/models/session.dart';
 import 'package:thanyarak/widgets/msgBox_widget.dart';
 
 class registerdata_pages extends StatefulWidget {
@@ -31,6 +33,9 @@ class registerdata_pages extends StatefulWidget {
   @override
   _registerdata_pagesState createState() => _registerdata_pagesState();
 }
+
+var focusNode = FocusNode();
+var textField = TextField(focusNode: focusNode);
 
 bool id = false;
 bool _id = false;
@@ -58,6 +63,7 @@ bool surname = false;
 bool _surerr = false;
 
 String pid;
+String cid_login;
 
 String birthDateInString;
 DateTime birthDate;
@@ -80,6 +86,8 @@ TextEditingController input_zip = TextEditingController();
 TextEditingController input_email = TextEditingController();
 TextEditingController input_surname = TextEditingController();
 TextEditingController input_district = TextEditingController();
+TextEditingController input_congenital = TextEditingController();
+TextEditingController input_allergic = TextEditingController();
 var now = DateTime.now();
 var format = new DateFormat('yyyy');
 
@@ -97,41 +105,38 @@ class _registerdata_pagesState extends State<registerdata_pages> {
     getToken();
   }
 
-  Future<void> postnewuser(var data) async {
-    var Strings = data['birthday'].toString().split('-');
-    var url = '${apiurl().url}/patient';
-    final response = await http.post(
-      Uri.parse(url),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ${Token}',
-      },
-      body: jsonEncode(<String, String>{
-        "citizenId": data['id'],
-        "prefix": data['prefixname'],
-        "name": data['name'],
-        "surname": data['surname'],
-        "dob": '${Strings[2]}-${Strings[1]}-${Strings[0]}',
-        "address": data['address'],
-        "sub_district": data['sub_district'],
-        "district": data['district'],
-        "province": data['province'],
-        "zip": data['zip'],
-        "mobile": data['tel'],
-        "email": data['email'],
-      }),
-    );
+  Future<void> getcid(var data) async {
+    var url = '${apiurl().url}/patient/findByCitizenId/${data['id']}';
+    final response = await http.get(Uri.parse(url), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ${Token}',
+    });
     if (response.statusCode == 200) {
-      print(response.body);
-
-      jsonRes = convert.jsonDecode(response.body);
-
+      print("Status checkCID: ${response.statusCode}");
+      showGeneralDialog(
+          context: context,
+          barrierDismissible: false,
+          barrierLabel:
+              MaterialLocalizations.of(context).modalBarrierDismissLabel,
+          barrierColor: Colors.transparent,
+          transitionDuration: Duration(milliseconds: 200),
+          pageBuilder:
+              (BuildContext context, Animation frist, Animation second) =>
+                  MSGBoxWidget(
+                    title: 'ท่านได้เคยลงทะเบียนไว้กับทางเราแล้ว',
+                    detail: '',
+                  ));
+    } else if (response.statusCode == 404) {
+      print("Status checkCID: ${response.statusCode}");
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => password_pages()));
+          context,
+          MaterialPageRoute(
+              builder: (context) => passwordNewUser_pages(
+                    dateSet: data,
+                  )));
     } else {
-      print(response.statusCode);
-
+      print("Status checkCID: ${response.statusCode}");
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => newtype_pages()));
     }
@@ -327,6 +332,7 @@ class _registerdata_pagesState extends State<registerdata_pages> {
                                           },
                                           child: FormBuilderTextField(
                                             name: 'id',
+                                            focusNode: focusNode,
                                             style:
                                                 GoogleFonts.kanit(fontSize: 14),
                                             controller: input_id,
@@ -1627,6 +1633,7 @@ class _registerdata_pagesState extends State<registerdata_pages> {
                                           },
                                           child: FormBuilderTextField(
                                             name: 'congenital',
+                                            controller: input_congenital,
                                             style:
                                                 GoogleFonts.kanit(fontSize: 14),
                                             decoration: InputDecoration(
@@ -1681,6 +1688,7 @@ class _registerdata_pagesState extends State<registerdata_pages> {
                                           },
                                           child: FormBuilderTextField(
                                             name: 'allergy',
+                                            controller: input_allergic,
                                             style:
                                                 GoogleFonts.kanit(fontSize: 14),
                                             decoration: InputDecoration(
@@ -1738,12 +1746,12 @@ class _registerdata_pagesState extends State<registerdata_pages> {
                                       //             password_pages()));
                                       _formKey.currentState.save();
                                       if (_formKey.currentState.validate()) {
-                                        print(_formKey.currentState.value);
+                                        // print(_formKey.currentState.value);
                                         var jsonEn = jsonEncode(
                                             _formKey.currentState.value);
                                         var jsonDe = jsonDecode(jsonEn);
 
-                                        postnewuser(jsonDe);
+                                        getcid(jsonDe);
                                       } else {
                                         print("validation failed");
                                       }

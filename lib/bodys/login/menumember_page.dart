@@ -1,13 +1,21 @@
 //@dart=2.9
+import 'dart:convert';
+import 'dart:ffi';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:thanyarak/bodys/API/api_findByCitizenId.dart';
+import 'package:thanyarak/bodys/API/api_url.dart';
 import 'package:thanyarak/bodys/alert_page.dart';
 import 'package:thanyarak/bodys/conditions_page.dart';
+import 'package:thanyarak/bodys/loading.dart';
 import 'package:thanyarak/bodys/login/editpassword_page.dart';
 import 'package:thanyarak/bodys/login/editprofile_page.dart';
 import 'package:thanyarak/bodys/login/estimate_page.dart';
@@ -20,6 +28,8 @@ import 'package:thanyarak/models/session.dart';
 import 'package:thanyarak/states/main_home.dart';
 import 'package:thanyarak/utility/my_constant.dart';
 import 'package:thanyarak/widgets/NavigationBar.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 
 class menumember_pages extends StatefulWidget {
   menumember_pages({Key key}) : super(key: key);
@@ -28,41 +38,61 @@ class menumember_pages extends StatefulWidget {
   _menumember_pagesState createState() => _menumember_pagesState();
 }
 
-Map<String, WidgetBuilder> map = {
-  '/mainHome': (BuildContext context) => MainPage(),
-};
-String firstState;
-void main() {
-  firstState = MyConstant.routeMainHome;
+String Token;
 
-  runApp(menumember_pages());
-}
-
-String cid = '';
+String cid;
 SessionManager ssr = SessionManager();
+var jsonRes;
+String apiStatus, name;
+File _img;
 
 class _menumember_pagesState extends State<menumember_pages> {
+  Future<FindByCitizenId> getcid(String txtcid, String tk) async {
+    var url = '${apiurl().url}/patient/findByCitizenId/${txtcid}';
+    final response = await http.get(Uri.parse(url), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ${tk}',
+    });
+    if (response.statusCode == 200) {
+      return FindByCitizenId.fromJson(jsonDecode(response.body));
+    } else {
+      print(response.statusCode);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => loadingPage()));
+    }
+  }
+
   final double topWidgetHeight = 120.0;
   final double avatarRadius = 50.0;
+
+  Future<FindByCitizenId> futureFindByCitizenId;
 
   Future getDATA() async {
     final SharedPreferences per = await SharedPreferences.getInstance();
     setState(() {
       cid = per.getString('cid');
-      print(cid);
+      Token = per.getString('tokens');
+      futureFindByCitizenId = getcid(cid, Token);
+      imgPro = per.getString('img');
+      if (imgPro == '' || imgPro == null) {
+      } else {
+        _img = File(imgPro.toString());
+      }
+      print('img: ${imgPro}');
     });
   }
 
   @override
   void initState() {
-    getDATA();
     super.initState();
+    getDATA();
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return WillPopScope(
+      child: Scaffold(
         body: Center(
           child: SingleChildScrollView(
             child: Stack(
@@ -206,17 +236,29 @@ class _menumember_pagesState extends State<menumember_pages> {
                                   topRight: Radius.circular(40.0),
                                 ),
                               ),
-
                               child: Column(
                                 //crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Container(
                                     padding: EdgeInsets.only(top: 60),
-                                    child: Text(
-                                      'จอร์นาธาน วิคตอร์เรีย',
-                                      style: GoogleFonts.kanit(
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.w500),
+                                    child: FutureBuilder<FindByCitizenId>(
+                                      future: futureFindByCitizenId,
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasData) {
+                                          return Text(
+                                            snapshot.data.name +
+                                                '  ' +
+                                                snapshot.data.surname,
+                                            style: GoogleFonts.kanit(
+                                                fontSize: 22,
+                                                fontWeight: FontWeight.w500),
+                                          );
+                                        } else if (snapshot.hasError) {
+                                          return Text('${snapshot.error}');
+                                        }
+
+                                        return CircularProgressIndicator();
+                                      },
                                     ),
                                   ),
                                   Expanded(
@@ -591,17 +633,49 @@ class _menumember_pagesState extends State<menumember_pages> {
                                         ),
                                         GestureDetector(
                                           onTap: () {
-                                            setState(() {
-                                              ssr.setCID('');
-                                              ssr.setPassword('');
-                                            });
-                                            //Navigator.pop(context);
-                                            Navigator.pushReplacement(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (BuildContext
-                                                            context) =>
-                                                        MainPage()));
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: Text(
+                                                    'ออกจากระบบ',
+                                                    style: GoogleFonts.kanit(),
+                                                  ),
+                                                  content: Text(
+                                                    'คุณต้องการที่จะออกจากระบบ หรือไม่',
+                                                    style: GoogleFonts.kanit(),
+                                                  ),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.pop(context,
+                                                              'Cancel'),
+                                                      child:
+                                                          const Text('ยกเลิก'),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          setState(() {
+                                                        ssr.setCID('');
+                                                        ssr.setPassword('');
+                                                        ssr.setIMG('');
+
+                                                        //Navigator.pop(context);
+                                                        Navigator.pushReplacement(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (BuildContext
+                                                                        context) =>
+                                                                    MainPage()));
+                                                      }),
+                                                      child: Text('ตกลง',
+                                                          style: GoogleFonts
+                                                              .kanit()),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
                                           },
                                           child: Container(
                                               decoration: BoxDecoration(
@@ -662,39 +736,21 @@ class _menumember_pagesState extends State<menumember_pages> {
                                   ),
                                 ],
                               ),
-
-                              //เนื้อหาตรงแดงๆ
-                              // child: ListView(
-                              //   padding: EdgeInsets.only(
-                              //       top: 60, left: 20, right: 20),
-                              //   children: <Widget>[
-                              //     Container(
-                              //       height: 50,
-                              //       color: Colors.amber[600],
-                              //       child: Center(child: Text('Entry A')),
-                              //     ),
-                              //     Container(
-                              //       height: 50,
-                              //       color: Colors.amber[500],
-                              //       child: Center(child: Text('Entry B')),
-                              //     ),
-                              //     Container(
-                              //       height: 50,
-                              //       color: Colors.amber[100],
-                              //       child: Center(child: Text('Entry C')),
-                              //     ),
-                              //   ],
-                              // ),
                             ),
                           )
                         ]))
                   ],
                 ),
                 Positioned(
-                  child: CircleAvatar(
-                    radius: avatarRadius,
-                    backgroundImage: AssetImage('images/Member_login.png'),
-                  ),
+                  child: _img == null || _img == ''
+                      ? CircleAvatar(
+                          radius: avatarRadius,
+                          backgroundImage: AssetImage('images/avatar.png'),
+                        )
+                      : CircleAvatar(
+                          radius: avatarRadius,
+                          backgroundImage: FileImage(_img),
+                        ),
                   left: (MediaQuery.of(context).size.width / 2) - avatarRadius,
                   top: topWidgetHeight - avatarRadius,
                 )
@@ -704,6 +760,15 @@ class _menumember_pagesState extends State<menumember_pages> {
         ),
         bottomNavigationBar: NavigagitonBar(actionGet: 5),
       ),
+      onWillPop: () {
+        Navigator.push(
+          context,
+          PageTransition(
+            type: PageTransitionType.fade,
+            child: MainPage(),
+          ),
+        );
+      },
     );
   }
 }

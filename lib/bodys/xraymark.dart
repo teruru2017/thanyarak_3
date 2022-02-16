@@ -1,4 +1,5 @@
 //@dart=2.9
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:carousel_slider/carousel_controller.dart';
@@ -8,9 +9,16 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:thanyarak/bodys/API/api_rights.dart';
+import 'package:thanyarak/bodys/API/api_scheduleDate.dart';
+import 'package:thanyarak/bodys/API/api_url.dart';
 import 'package:thanyarak/bodys/dating_page.dart';
 import 'package:thanyarak/bodys/detaildonate_pages.dart';
-import 'package:thanyarak/bodys/detaildonate_pagesB.dart';
+import 'package:thanyarak/bodys/loading.dart';
+import 'package:thanyarak/bodys/login/editprofile_page.dart';
+import 'package:thanyarak/models/session.dart';
+
 import 'package:thanyarak/widgets/NavigationBar.dart';
 import 'package:flutter/services.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -21,38 +29,41 @@ import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:intl/intl.dart' show DateFormat, Intl;
 import 'package:intl/date_symbol_data_local.dart';
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
+import 'package:thanyarak/widgets/msgBox_widget.dart';
 
+DateTime dt;
 DateTime _currentDate = DateTime.now();
 DateTime _targetDateTime = DateTime.now();
 String _currentMonth = DateFormat.MMMM().format(DateTime.now());
-String _daysel = DateFormat.yMd().format(_currentDate);
+String _daysel = DateFormat.yMd().format(_currentDate), Token, getDateAPI;
 bool _ckVisittime = false;
-List<DateTime> absentDates = [
-  DateTime(2021, 12, 2),
-  DateTime(2021, 12, 7),
-  DateTime(2021, 12, 8),
-  DateTime(2021, 12, 12),
-  DateTime(2021, 12, 13),
-  DateTime(2021, 12, 14),
-  DateTime(2021, 12, 16),
-  DateTime(2021, 12, 17),
-  DateTime(2021, 12, 18),
-  DateTime(2021, 12, 19),
-  DateTime(2021, 12, 31),
-];
+DateTime _markedDateMapLOOP;
+int setID;
+String name_get;
+String xx, showTime, showDay;
+String pid_x;
+String formattedDate;
+var jsonResappointment;
+//วันตัวแดง
+List<DateTime> absentDates = [];
+List<ScheduleDate> scheduleDate = [];
 
 EventList<Event> _markedDateMap = new EventList<Event>(
   events: {},
 );
 
 class xrayMark_page extends StatefulWidget {
-  xrayMark_page({Key key}) : super(key: key);
+  bool postpone;
+  int ID_postpone;
+  xrayMark_page({Key key, this.postpone, this.ID_postpone}) : super(key: key);
   @override
   _xrayMark_pageState createState() => _xrayMark_pageState();
 }
 
-int btck = 0;
-bool bt2 = true, page1 = false;
+int btck, ID_postpone;
+bool bt2 = true, page1 = false, postpone;
 enum SingingCharacter { buse01, buse02, buse03, buse04, buse05, buse06, buse07 }
 enum SingingCharacterV { have, donthave }
 enum SingingCharacterCD { have, donthave }
@@ -61,11 +72,87 @@ SingingCharacter _character = SingingCharacter.buse01;
 SingingCharacterV _characterV2 = SingingCharacterV.have;
 SingingCharacterCD _characterCD = SingingCharacterCD.have;
 
+int _Checkcharacter = 1;
+int _CheckcharacterV2 = 1;
+int _CheckcharacterCD = 1;
+
 class _xrayMark_pageState extends State<xrayMark_page> {
+  TextEditingController Phonecall = TextEditingController();
+  List<String> timeslotDate = [];
   initState() {
     Intl.defaultLocale = 'th';
     initializeDateFormatting();
     super.initState();
+
+    setState(() {
+      _currentDate = DateTime.now();
+      getDateAPI = DateFormat('yyyy-MM').format(_targetDateTime);
+      if (widget.postpone == true) {
+        postpone = widget.postpone;
+      } else {
+        postpone = false;
+      }
+      ID_postpone = widget.ID_postpone;
+      print(getDateAPI);
+    });
+    getDATA();
+  }
+
+  Future<List<ScheduleDate>> futureData;
+  Future getDATA() async {
+    final SharedPreferences per = await SharedPreferences.getInstance();
+    setState(() {
+      Token = per.getString('tokens');
+      pid_x = per.getString('pid');
+      name_get = per.getString('name');
+      print('name_get : ${name_get}');
+      print('pid : ${pid_x}');
+      futureData = fetchData(dateAPI: getDateAPI);
+    });
+  }
+
+  Future<List<ScheduleDate>> fetchData({String dateAPI}) async {
+    var url = '${apiurl().url}/scheduleDate/1/${dateAPI}';
+    final response = await http.get(Uri.parse(url), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ${Token}',
+    });
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      print(response.statusCode);
+      // print(jsonResponse);
+      var holiday = min(jsonResponse?.length, jsonResponse.length);
+      setState(() {
+        for (int i = 0; i < holiday; i++) {
+          // print(jsonResponse[0]['is_holiday']);
+          if (jsonResponse[i]['is_holiday'] == true) {
+            // print();
+            _markedDateMap.add(
+                DateTime.parse(jsonResponse[i]['date']),
+                new Event(
+                    title: jsonResponse[i].toString(),
+                    date: DateTime.parse(jsonResponse[i]['date']),
+                    icon: _absentIcon(
+                      DateTime.parse(jsonResponse[i]['date']).day.toString(),
+                    )));
+          }
+        }
+        _ckVisittime = false;
+      });
+
+      return jsonResponse
+          .map((data) => new ScheduleDate.fromJson(data))
+          .toList();
+    } else if (response.statusCode == 401) {
+      print('Status Getcid : ${response.statusCode}');
+
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => loadingPage()));
+    } else {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => loadingPage()));
+    }
   }
 
   var len = min(absentDates?.length, absentDates.length);
@@ -93,18 +180,6 @@ class _xrayMark_pageState extends State<xrayMark_page> {
       _f = 1;
     }
     cHeight = MediaQuery.of(context).size.height;
-    for (int i = 0; i < len; i++) {
-      _markedDateMap.add(
-        absentDates[i],
-        new Event(
-          date: absentDates[i],
-          title: absentDates[i].toString(),
-          icon: _absentIcon(
-            absentDates[i].day.toString(),
-          ),
-        ),
-      );
-    }
 
     _calendarCarouselNoHeader = CalendarCarousel<Event>(
       customGridViewPhysics: NeverScrollableScrollPhysics(),
@@ -114,6 +189,7 @@ class _xrayMark_pageState extends State<xrayMark_page> {
           _currentMonth = DateFormat.MMMM('th_Th').format(_targetDateTime);
         });
       },
+
       markedDateIconBorderColor: Colors.red,
       markedDateIconOffset: 2,
       markedDateIconMargin: 0,
@@ -161,14 +237,37 @@ class _xrayMark_pageState extends State<xrayMark_page> {
           (event) => ck = event.title,
         );
 
-        print(_targetDateTime);
-        print(_daysel);
-        print('----');
+        // print(_targetDateTime);
+        // print(_daysel);
 
         if (ck == '') {
           this.setState(() => _currentDate = date);
           _ckVisittime = true;
+          print('----------------------------');
           print('ว่าง');
+          print(
+              'Day select :  ${convertDateTimeDisplay(_currentDate.toString())}');
+
+          print(scheduleDate.length);
+          timeslotDate.clear();
+          for (int x = 0; x < scheduleDate.length; x++) {
+            if (convertDateTimeDisplay(_currentDate.toString()) ==
+                convertDateTimeDisplay(scheduleDate[x].date.toString())) {
+              print(
+                  "Day get : ${convertDateTimeDisplay(scheduleDate[x].date.toString())}");
+              for (int timeCount = 0;
+                  timeCount < scheduleDate[x].timeslots.length;
+                  timeCount++) {
+                timeslotDate
+                    .add(scheduleDate[x].timeslots[timeCount].time.toString());
+                // print(
+                //     "Time get :${timeCount} : ${scheduleDate[x].timeslots[timeCount].time.toString()}");
+                // txtTime(1, false, '07:30 น.');
+              }
+            }
+          }
+          print(timeslotDate);
+          print('----------------------------');
         } else {
           print('ไม่ว่าง');
         }
@@ -297,6 +396,12 @@ class _xrayMark_pageState extends State<xrayMark_page> {
                                             _targetDateTime.month - 1);
                                         _currentMonth = DateFormat.MMMM('th_TH')
                                             .format(_targetDateTime);
+                                        //GETAPI
+                                        getDateAPI = DateFormat('yyyy-MM')
+                                            .format(_targetDateTime);
+                                        print("GAR : ${getDateAPI}");
+                                        futureData =
+                                            fetchData(dateAPI: getDateAPI);
                                       });
                                     },
                                   ),
@@ -323,6 +428,12 @@ class _xrayMark_pageState extends State<xrayMark_page> {
                                             _targetDateTime.month + 1);
                                         _currentMonth = DateFormat.MMMM('th_TH')
                                             .format(_targetDateTime);
+                                        //GETAPI
+                                        getDateAPI = DateFormat('yyyy-MM')
+                                            .format(_targetDateTime);
+                                        print("GAR : ${getDateAPI}");
+                                        futureData =
+                                            fetchData(dateAPI: getDateAPI);
                                       });
                                     },
                                   ),
@@ -333,8 +444,22 @@ class _xrayMark_pageState extends State<xrayMark_page> {
                           Container(
                             // color: Colors.amber,
                             width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height * 0.4,
-                            child: _calendarCarouselNoHeader,
+                            height: MediaQuery.of(context).size.height * 0.45,
+                            child: FutureBuilder<List<ScheduleDate>>(
+                              future: futureData,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  scheduleDate = snapshot.data;
+
+                                  return _calendarCarouselNoHeader;
+                                } else if (snapshot.hasError) {
+                                  return Text("${snapshot.error}");
+                                }
+                                return Align(
+                                    alignment: Alignment.center,
+                                    child: CircularProgressIndicator());
+                              },
+                            ),
                           ),
                           Visibility(
                             visible: _ckVisittime,
@@ -347,54 +472,22 @@ class _xrayMark_pageState extends State<xrayMark_page> {
                               ),
                             ),
                           ),
-                          // Container(
-                          //   height: 50,
-                          //   child: Row(
-                          //     crossAxisAlignment: CrossAxisAlignment.center,
-                          //     children: [
-                          //Expad
-                          //       txtTime(1, false, '07:30 น.'),
-                          //       txtTime(2, true, '07:45 น.'),
-                          //       txtTime(3, false, '07:30 น.'),
-                          //       txtTime(4, false, '07:30 น.'),
-                          //     ],
-                          //   ),
-                          // ),
                           Visibility(
                             visible: _ckVisittime,
                             child: Wrap(
-                              direction: Axis.horizontal,
-                              alignment: WrapAlignment.spaceBetween,
-                              runAlignment: WrapAlignment.center,
-                              runSpacing: 3.0,
-                              spacing: 3.0,
-                              children: [
-                                txtTime(1, false, '07:30 น.'),
-                                txtTime(2, true, '07:45 น.'),
-                                txtTime(3, true, '08:00 น.'),
-                                txtTime(4, true, '08:20 น.'),
-                                txtTime(5, true, '08:40 น.'),
-                                txtTime(6, true, '09:00 น.'),
-                                txtTime(7, false, '09:20 น.'),
-                                txtTime(8, false, '09:40 น.'),
-                                txtTime(9, false, '10:00 น.'),
-                                txtTime(10, true, '10:20 น.'),
-                                txtTime(11, false, '10:40 น.'),
-                                txtTime(12, false, '11:00 น.'),
-                                txtTime(13, true, '11:30 น.'),
-                                txtTime(14, true, '11:45 น.'),
-                                txtTime(15, true, '12:00 น.'),
-                                txtTime(16, false, '12:20 น.'),
-                                txtTime(17, false, '12:40 น.'),
-                                txtTime(18, true, '13:00 น.'),
-                                txtTime(19, false, '13:20 น.'),
-                                txtTime(20, false, '13:40 น.'),
-                                txtTime(21, false, '14:00 น.'),
-                                txtTime(22, true, '14:20 น.'),
-                                txtTime(23, true, '14:40 น.'),
-                                txtTime(24, true, '15:00 น.'),
-                              ],
-                            ),
+                                direction: Axis.horizontal,
+                                alignment: WrapAlignment.spaceBetween,
+                                runAlignment: WrapAlignment.center,
+                                runSpacing: 3.0,
+                                spacing: 3.0,
+                                children:
+                                    List.generate(timeslotDate.length, (index) {
+                                  setState(() {
+                                    setID = index;
+                                  });
+                                  return txtTime(setID, false,
+                                      '${timeslotDate[index]} น.');
+                                })),
                           ),
                           SizedBox(height: 20),
                           Visibility(
@@ -411,12 +504,13 @@ class _xrayMark_pageState extends State<xrayMark_page> {
                           Visibility(
                             visible: _ckVisittime,
                             child: FormBuilderTextField(
+                              controller: Phonecall,
                               inputFormatters: [
                                 LengthLimitingTextInputFormatter(10),
                                 FilteringTextInputFormatter.digitsOnly
                               ],
                               keyboardType: TextInputType.number,
-                              name: 'phnoe',
+                              name: 'phone',
                               style: GoogleFonts.kanit(fontSize: 14),
                               decoration: InputDecoration(
                                   border: OutlineInputBorder(
@@ -480,7 +574,7 @@ class _xrayMark_pageState extends State<xrayMark_page> {
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10)),
                                   color: Color(0xffE6EFFE),
-                                  gradient: btck == 0
+                                  gradient: btck == 404
                                       ? LinearGradient(
                                           begin: Alignment.centerLeft,
                                           end: Alignment.centerRight,
@@ -501,11 +595,13 @@ class _xrayMark_pageState extends State<xrayMark_page> {
                                 child: Align(
                                   alignment: Alignment.center,
                                   child: Text(
-                                    'นัดหมาย',
+                                    postpone == true
+                                        ? 'เลื่อนนัดหมาย'
+                                        : 'นัดหมาย',
                                     style: GoogleFonts.kanit(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
-                                      color: btck == 0
+                                      color: btck == 404
                                           ? Colors.grey
                                           : Colors.white,
                                     ),
@@ -532,13 +628,20 @@ class _xrayMark_pageState extends State<xrayMark_page> {
     return Container(
       width: MediaQuery.of(context).size.width / 4.5,
       child: GestureDetector(
+        onTapCancel: () {},
         onTap: () {
           setState(() {
             if (ckStatus == true) {
             } else {
               btck = id;
+              print("_currentDate : ${_currentDate}");
+              print("btck : ${timeslotDate[btck]}");
 
-              print(btck);
+              xx =
+                  '${convertDateTimeDisplay_YMD(_currentDate.toString())} ${timeslotDate[btck]}';
+              print(xx);
+              showTime = ' ${timeslotDate[btck]}';
+              showDay = '${convertDateTimeDisplay(_currentDate.toString())}';
             }
           });
         },
@@ -549,7 +652,7 @@ class _xrayMark_pageState extends State<xrayMark_page> {
                   ? Border.all(color: Colors.transparent)
                   : btck == id
                       ? Border.all(color: Colors.blue)
-                      : Border.all(color: Colors.grey),
+                      : Border.all(color: Colors.grey.shade200),
               color: ckStatus == true
                   ? Colors.red[100]
                   : btck == id
@@ -622,9 +725,148 @@ class CustomDialog extends StatefulWidget {
 
 class _CustomDialogState extends State<CustomDialog> {
   @override
+  initState() {
+    Intl.defaultLocale = 'th';
+    initializeDateFormatting();
+    super.initState();
+    getDATA();
+    _character = SingingCharacter.buse01;
+    _characterCD = SingingCharacterCD.have;
+    _characterV2 = SingingCharacterV.have;
+  }
+
+  Future<List<RightsAPI>> RightsAPIDatas;
+
+  Future getDATA() async {
+    final SharedPreferences per = await SharedPreferences.getInstance();
+    setState(() {
+      Token = per.getString('tokens');
+      dt = DateTime.parse(xx);
+      print(dt);
+      print("ID_postpone ${ID_postpone}");
+    });
+  }
+
+  Future<void> postappointment(
+      {String pid_api, DateTime datetime, int location, int right_id}) async {
+    var url = '${apiurl().url}/appointment';
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${Token}',
+      },
+      body: jsonEncode(<String, String>{
+        "pid": "${pid_api}",
+        "datetime": "${datetime}",
+        "location_id": "${location}",
+        "right_id": "${right_id}",
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      jsonResappointment = convert.jsonDecode(response.body);
+      print(jsonResappointment);
+      print('APITURE statusCode:' + response.statusCode.toString());
+      setState(() {
+        Navigator.pop(context);
+        showGeneralDialog(
+            context: context,
+            barrierDismissible: false,
+            barrierLabel:
+                MaterialLocalizations.of(context).modalBarrierDismissLabel,
+            barrierColor: Colors.transparent,
+            transitionDuration: Duration(milliseconds: 200),
+            pageBuilder:
+                (BuildContext context, Animation frist, Animation second) =>
+                    SuscesDialog());
+      });
+    } else if (response.statusCode == 401) {
+      print('APITURE Getcid : ${response.statusCode}');
+
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => loadingPage()));
+    } else {
+      print("${pid_api} ${datetime} ${location} ${right_id}");
+      print('APITURE Getcid : ${response.statusCode}');
+      showGeneralDialog(
+          context: context,
+          barrierDismissible: false,
+          barrierLabel:
+              MaterialLocalizations.of(context).modalBarrierDismissLabel,
+          barrierColor: Colors.transparent,
+          transitionDuration: Duration(milliseconds: 200),
+          pageBuilder:
+              (BuildContext context, Animation frist, Animation second) =>
+                  MSGBoxWidget(
+                    title: 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง',
+                    detail: '',
+                  ));
+    }
+  }
+
+  Future<void> put_postpone(
+      {String pid_api, DateTime datetime, int location, int right_id}) async {
+    var url = '${apiurl().url}/appointment/${pid_api}';
+    final response = await http.put(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${Token}',
+      },
+      body: jsonEncode(<String, String>{
+        "datetime": "${datetime}",
+        "location_id": "${location}",
+        "right_id": "${right_id}",
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      jsonResappointment = convert.jsonDecode(response.body);
+
+      print('APITURE statusCode:' + response.statusCode.toString());
+      setState(() {
+        Navigator.pop(context);
+        showGeneralDialog(
+            context: context,
+            barrierDismissible: false,
+            barrierLabel:
+                MaterialLocalizations.of(context).modalBarrierDismissLabel,
+            barrierColor: Colors.transparent,
+            transitionDuration: Duration(milliseconds: 200),
+            pageBuilder:
+                (BuildContext context, Animation frist, Animation second) =>
+                    SuscesDialog());
+      });
+    } else if (response.statusCode == 401) {
+      print('APITURE Getcid : ${response.statusCode}');
+
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => loadingPage()));
+    } else {
+      print('APITURE Getcid : ${response.statusCode}');
+
+      showGeneralDialog(
+          context: context,
+          barrierDismissible: false,
+          barrierLabel:
+              MaterialLocalizations.of(context).modalBarrierDismissLabel,
+          barrierColor: Colors.transparent,
+          transitionDuration: Duration(milliseconds: 200),
+          pageBuilder:
+              (BuildContext context, Animation frist, Animation second) =>
+                  MSGBoxWidget(
+                    title: 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง',
+                    detail: '',
+                  ));
+    }
+  }
+
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height / 5;
-    print(height);
+    // print(height);
     return Visibility(
       visible: !page1,
       child: Scaffold(
@@ -685,6 +927,7 @@ class _CustomDialogState extends State<CustomDialog> {
                                   onChanged: (SingingCharacter value) {
                                     setState(() {
                                       _character = value;
+                                      _Checkcharacter = 1;
                                     });
                                   },
                                 ),
@@ -710,6 +953,9 @@ class _CustomDialogState extends State<CustomDialog> {
                                   onChanged: (SingingCharacter value) {
                                     setState(() {
                                       _character = value;
+
+                                      _Checkcharacter = 2;
+                                      print(value);
                                     });
                                   },
                                 ),
@@ -735,6 +981,7 @@ class _CustomDialogState extends State<CustomDialog> {
                                   onChanged: (SingingCharacter value) {
                                     setState(() {
                                       _character = value;
+                                      _Checkcharacter = 3;
                                     });
                                   },
                                 ),
@@ -760,6 +1007,7 @@ class _CustomDialogState extends State<CustomDialog> {
                                   onChanged: (SingingCharacter value) {
                                     setState(() {
                                       _character = value;
+                                      _Checkcharacter = 4;
                                     });
                                   },
                                 ),
@@ -785,6 +1033,7 @@ class _CustomDialogState extends State<CustomDialog> {
                                   onChanged: (SingingCharacter value) {
                                     setState(() {
                                       _character = value;
+                                      _Checkcharacter = 5;
                                     });
                                   },
                                 ),
@@ -810,6 +1059,7 @@ class _CustomDialogState extends State<CustomDialog> {
                                   onChanged: (SingingCharacter value) {
                                     setState(() {
                                       _character = value;
+                                      _Checkcharacter = 6;
                                     });
                                   },
                                 ),
@@ -835,6 +1085,7 @@ class _CustomDialogState extends State<CustomDialog> {
                                   onChanged: (SingingCharacter value) {
                                     setState(() {
                                       _character = value;
+                                      _Checkcharacter = 7;
                                     });
                                   },
                                 ),
@@ -929,6 +1180,7 @@ class _CustomDialogState extends State<CustomDialog> {
                                   onChanged: (SingingCharacterV valueV) {
                                     setState(() {
                                       _characterV2 = valueV;
+                                      _CheckcharacterV2 = 1;
                                     });
                                   },
                                 ),
@@ -950,6 +1202,7 @@ class _CustomDialogState extends State<CustomDialog> {
                                   onChanged: (SingingCharacterV valueV) {
                                     setState(() {
                                       _characterV2 = valueV;
+                                      _CheckcharacterV2 = 2;
                                     });
                                   },
                                 ),
@@ -985,6 +1238,7 @@ class _CustomDialogState extends State<CustomDialog> {
                                   onChanged: (SingingCharacterCD valueV) {
                                     setState(() {
                                       _characterCD = valueV;
+                                      _CheckcharacterCD = 1;
                                     });
                                   },
                                 ),
@@ -1006,6 +1260,7 @@ class _CustomDialogState extends State<CustomDialog> {
                                   onChanged: (SingingCharacterCD valueV) {
                                     setState(() {
                                       _characterCD = valueV;
+                                      _CheckcharacterCD = 2;
                                     });
                                   },
                                 ),
@@ -1027,22 +1282,19 @@ class _CustomDialogState extends State<CustomDialog> {
                             alignment: Alignment.topCenter,
                             child: GestureDetector(
                               onTap: () {
-                                setState(() {
-                                  Navigator.pop(context);
-                                  showGeneralDialog(
-                                      context: context,
-                                      barrierDismissible: false,
-                                      barrierLabel:
-                                          MaterialLocalizations.of(context)
-                                              .modalBarrierDismissLabel,
-                                      barrierColor: Colors.transparent,
-                                      transitionDuration:
-                                          Duration(milliseconds: 200),
-                                      pageBuilder: (BuildContext context,
-                                              Animation frist,
-                                              Animation second) =>
-                                          SuscesDialog());
-                                });
+                                if (postpone == true) {
+                                  put_postpone(
+                                      pid_api: ID_postpone.toString(),
+                                      datetime: dt,
+                                      location: 1,
+                                      right_id: _Checkcharacter);
+                                } else {
+                                  postappointment(
+                                      pid_api: pid_x,
+                                      datetime: dt,
+                                      location: 1,
+                                      right_id: _Checkcharacter);
+                                }
                               },
                               child: Container(
                                 margin: EdgeInsets.only(top: 30),
@@ -1064,7 +1316,9 @@ class _CustomDialogState extends State<CustomDialog> {
                                 child: Align(
                                   alignment: Alignment.center,
                                   child: Text(
-                                    'นัดหมาย',
+                                    postpone == true
+                                        ? 'เลื่อนนัดหมาย'
+                                        : 'นัดหมาย',
                                     style: GoogleFonts.kanit(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
@@ -1131,7 +1385,9 @@ class _SuscesDialogState extends State<SuscesDialog> {
                               width: 80,
                             ),
                             Text(
-                              "นัดตรวจสำเร็จ",
+                              postpone == true
+                                  ? "เลื่อนตรวจสำเร็จ"
+                                  : "นัดตรวจสำเร็จ",
                               style: GoogleFonts.kanit(
                                   color: Color(0xff0088C6),
                                   fontSize: 20,
@@ -1154,7 +1410,7 @@ class _SuscesDialogState extends State<SuscesDialog> {
                                     child: Align(
                                       alignment: Alignment.centerRight,
                                       child: Text(
-                                        'จอร์นาธาน วิคตอเรีย',
+                                        '${jsonResappointment['patient']['name']}  ${jsonResappointment['patient']['surname']}',
                                         style: GoogleFonts.kanit(
                                             color: Colors.black, fontSize: 16),
                                       ),
@@ -1180,7 +1436,7 @@ class _SuscesDialogState extends State<SuscesDialog> {
                                     child: Align(
                                       alignment: Alignment.centerRight,
                                       child: Text(
-                                        'TYR123456759',
+                                        '${jsonResappointment['id']}',
                                         style: GoogleFonts.kanit(
                                             color: Colors.black, fontSize: 16),
                                       ),
@@ -1206,7 +1462,7 @@ class _SuscesDialogState extends State<SuscesDialog> {
                                     child: Align(
                                       alignment: Alignment.centerRight,
                                       child: Text(
-                                        'HN0012345',
+                                        '${jsonResappointment['patient']['hn']}',
                                         style: GoogleFonts.kanit(
                                             color: Colors.black, fontSize: 16),
                                       ),
@@ -1232,7 +1488,7 @@ class _SuscesDialogState extends State<SuscesDialog> {
                                     child: Align(
                                       alignment: Alignment.centerRight,
                                       child: Text(
-                                        '20 มิถุนายน 2564',
+                                        '${showDay}',
                                         style: GoogleFonts.kanit(
                                             color: Colors.black, fontSize: 16),
                                       ),
@@ -1258,7 +1514,7 @@ class _SuscesDialogState extends State<SuscesDialog> {
                                     child: Align(
                                       alignment: Alignment.centerRight,
                                       child: Text(
-                                        '09.40 น.',
+                                        '${showTime}',
                                         style: GoogleFonts.kanit(
                                             color: Colors.black, fontSize: 16),
                                       ),
@@ -1325,20 +1581,20 @@ class _SuscesDialogState extends State<SuscesDialog> {
                             SizedBox(
                               height: 20,
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  Navigator.pop(context);
-                                });
-                              },
-                              child: Text(
-                                "แก้ไขวันนัดหมาย",
-                                style: GoogleFonts.kanit(
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xff0088C6),
-                                    fontSize: 16),
-                              ),
-                            ),
+                            // GestureDetector(
+                            //   onTap: () {
+                            //     setState(() {
+                            //       Navigator.pop(context);
+                            //     });
+                            //   },
+                            //   child: Text(
+                            //     "แก้ไขวันนัดหมาย",
+                            //     style: GoogleFonts.kanit(
+                            //         fontWeight: FontWeight.w500,
+                            //         color: Color(0xff0088C6),
+                            //         fontSize: 16),
+                            //   ),
+                            // ),
 
                             //ปุ่ม
 
@@ -1428,3 +1684,67 @@ class _SuscesDialogState extends State<SuscesDialog> {
   } //BoxShadow
 
 }
+
+String convertDateTimeDisplay(String date) {
+  final DateFormat displayFormater = DateFormat('yyyy-MM-dd HH:mm:ss.SSS');
+  final DateFormat serverFormater = DateFormat('dd-MM-yyyy');
+  final DateTime displayDate = displayFormater.parse(date);
+  final String formatted = serverFormater.format(displayDate);
+  return formatted;
+}
+
+String convertDateTimeDisplay_YMD(String date) {
+  final DateFormat displayFormater = DateFormat('yyyy-MM-dd HH:mm:ss.SSS');
+  final DateFormat serverFormater = DateFormat('yyyy-MM-dd');
+  final DateTime displayDate = displayFormater.parse(date);
+  final String formatted = serverFormater.format(displayDate);
+  return formatted;
+}
+
+// if (absentDates.length > 0) {
+//   for (int x = 0; x < len; x++) {
+//     _markedDateMap.add(
+//       absentDates[x],
+//       new Event(
+//         date: absentDates[x],
+//         title: absentDates[x].toString(),
+//         icon: _absentIcon(
+//           absentDates[x].day.toString(),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// if (absentDates != null) {
+//   for (int i = 0; i < len; i++) {
+//     _markedDateMap.add(
+//       absentDates[i],
+//       new Event(
+//         date: absentDates[i],
+//         title: absentDates[i].toString(),
+//         icon: _absentIcon(
+//           absentDates[i].day.toString(),
+//         ),
+//       ),
+//     );
+//   }
+// }
+// var holiday = min(scheduleDate?.length,
+//     scheduleDate.length);
+// for (int i = 0; i < holiday; i++) {
+//   if (scheduleDate[i].isHoliday == true) {
+//     print(scheduleDate[i].date);
+//     _markedDateMap.add(
+//         scheduleDate[i].date,
+//         Event(
+//             title: scheduleDate[i].toString(),
+//             date: scheduleDate[i].date,
+//             icon: _absentIcon(
+//               scheduleDate[i]
+//                   .date
+//                   .day
+//                   .toString(),
+//             )));
+//   }
+// }

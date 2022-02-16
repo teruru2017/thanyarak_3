@@ -1,4 +1,5 @@
 //@dart = 2.9
+import 'dart:convert' as convert;
 import 'dart:convert';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:http/http.dart' as http;
@@ -11,7 +12,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:thanyarak/bodys/API/api_article_detail.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:thanyarak/bodys/API/api_ArticleDetail.dart';
+// import 'package:thanyarak/bodys/API/api_article_detail.dart';
+import 'package:thanyarak/bodys/API/api_url.dart';
 import 'package:thanyarak/bodys/menu_page.dart';
 import 'package:thanyarak/bodys/notification_page.dart';
 import 'package:thanyarak/utility/my_constant.dart';
@@ -26,75 +30,118 @@ class ArticleDetailsPage extends StatefulWidget {
   _ArticleDetailsPageState createState() => _ArticleDetailsPageState();
 }
 
-String url;
+String url, cid;
+bool Favorite;
 
 class _ArticleDetailsPageState extends State<ArticleDetailsPage> {
-  Future<List<ardetail>> fetchData() async {
-    final response = await http.get(Uri.parse('${widget.urlget}'));
+  Future<DetailArticle> fetchData() async {
+    var url = '${apiurl().urlapi}/article.php?id=${widget.urlget}';
+    final response = await http.get(Uri.parse(url), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    });
     if (response.statusCode == 200) {
-      List jsonResponse = json.decode(response.body);
-      print(response.body);
-      return jsonResponse.map((data) => new ardetail.fromJson(data)).toList();
+      return DetailArticle.fromJson(jsonDecode(response.body));
     } else {
-      throw Exception('Unexpected error occured!');
+      print(response.statusCode);
     }
   }
 
-  Future<List<ardetail>> futureData;
+  Future<void> checkFavorite({String userid, cmsId}) async {
+    var url = '${apiurl().urlapi}/favorite.php?userId=${userid}&cmsId=${cmsId}';
+    final response = await http.get(Uri.parse(url), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    });
+    if (response.statusCode == 200) {
+      print("checkFavorite Status API :${response.statusCode}");
+      //บันทึก
+      setState(() {
+        Favorite = true;
+      });
+    } else if (response.statusCode == 404) {
+      setState(() {
+        Favorite = false;
+      });
+      print("checkFavorite Status API :${response.statusCode}");
+      //ไม่บันทึก
+    } else {
+      print("checkFavorite Status API :${response.statusCode}");
+    }
+  }
+
+  Future<void> addFavorite({String userid, cmsId}) async {
+    var url = '${apiurl().urlapi}/favorite.php';
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode(
+          <String, String>{"userId": "${userid}", "cmsId": "${cmsId}"}),
+    );
+    if (response.statusCode == 200) {
+      print("checkFavorite Status API :${response.statusCode}");
+      setState(() {
+        Favorite = true;
+      });
+    } else {
+      print("checkFavorite Status API :${response.statusCode}");
+    }
+  }
+
+  Future<void> delFavorite({String userid, cmsId}) async {
+    var url = '${apiurl().urlapi}/favorite.php';
+    final response = await http.delete(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "userId": "${userid}",
+        "listCmsId": "${cmsId}",
+      }),
+    );
+    if (response.statusCode == 200) {
+      print("delFavorite Status API :${response.statusCode}");
+      setState(() {
+        Favorite = false;
+      });
+    } else {
+      print("delFavorite Status API :${response.statusCode}");
+    }
+    // print(response.body);
+  }
+
+  DetailArticle dataFromWebAPI;
+
+  Future<DetailArticle> futureData;
+
   void initState() {
+    print("_____________________________");
+    print("this.page : article_details_page");
     Intl.defaultLocale = 'th';
     initializeDateFormatting();
     super.initState();
     futureData = fetchData();
+    getDATA();
   }
 
-  List<String> banners = [
-    'images/tt1.png',
-    'images/tt1.png.png',
-    'images/tt1.png.png',
-  ];
-  List<Widget> widgets = [];
-  void loopCreateBanner() {
-    for (var item in banners) {
-      setState(() {
-        widgets.add(createBannerWidget(item));
-      });
-    }
+  Future getDATA() async {
+    final SharedPreferences per = await SharedPreferences.getInstance();
+    setState(() {
+      cid = per.getString('cid');
+
+      checkFavorite(cmsId: widget.urlget, userid: cid);
+    });
   }
 
   Widget createBannerWidget(String path) => Image.asset(path);
-  List<String> pathImageA = [
-    'images/tt1.png',
-    'images/tt1.png',
-    'images/tt1.png',
-  ];
 
-  List<String> pathImageAritcles = [
-    'images/tt1.png',
-  ];
-  List<String> titleAritcles = [
-    'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
-    'Lorem Ipsum คือ เนื้อหาจำลองแบบเรียบๆ222',
-    'Lorem Ipsum คือ เนื้อหาจำลองแบบเรียบๆ333',
-    'Lorem Ipsum คือ เนื้อหาจำลองแบบเรียบๆ444',
-  ];
-  List<String> detailAritcles = [
-    'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะหลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะหลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมม...อ่านต่อ',
-  ];
-  List<String> dataAritcles = [
-    '16-6-25564',
-    '17-6-25564',
-    '18-6-25564',
-    '18-6-25564'
-  ];
-  List<String> viewAritcles = [
-    'ผู้เข้าชม 123k',
-    'ผู้เข้าชม 123k',
-    'ผู้เข้าชม 123k',
-    'ผู้เข้าชม 123k'
-  ];
   int _currentIndex = 0;
-  int index = 0;
+
   bool txt = false;
   @override
   Widget build(BuildContext context) {
@@ -186,38 +233,50 @@ class _ArticleDetailsPageState extends State<ArticleDetailsPage> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
                                         children: [
+//ปุ่มแชร์
+
+                                          // GestureDetector(
+                                          //   onTap: () {
+                                          //     // Navigator.push(
+                                          //     //     context,
+                                          //     //     CupertinoPageRoute(
+                                          //     //         builder: (context) =>
+                                          //     //             NotiPage()));
+                                          //   },
+                                          //   child: Container(
+                                          //     width: 20,
+                                          //     decoration: BoxDecoration(
+                                          //         image: DecorationImage(
+                                          //             image: AssetImage(
+                                          //                 'images/Share.png'))),
+                                          //   ),
+                                          // ),
+                                          // SizedBox(width: 20),
                                           GestureDetector(
                                             onTap: () {
-                                              // Navigator.push(
-                                              //     context,
-                                              //     CupertinoPageRoute(
-                                              //         builder: (context) =>
-                                              //             NotiPage()));
-                                            },
-                                            child: Container(
-                                              width: 20,
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          'images/Share.png'))),
-                                            ),
-                                          ),
-                                          SizedBox(width: 20),
-                                          GestureDetector(
-                                            onTap: () {
-                                              // Navigator.push(
-                                              //     context,
-                                              //     CupertinoPageRoute(
-                                              //         builder: (context) =>
-                                              //             MenuPage()));
+                                              if (Favorite == false) {
+                                                addFavorite(
+                                                  cmsId: widget.urlget,
+                                                  userid: cid,
+                                                );
+                                              } else if (Favorite == true) {
+                                                delFavorite(
+                                                  cmsId: widget.urlget,
+                                                  userid: cid,
+                                                );
+                                              }
                                             },
                                             child: Container(
                                               width: 20,
                                               height: 20,
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          'images/fav.png'))),
+                                              child: Icon(
+                                                // bookmark_outlined
+                                                Favorite == false
+                                                    ? Icons
+                                                        .bookmark_border_outlined
+                                                    : Icons.bookmark_outlined,
+                                                color: Colors.white,
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -251,11 +310,11 @@ class _ArticleDetailsPageState extends State<ArticleDetailsPage> {
                     Padding(
                       padding: const EdgeInsets.only(
                           top: 110, left: 15, right: 15, bottom: 20),
-                      child: FutureBuilder<List<ardetail>>(
+                      child: FutureBuilder<DetailArticle>(
                         future: futureData,
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
-                            List<ardetail> ardetaildata = snapshot.data;
+                            DetailArticle ardetaildata = snapshot.data;
                             return Column(
                               children: <Widget>[
                                 Container(
@@ -268,13 +327,13 @@ class _ArticleDetailsPageState extends State<ArticleDetailsPage> {
                                     image: DecorationImage(
                                         fit: BoxFit.cover,
                                         image: NetworkImage(
-                                            ardetaildata[index].urlpicpath)),
+                                            ardetaildata.picturePath)),
                                   ),
                                 ),
                                 SizedBox(height: 20),
                                 Align(
                                     child: Text(
-                                      '${ardetaildata[index].subject}',
+                                      '${ardetaildata.subject}',
                                       // 'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
                                       maxLines: 2,
 
@@ -298,12 +357,12 @@ class _ArticleDetailsPageState extends State<ArticleDetailsPage> {
                                       width: 5,
                                     ),
                                     Text(
-                                      DateFormat('dd/MM/').format(
-                                              ardetaildata[index].createdate) +
+                                      DateFormat('dd/MM/')
+                                              .format(ardetaildata.createDate) +
                                           DateFormat('yyyy').format(
-                                            ardetaildata[index].createdate.add(
-                                                  Duration(days: 198195),
-                                                ),
+                                            ardetaildata.createDate.add(
+                                              Duration(days: 198195),
+                                            ),
                                           ),
                                       overflow: TextOverflow.ellipsis,
                                       style: GoogleFonts.kanit(
@@ -324,7 +383,7 @@ class _ArticleDetailsPageState extends State<ArticleDetailsPage> {
                                       width: 5,
                                     ),
                                     Text(
-                                      ardetaildata[index].view.toString(),
+                                      ardetaildata.view.toString(),
                                       overflow: TextOverflow.ellipsis,
                                       style: GoogleFonts.kanit(
                                         fontSize: 12,
@@ -338,14 +397,8 @@ class _ArticleDetailsPageState extends State<ArticleDetailsPage> {
                                 Align(
                                     alignment: Alignment.centerLeft,
                                     child: Html(
-                                      data:
-                                          '<body>${ardetaildata[index].html}</body>',
+                                      data: '<body>${ardetaildata.html}</body>',
                                       style: {
-                                        // "h3": Style(
-                                        //     maxLines: txt ? 10 : 5,
-                                        //     backgroundColor: Color.fromARGB(
-                                        //         0x50, 0xee, 0xee, 0xee),
-                                        //     fontSize: FontSize.em(2)),
                                         "body": Style(
                                           maxLines: txt ? 10 : 5,
                                           fontFamily: 'kanit',
@@ -377,79 +430,32 @@ class _ArticleDetailsPageState extends State<ArticleDetailsPage> {
                                         color: Colors.black,
                                       )),
                                 ),
-                                SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Container(
-                                        // width: MediaQuery.of(context).size.width,
-                                        padding: EdgeInsets.only(
-                                          top: 10,
-                                          right: 10,
-                                        ),
-                                        //color: Colors.red,
-                                        child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                width: 150,
-                                                height: 150,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.amber,
-                                                    image: DecorationImage(
-                                                        fit: BoxFit.cover,
-                                                        image: AssetImage(
-                                                            'images/1150.png')),
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                20))),
-                                              ),
-                                              SizedBox(width: 10),
-                                              Container(
-                                                width: 150,
-                                                height: 150,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.amber,
-                                                    image: DecorationImage(
-                                                        fit: BoxFit.cover,
-                                                        image: AssetImage(
-                                                            'images/1150.png')),
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                20))),
-                                              ),
-                                              SizedBox(width: 10),
-                                              Container(
-                                                width: 150,
-                                                height: 150,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    image: DecorationImage(
-                                                        fit: BoxFit.cover,
-                                                        image: AssetImage(
-                                                            'images/1150.png')),
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                20))),
-                                              ),
-                                              SizedBox(width: 10),
-                                              Container(
-                                                width: 150,
-                                                height: 150,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.amber,
-                                                    image: DecorationImage(
-                                                        fit: BoxFit.cover,
-                                                        image: AssetImage(
-                                                            'images/1150.png')),
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                20))),
-                                              ),
-                                            ])))
+                                Container(
+                                  margin: EdgeInsets.symmetric(vertical: 0.8),
+                                  height: 150,
+                                  child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: snapshot.data.gallery.length,
+                                      itemBuilder: (context, index) {
+                                        return Container(
+                                          width: 150,
+                                          height: 150,
+                                          margin: EdgeInsets.only(
+                                            right: 20,
+                                          ),
+                                          decoration: BoxDecoration(
+                                              color: Colors.amber,
+                                              image: DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  image: NetworkImage(snapshot
+                                                      .data
+                                                      .gallery[index]
+                                                      .filePath)),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20))),
+                                        );
+                                      }),
+                                ),
                               ],
                             );
                           } else if (snapshot.hasError) {
@@ -468,163 +474,7 @@ class _ArticleDetailsPageState extends State<ArticleDetailsPage> {
         ],
       ),
       bottomNavigationBar: NavigagitonBar(
-        actionGet: 3,
-      ),
-    );
-  }
-  // CarouselSlider builBanner() {
-  //   return CarouselSlider(
-  //       items: widgets,
-  //       options: CarouselOptions(
-  //           autoPlay: true, autoPlayInterval: Duration(seconds: 3)));
-  // }
-
-  // Container buildHead() {
-  //   return Container(
-  //     decoration: const BoxDecoration(
-  //       image: DecorationImage(
-  //           image: AssetImage('images/h_detail_article.png'),
-  //           fit: BoxFit.cover),
-  //     ),
-  //     // width: double.infinity,
-  //     height: 100,
-  //     child: ListTile(
-  //       title: ShowTitle(
-  //         title: 'รายละเอียดบทความ',
-  //         textStyle: MyConstant().h2StyleWhite(),
-  //       ),
-  //       // subtitle: ShowTitle(
-  //       //   title: 'กรุณาเข้าสู้ระบบ',
-  //       //   textStyle: MyConstant().h3StyleWhite(),
-  //       // ),
-  //       trailing: Row(
-  //         mainAxisSize: MainAxisSize.min,
-  //         children: [
-  //           IconButton(
-  //             onPressed: () {},
-  //             icon: const Icon(
-  //               Icons.notifications,
-  //               color: Colors.white,
-  //             ),
-  //           ),
-  //           IconButton(
-  //             onPressed: () {},
-  //             icon: const Icon(
-  //               Icons.menu,
-  //               color: Colors.white,
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  // SizedBox listArticle() {
-  //   return SizedBox(
-  //     child: ListView.builder(
-  //       scrollDirection: Axis.vertical,
-  //       shrinkWrap: true,
-  //       physics: const ClampingScrollPhysics(),
-  //       itemCount: pathImageAritcles.length,
-  //       itemBuilder: (context, index) => Card(
-  //           child: Column(
-  //         crossAxisAlignment: CrossAxisAlignment.center,
-  //         children: [
-  //           Container(
-  //             height: 170,
-  //             width: 366,
-  //             decoration: BoxDecoration(
-  //               borderRadius: BorderRadius.only(
-  //                   topLeft: Radius.circular(20),
-  //                   topRight: Radius.circular(20)),
-  //               image: DecorationImage(
-  //                 image: AssetImage(
-  //                   pathImageAritcles[index],
-  //                 ),
-  //                 fit: BoxFit.cover,
-  //               ),
-  //             ),
-  //           ),
-  //           Container(
-  //             width: 326,
-  //             child: Padding(
-  //               padding:
-  //                   const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-  //               child: ShowTitle(
-  //                 title: cutWordH(titleAritcles[index]),
-  //                 textStyle: MyConstant().h2StyleBlue(),
-  //               ),
-  //             ),
-  //           ),
-  //           Row(
-  //             children: [
-  //               Padding(
-  //                 padding: const EdgeInsets.fromLTRB(20, 4, 4, 4),
-  //                 child: SvgPicture.asset('images/c1.svg'),
-  //               ),
-  //               ShowTitle(
-  //                 title: dataAritcles[index],
-  //                 textStyle: MyConstant().h4StyleGley(),
-  //               ),
-  //               Padding(
-  //                 padding: const EdgeInsets.fromLTRB(16, 4, 4, 4),
-  //                 child: SvgPicture.asset('images/v2.svg'),
-  //               ),
-  //               ShowTitle(
-  //                 title: viewAritcles[index],
-  //                 textStyle: MyConstant().h4StyleGley(),
-  //               ),
-  //             ],
-  //           ),
-  //           Container(
-  //             width: 326,
-  //             child: Padding(
-  //               padding:
-  //                   const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-  //               child: ShowTitle(
-  //                 title: cutWord(detailAritcles[index]),
-  //                 textStyle: MyConstant().h4StyleBlack(),
-  //               ),
-  //             ),
-  //           ),
-  //           SizedBox(
-  //             height: 5,
-  //           ),
-  //         ],
-  //       )),
-  //     ),
-  //   );
-  // }
-
-  SizedBox listImages() {
-    return SizedBox(
-      height: 180,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        shrinkWrap: true,
-        physics: const ClampingScrollPhysics(),
-        itemCount: pathImageA.length,
-        itemBuilder: (context, index) => Card(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                height: 130,
-                width: 130,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  image: DecorationImage(
-                    image: AssetImage(
-                      pathImageA[index],
-                    ),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+        actionGet: 2,
       ),
     );
   }

@@ -1,8 +1,13 @@
 //@dart=2.9
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:thanyarak/bodys/API/api_findByCitizenId.dart';
+import 'package:thanyarak/bodys/API/api_url.dart';
 import 'package:thanyarak/bodys/about_page.dart';
 import 'package:thanyarak/bodys/article_details_page.dart';
 import 'package:thanyarak/bodys/article_page.dart';
@@ -11,6 +16,7 @@ import 'package:thanyarak/bodys/dating_page.dart';
 import 'package:thanyarak/bodys/donate_page.dart';
 import 'package:thanyarak/bodys/hitstoryCk_page.dart';
 import 'package:thanyarak/bodys/hitstoryDetail.dart';
+import 'package:thanyarak/bodys/loading.dart';
 import 'package:thanyarak/bodys/login/setting_page.dart';
 import 'package:thanyarak/bodys/main_page.dart';
 
@@ -23,6 +29,8 @@ import 'package:thanyarak/models/session.dart';
 import 'package:thanyarak/utility/my_constant.dart';
 import 'package:thanyarak/widgets/article_widget.dart';
 import 'package:thanyarak/widgets/show_title.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 
 import 'package:thanyarak/bodys/notification_page.dart';
 
@@ -33,15 +41,43 @@ class MenuPage extends StatefulWidget {
   _MenuPageState createState() => _MenuPageState();
 }
 
+final double avatarRadius = 50.0;
+File _img;
+String Token;
 String cid = '';
+Future<FindByCitizenId> futureFindByCitizenId;
 
 class _MenuPageState extends State<MenuPage> {
   Future getDATA() async {
     final SharedPreferences per = await SharedPreferences.getInstance();
     setState(() {
+      Token = per.getString('tokens');
+
       cid = per.getString('cid');
-      print(cid);
+      print('cid: ${cid}');
+      imgPro = per.getString('img');
+      if (imgPro == '' || imgPro == null) {
+      } else {
+        _img = File(imgPro.toString());
+      }
+      print('img:${imgPro}');
     });
+  }
+
+  Future<FindByCitizenId> getcid(String txtcid, String tk) async {
+    var url = '${apiurl().url}/patient/findByCitizenId/${txtcid}';
+    final response = await http.get(Uri.parse(url), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ${tk}',
+    });
+    if (response.statusCode == 200) {
+      return FindByCitizenId.fromJson(jsonDecode(response.body));
+    } else {
+      print(response.statusCode);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => loadingPage()));
+    }
   }
 
   SessionManager ssr = SessionManager();
@@ -50,6 +86,12 @@ class _MenuPageState extends State<MenuPage> {
   void initState() {
     getDATA();
     super.initState();
+    if (cid == '' || cid == null) {
+    } else {
+      setState(() {
+        futureFindByCitizenId = getcid(cid, Token);
+      });
+    }
   }
 
   bool txt = true;
@@ -663,14 +705,16 @@ class _MenuPageState extends State<MenuPage> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(50),
                         child: Container(
-                          decoration: ShapeDecoration(
-                              //color: Colors.green,
-                              shape: CircleBorder(),
-                              image: DecorationImage(
-                                image: AssetImage(cid == '' || cid == null
-                                    ? 'images/avatar.png'
-                                    : 'images/loginuser.png'),
-                              )),
+                          child: _img == null || _img == ''
+                              ? CircleAvatar(
+                                  radius: avatarRadius,
+                                  backgroundImage:
+                                      AssetImage('images/avatar.png'),
+                                )
+                              : CircleAvatar(
+                                  radius: avatarRadius,
+                                  backgroundImage: FileImage(_img),
+                                ),
                           // child: Image(
                           //   image: AssetImage('images/avatar.png'),
                           // ),
@@ -697,17 +741,30 @@ class _MenuPageState extends State<MenuPage> {
                               ),
                             ),
                           ),
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              'Jonathan Wicktoria',
-                              maxLines: 1,
-                              overflow: TextOverflow.visible,
-                              style: GoogleFonts.kanit(
-                                fontSize: 14,
-                                color: Colors.white70,
-                              ),
-                            ),
+                          FutureBuilder<FindByCitizenId>(
+                            future: futureFindByCitizenId,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    snapshot.data.name +
+                                        '  ' +
+                                        snapshot.data.surname,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.visible,
+                                    style: GoogleFonts.kanit(
+                                      fontSize: 14,
+                                      color: Colors.white70,
+                                    ),
+                                  ),
+                                );
+                              } else if (snapshot.hasError) {
+                                return Text('${snapshot.error}');
+                              }
+
+                              return CircularProgressIndicator();
+                            },
                           ),
                         ],
                       ),
@@ -749,12 +806,42 @@ class _MenuPageState extends State<MenuPage> {
             Expanded(
               child: GestureDetector(
                 onTap: () {
-                  setState(() {
-                    ssr.setID('');
-                  });
-                  //Navigator.pop(context);
-                  // Navigator.pop(context,
-                  //     MaterialPageRoute(builder: (context) => MainPage()));
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text(
+                          'ออกจากระบบ',
+                          style: GoogleFonts.kanit(),
+                        ),
+                        content: Text(
+                          'คุณต้องการที่จะออกจากระบบ หรือไม่',
+                          style: GoogleFonts.kanit(),
+                        ),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'Cancel'),
+                            child: const Text('ยกเลิก'),
+                          ),
+                          TextButton(
+                            onPressed: () => setState(() {
+                              ssr.setCID('');
+                              ssr.setPassword('');
+                              ssr.setIMG('');
+                              ssr.setPID('');
+                              //Navigator.pop(context);
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          MainPage()));
+                            }),
+                            child: Text('ตกลง', style: GoogleFonts.kanit()),
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 },
                 child: Container(
                   margin: EdgeInsets.only(top: 0),

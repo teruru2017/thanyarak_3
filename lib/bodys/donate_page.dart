@@ -30,7 +30,7 @@ class DonatePage extends StatefulWidget {
   _DonatePageState createState() => _DonatePageState();
 }
 
-String checklogin = '';
+String cid = '';
 
 class _DonatePageState extends State<DonatePage> {
   Future<List<apiDonate>> donateData() async {
@@ -48,8 +48,8 @@ class _DonatePageState extends State<DonatePage> {
   Future getDATA() async {
     final SharedPreferences per = await SharedPreferences.getInstance();
     setState(() {
-      checklogin = per.getString('id');
-      print(checklogin);
+      cid = per.getString('cid');
+      // print(cid);
     });
   }
 
@@ -100,330 +100,357 @@ class _DonatePageState extends State<DonatePage> {
       _w = 2;
       _f = 1;
     }
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Container(
-                child: Stack(
-                  children: [
-                    //พื้นหลัง
-                    Container(
-                      height: MediaQuery.of(context).size.height,
-                      padding: EdgeInsets.only(top: 20, left: 15, right: 15),
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage('images/bg_menu.png'),
-                            fit: BoxFit.cover,
-                            alignment: Alignment.topCenter),
-                      ),
-                      child: Column(
-                        children: [
-                          Container(
-                            // color: Colors.amber,
-                            padding:
-                                EdgeInsets.only(top: 20, left: 15, right: 15),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: _f,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(top: 0),
-                                    child: Container(
-                                      height: 40,
-                                      // color: Colors.red,
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          'บริจาค',
-                                          style: GoogleFonts.kanit(
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.white,
+    return WillPopScope(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Container(
+                  child: Stack(
+                    children: [
+                      //พื้นหลัง
+                      Container(
+                        height: MediaQuery.of(context).size.height,
+                        padding: EdgeInsets.only(top: 20, left: 15, right: 15),
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage('images/bg_menu.png'),
+                              fit: BoxFit.cover,
+                              alignment: Alignment.topCenter),
+                        ),
+                        child: Column(
+                          children: [
+                            Container(
+                              // color: Colors.amber,
+                              padding:
+                                  EdgeInsets.only(top: 20, left: 15, right: 15),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    flex: _f,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(top: 0),
+                                      child: Container(
+                                        height: 40,
+                                        // color: Colors.red,
+                                        child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'บริจาค',
+                                            style: GoogleFonts.kanit(
+                                              fontSize: 22,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.white,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 0),
-                                  child: Container(
-                                    // color: Colors.amber,
-                                    height: 40,
-                                    width: 100,
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 0),
                                     child: Container(
-                                      //color: Colors.red,
-                                      //margin: EdgeInsets.only(top: 35),
-                                      // padding: EdgeInsets.only(top: 15),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  CupertinoPageRoute(
-                                                      builder: (context) =>
-                                                          checklogin == '' ||
-                                                                  checklogin ==
-                                                                      null
-                                                              ? NotiPage()
-                                                              : alert_page()));
-                                            },
-                                            child: Stack(
-                                              children: [
-                                                Container(
-                                                  padding: EdgeInsets.all(10),
-                                                  decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                          image: AssetImage(
-                                                              'images/notimenu.png'))),
-                                                ),
-                                                Visibility(
-                                                  visible: checklogin == '' ||
-                                                          checklogin == null
-                                                      ? false
-                                                      : true,
-                                                  child: Positioned(
-                                                    left: 10,
-                                                    top: 6,
-                                                    child: Container(
-                                                      height: 10,
-                                                      width: 10,
-                                                      decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                            width: 1,
-                                                            color: HexColor(
-                                                                '#31BCEB')),
-                                                        color:
-                                                            HexColor('#F291A3'),
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                          Radius.circular(50),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(width: 20),
-                                          GestureDetector(
-                                            onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  CupertinoPageRoute(
-                                                      builder: (context) =>
-                                                          MenuPage()));
-                                            },
-                                            child: Container(
-                                              width: 20,
-                                              height: 20,
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          'images/menu.png'))),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    //พื้นหลังเนื้อหา
-                    Padding(
-                      padding: const EdgeInsets.only(top: 90),
-                      child: Container(
-                        height: MediaQuery.of(context).size.height,
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(40.0),
-                            topRight: Radius.circular(40.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                    //เนื้อหา
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          top: 110, left: 15, right: 15, bottom: 20),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        child: Column(
-                          children: [
-                            FutureBuilder<List<apiDonate>>(
-                              future: futureData,
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                  List<apiDonate> donateData = snapshot.data;
-                                  return Container(
-                                    child: Column(
-                                      children: donateData
-                                          .map(
-                                            (e) => GestureDetector(
+                                      // color: Colors.amber,
+                                      height: 40,
+                                      width: 100,
+                                      child: Container(
+                                        //color: Colors.red,
+                                        //margin: EdgeInsets.only(top: 35),
+                                        // padding: EdgeInsets.only(top: 15),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            GestureDetector(
                                               onTap: () {
                                                 Navigator.push(
                                                     context,
                                                     CupertinoPageRoute(
                                                         builder: (context) =>
-                                                            detaildonate_pages(
-                                                              urlget:
-                                                                  'https://truethanyarak.com/api/Ar_Detail.php?id=${e.id}',
-                                                            )));
+                                                            cid == '' ||
+                                                                    cid == null
+                                                                ? NotiPage()
+                                                                : alert_page()));
                                               },
-                                              child: Column(
+                                              child: Stack(
                                                 children: [
                                                   Container(
-                                                    // width: 380,
+                                                    padding: EdgeInsets.all(10),
                                                     decoration: BoxDecoration(
-                                                        boxShadow: [
-                                                          BoxShadow(
-                                                            color: Colors.grey
-                                                                .withOpacity(
-                                                                    0.2),
-                                                            spreadRadius: 1,
-                                                            blurRadius: 10,
-                                                            offset:
-                                                                Offset(0, 8),
-                                                          )
-                                                        ],
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    40))),
-                                                    child: Column(
-                                                      children: [
-                                                        Container(
-                                                          width: MediaQuery.of(
-                                                                  context)
-                                                              .size
-                                                              .width,
-                                                          height: 160,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            // color: Colors.white,
-                                                            image: DecorationImage(
-                                                                fit: BoxFit
-                                                                    .cover,
-                                                                image: NetworkImage(
-                                                                    e.urlpicpath)),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .only(
-                                                              topLeft: Radius
-                                                                  .circular(40),
-                                                              topRight: Radius
-                                                                  .circular(40),
-                                                            ),
+                                                        image: DecorationImage(
+                                                            image: AssetImage(
+                                                                'images/notimenu.png'))),
+                                                  ),
+                                                  Visibility(
+                                                    visible:
+                                                        cid == '' || cid == null
+                                                            ? false
+                                                            : true,
+                                                    child: Positioned(
+                                                      left: 10,
+                                                      top: 6,
+                                                      child: Container(
+                                                        height: 10,
+                                                        width: 10,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                              width: 1,
+                                                              color: HexColor(
+                                                                  '#31BCEB')),
+                                                          color: HexColor(
+                                                              '#F291A3'),
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                            Radius.circular(50),
                                                           ),
                                                         ),
-                                                        Container(
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(width: 20),
+                                            GestureDetector(
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    CupertinoPageRoute(
+                                                        builder: (context) =>
+                                                            MenuPage()));
+                                              },
+                                              child: Container(
+                                                width: 20,
+                                                height: 20,
+                                                decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                        image: AssetImage(
+                                                            'images/menu.png'))),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      //พื้นหลังเนื้อหา
+                      Padding(
+                        padding: const EdgeInsets.only(top: 90),
+                        child: Container(
+                          height: MediaQuery.of(context).size.height,
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(40.0),
+                              topRight: Radius.circular(40.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                      //เนื้อหา
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 110, left: 15, right: 15, bottom: 20),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Column(
+                            children: [
+                              FutureBuilder<List<apiDonate>>(
+                                future: futureData,
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    List<apiDonate> donateData = snapshot.data;
+                                    return Container(
+                                      child: Column(
+                                        children: donateData
+                                            .map(
+                                              (e) => GestureDetector(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      CupertinoPageRoute(
+                                                          builder: (context) =>
+                                                              detaildonate_pages(
+                                                                urlget:
+                                                                    '${e.id}',
+                                                              )));
+                                                },
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      // width: 380,
+                                                      decoration: BoxDecoration(
+                                                          boxShadow: [
+                                                            BoxShadow(
+                                                              color: Colors.grey
+                                                                  .withOpacity(
+                                                                      0.2),
+                                                              spreadRadius: 1,
+                                                              blurRadius: 10,
+                                                              offset:
+                                                                  Offset(0, 8),
+                                                            )
+                                                          ],
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          40))),
+                                                      child: Column(
+                                                        children: [
+                                                          Container(
                                                             width:
                                                                 MediaQuery.of(
                                                                         context)
                                                                     .size
                                                                     .width,
-                                                            height: 150,
+                                                            height: 160,
                                                             decoration:
                                                                 BoxDecoration(
-                                                              color:
-                                                                  Colors.white,
+                                                              // color: Colors.white,
+                                                              image: DecorationImage(
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                  image: NetworkImage(
+                                                                      e.urlpicpath)),
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .only(
-                                                                bottomLeft: Radius
+                                                                topLeft: Radius
                                                                     .circular(
                                                                         40),
-                                                                bottomRight:
-                                                                    Radius
-                                                                        .circular(
-                                                                            40),
+                                                                topRight: Radius
+                                                                    .circular(
+                                                                        40),
                                                               ),
                                                             ),
-                                                            child: Container(
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      top: 10,
-                                                                      left: 20,
-                                                                      right:
-                                                                          20),
-                                                              child: Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  Text(e.subject,
-                                                                      maxLines:
-                                                                          2,
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis,
-                                                                      style: GoogleFonts.kanit(
-                                                                          fontSize:
-                                                                              16,
-                                                                          fontWeight: FontWeight
-                                                                              .w500,
+                                                          ),
+                                                          Container(
+                                                              width:
+                                                                  MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width,
+                                                              height: 150,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Colors
+                                                                    .white,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .only(
+                                                                  bottomLeft: Radius
+                                                                      .circular(
+                                                                          40),
+                                                                  bottomRight: Radius
+                                                                      .circular(
+                                                                          40),
+                                                                ),
+                                                              ),
+                                                              child: Container(
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        top: 10,
+                                                                        left:
+                                                                            20,
+                                                                        right:
+                                                                            20),
+                                                                child: Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Text(e.subject,
+                                                                        maxLines:
+                                                                            2,
+                                                                        overflow:
+                                                                            TextOverflow
+                                                                                .ellipsis,
+                                                                        style: GoogleFonts.kanit(
+                                                                            fontSize:
+                                                                                16,
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
+                                                                            color: Color(0xff0088C6))),
+                                                                    SizedBox(
+                                                                        height:
+                                                                            5),
+                                                                    Text(
+                                                                        e.title,
+                                                                        maxLines:
+                                                                            2,
+                                                                        overflow:
+                                                                            TextOverflow
+                                                                                .ellipsis,
+                                                                        style: GoogleFonts.kanit(
+                                                                            fontSize:
+                                                                                14,
+                                                                            color:
+                                                                                Colors.black)),
+                                                                    SizedBox(
+                                                                        height:
+                                                                            5),
+                                                                    Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        FaIcon(
+                                                                          FontAwesomeIcons
+                                                                              .solidClock,
+                                                                          size:
+                                                                              12,
                                                                           color:
-                                                                              Color(0xff0088C6))),
-                                                                  SizedBox(
-                                                                      height:
-                                                                          5),
-                                                                  Text(e.title,
-                                                                      maxLines:
-                                                                          2,
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis,
-                                                                      style: GoogleFonts.kanit(
-                                                                          fontSize:
-                                                                              14,
-                                                                          color:
-                                                                              Colors.black)),
-                                                                  SizedBox(
-                                                                      height:
-                                                                          5),
-                                                                  Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .start,
-                                                                    children: [
-                                                                      FaIcon(
-                                                                        FontAwesomeIcons
-                                                                            .solidClock,
-                                                                        size:
-                                                                            12,
-                                                                        color: Color(
-                                                                            0xff0088C6),
-                                                                      ),
-                                                                      SizedBox(
-                                                                        width:
-                                                                            5,
-                                                                      ),
-                                                                      Text(
-                                                                          DateFormat('dd/MM/').format(e
-                                                                                  .createdate) +
-                                                                              DateFormat('yyyy')
-                                                                                  .format(
-                                                                                e.createdate.add(
-                                                                                  Duration(days: 198195),
+                                                                              Color(0xff0088C6),
+                                                                        ),
+                                                                        SizedBox(
+                                                                          width:
+                                                                              5,
+                                                                        ),
+                                                                        Text(
+                                                                            DateFormat('dd/MM/').format(e.createdate) +
+                                                                                DateFormat('yyyy').format(
+                                                                                  e.createdate.add(
+                                                                                    Duration(days: 198195),
+                                                                                  ),
                                                                                 ),
-                                                                              ),
-                                                                          overflow: TextOverflow
-                                                                              .ellipsis,
+                                                                            overflow: TextOverflow.ellipsis,
+                                                                            style: GoogleFonts.kanit(
+                                                                              fontSize: 12,
+                                                                              fontWeight: FontWeight.w500,
+                                                                              color: Colors.grey,
+                                                                            )),
+                                                                        SizedBox(
+                                                                          width:
+                                                                              10,
+                                                                        ),
+                                                                        FaIcon(
+                                                                          FontAwesomeIcons
+                                                                              .solidEye,
+                                                                          size:
+                                                                              12,
+                                                                          color:
+                                                                              Color(0xff0088C6),
+                                                                        ),
+                                                                        SizedBox(
+                                                                          width:
+                                                                              5,
+                                                                        ),
+                                                                        Text(
+                                                                          '10',
+                                                                          overflow:
+                                                                              TextOverflow.ellipsis,
                                                                           style:
                                                                               GoogleFonts.kanit(
                                                                             fontSize:
@@ -432,465 +459,50 @@ class _DonatePageState extends State<DonatePage> {
                                                                                 FontWeight.w500,
                                                                             color:
                                                                                 Colors.grey,
-                                                                          )),
-                                                                      SizedBox(
-                                                                        width:
-                                                                            10,
-                                                                      ),
-                                                                      FaIcon(
-                                                                        FontAwesomeIcons
-                                                                            .solidEye,
-                                                                        size:
-                                                                            12,
-                                                                        color: Color(
-                                                                            0xff0088C6),
-                                                                      ),
-                                                                      SizedBox(
-                                                                        width:
-                                                                            5,
-                                                                      ),
-                                                                      Text(
-                                                                        '10',
-                                                                        overflow:
-                                                                            TextOverflow.ellipsis,
-                                                                        style: GoogleFonts
-                                                                            .kanit(
-                                                                          fontSize:
-                                                                              12,
-                                                                          fontWeight:
-                                                                              FontWeight.w500,
-                                                                          color:
-                                                                              Colors.grey,
+                                                                          ),
                                                                         ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            )),
-                                                      ],
+                                                                      ],
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              )),
+                                                        ],
+                                                      ),
                                                     ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 20,
-                                                  )
-                                                ],
+                                                    SizedBox(
+                                                      height: 20,
+                                                    )
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                          )
-                                          .toList(),
-                                    ),
-                                  );
-                                } else if (snapshot.hasError) {
-                                  return Text("${snapshot.error}");
-                                }
-                                // By default show a loading spinner.
-                                return CircularProgressIndicator();
-                              },
-                            ),
-                            // DonateWidget()
-                            // GestureDetector(
-                            //   onTap: () => Navigator.push(
-                            //       context,
-                            //       CupertinoPageRoute(
-                            //           builder: (context) =>
-                            //               detaildonate_pages())),
-                            //   child: Container(
-                            //     // width: 380,
-                            //     decoration: BoxDecoration(
-                            //         boxShadow: [
-                            //           BoxShadow(
-                            //             color: Colors.grey.withOpacity(0.2),
-                            //             spreadRadius: 1,
-                            //             blurRadius: 10,
-                            //             offset: Offset(0, 8),
-                            //           )
-                            //         ],
-                            //         borderRadius:
-                            //             BorderRadius.all(Radius.circular(40))),
-                            //     child: Column(
-                            //       children: [
-                            //         Container(
-                            //           width: MediaQuery.of(context).size.width,
-                            //           height: 160,
-                            //           decoration: BoxDecoration(
-                            //             // color: Colors.white,
-                            //             image: DecorationImage(
-                            //                 fit: BoxFit.cover,
-                            //                 image:
-                            //                     AssetImage('images/1150.png')),
-                            //             borderRadius: BorderRadius.only(
-                            //               topLeft: Radius.circular(40),
-                            //               topRight: Radius.circular(40),
-                            //             ),
-                            //           ),
-                            //         ),
-                            //         Container(
-                            //             width:
-                            //                 MediaQuery.of(context).size.width,
-                            //             height: 150,
-                            //             decoration: BoxDecoration(
-                            //               color: Colors.white,
-                            //               borderRadius: BorderRadius.only(
-                            //                 bottomLeft: Radius.circular(40),
-                            //                 bottomRight: Radius.circular(40),
-                            //               ),
-                            //             ),
-                            //             child: Container(
-                            //               padding: EdgeInsets.only(
-                            //                   top: 10, left: 20, right: 20),
-                            //               child: Column(
-                            //                 crossAxisAlignment:
-                            //                     CrossAxisAlignment.start,
-                            //                 children: [
-                            //                   Text(
-                            //                       'บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิถันยรักษ์ฯ',
-                            //                       maxLines: 2,
-                            //                       overflow:
-                            //                           TextOverflow.ellipsis,
-                            //                       style: GoogleFonts.kanit(
-                            //                           fontSize: 16,
-                            //                           fontWeight:
-                            //                               FontWeight.w500,
-                            //                           color:
-                            //                               Color(0xff0088C6))),
-                            //                   SizedBox(height: 5),
-                            //                   Text(
-                            //                       'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
-                            //                       maxLines: 2,
-                            //                       overflow:
-                            //                           TextOverflow.ellipsis,
-                            //                       style: GoogleFonts.kanit(
-                            //                           fontSize: 14,
-                            //                           color: Colors.black)),
-                            //                   SizedBox(height: 5),
-                            //                   Row(
-                            //                     mainAxisAlignment:
-                            //                         MainAxisAlignment.start,
-                            //                     children: [
-                            //                       FaIcon(
-                            //                         FontAwesomeIcons.solidClock,
-                            //                         size: 12,
-                            //                         color: Color(0xff0088C6),
-                            //                       ),
-                            //                       SizedBox(
-                            //                         width: 5,
-                            //                       ),
-                            //                       Text(
-                            //                         "16-06-2564",
-                            //                         overflow:
-                            //                             TextOverflow.ellipsis,
-                            //                         style: GoogleFonts.kanit(
-                            //                           fontSize: 12,
-                            //                           fontWeight:
-                            //                               FontWeight.w500,
-                            //                           color: Colors.grey,
-                            //                         ),
-                            //                       ),
-                            //                       SizedBox(
-                            //                         width: 10,
-                            //                       ),
-                            //                       FaIcon(
-                            //                         FontAwesomeIcons.solidEye,
-                            //                         size: 12,
-                            //                         color: Color(0xff0088C6),
-                            //                       ),
-                            //                       SizedBox(
-                            //                         width: 5,
-                            //                       ),
-                            //                       Text(
-                            //                         "50,000",
-                            //                         overflow:
-                            //                             TextOverflow.ellipsis,
-                            //                         style: GoogleFonts.kanit(
-                            //                           fontSize: 12,
-                            //                           fontWeight:
-                            //                               FontWeight.w500,
-                            //                           color: Colors.grey,
-                            //                         ),
-                            //                       ),
-                            //                     ],
-                            //                   ),
-                            //                 ],
-                            //               ),
-                            //             )),
-                            //       ],
-                            //     ),
-                            //   ),
-                            // ),
-                            // SizedBox(height: 20),
-                            // GestureDetector(
-                            //   onTap: () => Navigator.push(
-                            //       context,
-                            //       CupertinoPageRoute(
-                            //           builder: (context) =>
-                            //               detaildonate_pages())),
-                            //   child: Container(
-                            //     // width: 380,
-                            //     decoration: BoxDecoration(
-                            //         boxShadow: [
-                            //           BoxShadow(
-                            //             color: Colors.grey.withOpacity(0.2),
-                            //             spreadRadius: 1,
-                            //             blurRadius: 10,
-                            //             offset: Offset(0, 8),
-                            //           )
-                            //         ],
-                            //         borderRadius:
-                            //             BorderRadius.all(Radius.circular(40))),
-                            //     child: Column(
-                            //       children: [
-                            //         Container(
-                            //           width: MediaQuery.of(context).size.width,
-                            //           height: 160,
-                            //           decoration: BoxDecoration(
-                            //             // color: Colors.white,
-                            //             image: DecorationImage(
-                            //                 fit: BoxFit.cover,
-                            //                 image:
-                            //                     AssetImage('images/1150.png')),
-                            //             borderRadius: BorderRadius.only(
-                            //               topLeft: Radius.circular(40),
-                            //               topRight: Radius.circular(40),
-                            //             ),
-                            //           ),
-                            //         ),
-                            //         Container(
-                            //             width:
-                            //                 MediaQuery.of(context).size.width,
-                            //             height: 150,
-                            //             decoration: BoxDecoration(
-                            //               color: Colors.white,
-                            //               borderRadius: BorderRadius.only(
-                            //                 bottomLeft: Radius.circular(40),
-                            //                 bottomRight: Radius.circular(40),
-                            //               ),
-                            //             ),
-                            //             child: Container(
-                            //               padding: EdgeInsets.only(
-                            //                   top: 10, left: 20, right: 20),
-                            //               child: Column(
-                            //                 crossAxisAlignment:
-                            //                     CrossAxisAlignment.start,
-                            //                 children: [
-                            //                   Text(
-                            //                       'บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิถันยรักษ์ฯ',
-                            //                       maxLines: 2,
-                            //                       overflow:
-                            //                           TextOverflow.ellipsis,
-                            //                       style: GoogleFonts.kanit(
-                            //                           fontSize: 16,
-                            //                           fontWeight:
-                            //                               FontWeight.w500,
-                            //                           color:
-                            //                               Color(0xff0088C6))),
-                            //                   SizedBox(height: 5),
-                            //                   Text(
-                            //                       'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
-                            //                       maxLines: 2,
-                            //                       overflow:
-                            //                           TextOverflow.ellipsis,
-                            //                       style: GoogleFonts.kanit(
-                            //                           fontSize: 14,
-                            //                           color: Colors.black)),
-                            //                   SizedBox(height: 5),
-                            //                   Row(
-                            //                     mainAxisAlignment:
-                            //                         MainAxisAlignment.start,
-                            //                     children: [
-                            //                       FaIcon(
-                            //                         FontAwesomeIcons.solidClock,
-                            //                         size: 12,
-                            //                         color: Color(0xff0088C6),
-                            //                       ),
-                            //                       SizedBox(
-                            //                         width: 5,
-                            //                       ),
-                            //                       Text(
-                            //                         "16-06-2564",
-                            //                         overflow:
-                            //                             TextOverflow.ellipsis,
-                            //                         style: GoogleFonts.kanit(
-                            //                           fontSize: 12,
-                            //                           fontWeight:
-                            //                               FontWeight.w500,
-                            //                           color: Colors.grey,
-                            //                         ),
-                            //                       ),
-                            //                       SizedBox(
-                            //                         width: 10,
-                            //                       ),
-                            //                       FaIcon(
-                            //                         FontAwesomeIcons.solidEye,
-                            //                         size: 12,
-                            //                         color: Color(0xff0088C6),
-                            //                       ),
-                            //                       SizedBox(
-                            //                         width: 5,
-                            //                       ),
-                            //                       Text(
-                            //                         "50,000",
-                            //                         overflow:
-                            //                             TextOverflow.ellipsis,
-                            //                         style: GoogleFonts.kanit(
-                            //                           fontSize: 12,
-                            //                           fontWeight:
-                            //                               FontWeight.w500,
-                            //                           color: Colors.grey,
-                            //                         ),
-                            //                       ),
-                            //                     ],
-                            //                   ),
-                            //                 ],
-                            //               ),
-                            //             )),
-                            //       ],
-                            //     ),
-                            //   ),
-                            // ),
-                            // SizedBox(height: 20),
-                            // GestureDetector(
-                            //   onTap: () => Navigator.push(
-                            //       context,
-                            //       CupertinoPageRoute(
-                            //           builder: (context) =>
-                            //               detaildonate_pages())),
-                            //   child: Container(
-                            //     // width: 380,
-                            //     decoration: BoxDecoration(
-                            //         boxShadow: [
-                            //           BoxShadow(
-                            //             color: Colors.grey.withOpacity(0.2),
-                            //             spreadRadius: 1,
-                            //             blurRadius: 10,
-                            //             offset: Offset(0, 8),
-                            //           )
-                            //         ],
-                            //         borderRadius:
-                            //             BorderRadius.all(Radius.circular(40))),
-                            //     child: Column(
-                            //       children: [
-                            //         Container(
-                            //           width: MediaQuery.of(context).size.width,
-                            //           height: 160,
-                            //           decoration: BoxDecoration(
-                            //             // color: Colors.white,
-                            //             image: DecorationImage(
-                            //                 fit: BoxFit.cover,
-                            //                 image:
-                            //                     AssetImage('images/1150.png')),
-                            //             borderRadius: BorderRadius.only(
-                            //               topLeft: Radius.circular(40),
-                            //               topRight: Radius.circular(40),
-                            //             ),
-                            //           ),
-                            //         ),
-                            //         Container(
-                            //             width:
-                            //                 MediaQuery.of(context).size.width,
-                            //             height: 150,
-                            //             decoration: BoxDecoration(
-                            //               color: Colors.white,
-                            //               borderRadius: BorderRadius.only(
-                            //                 bottomLeft: Radius.circular(40),
-                            //                 bottomRight: Radius.circular(40),
-                            //               ),
-                            //             ),
-                            //             child: Container(
-                            //               padding: EdgeInsets.only(
-                            //                   top: 10, left: 20, right: 20),
-                            //               child: Column(
-                            //                 crossAxisAlignment:
-                            //                     CrossAxisAlignment.start,
-                            //                 children: [
-                            //                   Text(
-                            //                       'บริษัท ฟิลิป เวน(ประเทศไทย) จำกัด ได้นำรายได้จากการจัดกิจกรรมต้านภัยมะเร็งเต้านม มอบให้มูลนิธิถันยรักษ์ฯ',
-                            //                       maxLines: 2,
-                            //                       overflow:
-                            //                           TextOverflow.ellipsis,
-                            //                       style: GoogleFonts.kanit(
-                            //                           fontSize: 16,
-                            //                           fontWeight:
-                            //                               FontWeight.w500,
-                            //                           color:
-                            //                               Color(0xff0088C6))),
-                            //                   SizedBox(height: 5),
-                            //                   Text(
-                            //                       'หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ หลายๆ ท่านสงสัย ตรวจเต้านมด้วยแมมโมแกรมแล้ว ทำไมยังต้องตรวจอัลตร้าซาวนด์อีกล่ะ มันให้ผลการตรวจวินิจฉัยแตกต่างกันอย่างไร เรามีสาระความรู้มาฝากค่ะ',
-                            //                       maxLines: 2,
-                            //                       overflow:
-                            //                           TextOverflow.ellipsis,
-                            //                       style: GoogleFonts.kanit(
-                            //                           fontSize: 14,
-                            //                           color: Colors.black)),
-                            //                   SizedBox(height: 5),
-                            //                   Row(
-                            //                     mainAxisAlignment:
-                            //                         MainAxisAlignment.start,
-                            //                     children: [
-                            //                       FaIcon(
-                            //                         FontAwesomeIcons.solidClock,
-                            //                         size: 12,
-                            //                         color: Color(0xff0088C6),
-                            //                       ),
-                            //                       SizedBox(
-                            //                         width: 5,
-                            //                       ),
-                            //                       Text(
-                            //                         "16-06-2564",
-                            //                         overflow:
-                            //                             TextOverflow.ellipsis,
-                            //                         style: GoogleFonts.kanit(
-                            //                           fontSize: 12,
-                            //                           fontWeight:
-                            //                               FontWeight.w500,
-                            //                           color: Colors.grey,
-                            //                         ),
-                            //                       ),
-                            //                       SizedBox(
-                            //                         width: 10,
-                            //                       ),
-                            //                       FaIcon(
-                            //                         FontAwesomeIcons.solidEye,
-                            //                         size: 12,
-                            //                         color: Color(0xff0088C6),
-                            //                       ),
-                            //                       SizedBox(
-                            //                         width: 5,
-                            //                       ),
-                            //                       Text(
-                            //                         "50,000",
-                            //                         overflow:
-                            //                             TextOverflow.ellipsis,
-                            //                         style: GoogleFonts.kanit(
-                            //                           fontSize: 12,
-                            //                           fontWeight:
-                            //                               FontWeight.w500,
-                            //                           color: Colors.grey,
-                            //                         ),
-                            //                       ),
-                            //                     ],
-                            //                   ),
-                            //                 ],
-                            //               ),
-                            //             )),
-                            //       ],
-                            //     ),
-                            //   ),
-                            // ),
-                            // SizedBox(height: 20),
-                          ],
+                                            )
+                                            .toList(),
+                                      ),
+                                    );
+                                  } else if (snapshot.hasError) {
+                                    return Text("${snapshot.error}");
+                                  }
+                                  // By default show a loading spinner.
+                                  return CircularProgressIndicator();
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
+        bottomNavigationBar: NavigagitonBar(actionGet: 3),
       ),
-      bottomNavigationBar: NavigagitonBar(actionGet: 3),
+      onWillPop: () {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            '/mainHome', (Route<dynamic> route) => false);
+      },
     );
   }
 }

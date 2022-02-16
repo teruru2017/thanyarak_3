@@ -1,39 +1,198 @@
 //@dart=2.9
+import 'dart:convert';
+import 'dart:ffi';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:thanyarak/bodys/API/api_url.dart';
 import 'package:thanyarak/bodys/dating_page.dart';
 import 'package:thanyarak/bodys/slipMark.dart';
+import 'package:thanyarak/models/session.dart';
 import 'package:thanyarak/widgets/NavigationBar.dart';
 import 'package:flutter/services.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
 
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel;
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
-import 'package:intl/intl.dart' show DateFormat;
+import 'package:intl/intl.dart' show DateFormat, Intl;
+import 'package:thanyarak/widgets/msgBox_widget.dart';
 
 class detailcheck_page extends StatefulWidget {
-  detailcheck_page({Key key}) : super(key: key);
+  detailcheck_page({Key key, this.list_id}) : super(key: key);
+  List<int> list_id;
   @override
   _detailcheck_pageState createState() => _detailcheck_pageState();
 }
 
+String cid, resultType, addressHis;
 enum SingingCharacter { buse01, buse02, buse03 }
 enum SingingCharacterV { email, phone }
 SingingCharacterV _characterV2 = SingingCharacterV.email;
 SingingCharacter _character = SingingCharacter.buse01;
 
+String imgBase64;
+
 int _ck = 0;
 int _ckbar = 0;
+String typeSend;
+String stringList;
 
 class _detailcheck_pageState extends State<detailcheck_page> {
-//
+  TextEditingController input_download = TextEditingController();
+  TextEditingController input_cd = TextEditingController();
+  List<int> listID;
+  void initState() {
+    imgBase64 = "";
+    _ck = 0;
+    _ckbar = 0;
+    _character = SingingCharacter.buse01;
+    _characterV2 = SingingCharacterV.email;
+    print("_____________________________");
+    print('this.page : detailcheck');
+    Intl.defaultLocale = 'th';
+    resultType = 'download';
+    initializeDateFormatting();
+    super.initState();
+    getDATA();
+  }
+
+  Future getDATA() async {
+    final SharedPreferences per = await SharedPreferences.getInstance();
+    setState(() {
+      cid = per.getString('cid');
+      listID = widget.list_id;
+      // print(listID);
+    });
+  }
+
+  Future<void> postHistory({
+    String userId,
+    String historyId,
+    String resultType,
+    String phoneNumber,
+    String email,
+    String address,
+    String slipImage,
+  }) async {
+    var url = '${apiurl().urlapi}/history.php';
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode(<String, String>{
+        "userId": "${userId}",
+        "historyId": "${historyId}",
+        "resultType": "${resultType}",
+        "phoneNumber": "${phoneNumber}",
+        "email": "${email}",
+        "address": "${address}",
+        "slipImage": "${slipImage}",
+      }),
+    );
+    if (response.statusCode == 200) {
+      print('postHistory Status APi: ' + response.statusCode.toString());
+      showGeneralDialog(
+          context: context,
+          barrierDismissible: false,
+          barrierLabel:
+              MaterialLocalizations.of(context).modalBarrierDismissLabel,
+          barrierColor: Colors.transparent,
+          transitionDuration: Duration(milliseconds: 200),
+          pageBuilder:
+              (BuildContext context, Animation frist, Animation second) =>
+                  sucess(
+                    TypeSend: typeSend,
+                    DetaiSend: input_download.text,
+                  ));
+    } else {
+      print('postHistory Status APi: ' + response.statusCode.toString());
+      showGeneralDialog(
+          context: context,
+          barrierDismissible: false,
+          barrierLabel:
+              MaterialLocalizations.of(context).modalBarrierDismissLabel,
+          barrierColor: Colors.transparent,
+          transitionDuration: Duration(milliseconds: 200),
+          pageBuilder:
+              (BuildContext context, Animation frist, Animation second) =>
+                  MSGBoxWidget(
+                    title: 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง',
+                    detail: '',
+                  ));
+    }
+  }
+
+  Future<void> postProcedureHistory({
+    String userId,
+    String historyId,
+    String resultType,
+    String phoneNumber,
+    String email,
+    String address,
+    String slipImage,
+  }) async {
+    var url = '${apiurl().urlapi}/history.php';
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode(<String, String>{
+        "userId": "${userId}",
+        "historyId": "${historyId}",
+        "resultType": "${resultType}",
+        "phoneNumber": "${phoneNumber}",
+        "email": "${email}",
+        "address": "${address}",
+        "slipImage": "${slipImage}",
+      }),
+    );
+    if (response.statusCode == 200) {
+      print('postHistory Status APi: ' + response.statusCode.toString());
+      showGeneralDialog(
+          context: context,
+          barrierDismissible: false,
+          barrierLabel:
+              MaterialLocalizations.of(context).modalBarrierDismissLabel,
+          barrierColor: Colors.transparent,
+          transitionDuration: Duration(milliseconds: 200),
+          pageBuilder:
+              (BuildContext context, Animation frist, Animation second) =>
+                  sucessV3());
+    } else {
+      print('postHistory Status APi: ' + response.statusCode.toString());
+      showGeneralDialog(
+          context: context,
+          barrierDismissible: false,
+          barrierLabel:
+              MaterialLocalizations.of(context).modalBarrierDismissLabel,
+          barrierColor: Colors.transparent,
+          transitionDuration: Duration(milliseconds: 200),
+          pageBuilder:
+              (BuildContext context, Animation frist, Animation second) =>
+                  MSGBoxWidget(
+                    title: 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง',
+                    detail: '',
+                  ));
+    }
+  }
 
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -217,6 +376,13 @@ class _detailcheck_pageState extends State<detailcheck_page> {
                                                       setState(() {
                                                         _character = value;
                                                         _ckbar = 0;
+                                                        resultType = 'download';
+                                                        input_cd.clear();
+                                                        input_download.clear();
+                                                        _ck = 0;
+                                                        _characterV2 =
+                                                            SingingCharacterV
+                                                                .email;
                                                       });
                                                     },
                                                   ),
@@ -260,6 +426,10 @@ class _detailcheck_pageState extends State<detailcheck_page> {
                                                       setState(() {
                                                         _character = value;
                                                         _ckbar = 1;
+                                                        resultType = 'CD';
+                                                        input_cd.clear();
+                                                        input_download.clear();
+                                                        _ck = null;
                                                       });
                                                     },
                                                   ),
@@ -303,6 +473,11 @@ class _detailcheck_pageState extends State<detailcheck_page> {
                                                       setState(() {
                                                         _character = value;
                                                         _ckbar = 2;
+                                                        resultType =
+                                                            'procedure';
+                                                        input_cd.clear();
+                                                        input_download.clear();
+                                                        _ck = null;
                                                       });
                                                     },
                                                   ),
@@ -353,6 +528,8 @@ class _detailcheck_pageState extends State<detailcheck_page> {
                                                   setState(() {
                                                     _characterV2 = valueV;
                                                     _ck = 0;
+
+                                                    input_download.clear();
                                                   });
                                                 },
                                               ),
@@ -376,6 +553,7 @@ class _detailcheck_pageState extends State<detailcheck_page> {
                                                   setState(() {
                                                     _characterV2 = valueV;
                                                     _ck = 1;
+                                                    input_download.clear();
                                                   });
                                                 },
                                               ),
@@ -392,7 +570,8 @@ class _detailcheck_pageState extends State<detailcheck_page> {
                                           ],
                                         ),
                                         FormBuilderTextField(
-                                          keyboardType: TextInputType.number,
+                                          keyboardType: TextInputType.text,
+                                          controller: input_download,
                                           name: _ck == 0 ? 'email' : 'phone',
                                           style:
                                               GoogleFonts.kanit(fontSize: 14),
@@ -452,8 +631,9 @@ class _detailcheck_pageState extends State<detailcheck_page> {
                                           height: 10,
                                         ),
                                         FormBuilderTextField(
-                                          keyboardType: TextInputType.number,
+                                          keyboardType: TextInputType.text,
                                           name: 'address',
+                                          controller: input_cd,
                                           style:
                                               GoogleFonts.kanit(fontSize: 14),
                                           decoration: InputDecoration(
@@ -547,23 +727,99 @@ class _detailcheck_pageState extends State<detailcheck_page> {
                           GestureDetector(
                             onTap: () {
                               setState(() {
-                                showGeneralDialog(
-                                    context: context,
-                                    barrierDismissible: false,
-                                    barrierLabel:
-                                        MaterialLocalizations.of(context)
-                                            .modalBarrierDismissLabel,
-                                    barrierColor: Colors.transparent,
-                                    transitionDuration:
-                                        Duration(milliseconds: 200),
-                                    pageBuilder: (BuildContext context,
-                                            Animation frist,
-                                            Animation second) =>
-                                        _ckbar == 0
-                                            ? sucess()
-                                            : _ckbar == 1
-                                                ? payDialog()
-                                                : sucessV3());
+                                typeSend = _ck == 0
+                                    ? 'E-mail'
+                                    : _ck == 1
+                                        ? 'Sms'
+                                        : '';
+                                stringList = listID.join(",");
+                                print("cid : ${cid}");
+                                print("resultType :${resultType}");
+                                print("input_download :${input_download.text}");
+                                print("input_cd :${input_cd.text}");
+                                print("typeSend :${typeSend}");
+                                // print(_ckbar);
+                                addressHis = input_cd.text;
+
+                                //ปุ่ม
+                                if (_ckbar == 0) {
+                                  String phone_ck = "",
+                                      mail_ck = "",
+                                      img = "",
+                                      resultType_ck = "";
+
+                                  if (input_download.text != "") {
+                                    _ck == 0
+                                        ? mail_ck = input_download.text
+                                        : phone_ck = input_download.text;
+                                    postHistory(
+                                        userId: cid,
+                                        historyId: stringList,
+                                        address: input_cd.text,
+                                        email: mail_ck,
+                                        phoneNumber: phone_ck,
+                                        resultType: resultType,
+                                        slipImage: img);
+                                  } else {
+                                    showGeneralDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        barrierLabel:
+                                            MaterialLocalizations.of(context)
+                                                .modalBarrierDismissLabel,
+                                        barrierColor: Colors.transparent,
+                                        transitionDuration:
+                                            Duration(milliseconds: 200),
+                                        pageBuilder: (BuildContext context,
+                                                Animation frist,
+                                                Animation second) =>
+                                            MSGBoxWidget(
+                                              title: 'กรุณากรอกข้อมูลให้ครบ',
+                                              detail: '',
+                                            ));
+                                  }
+                                } else if (_ckbar == 1) {
+                                  showGeneralDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      barrierLabel:
+                                          MaterialLocalizations.of(context)
+                                              .modalBarrierDismissLabel,
+                                      barrierColor: Colors.transparent,
+                                      transitionDuration:
+                                          Duration(milliseconds: 200),
+                                      pageBuilder: (BuildContext context,
+                                              Animation frist,
+                                              Animation second) =>
+                                          payDialog());
+                                } else if (_ckbar == 2) {
+                                  postProcedureHistory(
+                                      userId: cid,
+                                      historyId: stringList,
+                                      address: '',
+                                      email: '',
+                                      phoneNumber: '',
+                                      resultType: resultType,
+                                      slipImage: '');
+                                }
+
+                                // showGeneralDialog(
+                                //     context: context,
+                                //     barrierDismissible: false,
+                                //     barrierLabel:
+                                //         MaterialLocalizations.of(context)
+                                //             .modalBarrierDismissLabel,
+                                //     barrierColor: Colors.transparent,
+                                //     transitionDuration:
+                                //         Duration(milliseconds: 200),
+                                //     pageBuilder: (BuildContext context,
+                                //             Animation frist,
+                                //             Animation second) =>
+                                //         _ckbar == 0
+                                //             ? sucess()
+                                //             : _ckbar == 1
+                                //                 ? payDialog()
+                                //                 : sucessV3());
                               });
                             },
                             child: Container(
@@ -635,8 +891,9 @@ class _detailcheck_pageState extends State<detailcheck_page> {
 }
 
 class sucess extends StatefulWidget {
-  sucess({Key key}) : super(key: key);
-
+  sucess({Key key, this.DetaiSend, this.TypeSend}) : super(key: key);
+  String DetaiSend;
+  String TypeSend;
   @override
   _sucessState createState() => _sucessState();
 }
@@ -685,12 +942,12 @@ class _sucessState extends State<sucess> {
                                   color: Colors.black, fontSize: 14),
                             ),
                             Text(
-                              "E-mail : xxxxxx@xxx.com เรียบร้อยแล้ว",
+                              "${widget.TypeSend} : ${widget.DetaiSend} เรียบร้อยแล้ว",
                               style: GoogleFonts.kanit(
                                   color: Colors.black, fontSize: 14),
                             ),
                             Text(
-                              "กรุณาตรวจสอบ E-mail ของท่าน",
+                              "กรุณาตรวจสอบ ${widget.TypeSend} ของท่าน",
                               style: GoogleFonts.kanit(
                                   color: Colors.black, fontSize: 14),
                             ),
@@ -701,6 +958,7 @@ class _sucessState extends State<sucess> {
                             ,
                             GestureDetector(
                               onTap: () {
+                                Navigator.pop(context);
                                 Navigator.push(
                                   context,
                                   PageTransition(
@@ -783,10 +1041,90 @@ class payDialog extends StatefulWidget {
 }
 
 class _payDialoglogState extends State<payDialog> {
+  Future<void> postCDHistory({
+    String userId,
+    String historyId,
+    String resultType,
+    String phoneNumber,
+    String email,
+    String address,
+    String slipImage,
+  }) async {
+    var url = '${apiurl().urlapi}/history.php';
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode(<String, String>{
+        "userId": "${userId}",
+        "historyId": "${historyId}",
+        "resultType": "${resultType}",
+        "phoneNumber": "${phoneNumber}",
+        "email": "${email}",
+        "address": "${address}",
+        "slipImage": "${slipImage}",
+      }),
+    );
+    if (response.statusCode == 200) {
+      print('postCDHistory Status APi: ' + response.statusCode.toString());
+      Navigator.pop(context);
+      showGeneralDialog(
+          context: context,
+          barrierDismissible: false,
+          barrierLabel:
+              MaterialLocalizations.of(context).modalBarrierDismissLabel,
+          barrierColor: Colors.transparent,
+          transitionDuration: Duration(milliseconds: 200),
+          pageBuilder:
+              (BuildContext context, Animation frist, Animation second) =>
+                  sucessV2());
+    } else {
+      print('postCDHistory Status APi: ' + response.statusCode.toString());
+      showGeneralDialog(
+          context: context,
+          barrierDismissible: false,
+          barrierLabel:
+              MaterialLocalizations.of(context).modalBarrierDismissLabel,
+          barrierColor: Colors.transparent,
+          transitionDuration: Duration(milliseconds: 200),
+          pageBuilder:
+              (BuildContext context, Animation frist, Animation second) =>
+                  MSGBoxWidget(
+                    title: 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง',
+                    detail: '',
+                  ));
+    }
+  }
+
+  final ImagePicker imgpicker = ImagePicker();
+  String imagepath = "";
   @override
+  _getFromGallery() async {
+    var pickedFile = await imgpicker.pickImage(source: ImageSource.gallery);
+    //you can use ImageCourse.camera for Camera capture
+    if (pickedFile != null) {
+      imagepath = pickedFile.path;
+      // print(imagepath);
+
+      File imagefile = File(imagepath);
+      Uint8List imagebytes = await imagefile.readAsBytes();
+      String base64string = base64.encode(imagebytes);
+      setState(() {
+        imgBase64 = base64string;
+      });
+      // print(imgBase64);
+
+      Uint8List decodedbytes = base64.decode(base64string);
+    } else {
+      print("No image is selected.");
+    }
+  }
+
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height / 5;
-    print(height);
+    // print(height);
     return Visibility(
       child: Scaffold(
           backgroundColor: Colors.black38,
@@ -882,7 +1220,9 @@ class _payDialoglogState extends State<payDialog> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              setState(() {});
+                              setState(() {
+                                _getFromGallery();
+                              });
                             },
                             child: Container(
                               margin: EdgeInsets.only(top: 30),
@@ -912,20 +1252,54 @@ class _payDialoglogState extends State<payDialog> {
                           GestureDetector(
                             onTap: () {
                               setState(() {
-                                Navigator.pop(context);
-                                showGeneralDialog(
-                                    context: context,
-                                    barrierDismissible: false,
-                                    barrierLabel:
-                                        MaterialLocalizations.of(context)
-                                            .modalBarrierDismissLabel,
-                                    barrierColor: Colors.transparent,
-                                    transitionDuration:
-                                        Duration(milliseconds: 200),
-                                    pageBuilder: (BuildContext context,
-                                            Animation frist,
-                                            Animation second) =>
-                                        sucessV2());
+//แนปสลิป
+                                // print(addressHis.length);
+                                if (addressHis.length > 0) {
+                                  if (imgBase64.length > 0) {
+                                    postCDHistory(
+                                        userId: cid,
+                                        historyId: stringList,
+                                        address: addressHis,
+                                        email: '',
+                                        phoneNumber: '',
+                                        resultType: resultType,
+                                        slipImage: imgBase64);
+                                  } else {
+                                    showGeneralDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        barrierLabel:
+                                            MaterialLocalizations.of(context)
+                                                .modalBarrierDismissLabel,
+                                        barrierColor: Colors.transparent,
+                                        transitionDuration:
+                                            Duration(milliseconds: 200),
+                                        pageBuilder: (BuildContext context,
+                                                Animation frist,
+                                                Animation second) =>
+                                            MSGBoxWidget(
+                                              title: 'กรุณาแนบสลิปการชำระเงิน',
+                                              detail: '',
+                                            ));
+                                  }
+                                } else {
+                                  showGeneralDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      barrierLabel:
+                                          MaterialLocalizations.of(context)
+                                              .modalBarrierDismissLabel,
+                                      barrierColor: Colors.transparent,
+                                      transitionDuration:
+                                          Duration(milliseconds: 200),
+                                      pageBuilder: (BuildContext context,
+                                              Animation frist,
+                                              Animation second) =>
+                                          MSGBoxWidget(
+                                            title: 'กรุณากรอกที่อยู่',
+                                            detail: '',
+                                          ));
+                                }
                               });
                             },
                             child: Container(
@@ -1135,32 +1509,29 @@ class _sucessV2State extends State<sucessV2> {
                                   color: Colors.grey, fontSize: 14),
                             ),
                             Text(
-                              "555 สายไหม 99 ถนนสายไหม แขวงสายไหม",
+                              "${addressHis}",
                               style: GoogleFonts.kanit(
                                   color: Colors.black, fontSize: 14),
+                              textAlign: TextAlign.center,
                             ),
-                            Text(
-                              "เขตสายไหม กรุงเทพฯ 10220",
-                              style: GoogleFonts.kanit(
-                                  color: Colors.black, fontSize: 14),
-                            ),
+
                             SizedBox(
                               height: 10,
                             ),
                             //ปุ่ม
 
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  Navigator.pop(context);
-                                });
-                              },
-                              child: Text(
-                                "แก้ไขที่อยู่จัดส่ง",
-                                style: GoogleFonts.kanit(
-                                    color: Color(0xff0088C6), fontSize: 18),
-                              ),
-                            ),
+                            // GestureDetector(
+                            //   onTap: () {
+                            //     setState(() {
+                            //       Navigator.pop(context);
+                            //     });
+                            //   },
+                            //   child: Text(
+                            //     "แก้ไขที่อยู่จัดส่ง",
+                            //     style: GoogleFonts.kanit(
+                            //         color: Color(0xff0088C6), fontSize: 18),
+                            //   ),
+                            // ),
                             GestureDetector(
                               onTap: () {
                                 Navigator.push(

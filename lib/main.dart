@@ -1,6 +1,9 @@
 //@dart=2.9
 import 'package:flutter/material.dart';
 import 'package:thanyarak/bodys/API/testapi.dart';
+import 'package:thanyarak/bodys/Tests/testAPI2.dart';
+import 'package:thanyarak/bodys/Tests/testAPI_scheduleDate.dart';
+import 'package:thanyarak/bodys/Tests/testNotification%20.dart';
 import 'package:thanyarak/bodys/Tests/testtext.dart';
 import 'package:thanyarak/bodys/article_page.dart';
 import 'package:thanyarak/bodys/dating_page.dart';
@@ -9,18 +12,26 @@ import 'package:thanyarak/bodys/loading.dart';
 import 'package:thanyarak/bodys/login/menumember_page.dart';
 import 'package:thanyarak/bodys/main_page.dart';
 import 'package:thanyarak/bodys/mark_procedure.dart';
+import 'package:thanyarak/bodys/newtype_pages.dart';
 import 'package:thanyarak/bodys/pin.dart';
 import 'package:thanyarak/bodys/signin_page.dart';
+
 import 'package:thanyarak/bodys/xray.dart';
 import 'package:thanyarak/bodys/xraymark.dart';
 import 'package:thanyarak/models/article_model.dart';
 import 'package:thanyarak/states/main_home.dart';
 import 'package:thanyarak/utility/my_constant.dart';
+import 'package:thanyarak/widgets/test_img.dart';
 
 Map<String, WidgetBuilder> map = {
   '/loading': (BuildContext context) => new loadingPage(),
+  '/pin': (BuildContext context) => new PinPage(),
   '/mainHome': (BuildContext context) => new MainPage(),
   '/SinginPage': (BuildContext context) => new SignInPage(),
+  '/menuHome': (BuildContext context) => new menumember_pages(),
+  '/newtype_pages': (BuildContext context) => new newtype_pages(),
+  '/test': (BuildContext context) => new testNotification(),
+  '/signin_page': (BuildContext context) => new SignInPage(),
 };
 
 String firstState;

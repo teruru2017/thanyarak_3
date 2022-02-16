@@ -33,7 +33,7 @@ class _NavigagitonBarState extends State<NavigagitonBar> {
     final SharedPreferences per = await SharedPreferences.getInstance();
     setState(() {
       cid = per.getString('cid');
-      print(cid);
+      print('cid: ${cid}');
     });
   }
 
@@ -42,7 +42,7 @@ class _NavigagitonBarState extends State<NavigagitonBar> {
     getDATA();
     super.initState();
     if (widget.actionGet == 1) {
-      print('home');
+      print('page: home');
       homeck = true;
       articleck = false;
       doneck = false;
@@ -55,28 +55,28 @@ class _NavigagitonBarState extends State<NavigagitonBar> {
       detailck = false;
       memberck = false;
 
-      print('article');
+      print('page: article');
     } else if (widget.actionGet == 3) {
       homeck = false;
       articleck = false;
       doneck = true;
       detailck = false;
       memberck = false;
-      print('doneck');
+      print('page: doneck');
     } else if (widget.actionGet == 4) {
       homeck = false;
       articleck = false;
       doneck = false;
       detailck = true;
       memberck = false;
-      print('detailck');
+      print('page: detailck');
     } else if (widget.actionGet == 5) {
       homeck = false;
       articleck = false;
       doneck = false;
       detailck = false;
       memberck = true;
-      print('memberck');
+      print('page: memberck');
     } else {
       homeck = false;
       articleck = false;
