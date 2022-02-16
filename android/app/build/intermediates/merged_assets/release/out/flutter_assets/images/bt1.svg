@@ -1,0 +1,10 @@
+<svg id="BT_01" data-name="BT 01" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="90" height="40" viewBox="0 0 90 40">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.941" y1="0.109" x2="0.193" y2="0.767" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#43cef8"/>
+      <stop offset="1" stop-color="#0088c6"/>
+    </linearGradient>
+  </defs>
+  <rect id="Rectangle_67" data-name="Rectangle 67" width="90" height="40" rx="10" fill="url(#linear-gradient)"/>
+  <text id="ช้อปเลย" transform="translate(0 8)" fill="#fff" font-size="16" font-family="Kanit-Regular, Kanit"><tspan x="18.792" y="18">ช้อปเลย</tspan></text>
+</svg>
