@@ -539,6 +539,7 @@ class _CustomDialogState extends State<CustomDialog> {
         visible: !page2,
         child: Scaffold(
           backgroundColor: Colors.black38,
+          endDrawerEnableOpenDragGesture: false,
           body: Container(
               child: SingleChildScrollView(
             child: Stack(
@@ -893,6 +894,7 @@ class _bankDialogState extends State<bankDialog> {
     initializeDateFormatting();
     super.initState();
     imgDo = '';
+    imageFile = null;
   }
 
   _getFromGallery() async {
@@ -901,7 +903,9 @@ class _bankDialogState extends State<bankDialog> {
     if (pickedFile != null) {
       imagepath = pickedFile.path;
       // print(imagepath);
-
+      setState(() {
+        imageFile = File(pickedFile.path);
+      });
       File imagefile = File(imagepath);
       Uint8List imagebytes = await imagefile.readAsBytes();
       String base64string = base64.encode(imagebytes);
