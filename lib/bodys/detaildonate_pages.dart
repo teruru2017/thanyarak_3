@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -520,7 +521,8 @@ class CustomDialog extends StatefulWidget {
 }
 
 class _CustomDialogState extends State<CustomDialog> {
-  String toLaunch = 'https://tmn.app.link/?deeplink=ascendmoney';
+  // String toLaunch = 'https://tmn.app.link/?deeplink=ascendmoney';
+  String toLaunch = "https://tmn.app.link/THANYARAK02";
   Future<void> _launchInBrowser(String url) async {
     if (!await launch(
       url,
@@ -641,14 +643,24 @@ class _CustomDialogState extends State<CustomDialog> {
                                     child: Container(
                                       child: Column(
                                         children: [
-                                          Container(
-                                              width: 150,
-                                              height: 70,
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                image: AssetImage(
-                                                    'images/truemove.png'),
-                                              ))),
+                                          GestureDetector(
+                                            onTap: () {
+                                              final Uri phoneUrl = Uri(
+                                                scheme: 'tel',
+                                                path: '*948*2525*10#',
+                                              );
+                                              launch(phoneUrl.toString());
+                                              // launch("tel://*1000*10*");
+                                            },
+                                            child: Container(
+                                                width: 150,
+                                                height: 70,
+                                                decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                  image: AssetImage(
+                                                      'images/truemove.png'),
+                                                ))),
+                                          ),
                                           GestureDetector(
                                             onTap: () {
                                               Navigator.pop(context);
@@ -695,14 +707,24 @@ class _CustomDialogState extends State<CustomDialog> {
                                     child: Container(
                                       child: Column(
                                         children: [
-                                          Container(
-                                              width: 150,
-                                              height: 70,
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                image: AssetImage(
-                                                    'images/truemove.png'),
-                                              ))),
+                                          GestureDetector(
+                                            onTap: () {
+                                              final Uri phoneUrl = Uri(
+                                                scheme: 'tel',
+                                                path: '*948*2525*10#',
+                                              );
+                                              launch(phoneUrl.toString());
+                                              // launch("tel://*1000*100*");
+                                            },
+                                            child: Container(
+                                                width: 150,
+                                                height: 70,
+                                                decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                  image: AssetImage(
+                                                      'images/truemove.png'),
+                                                ))),
+                                          ),
                                           GestureDetector(
                                             onTap: () {
                                               Navigator.pop(context);

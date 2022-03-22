@@ -748,9 +748,7 @@ class _MenuPageState extends State<MenuPage> {
                                 return Align(
                                   alignment: Alignment.topLeft,
                                   child: Text(
-                                    snapshot.data.name +
-                                        '  ' +
-                                        snapshot.data.surname,
+                                    "${snapshot.data.name}  ${snapshot.data.surname}",
                                     maxLines: 1,
                                     overflow: TextOverflow.visible,
                                     style: GoogleFonts.kanit(

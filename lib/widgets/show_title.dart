@@ -12,6 +12,9 @@ class ShowTitle extends StatelessWidget {
     return Text(
       title,
       style: textStyle == null ? MyConstant().h3Style() : textStyle!,
+      overflow: TextOverflow.fade,
+      maxLines: 1,
+      softWrap: false,
     );
   }
 }

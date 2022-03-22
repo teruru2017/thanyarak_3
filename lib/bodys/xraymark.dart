@@ -65,6 +65,7 @@ class xrayMark_page extends StatefulWidget {
 int btck, ID_postpone;
 bool bt2 = true, page1 = false, postpone;
 enum SingingCharacter { buse01, buse02, buse03, buse04, buse05, buse06, buse07 }
+
 enum SingingCharacterV { have, donthave }
 enum SingingCharacterCD { have, donthave }
 
@@ -73,10 +74,13 @@ SingingCharacterV _characterV2 = SingingCharacterV.have;
 SingingCharacterCD _characterCD = SingingCharacterCD.have;
 
 int _Checkcharacter = 1;
-int _CheckcharacterV2 = 1;
-int _CheckcharacterCD = 1;
+int _CheckcharacterV2 = 0;
+int _CheckcharacterCD = 0;
+bool groupValue;
+bool value;
 
 class _xrayMark_pageState extends State<xrayMark_page> {
+  String phoneSet;
   TextEditingController Phonecall = TextEditingController();
   List<String> timeslotDate = [];
   initState() {
@@ -85,6 +89,7 @@ class _xrayMark_pageState extends State<xrayMark_page> {
     super.initState();
 
     setState(() {
+      phoneSet = '';
       _currentDate = DateTime.now();
       getDateAPI = DateFormat('yyyy-MM').format(_targetDateTime);
       if (widget.postpone == true) {
@@ -162,7 +167,7 @@ class _xrayMark_pageState extends State<xrayMark_page> {
   static Widget _absentIcon(String day) => Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderRadius: BorderRadius.all(Radius.circular(15)),
           color: Colors.red[100],
         ),
         padding: EdgeInsets.all(1),
@@ -216,7 +221,7 @@ class _xrayMark_pageState extends State<xrayMark_page> {
 
       showWeekDays: true,
       selectedDayButtonColor: Colors.blue,
-      dayPadding: 10,
+      dayPadding: 1,
 
       selectedDayBorderColor: Colors.blue,
 
@@ -236,9 +241,12 @@ class _xrayMark_pageState extends State<xrayMark_page> {
         events.forEach(
           (event) => ck = event.title,
         );
-
+        print(" xxx  ${btck}");
         // print(_targetDateTime);
         // print(_daysel);
+        setState(() {
+          btck = 404;
+        });
 
         if (ck == '') {
           this.setState(() => _currentDate = date);
@@ -550,19 +558,56 @@ class _xrayMark_pageState extends State<xrayMark_page> {
                             child: GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  showGeneralDialog(
-                                      context: context,
-                                      barrierDismissible: false,
-                                      barrierLabel:
-                                          MaterialLocalizations.of(context)
-                                              .modalBarrierDismissLabel,
-                                      barrierColor: Colors.transparent,
-                                      transitionDuration:
-                                          Duration(milliseconds: 200),
-                                      pageBuilder: (BuildContext context,
-                                              Animation frist,
-                                              Animation second) =>
-                                          CustomDialog());
+                                  phoneSet = Phonecall.text;
+                                  if (btck == 404) {
+                                    showGeneralDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        barrierLabel:
+                                            MaterialLocalizations.of(context)
+                                                .modalBarrierDismissLabel,
+                                        barrierColor: Colors.transparent,
+                                        transitionDuration:
+                                            Duration(milliseconds: 200),
+                                        pageBuilder: (BuildContext context,
+                                                Animation frist,
+                                                Animation second) =>
+                                            MSGBoxWidget(
+                                              title: 'กรุณาระบุเวลานัดหมาย',
+                                              detail: '',
+                                            ));
+                                  } else if (phoneSet.length < 10) {
+                                    showGeneralDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        barrierLabel:
+                                            MaterialLocalizations.of(context)
+                                                .modalBarrierDismissLabel,
+                                        barrierColor: Colors.transparent,
+                                        transitionDuration:
+                                            Duration(milliseconds: 200),
+                                        pageBuilder: (BuildContext context,
+                                                Animation frist,
+                                                Animation second) =>
+                                            MSGBoxWidget(
+                                              title: 'กรุณาระบุเบอร์โทรศัพท์',
+                                              detail: '',
+                                            ));
+                                  } else {
+                                    showGeneralDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        barrierLabel:
+                                            MaterialLocalizations.of(context)
+                                                .modalBarrierDismissLabel,
+                                        barrierColor: Colors.transparent,
+                                        transitionDuration:
+                                            Duration(milliseconds: 200),
+                                        pageBuilder: (BuildContext context,
+                                                Animation frist,
+                                                Animation second) =>
+                                            CustomDialog());
+                                  }
                                 });
                               },
                               child: Container(
@@ -662,12 +707,15 @@ class _xrayMark_pageState extends State<xrayMark_page> {
                 Radius.circular(10.0),
               ),
             ),
-            padding: EdgeInsets.all(10),
-            margin: EdgeInsets.all(5),
+            padding: EdgeInsets.only(top: 10, bottom: 10, left: 2, right: 2),
+            margin: EdgeInsets.all(2),
             child: Align(
               alignment: Alignment.center,
               child: Text(
                 txt,
+                overflow: TextOverflow.fade,
+                maxLines: 1,
+                softWrap: false,
                 style: GoogleFonts.kanit(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
@@ -724,6 +772,9 @@ class CustomDialog extends StatefulWidget {
 }
 
 class _CustomDialogState extends State<CustomDialog> {
+  int _selected = 0;
+  bool value;
+  ValueChanged<bool> onChanged;
   @override
   initState() {
     Intl.defaultLocale = 'th';
@@ -733,6 +784,10 @@ class _CustomDialogState extends State<CustomDialog> {
     _character = SingingCharacter.buse01;
     _characterCD = SingingCharacterCD.have;
     _characterV2 = SingingCharacterV.have;
+    setState(() {
+      _selected = 1;
+      _Checkcharacter = 1;
+    });
   }
 
   Future<List<RightsAPI>> RightsAPIDatas;
@@ -744,11 +799,17 @@ class _CustomDialogState extends State<CustomDialog> {
       dt = DateTime.parse(xx);
       print(dt);
       print("ID_postpone ${ID_postpone}");
+      RightsAPIData = APIRightsGET();
     });
   }
 
   Future<void> postappointment(
-      {String pid_api, DateTime datetime, int location, int right_id}) async {
+      {String pid_api,
+      DateTime datetime,
+      int location,
+      int right_id,
+      int have_doc,
+      int have_cd}) async {
     var url = '${apiurl().url}/appointment';
     final response = await http.post(
       Uri.parse(url),
@@ -762,6 +823,8 @@ class _CustomDialogState extends State<CustomDialog> {
         "datetime": "${datetime}",
         "location_id": "${location}",
         "right_id": "${right_id}",
+        "have_doc": "${have_doc}",
+        "have_cd": "${have_cd}",
       }),
     );
 
@@ -807,7 +870,12 @@ class _CustomDialogState extends State<CustomDialog> {
   }
 
   Future<void> put_postpone(
-      {String pid_api, DateTime datetime, int location, int right_id}) async {
+      {String pid_api,
+      DateTime datetime,
+      int location,
+      int right_id,
+      int have_doc,
+      int have_cd}) async {
     var url = '${apiurl().url}/appointment/${pid_api}';
     final response = await http.put(
       Uri.parse(url),
@@ -820,6 +888,8 @@ class _CustomDialogState extends State<CustomDialog> {
         "datetime": "${datetime}",
         "location_id": "${location}",
         "right_id": "${right_id}",
+        "have_doc": "${have_doc}",
+        "have_cd": "${have_cd}",
       }),
     );
 
@@ -861,6 +931,32 @@ class _CustomDialogState extends State<CustomDialog> {
                     title: 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง',
                     detail: '',
                   ));
+    }
+  }
+
+  Future<List<RightsAPI>> RightsAPIData;
+  Future<List<RightsAPI>> APIRightsGET() async {
+    var url = '${apiurl().url}/rights';
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${Token}',
+      },
+    );
+    if (response.statusCode == 200) {
+      print('RightsAPI  : ${response.statusCode}');
+      List jsonResponse = json.decode(response.body);
+
+      return jsonResponse.map((data) => new RightsAPI.fromJson(data)).toList();
+    } else if (response.statusCode == 401) {
+      print('RightsAPI  : ${response.statusCode}');
+
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => loadingPage()));
+    } else {
+      print('RightsAPI  : ${response.statusCode}');
     }
   }
 
@@ -916,190 +1012,249 @@ class _CustomDialogState extends State<CustomDialog> {
                               ),
                             ),
                           ),
-                          Row(
+                          Container(
+                              child: Column(
                             children: [
-                              Transform.scale(
-                                scale: 1,
-                                child: Radio<SingingCharacter>(
-                                  activeColor: Color(0xff0088C6),
-                                  value: SingingCharacter.buse01,
-                                  groupValue: _character,
-                                  onChanged: (SingingCharacter value) {
-                                    setState(() {
-                                      _character = value;
-                                      _Checkcharacter = 1;
-                                    });
-                                  },
-                                ),
-                              ),
-                              Expanded(
-                                  child: Text(
-                                'สิทธิเบิกจ่ายตรง กรมบัญชีกลาง',
-                                style: GoogleFonts.kanit(
-                                  fontSize: 14,
-                                  color: Colors.grey,
-                                ),
-                              )),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Transform.scale(
-                                scale: 1,
-                                child: Radio<SingingCharacter>(
-                                  activeColor: Color(0xff0088C6),
-                                  value: SingingCharacter.buse02,
-                                  groupValue: _character,
-                                  onChanged: (SingingCharacter value) {
-                                    setState(() {
-                                      _character = value;
+                              FutureBuilder<List<RightsAPI>>(
+                                future: RightsAPIData,
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    List<RightsAPI> data = snapshot.data;
 
-                                      _Checkcharacter = 2;
-                                      print(value);
-                                    });
-                                  },
-                                ),
+                                    return ListView.separated(
+                                      separatorBuilder:
+                                          (BuildContext context, int index) {
+                                        return SizedBox(
+                                          height: 1,
+                                        );
+                                      },
+                                      controller: ScrollController(),
+                                      shrinkWrap: true,
+                                      itemCount: data.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return Row(
+                                          children: [
+                                            Transform.scale(
+                                              scale: 1,
+                                              child: Radio(
+                                                activeColor: Color(0xff0088C6),
+                                                value: data[index].id,
+                                                groupValue: _selected,
+                                                onChanged: (int value) {
+                                                  print(value);
+                                                  setState(() {
+                                                    _selected = value;
+                                                    _Checkcharacter = value;
+                                                  });
+                                                },
+                                              ),
+                                            ),
+                                            Expanded(
+                                                child: Text(
+                                              '${data[index].name}',
+                                              style: GoogleFonts.kanit(
+                                                fontSize: 14,
+                                                color: Colors.grey,
+                                              ),
+                                            )),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  } else if (snapshot.hasError) {
+                                    return Text("${snapshot.error}");
+                                  }
+                                  // By default show a loading spinner.
+                                  return CircularProgressIndicator();
+                                },
                               ),
-                              Expanded(
-                                  child: Text(
-                                'สิทธิเบิกราชการอื่นๆ',
-                                style: GoogleFonts.kanit(
-                                  fontSize: 14,
-                                  color: Colors.grey,
-                                ),
-                              )),
                             ],
-                          ),
-                          Row(
-                            children: [
-                              Transform.scale(
-                                scale: 1,
-                                child: Radio<SingingCharacter>(
-                                  activeColor: Color(0xff0088C6),
-                                  value: SingingCharacter.buse03,
-                                  groupValue: _character,
-                                  onChanged: (SingingCharacter value) {
-                                    setState(() {
-                                      _character = value;
-                                      _Checkcharacter = 3;
-                                    });
-                                  },
-                                ),
-                              ),
-                              Expanded(
-                                  child: Text(
-                                'สิทธิประกันสังคม (รพ.ศิริราช)',
-                                style: GoogleFonts.kanit(
-                                  fontSize: 14,
-                                  color: Colors.grey,
-                                ),
-                              )),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Transform.scale(
-                                scale: 1,
-                                child: Radio<SingingCharacter>(
-                                  activeColor: Color(0xff0088C6),
-                                  value: SingingCharacter.buse04,
-                                  groupValue: _character,
-                                  onChanged: (SingingCharacter value) {
-                                    setState(() {
-                                      _character = value;
-                                      _Checkcharacter = 4;
-                                    });
-                                  },
-                                ),
-                              ),
-                              Expanded(
-                                  child: Text(
-                                'สิทธิประกันสังคม (รพ.อื่น)',
-                                style: GoogleFonts.kanit(
-                                  fontSize: 14,
-                                  color: Colors.grey,
-                                ),
-                              )),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Transform.scale(
-                                scale: 1,
-                                child: Radio<SingingCharacter>(
-                                  activeColor: Color(0xff0088C6),
-                                  value: SingingCharacter.buse05,
-                                  groupValue: _character,
-                                  onChanged: (SingingCharacter value) {
-                                    setState(() {
-                                      _character = value;
-                                      _Checkcharacter = 5;
-                                    });
-                                  },
-                                ),
-                              ),
-                              Expanded(
-                                  child: Text(
-                                'สิทธิหลักประกันคุณภาพ 30 บาท (บัตรทอง) (รพ.ศิริราช)',
-                                style: GoogleFonts.kanit(
-                                  fontSize: 14,
-                                  color: Colors.grey,
-                                ),
-                              )),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Transform.scale(
-                                scale: 1,
-                                child: Radio<SingingCharacter>(
-                                  activeColor: Color(0xff0088C6),
-                                  value: SingingCharacter.buse06,
-                                  groupValue: _character,
-                                  onChanged: (SingingCharacter value) {
-                                    setState(() {
-                                      _character = value;
-                                      _Checkcharacter = 6;
-                                    });
-                                  },
-                                ),
-                              ),
-                              Expanded(
-                                  child: Text(
-                                'สิทธิหลักประกันคุณภาพ 30 บาท (บัตรทอง) (รพ.อื่น)',
-                                style: GoogleFonts.kanit(
-                                  fontSize: 14,
-                                  color: Colors.grey,
-                                ),
-                              )),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Transform.scale(
-                                scale: 1,
-                                child: Radio<SingingCharacter>(
-                                  activeColor: Color(0xff0088C6),
-                                  value: SingingCharacter.buse07,
-                                  groupValue: _character,
-                                  onChanged: (SingingCharacter value) {
-                                    setState(() {
-                                      _character = value;
-                                      _Checkcharacter = 7;
-                                    });
-                                  },
-                                ),
-                              ),
-                              Expanded(
-                                  child: Text(
-                                'สิทธิหลักประกันคุณภาพ 30 บาท (บัตรทอง) (สิทธิว่าง)',
-                                style: GoogleFonts.kanit(
-                                  fontSize: 14,
-                                  color: Colors.grey,
-                                ),
-                              )),
-                            ],
-                          ),
+                          )),
+                          // Row(
+                          //   children: [
+                          //     Transform.scale(
+                          //       scale: 1,
+                          //       child: Radio<SingingCharacter>(
+                          //         activeColor: Color(0xff0088C6),
+                          //         value: SingingCharacter.buse01,
+                          //         groupValue: _character,
+                          //         onChanged: (SingingCharacter value) {
+                          //           setState(() {
+                          //             _character = value;
+                          //             _Checkcharacter = 1;
+                          //           });
+                          //         },
+                          //       ),
+                          //     ),
+                          //     Expanded(
+                          //         child: Text(
+                          //       'สิทธิเบิกจ่ายตรง กรมบัญชีกลาง',
+                          //       style: GoogleFonts.kanit(
+                          //         fontSize: 14,
+                          //         color: Colors.grey,
+                          //       ),
+                          //     )),
+                          //   ],
+                          // ),
+                          // Row(
+                          //   children: [
+                          //     Transform.scale(
+                          //       scale: 1,
+                          //       child: Radio<SingingCharacter>(
+                          //         activeColor: Color(0xff0088C6),
+                          //         value: SingingCharacter.buse02,
+                          //         groupValue: _character,
+                          //         onChanged: (SingingCharacter value) {
+                          //           setState(() {
+                          //             _character = value;
+
+                          //             _Checkcharacter = 2;
+                          //             print(value);
+                          //           });
+                          //         },
+                          //       ),
+                          //     ),
+                          //     Expanded(
+                          //         child: Text(
+                          //       'สิทธิเบิกราชการอื่นๆ',
+                          //       style: GoogleFonts.kanit(
+                          //         fontSize: 14,
+                          //         color: Colors.grey,
+                          //       ),
+                          //     )),
+                          //   ],
+                          // ),
+                          // Row(
+                          //   children: [
+                          //     Transform.scale(
+                          //       scale: 1,
+                          //       child: Radio<SingingCharacter>(
+                          //         activeColor: Color(0xff0088C6),
+                          //         value: SingingCharacter.buse03,
+                          //         groupValue: _character,
+                          //         onChanged: (SingingCharacter value) {
+                          //           setState(() {
+                          //             _character = value;
+                          //             _Checkcharacter = 3;
+                          //           });
+                          //         },
+                          //       ),
+                          //     ),
+                          //     Expanded(
+                          //         child: Text(
+                          //       'สิทธิประกันสังคม (รพ.ศิริราช)',
+                          //       style: GoogleFonts.kanit(
+                          //         fontSize: 14,
+                          //         color: Colors.grey,
+                          //       ),
+                          //     )),
+                          //   ],
+                          // ),
+                          // Row(
+                          //   children: [
+                          //     Transform.scale(
+                          //       scale: 1,
+                          //       child: Radio<SingingCharacter>(
+                          //         activeColor: Color(0xff0088C6),
+                          //         value: SingingCharacter.buse04,
+                          //         groupValue: _character,
+                          //         onChanged: (SingingCharacter value) {
+                          //           setState(() {
+                          //             _character = value;
+                          //             _Checkcharacter = 4;
+                          //           });
+                          //         },
+                          //       ),
+                          //     ),
+                          //     Expanded(
+                          //         child: Text(
+                          //       'สิทธิประกันสังคม (รพ.อื่น)',
+                          //       style: GoogleFonts.kanit(
+                          //         fontSize: 14,
+                          //         color: Colors.grey,
+                          //       ),
+                          //     )),
+                          //   ],
+                          // ),
+                          // Row(
+                          //   children: [
+                          //     Transform.scale(
+                          //       scale: 1,
+                          //       child: Radio<SingingCharacter>(
+                          //         activeColor: Color(0xff0088C6),
+                          //         value: SingingCharacter.buse05,
+                          //         groupValue: _character,
+                          //         onChanged: (SingingCharacter value) {
+                          //           setState(() {
+                          //             _character = value;
+                          //             _Checkcharacter = 5;
+                          //           });
+                          //         },
+                          //       ),
+                          //     ),
+                          //     Expanded(
+                          //         child: Text(
+                          //       'สิทธิหลักประกันคุณภาพ 30 บาท (บัตรทอง) (รพ.ศิริราช)',
+                          //       style: GoogleFonts.kanit(
+                          //         fontSize: 14,
+                          //         color: Colors.grey,
+                          //       ),
+                          //     )),
+                          //   ],
+                          // ),
+                          // Row(
+                          //   children: [
+                          //     Transform.scale(
+                          //       scale: 1,
+                          //       child: Radio<SingingCharacter>(
+                          //         activeColor: Color(0xff0088C6),
+                          //         value: SingingCharacter.buse06,
+                          //         groupValue: _character,
+                          //         onChanged: (SingingCharacter value) {
+                          //           setState(() {
+                          //             _character = value;
+                          //             _Checkcharacter = 6;
+                          //           });
+                          //         },
+                          //       ),
+                          //     ),
+                          //     Expanded(
+                          //         child: Text(
+                          //       'สิทธิหลักประกันคุณภาพ 30 บาท (บัตรทอง) (รพ.อื่น)',
+                          //       style: GoogleFonts.kanit(
+                          //         fontSize: 14,
+                          //         color: Colors.grey,
+                          //       ),
+                          //     )),
+                          //   ],
+                          // ),
+                          // Row(
+                          //   children: [
+                          //     Transform.scale(
+                          //       scale: 1,
+                          //       child: Radio<SingingCharacter>(
+                          //         activeColor: Color(0xff0088C6),
+                          //         value: SingingCharacter.buse07,
+                          //         groupValue: _character,
+                          //         onChanged: (SingingCharacter value) {
+                          //           setState(() {
+                          //             _character = value;
+                          //             _Checkcharacter = 7;
+                          //           });
+                          //         },
+                          //       ),
+                          //     ),
+                          //     Expanded(
+                          //         child: Text(
+                          //       'สิทธิหลักประกันคุณภาพ 30 บาท (บัตรทอง) (สิทธิว่าง)',
+                          //       style: GoogleFonts.kanit(
+                          //         fontSize: 14,
+                          //         color: Colors.grey,
+                          //       ),
+                          //     )),
+                          //   ],
+                          // ),
                           SizedBox(
                             height: 10,
                           ),
@@ -1180,7 +1335,7 @@ class _CustomDialogState extends State<CustomDialog> {
                                   onChanged: (SingingCharacterV valueV) {
                                     setState(() {
                                       _characterV2 = valueV;
-                                      _CheckcharacterV2 = 1;
+                                      _CheckcharacterV2 = 0;
                                     });
                                   },
                                 ),
@@ -1202,7 +1357,7 @@ class _CustomDialogState extends State<CustomDialog> {
                                   onChanged: (SingingCharacterV valueV) {
                                     setState(() {
                                       _characterV2 = valueV;
-                                      _CheckcharacterV2 = 2;
+                                      _CheckcharacterV2 = 1;
                                     });
                                   },
                                 ),
@@ -1238,7 +1393,7 @@ class _CustomDialogState extends State<CustomDialog> {
                                   onChanged: (SingingCharacterCD valueV) {
                                     setState(() {
                                       _characterCD = valueV;
-                                      _CheckcharacterCD = 1;
+                                      _CheckcharacterCD = 0;
                                     });
                                   },
                                 ),
@@ -1260,7 +1415,7 @@ class _CustomDialogState extends State<CustomDialog> {
                                   onChanged: (SingingCharacterCD valueV) {
                                     setState(() {
                                       _characterCD = valueV;
-                                      _CheckcharacterCD = 2;
+                                      _CheckcharacterCD = 1;
                                     });
                                   },
                                 ),
@@ -1287,13 +1442,17 @@ class _CustomDialogState extends State<CustomDialog> {
                                       pid_api: ID_postpone.toString(),
                                       datetime: dt,
                                       location: 1,
-                                      right_id: _Checkcharacter);
+                                      right_id: _Checkcharacter,
+                                      have_cd: _CheckcharacterCD,
+                                      have_doc: _CheckcharacterV2);
                                 } else {
                                   postappointment(
                                       pid_api: pid_x,
                                       datetime: dt,
                                       location: 1,
-                                      right_id: _Checkcharacter);
+                                      right_id: _Checkcharacter,
+                                      have_cd: _CheckcharacterCD,
+                                      have_doc: _CheckcharacterV2);
                                 }
                               },
                               child: Container(

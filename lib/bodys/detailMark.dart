@@ -242,7 +242,7 @@ class _detailMarkk_pageState extends State<detailMark_page> {
                                                       Alignment.centerLeft,
                                                   child: Text(
                                                     // 'Memmogram Ultrasound',
-                                                    '',
+                                                    'นัดหมายเอกซเรย์เต้านม',
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                     style: GoogleFonts.kanit(

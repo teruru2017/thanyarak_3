@@ -55,6 +55,8 @@ String txt, pid;
 class _dating_pageState extends State<dating_page> {
   final CarouselController _controller = CarouselController();
   void initState() {
+    countMark = 2;
+    txt = 'all';
     getpin();
     Intl.defaultLocale = 'th';
     initializeDateFormatting();
@@ -198,17 +200,17 @@ class _dating_pageState extends State<dating_page> {
                                             child: Align(
                                               alignment: Alignment.center,
                                               child: Wrap(
-                                                spacing: 2,
+                                                spacing: 1,
                                                 crossAxisAlignment:
                                                     WrapCrossAlignment.center,
                                                 children: [
                                                   Image.asset(
                                                       'images/history__outline.png',
-                                                      scale: 3),
+                                                      scale: 5),
                                                   Text(
                                                     'ประวัติการตรวจ',
                                                     style: GoogleFonts.kanit(
-                                                        fontSize: 12,
+                                                        fontSize: 11,
                                                         color: Colors.white),
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -256,18 +258,20 @@ class _dating_pageState extends State<dating_page> {
                                             child: Align(
                                               alignment: Alignment.center,
                                               child: Wrap(
-                                                spacing: 2,
+                                                spacing: 1,
                                                 crossAxisAlignment:
                                                     WrapCrossAlignment.center,
                                                 children: [
                                                   Icon(
-                                                      Icons
-                                                          .add_circle_outline_outlined,
-                                                      color: Colors.white),
+                                                    Icons
+                                                        .add_circle_outline_outlined,
+                                                    color: Colors.white,
+                                                    size: 10,
+                                                  ),
                                                   Text(
                                                     'เพิ่มนัดหมาย',
                                                     style: GoogleFonts.kanit(
-                                                        fontSize: 12,
+                                                        fontSize: 11,
                                                         color: Colors.white),
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -580,11 +584,17 @@ class _dating_pageState extends State<dating_page> {
                                                                             Alignment.centerLeft,
                                                                         child:
                                                                             Text(
-                                                                          "",
+                                                                          "นัดหมายเอกซเรย์เต้านม",
+                                                                          overflow:
+                                                                              TextOverflow.fade,
+                                                                          maxLines:
+                                                                              1,
+                                                                          softWrap:
+                                                                              false,
                                                                           style:
                                                                               GoogleFonts.kanit(
                                                                             fontSize:
-                                                                                18,
+                                                                                16,
                                                                             color:
                                                                                 Colors.black,
                                                                           ),
@@ -592,8 +602,6 @@ class _dating_pageState extends State<dating_page> {
                                                                       ),
                                                                     ),
                                                                     IconButton(
-                                                                      onPressed:
-                                                                          () {},
                                                                       icon:
                                                                           Container(
                                                                         decoration:
@@ -796,11 +804,17 @@ class _dating_pageState extends State<dating_page> {
                                                                               Align(
                                                                             alignment:
                                                                                 Alignment.centerLeft,
-                                                                            child: Text("",
-                                                                                style: GoogleFonts.kanit(
-                                                                                  fontSize: 18,
-                                                                                  color: Colors.black,
-                                                                                )),
+                                                                            child:
+                                                                                Text(
+                                                                              "นัดหมายเอกซเรย์เต้านม",
+                                                                              overflow: TextOverflow.fade,
+                                                                              maxLines: 1,
+                                                                              softWrap: false,
+                                                                              style: GoogleFonts.kanit(
+                                                                                fontSize: 16,
+                                                                                color: Colors.black,
+                                                                              ),
+                                                                            ),
                                                                           ),
                                                                         ),
                                                                         IconButton(
@@ -1011,11 +1025,16 @@ class _dating_pageState extends State<dating_page> {
                                                                             Expanded(
                                                                               child: Align(
                                                                                 alignment: Alignment.centerLeft,
-                                                                                child: Text("",
-                                                                                    style: GoogleFonts.kanit(
-                                                                                      fontSize: 18,
-                                                                                      color: Colors.black,
-                                                                                    )),
+                                                                                child: Text(
+                                                                                  "นัดหมายเอกซเรย์เต้านม",
+                                                                                  overflow: TextOverflow.fade,
+                                                                                  maxLines: 1,
+                                                                                  softWrap: false,
+                                                                                  style: GoogleFonts.kanit(
+                                                                                    fontSize: 16,
+                                                                                    color: Colors.black,
+                                                                                  ),
+                                                                                ),
                                                                               ),
                                                                             ),
                                                                             IconButton(
@@ -1204,11 +1223,17 @@ class _dating_pageState extends State<dating_page> {
                                                                               Align(
                                                                             alignment:
                                                                                 Alignment.centerLeft,
-                                                                            child: Text("",
-                                                                                style: GoogleFonts.kanit(
-                                                                                  fontSize: 18,
-                                                                                  color: Colors.black,
-                                                                                )),
+                                                                            child:
+                                                                                Text(
+                                                                              "นัดหมายเอกซเรย์เต้านม",
+                                                                              overflow: TextOverflow.fade,
+                                                                              maxLines: 1,
+                                                                              softWrap: false,
+                                                                              style: GoogleFonts.kanit(
+                                                                                fontSize: 16,
+                                                                                color: Colors.black,
+                                                                              ),
+                                                                            ),
                                                                           ),
                                                                         ),
                                                                         IconButton(

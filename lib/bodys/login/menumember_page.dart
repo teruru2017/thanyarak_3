@@ -1,6 +1,6 @@
 //@dart=2.9
 import 'dart:convert';
-import 'dart:ffi';
+//import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -73,6 +73,7 @@ class _menumember_pagesState extends State<menumember_pages> {
     setState(() {
       cid = per.getString('cid');
       Token = per.getString('tokens');
+      checknotification(cmsId: cid);
       futureFindByCitizenId = getcid(cid, Token);
       imgPro = per.getString('img');
       if (imgPro == '' || imgPro == null) {
@@ -81,6 +82,32 @@ class _menumember_pagesState extends State<menumember_pages> {
       }
       print('img: ${imgPro}');
     });
+  }
+
+  bool notifiAction = false;
+  Future<void> checknotification({String cmsId}) async {
+    var url = '${apiurl().urlapi}/notification.php?userId=${cmsId}&unread=true';
+    final response = await http.get(Uri.parse(url), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    });
+    if (response.statusCode == 200) {
+      print("checknotification Status API :${response.statusCode}");
+
+      var jsonResponse = json.decode(response.body);
+
+      if (jsonResponse['unread'] == 0) {
+        setState(() {
+          notifiAction = false;
+        });
+      } else {
+        setState(() {
+          notifiAction = true;
+        });
+      }
+    } else {
+      print("checknotification Status API :${response.statusCode}");
+    }
   }
 
   @override
@@ -158,7 +185,10 @@ class _menumember_pagesState extends State<menumember_pages> {
                                                           cid == '' ||
                                                                   cid == null
                                                               ? NotiPage()
-                                                              : alert_page()));
+                                                              : alert_page(
+                                                                  pageto:
+                                                                      "/menuHome",
+                                                                )));
                                             },
                                             child: Stack(
                                               children: [
@@ -170,10 +200,7 @@ class _menumember_pagesState extends State<menumember_pages> {
                                                               'images/notimenu.png'))),
                                                 ),
                                                 Visibility(
-                                                  visible:
-                                                      cid == '' || cid == null
-                                                          ? false
-                                                          : true,
+                                                  visible: notifiAction,
                                                   child: Positioned(
                                                     left: 10,
                                                     top: 6,

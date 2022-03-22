@@ -31,6 +31,9 @@ class editpassword_page extends StatefulWidget {
 }
 
 class _editpassword_pageState extends State<editpassword_page> {
+  bool showpasswordole = false,
+      showpasswordnew = false,
+      showpasswordnewAg = false;
   bool txt = true;
   bool oldpass = false;
   bool newpass = false;
@@ -274,6 +277,10 @@ class _editpassword_pageState extends State<editpassword_page> {
                                             flex: 1,
                                             child: Container(
                                               child: FormBuilderTextField(
+                                                obscureText:
+                                                    showpasswordole == false
+                                                        ? true
+                                                        : false,
                                                 controller: oldpassword,
                                                 readOnly: false,
                                                 maxLength: 4,
@@ -340,6 +347,23 @@ class _editpassword_pageState extends State<editpassword_page> {
                                                             10),
                                                       ),
                                                     ),
+                                                    suffixIcon: GestureDetector(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          showpasswordole =
+                                                              !showpasswordole;
+                                                        });
+                                                      },
+                                                      child: Icon(
+                                                        showpasswordole == false
+                                                            ? Icons
+                                                                .visibility_off_outlined
+                                                            : Icons
+                                                                .visibility_outlined,
+                                                        color: Colors
+                                                            .grey.shade300,
+                                                      ),
+                                                    ),
                                                     fillColor: Colors.grey[50],
                                                     filled: true),
                                                 validator: (value) {
@@ -394,6 +418,10 @@ class _editpassword_pageState extends State<editpassword_page> {
                                             flex: 1,
                                             child: Container(
                                               child: FormBuilderTextField(
+                                                obscureText:
+                                                    showpasswordnew == false
+                                                        ? true
+                                                        : false,
                                                 controller: password1,
                                                 readOnly: false,
                                                 name: 'newpassword',
@@ -460,6 +488,23 @@ class _editpassword_pageState extends State<editpassword_page> {
                                                             10),
                                                       ),
                                                     ),
+                                                    suffixIcon: GestureDetector(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          showpasswordnew =
+                                                              !showpasswordnew;
+                                                        });
+                                                      },
+                                                      child: Icon(
+                                                        showpasswordnew == false
+                                                            ? Icons
+                                                                .visibility_off_outlined
+                                                            : Icons
+                                                                .visibility_outlined,
+                                                        color: Colors
+                                                            .grey.shade300,
+                                                      ),
+                                                    ),
                                                     fillColor: Colors.grey[50],
                                                     filled: true),
                                                 validator: (value) {
@@ -514,6 +559,10 @@ class _editpassword_pageState extends State<editpassword_page> {
                                             flex: 1,
                                             child: Container(
                                               child: FormBuilderTextField(
+                                                obscureText:
+                                                    showpasswordnewAg == false
+                                                        ? true
+                                                        : false,
                                                 controller: password2,
                                                 readOnly: false,
                                                 maxLength: 4,
@@ -569,6 +618,24 @@ class _editpassword_pageState extends State<editpassword_page> {
                                                           BorderRadius.all(
                                                               Radius.circular(
                                                                   20)),
+                                                    ),
+                                                    suffixIcon: GestureDetector(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          showpasswordnewAg =
+                                                              !showpasswordnewAg;
+                                                        });
+                                                      },
+                                                      child: Icon(
+                                                        showpasswordnewAg ==
+                                                                false
+                                                            ? Icons
+                                                                .visibility_off_outlined
+                                                            : Icons
+                                                                .visibility_outlined,
+                                                        color: Colors
+                                                            .grey.shade300,
+                                                      ),
                                                     ),
                                                     //border: InputBorder.none,
 

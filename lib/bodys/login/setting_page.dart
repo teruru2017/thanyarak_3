@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:thanyarak/bodys/menu_page.dart';
 import 'package:thanyarak/bodys/notification_page.dart';
+import 'package:thanyarak/models/session.dart';
 import 'package:thanyarak/widgets/NavigationBar.dart';
 
 class setting_page extends StatefulWidget {
@@ -17,6 +19,7 @@ class setting_page extends StatefulWidget {
 bool value = true;
 
 class _setting_pageState extends State<setting_page> {
+  bool isSwitched = false;
   final double topWidgetHeight = 90.0;
   final double avatarRadius = 70.0;
   final double cameraRadius = 20.0;
@@ -197,7 +200,9 @@ class _setting_pageState extends State<setting_page> {
                                                         alignment: Alignment
                                                             .centerLeft,
                                                         child: Text(
-                                                          'เปิด',
+                                                          isSwitched == false
+                                                              ? 'ปิด'
+                                                              : 'เปิด',
                                                           style:
                                                               GoogleFonts.kanit(
                                                             fontSize: 18,
@@ -213,79 +218,79 @@ class _setting_pageState extends State<setting_page> {
                                               flex: 2, child: buildSwitch()),
                                         ])),
                                     SizedBox(height: 20),
-                                    Container(
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            border: Border.all(
-                                              color: Colors.blue.shade50,
-                                            ),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.grey
-                                                    .withOpacity(0.1),
-                                                spreadRadius: 2,
-                                                blurRadius: 2,
-                                                offset: Offset(0, 2),
-                                              )
-                                            ],
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20))),
-                                        height: 100,
-                                        child: Row(children: <Widget>[
-                                          Expanded(
-                                              flex: 8,
-                                              child: Container(
-                                                padding:
-                                                    EdgeInsets.only(left: 10),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Container(
-                                                      padding: EdgeInsets.only(
-                                                          left: 10),
-                                                      child: Align(
-                                                        alignment: Alignment
-                                                            .centerLeft,
-                                                        child: Text(
-                                                          'ภาษา',
-                                                          style:
-                                                              GoogleFonts.kanit(
-                                                            fontSize: 14,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                      padding: EdgeInsets.only(
-                                                          left: 10),
-                                                      child: Align(
-                                                        alignment: Alignment
-                                                            .centerLeft,
-                                                        child: Text(
-                                                          'ไทย',
-                                                          style:
-                                                              GoogleFonts.kanit(
-                                                            fontSize: 18,
-                                                            color: Colors.blue,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              )),
-                                          Expanded(
-                                              flex: 2,
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                    image: DecorationImage(
-                                                        image: AssetImage(
-                                                            'images/0.png'),
-                                                        scale: 1.5)),
-                                                // color: Colors.green,
-                                              )),
-                                        ])),
+                                    // Container(
+                                    //     decoration: BoxDecoration(
+                                    //         color: Colors.white,
+                                    //         border: Border.all(
+                                    //           color: Colors.blue.shade50,
+                                    //         ),
+                                    //         boxShadow: [
+                                    //           BoxShadow(
+                                    //             color: Colors.grey
+                                    //                 .withOpacity(0.1),
+                                    //             spreadRadius: 2,
+                                    //             blurRadius: 2,
+                                    //             offset: Offset(0, 2),
+                                    //           )
+                                    //         ],
+                                    //         borderRadius: BorderRadius.all(
+                                    //             Radius.circular(20))),
+                                    //     height: 100,
+                                    //     child: Row(children: <Widget>[
+                                    //       Expanded(
+                                    //           flex: 8,
+                                    //           child: Container(
+                                    //             padding:
+                                    //                 EdgeInsets.only(left: 10),
+                                    //             child: Column(
+                                    //               mainAxisAlignment:
+                                    //                   MainAxisAlignment.center,
+                                    //               children: [
+                                    //                 Container(
+                                    //                   padding: EdgeInsets.only(
+                                    //                       left: 10),
+                                    //                   child: Align(
+                                    //                     alignment: Alignment
+                                    //                         .centerLeft,
+                                    //                     child: Text(
+                                    //                       'ภาษา',
+                                    //                       style:
+                                    //                           GoogleFonts.kanit(
+                                    //                         fontSize: 14,
+                                    //                       ),
+                                    //                     ),
+                                    //                   ),
+                                    //                 ),
+                                    //                 Container(
+                                    //                   padding: EdgeInsets.only(
+                                    //                       left: 10),
+                                    //                   child: Align(
+                                    //                     alignment: Alignment
+                                    //                         .centerLeft,
+                                    //                     child: Text(
+                                    //                       'ไทย',
+                                    //                       style:
+                                    //                           GoogleFonts.kanit(
+                                    //                         fontSize: 18,
+                                    //                         color: Colors.blue,
+                                    //                       ),
+                                    //                     ),
+                                    //                   ),
+                                    //                 ),
+                                    //               ],
+                                    //             ),
+                                    //           )),
+                                    //       Expanded(
+                                    //           flex: 2,
+                                    //           child: Container(
+                                    //             decoration: BoxDecoration(
+                                    //                 image: DecorationImage(
+                                    //                     image: AssetImage(
+                                    //                         'images/0.png'),
+                                    //                     scale: 1.5)),
+                                    //             // color: Colors.green,
+                                    //           )),
+                                    //     ])),
                                     SizedBox(height: 20),
                                     Container(
                                         decoration: BoxDecoration(
@@ -337,7 +342,7 @@ class _setting_pageState extends State<setting_page> {
                                                         alignment: Alignment
                                                             .centerLeft,
                                                         child: Text(
-                                                          '2.02.10',
+                                                          '1.00.00',
                                                           style:
                                                               GoogleFonts.kanit(
                                                             fontSize: 18,
@@ -352,13 +357,13 @@ class _setting_pageState extends State<setting_page> {
                                           Expanded(
                                               flex: 2,
                                               child: Container(
-                                                decoration: BoxDecoration(
-                                                    image: DecorationImage(
-                                                        image: AssetImage(
-                                                            'images/0.png'),
-                                                        scale: 1.5)),
-                                                // color: Colors.green,
-                                              )),
+                                                  // decoration: BoxDecoration(
+                                                  //     image: DecorationImage(
+                                                  //         image: AssetImage(
+                                                  //             'images/0.png'),
+                                                  //         scale: 1.5)),
+                                                  // color: Colors.green,
+                                                  )),
                                         ])),
                                   ],
                                 ),
@@ -387,8 +392,12 @@ class _setting_pageState extends State<setting_page> {
           inactiveThumbColor: Colors.white,
           inactiveTrackColor: Colors.grey,
           splashRadius: 20,
-          value: value,
-          onChanged: (value) => setState(() {}),
+          value: isSwitched,
+          onChanged: (value) => setState(() {
+            setState(() {
+              isSwitched = value;
+            });
+          }),
         ),
       );
 }

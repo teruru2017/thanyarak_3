@@ -5,6 +5,7 @@ import 'package:thanyarak/bodys/Tests/testAPI2.dart';
 import 'package:thanyarak/bodys/Tests/testAPI_scheduleDate.dart';
 import 'package:thanyarak/bodys/Tests/testNotification%20.dart';
 import 'package:thanyarak/bodys/Tests/testtext.dart';
+import 'package:thanyarak/bodys/about_page.dart';
 import 'package:thanyarak/bodys/article_page.dart';
 import 'package:thanyarak/bodys/dating_page.dart';
 import 'package:thanyarak/bodys/donate_page.dart';
@@ -32,8 +33,11 @@ Map<String, WidgetBuilder> map = {
   '/newtype_pages': (BuildContext context) => new newtype_pages(),
   '/test': (BuildContext context) => new testNotification(),
   '/signin_page': (BuildContext context) => new SignInPage(),
+  '/aboutPage': (BuildContext context) => new AboutPage(),
+  '/donatePage': (BuildContext context) => new DonatePage(),
+  '/artclePage': (BuildContext context) => new Article_page(),
 };
-
+//test
 String firstState;
 
 void main() {

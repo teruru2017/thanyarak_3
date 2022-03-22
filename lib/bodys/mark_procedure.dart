@@ -25,7 +25,9 @@ class mark_procedure_page extends StatefulWidget {
   _mark_procedure_pageState createState() => _mark_procedure_pageState();
 }
 
-String textPhone, nameProcedure, imgBase64, cidProcedure;
+String textPhone, nameProcedure, imgBase64, cidProcedure, pidProcedure;
+
+File _img;
 
 class _mark_procedure_pageState extends State<mark_procedure_page> {
   TextEditingController phoninput = TextEditingController();
@@ -44,7 +46,7 @@ class _mark_procedure_pageState extends State<mark_procedure_page> {
     phoneMARK,
     imgMARK,
   }) async {
-    var url = '${apiurl().urlapi}/donate.php';
+    var url = '${apiurl().urlapi}/procedure.php';
     final response = await http.post(
       Uri.parse(url),
       headers: {
@@ -53,19 +55,17 @@ class _mark_procedure_pageState extends State<mark_procedure_page> {
       },
       body: jsonEncode(
         <String, dynamic>{
-          "type": "procedure",
-          "cmsId": 0,
+          "cid": "${pidProcedure}",
+          "userId": "${cidMARK}",
           "fullname": "${nameMARK}",
-          "remark": "${cidMARK}",
-          "address": "${phoneMARK}",
-          "amount": "procedure",
+          "phone": "${phoneMARK}",
           "slipImage": "${imgMARK}"
         },
       ),
     );
 
     if (response.statusCode == 200) {
-      print('UpdateuserPassword Status APi: ' + response.statusCode.toString());
+      print('procedure Status APi: ' + response.statusCode.toString());
       showGeneralDialog(
           context: context,
           barrierDismissible: false,
@@ -77,7 +77,8 @@ class _mark_procedure_pageState extends State<mark_procedure_page> {
               (BuildContext context, Animation frist, Animation second) =>
                   Succes(phonenumber: textPhone));
     } else {
-      print('UpdateuserPassword Status APi: ' + response.statusCode.toString());
+      print('procedure Status APi: ' + response.statusCode.toString());
+      print(response.body);
       showGeneralDialog(
         context: context,
         barrierDismissible: false,
@@ -100,11 +101,11 @@ class _mark_procedure_pageState extends State<mark_procedure_page> {
     setState(() {
       cidProcedure = per.getString('cid');
       nameProcedure = per.getString('name');
+      pidProcedure = per.getString('pid');
     });
   }
 
   final ImagePicker imgpicker = ImagePicker();
-
   String imagepath = "";
   String imageName = "";
   @override
@@ -113,8 +114,10 @@ class _mark_procedure_pageState extends State<mark_procedure_page> {
     if (pickedFile != null) {
       imageName = pickedFile.name;
       imagepath = pickedFile.path;
+      _img = File(pickedFile.path);
       File imagefile = File(imagepath);
       Uint8List imagebytes = await imagefile.readAsBytes();
+
       String base64string = base64.encode(imagebytes);
       setState(() {
         imgBase64 = base64string;
@@ -271,7 +274,7 @@ class _mark_procedure_pageState extends State<mark_procedure_page> {
                                       image: DecorationImage(
                                           image: imagepath == ""
                                               ? AssetImage('images/NoPath.png')
-                                              : AssetImage(imagepath))),
+                                              : FileImage(_img))),
                                 ),
                                 SizedBox(
                                   height: 10,

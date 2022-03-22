@@ -31,8 +31,6 @@ class SignInPage extends StatefulWidget {
   _SignInPageState createState() => _SignInPageState();
 }
 
-TextEditingController input_cid = TextEditingController();
-TextEditingController input_password = TextEditingController();
 bool cid = false;
 bool _ciderr = false;
 bool password = false;
@@ -49,6 +47,8 @@ Future<void> setLog(String txt) async {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  TextEditingController input_cid = TextEditingController();
+  TextEditingController input_password = TextEditingController();
   final _formKey = GlobalKey<FormBuilderState>();
   void initState() {
     Intl.defaultLocale = 'th';
@@ -391,6 +391,13 @@ class _SignInPageState extends State<SignInPage> {
                                     });
                                   },
                                   child: FormBuilderTextField(
+                                    onChanged: (value) {
+                                      if (value.length == 4) {
+                                        buttomck = true;
+                                      } else {
+                                        buttomck = false;
+                                      }
+                                    },
                                     controller: input_password,
                                     name: 'password',
                                     maxLength: 4,

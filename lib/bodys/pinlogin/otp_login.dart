@@ -62,7 +62,12 @@ class OtpLoging_pagesState extends State<OtpLoging_pages> {
     });
     if (response.statusCode == 200) {
       print('Status Getcid : ${response.statusCode}');
-      getOTP(txtphone: phone);
+      var jsonResponse = json.decode(response.body);
+
+      // print(jsonResponse);
+      getOTP(txtphone: jsonResponse['mobile']);
+      phone = jsonResponse['mobile'];
+
       return FindByCitizenId.fromJson(jsonDecode(response.body));
     } else {
       Navigator.push(
@@ -131,7 +136,8 @@ class OtpLoging_pagesState extends State<OtpLoging_pages> {
       otpPIN3.clear();
       otpPIN4.clear();
     } else {
-      print('Status getOTP : ${response.statusCode}');
+      print('Status getOTP : ${response.statusCode} ${txtphone}');
+      print('Status getOTP : ${response.body}');
     }
   }
 
@@ -289,8 +295,6 @@ class OtpLoging_pagesState extends State<OtpLoging_pages> {
                             future: futureFindByCitizenId,
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
-                                phone = snapshot.data.mobile;
-
                                 return Align(
                                   alignment: Alignment(-1, -1),
                                   child: Text(
@@ -404,7 +408,7 @@ class OtpLoging_pagesState extends State<OtpLoging_pages> {
                                       otpPIN2.text +
                                       otpPIN3.text +
                                       otpPIN4.text;
-                                  print(numOTP + '/' + OTPRef + '/' + phone);
+
                                   if (numOTP.length == 4) {
                                     setState(() {
                                       putOTP(

@@ -1,12 +1,6 @@
 //@dart=2.9
 import 'dart:convert';
 
-Map<String, RightsAPI> rightsFromJson(String str) => Map.from(json.decode(str))
-    .map((k, v) => MapEntry<String, RightsAPI>(k, RightsAPI.fromJson(v)));
-
-String rightsToJson(Map<String, RightsAPI> data) => json.encode(
-    Map.from(data).map((k, v) => MapEntry<String, dynamic>(k, v.toJson())));
-
 class RightsAPI {
   int id;
   String name;

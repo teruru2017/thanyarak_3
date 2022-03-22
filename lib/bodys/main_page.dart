@@ -16,6 +16,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:thanyarak/bodys/API/api_appointments.dart';
+import 'package:thanyarak/bodys/API/api_articleHl.dart';
 import 'package:thanyarak/bodys/API/api_banner.dart';
 import 'package:thanyarak/bodys/API/api_main_article.dart';
 import 'package:thanyarak/bodys/API/api_url.dart';
@@ -98,7 +99,7 @@ class _MainPageState extends State<MainPage> {
   bool isLoading = false;
   List<dynamic> banner = [];
   String tokendata = "";
-  String cid, pid;
+  String cid, pid, mobile;
   File _img;
 
   @override
@@ -112,13 +113,54 @@ class _MainPageState extends State<MainPage> {
     getDATA();
   }
 
+  bool notifiAction = false;
+  Future<void> checknotification({String cmsId}) async {
+    var url = '${apiurl().urlapi}/notification.php?userId=${cmsId}&unread=true';
+    final response = await http.get(Uri.parse(url), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    });
+    if (response.statusCode == 200) {
+      print("checknotification Status API :${response.statusCode}");
+
+      var jsonResponse = json.decode(response.body);
+
+      if (jsonResponse['unread'] == 0) {
+        setState(() {
+          notifiAction = false;
+        });
+      } else {
+        setState(() {
+          notifiAction = true;
+        });
+      }
+    } else {
+      print("checknotification Status API :${response.statusCode}");
+    }
+  }
+
   Appointments arm;
   Future<List<apibanner>> futureData;
   Future<List<apiarticle>> articleData;
+  Future<List<Arhighlight>> arhighlight() async {
+    var url = '${apiurl().urlapi}/article.php?highlight=true';
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
 
+      return jsonResponse
+          .map((data) => new Arhighlight.fromJson(data))
+          .toList();
+    } else {
+      throw Exception('Unexpected error occured!');
+    }
+  }
+
+  Future<List<Arhighlight>> ArhighlightData;
   Future getDATA() async {
     final SharedPreferences per = await SharedPreferences.getInstance();
     setState(() {
+      ArhighlightData = arhighlight();
       cid = per.getString('cid');
       imgPro = per.getString('img');
       if (imgPro == '' || imgPro == null) {
@@ -126,6 +168,7 @@ class _MainPageState extends State<MainPage> {
         _img = File(imgPro.toString());
       }
       print('img : ${imgPro}');
+      checknotification(cmsId: cid);
       getToken();
     });
   }
@@ -141,6 +184,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   Future<List<Appointments>> fetchAppointmentsData;
+
   Future<List<Appointments>> fetchAppointments(String pidSET) async {
     var url = '${apiurl().url}/patient/appointments/${pidSET}';
     final response = await http.get(Uri.parse(url), headers: {
@@ -161,7 +205,7 @@ class _MainPageState extends State<MainPage> {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => loadingPage()));
     } else {
-      print(response.statusCode);
+      print("Appointments ${response.statusCode}");
     }
   }
 
@@ -180,8 +224,10 @@ class _MainPageState extends State<MainPage> {
       setState(() {
         name = jsonRes['name'] + '  ' + jsonRes['surname'];
         pid = jsonRes['pid'];
+        mobile = jsonRes['mobile'];
         ssr.setNAME('${name}');
         ssr.setPID('${pid}');
+        ssr.setCall('${mobile}');
         print('pid : ${pid}');
         print('${name}');
         fetchAppointmentsData = fetchAppointments(pid);
@@ -249,6 +295,7 @@ class _MainPageState extends State<MainPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Container(
+                                    // margin: EdgeInsets.only(top: 10),
                                     height: 100,
                                     width: 100,
                                     //color: Colors.amber,
@@ -304,18 +351,22 @@ class _MainPageState extends State<MainPage> {
                                             //     }
                                             //   },
                                             // ),
-                                            Align(
-                                              alignment: Alignment.topLeft,
-                                              child: Text(
-                                                cid == '' || cid == null
-                                                    ? 'สวัสดีค่ะ'
-                                                    : 'สวัสดีครับ',
-                                                maxLines: 1,
-                                                overflow: TextOverflow.visible,
-                                                style: GoogleFonts.kanit(
-                                                  fontSize: 24,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.white,
+                                            Container(
+                                              // margin: EdgeInsets.only(top: 10),
+                                              child: Align(
+                                                alignment: Alignment.topLeft,
+                                                child: Text(
+                                                  cid == '' || cid == null
+                                                      ? 'สวัสดีค่ะ'
+                                                      : 'สวัสดีครับ',
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.visible,
+                                                  style: GoogleFonts.kanit(
+                                                    fontSize: 24,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.white,
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -362,7 +413,10 @@ class _MainPageState extends State<MainPage> {
                                                             cid == '' ||
                                                                     cid == null
                                                                 ? NotiPage()
-                                                                : alert_page()));
+                                                                : alert_page(
+                                                                    pageto:
+                                                                        '/mainHome',
+                                                                  )));
                                               },
                                               child: Stack(
                                                 children: [
@@ -374,10 +428,7 @@ class _MainPageState extends State<MainPage> {
                                                                 'images/notimenu.png'))),
                                                   ),
                                                   Visibility(
-                                                    visible:
-                                                        cid == '' || cid == null
-                                                            ? false
-                                                            : true,
+                                                    visible: notifiAction,
                                                     child: Positioned(
                                                       left: 10,
                                                       top: 6,
@@ -482,9 +533,11 @@ class _MainPageState extends State<MainPage> {
                                                     child: Stack(
                                                       children: <Widget>[
                                                         Image.network(
-                                                            item.urlpath,
-                                                            fit: BoxFit.cover,
-                                                            width: 1000.0),
+                                                          item.urlpath,
+                                                          fit: BoxFit.cover,
+                                                          width: 1000.0,
+                                                          height: 1000.0,
+                                                        ),
                                                         Positioned(
                                                           bottom: 0.0,
                                                           left: 0.0,
@@ -633,191 +686,263 @@ class _MainPageState extends State<MainPage> {
                             ),
                             Container(
                               //height: MediaQuery.of(context).size.height,
-
-                              // color: Colors.amber,
-                              child: FutureBuilder<List<apiarticle>>(
-                                future: articleData,
+                              child: FutureBuilder<List<Arhighlight>>(
+                                future: ArhighlightData,
                                 builder: (context, snapshot) {
                                   if (snapshot.hasData) {
-                                    List<apiarticle> articleDatas =
-                                        snapshot.data;
-                                    return SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Container(
-                                        child: new Row(
-                                            children: articleDatas
-                                                .map((item) => new Container(
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                              .size
-                                                              .width,
-                                                      padding: EdgeInsets.only(
-                                                        left: 15,
-                                                      ),
-                                                      child:
-                                                          SingleChildScrollView(
-                                                        scrollDirection:
-                                                            Axis.horizontal,
-                                                        child: Container(
-                                                          // width: MediaQuery.of(context).size.width,
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  top: 10,
-                                                                  right: 10,
-                                                                  left: 10,
-                                                                  bottom: 20),
-                                                          //color: Colors.red,
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              GestureDetector(
-                                                                onDoubleTap:
-                                                                    () {
-                                                                  setState(() {
-                                                                    Navigator.push(
-                                                                        context,
-                                                                        CupertinoPageRoute(
-                                                                            builder: (context) => ArticleDetailsPage(
-                                                                                  urlget: 'https://truethanyarak.com/api/Ar_Detail.php?id=${item.id}',
-                                                                                )));
-                                                                  });
-                                                                },
-                                                                child:
-                                                                    Container(
-                                                                  width: 330,
-                                                                  decoration: BoxDecoration(
-                                                                      boxShadow: [
-                                                                        BoxShadow(
-                                                                          color: Colors
-                                                                              .grey
-                                                                              .withOpacity(0.2),
-                                                                          spreadRadius:
-                                                                              1,
-                                                                          blurRadius:
-                                                                              10,
-                                                                          offset: Offset(
-                                                                              0,
-                                                                              8),
-                                                                        )
-                                                                      ],
-                                                                      borderRadius:
-                                                                          BorderRadius.all(
-                                                                              Radius.circular(40))),
-                                                                  child: Column(
-                                                                    children: [
-                                                                      Container(
-                                                                        width: MediaQuery.of(context)
-                                                                            .size
-                                                                            .width,
-                                                                        height:
-                                                                            130,
-                                                                        decoration:
-                                                                            BoxDecoration(
-                                                                          // color: Colors.white,
-                                                                          image: DecorationImage(
-                                                                              fit: BoxFit.cover,
-                                                                              image: NetworkImage(item.urlpicpath)),
-                                                                          borderRadius:
-                                                                              BorderRadius.only(
-                                                                            topLeft:
-                                                                                Radius.circular(30),
-                                                                            topRight:
-                                                                                Radius.circular(30),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                      Container(
-                                                                          width: MediaQuery.of(context)
-                                                                              .size
-                                                                              .width,
-                                                                          height:
-                                                                              100,
-                                                                          decoration:
-                                                                              BoxDecoration(
-                                                                            color:
-                                                                                Colors.white,
-                                                                            borderRadius:
-                                                                                BorderRadius.only(
-                                                                              bottomLeft: Radius.circular(30),
-                                                                              bottomRight: Radius.circular(30),
-                                                                            ),
-                                                                          ),
-                                                                          child:
-                                                                              Container(
-                                                                            padding:
-                                                                                EdgeInsets.only(left: 15, right: 15),
-                                                                            child:
-                                                                                Column(
-                                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                                              children: [
-                                                                                Text(item.subject, maxLines: 1, style: GoogleFonts.kanit(fontSize: 16, fontWeight: FontWeight.w500, color: Color(0xff0088C6))),
-                                                                                Text(item.title, maxLines: 2, overflow: TextOverflow.ellipsis, style: GoogleFonts.kanit(fontSize: 14, color: Colors.black)),
-                                                                                Row(
-                                                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                                                  children: [
-                                                                                    FaIcon(
-                                                                                      FontAwesomeIcons.solidClock,
-                                                                                      size: 12,
-                                                                                      color: Color(0xff0088C6),
-                                                                                    ),
-                                                                                    SizedBox(
-                                                                                      width: 5,
-                                                                                    ),
-                                                                                    Text(
-                                                                                      // item.createdate,
-                                                                                      DateFormat('dd/MM/').format(item.createdate) +
-                                                                                          DateFormat('yyyy').format(
-                                                                                            item.createdate.add(
-                                                                                              Duration(days: 198195),
-                                                                                            ),
-                                                                                          ),
-                                                                                      overflow: TextOverflow.ellipsis,
-                                                                                      style: GoogleFonts.kanit(
-                                                                                        fontSize: 12,
-                                                                                        fontWeight: FontWeight.w500,
-                                                                                        color: Colors.grey,
-                                                                                      ),
-                                                                                    ),
-                                                                                    SizedBox(
-                                                                                      width: 10,
-                                                                                    ),
-                                                                                    FaIcon(
-                                                                                      FontAwesomeIcons.solidEye,
-                                                                                      size: 12,
-                                                                                      color: Color(0xff0088C6),
-                                                                                    ),
-                                                                                    SizedBox(
-                                                                                      width: 5,
-                                                                                    ),
-                                                                                    Text(
-                                                                                      NumberFormat.decimalPattern().format(item.view),
-                                                                                      // item.view.toString(),
-                                                                                      overflow: TextOverflow.ellipsis,
-                                                                                      style: GoogleFonts.kanit(
-                                                                                        fontSize: 12,
-                                                                                        fontWeight: FontWeight.w500,
-                                                                                        color: Colors.grey,
-                                                                                      ),
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                          )),
-                                                                    ],
-                                                                  ),
+                                    List<Arhighlight> data = snapshot.data;
+                                    List<Widget> imageSliderBanner = data
+                                        .map(
+                                          (item) => GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                Navigator.push(
+                                                    context,
+                                                    CupertinoPageRoute(
+                                                        builder: (context) =>
+                                                            ArticleDetailsPage(
+                                                              urlget:
+                                                                  '${item.cmsId}',
+                                                            )));
+                                              });
+                                            },
+                                            child: Container(
+                                              margin: EdgeInsets.all(5.0),
+                                              padding: EdgeInsets.all(20),
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(30.0)),
+                                                child: Stack(
+                                                  children: <Widget>[
+                                                    Container(
+                                                      child: Column(
+                                                        children: [
+                                                          Expanded(
+                                                            child: Container(
+                                                              height: 130,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                // color: Colors.white,
+                                                                image: DecorationImage(
+                                                                    fit: BoxFit
+                                                                        .cover,
+                                                                    image: NetworkImage(
+                                                                        item.picturePath)),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .only(
+                                                                  topLeft: Radius
+                                                                      .circular(
+                                                                          30),
+                                                                  topRight: Radius
+                                                                      .circular(
+                                                                          30),
                                                                 ),
                                                               ),
-                                                              SizedBox(
-                                                                  width: 20),
-                                                            ],
+                                                            ),
                                                           ),
-                                                        ),
+                                                          Container(
+                                                            height: 100,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color:
+                                                                  Colors.white,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .only(
+                                                                bottomLeft: Radius
+                                                                    .circular(
+                                                                        30),
+                                                                bottomRight:
+                                                                    Radius
+                                                                        .circular(
+                                                                            30),
+                                                              ),
+                                                            ),
+                                                            child: Container(
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      left: 15,
+                                                                      right:
+                                                                          15),
+                                                              child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
+                                                                      item
+                                                                          .subject,
+                                                                      maxLines:
+                                                                          1,
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
+                                                                      style: GoogleFonts.kanit(
+                                                                          fontSize:
+                                                                              16,
+                                                                          fontWeight: FontWeight
+                                                                              .w500,
+                                                                          color:
+                                                                              Color(0xff0088C6))),
+                                                                  Text(
+                                                                      item
+                                                                          .title,
+                                                                      maxLines:
+                                                                          2,
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
+                                                                      style: GoogleFonts.kanit(
+                                                                          fontSize:
+                                                                              14,
+                                                                          color:
+                                                                              Colors.black)),
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      FaIcon(
+                                                                        FontAwesomeIcons
+                                                                            .solidClock,
+                                                                        size:
+                                                                            12,
+                                                                        color: Color(
+                                                                            0xff0088C6),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            5,
+                                                                      ),
+                                                                      Text(
+                                                                        DateFormat('dd/MM/').format(item.createDate) +
+                                                                            DateFormat('yyyy').format(
+                                                                              item.createDate.add(
+                                                                                Duration(days: 198195),
+                                                                              ),
+                                                                            ),
+                                                                        overflow:
+                                                                            TextOverflow.ellipsis,
+                                                                        style: GoogleFonts
+                                                                            .kanit(
+                                                                          fontSize:
+                                                                              12,
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                          color:
+                                                                              Colors.grey,
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            10,
+                                                                      ),
+                                                                      FaIcon(
+                                                                        FontAwesomeIcons
+                                                                            .solidEye,
+                                                                        size:
+                                                                            12,
+                                                                        color: Color(
+                                                                            0xff0088C6),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            5,
+                                                                      ),
+                                                                      Text(
+                                                                        '64',
+                                                                        overflow:
+                                                                            TextOverflow.ellipsis,
+                                                                        style: GoogleFonts
+                                                                            .kanit(
+                                                                          fontSize:
+                                                                              12,
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                          color:
+                                                                              Colors.grey,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ))
-                                                .toList()),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                        .toList();
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.1),
+                                              spreadRadius: 1,
+                                              blurRadius: 10,
+                                              offset: Offset(8, 0),
+                                            )
+                                          ],
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(30))),
+                                      child: Column(
+                                        children: [
+                                          CarouselSlider(
+                                            items: imageSliderBanner,
+                                            carouselController: _controller,
+                                            options: CarouselOptions(
+                                                height: 250,
+                                                viewportFraction: 1,
+                                                autoPlay: false,
+                                                enlargeCenterPage: true,
+                                                autoPlayInterval:
+                                                    Duration(seconds: 15),
+                                                aspectRatio: 2.0,
+                                                onPageChanged: (index, reason) {
+                                                  setState(() {
+                                                    _currents = index;
+                                                  });
+                                                }),
+                                          ),
+                                          Visibility(
+                                            visible: false,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: imageSliderBanner
+                                                  .asMap()
+                                                  .entries
+                                                  .map((entry) {
+                                                return GestureDetector(
+                                                  onTap: () => _controller
+                                                      .animateToPage(entry.key),
+                                                  child: Container(
+                                                    width: 9.0,
+                                                    height: 9.0,
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 5.0,
+                                                            horizontal: 2.0),
+                                                    decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        color: _currents ==
+                                                                entry.key
+                                                            ? Colors.pink[200]
+                                                            : Colors.blue),
+                                                  ),
+                                                );
+                                              }).toList(),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     );
                                   } else if (snapshot.hasError) {
@@ -827,6 +952,200 @@ class _MainPageState extends State<MainPage> {
                                   return CircularProgressIndicator();
                                 },
                               ),
+                              // color: Colors.amber,
+                              // child: FutureBuilder<List<Arhighlight>>(
+                              //   future: ArhighlightData,
+                              //   builder: (context, snapshot) {
+                              //     if (snapshot.hasData) {
+                              //       List<Arhighlight> articleDatas =
+                              //           snapshot.data;
+                              //       return SingleChildScrollView(
+                              //         scrollDirection: Axis.horizontal,
+                              //         child: Container(
+                              //           child: new Row(
+                              //               children: articleDatas
+                              //                   .map((item) => new Container(
+                              //                         width:
+                              //                             MediaQuery.of(context)
+                              //                                 .size
+                              //                                 .width,
+                              //                         padding: EdgeInsets.only(
+                              //                           left: 15,
+                              //                         ),
+                              //                         child:
+                              //                             SingleChildScrollView(
+                              //                           scrollDirection:
+                              //                               Axis.horizontal,
+                              //                           child: Container(
+                              //                             // width: MediaQuery.of(context).size.width,
+                              //                             padding:
+                              //                                 EdgeInsets.only(
+                              //                                     top: 10,
+                              //                                     right: 10,
+                              //                                     left: 10,
+                              //                                     bottom: 20),
+                              //                             //color: Colors.red,
+                              //                             child: Row(
+                              //                               mainAxisAlignment:
+                              //                                   MainAxisAlignment
+                              //                                       .start,
+                              //                               children: [
+                              //                                 GestureDetector(
+                              //                                   onTap: () {
+                              //                                     setState(() {
+                              //                                       Navigator.push(
+                              //                                           context,
+                              //                                           CupertinoPageRoute(
+                              //                                               builder: (context) => ArticleDetailsPage(
+                              //                                                     urlget: '${item.cmsId}',
+                              //                                                   )));
+                              //                                     });
+                              //                                   },
+                              //                                   child:
+                              //                                       Container(
+                              //                                     width: 330,
+                              //                                     decoration: BoxDecoration(
+                              //                                         boxShadow: [
+                              //                                           BoxShadow(
+                              //                                             color: Colors
+                              //                                                 .grey
+                              //                                                 .withOpacity(0.2),
+                              //                                             spreadRadius:
+                              //                                                 1,
+                              //                                             blurRadius:
+                              //                                                 10,
+                              //                                             offset: Offset(
+                              //                                                 0,
+                              //                                                 8),
+                              //                                           )
+                              //                                         ],
+                              //                                         borderRadius:
+                              //                                             BorderRadius.all(
+                              //                                                 Radius.circular(40))),
+                              //                                     child: Column(
+                              //                                       children: [
+                              //                                         Container(
+                              //                                           width: MediaQuery.of(context)
+                              //                                               .size
+                              //                                               .width,
+                              //                                           height:
+                              //                                               130,
+                              //                                           decoration:
+                              //                                               BoxDecoration(
+                              //                                             // color: Colors.white,
+                              //                                             image: DecorationImage(
+                              //                                                 fit: BoxFit.cover,
+                              //                                                 image: NetworkImage(item.picturePath)),
+                              //                                             borderRadius:
+                              //                                                 BorderRadius.only(
+                              //                                               topLeft:
+                              //                                                   Radius.circular(30),
+                              //                                               topRight:
+                              //                                                   Radius.circular(30),
+                              //                                             ),
+                              //                                           ),
+                              //                                         ),
+                              //                                         Container(
+                              //                                             width: MediaQuery.of(context)
+                              //                                                 .size
+                              //                                                 .width,
+                              //                                             height:
+                              //                                                 100,
+                              //                                             decoration:
+                              //                                                 BoxDecoration(
+                              //                                               color:
+                              //                                                   Colors.white,
+                              //                                               borderRadius:
+                              //                                                   BorderRadius.only(
+                              //                                                 bottomLeft: Radius.circular(30),
+                              //                                                 bottomRight: Radius.circular(30),
+                              //                                               ),
+                              //                                             ),
+                              //                                             child:
+                              //                                                 Container(
+                              //                                               padding:
+                              //                                                   EdgeInsets.only(left: 15, right: 15),
+                              //                                               child:
+                              //                                                   Column(
+                              //                                                 crossAxisAlignment: CrossAxisAlignment.start,
+                              //                                                 children: [
+                              //                                                   Text(item.subject, maxLines: 1, style: GoogleFonts.kanit(fontSize: 16, fontWeight: FontWeight.w500, color: Color(0xff0088C6))),
+                              //                                                   Text(item.title, maxLines: 2, overflow: TextOverflow.ellipsis, style: GoogleFonts.kanit(fontSize: 14, color: Colors.black)),
+                              //                                                   Row(
+                              //                                                     mainAxisAlignment: MainAxisAlignment.start,
+                              //                                                     children: [
+                              //                                                       FaIcon(
+                              //                                                         FontAwesomeIcons.solidClock,
+                              //                                                         size: 12,
+                              //                                                         color: Color(0xff0088C6),
+                              //                                                       ),
+                              //                                                       SizedBox(
+                              //                                                         width: 5,
+                              //                                                       ),
+                              //                                                       Text(
+                              //                                                         // item.createdate,
+                              //                                                         DateFormat('dd/MM/').format(item.createDate) +
+                              //                                                             DateFormat('yyyy').format(
+                              //                                                               item.createDate.add(
+                              //                                                                 Duration(days: 198195),
+                              //                                                               ),
+                              //                                                             ),
+                              //                                                         overflow: TextOverflow.ellipsis,
+                              //                                                         style: GoogleFonts.kanit(
+                              //                                                           fontSize: 12,
+                              //                                                           fontWeight: FontWeight.w500,
+                              //                                                           color: Colors.grey,
+                              //                                                         ),
+                              //                                                       ),
+                              //                                                       SizedBox(
+                              //                                                         width: 10,
+                              //                                                       ),
+                              //                                                       FaIcon(
+                              //                                                         FontAwesomeIcons.solidEye,
+                              //                                                         size: 12,
+                              //                                                         color: Color(0xff0088C6),
+                              //                                                       ),
+                              //                                                       SizedBox(
+                              //                                                         width: 5,
+                              //                                                       ),
+                              //                                                       Text(
+                              //                                                         NumberFormat.decimalPattern().format(item.view),
+                              //                                                         // item.view.toString(),
+                              //                                                         overflow: TextOverflow.ellipsis,
+                              //                                                         style: GoogleFonts.kanit(
+                              //                                                           fontSize: 12,
+                              //                                                           fontWeight: FontWeight.w500,
+                              //                                                           color: Colors.grey,
+                              //                                                         ),
+                              //                                                       ),
+                              //                                                     ],
+                              //                                                   ),
+                              //                                                 ],
+                              //                                               ),
+                              //                                             )),
+                              //                                       ],
+                              //                                     ),
+                              //                                   ),
+                              //                                 ),
+                              //                                 SizedBox(
+                              //                                     width: 20),
+                              //                               ],
+                              //                             ),
+                              //                           ),
+                              //                         ),
+                              //                       ))
+                              //                   .toList()),
+                              //         ),
+                              //       );
+                              //     } else if (snapshot.hasError) {
+                              //       return Text("${snapshot.error}");
+                              //     }
+                              //     // By default show a loading spinner.
+                              //     return CircularProgressIndicator();
+                              //   },
+                              // ),
+
+                              ////
                             ),
                             //cardบทความ
                             // Container(
@@ -1379,12 +1698,12 @@ class _MainPageState extends State<MainPage> {
           if (sect.length <= 0) {
             return Container();
           } else {
-            print(sect.reduce(min));
+            // print(sect.reduce(min));
             int getSET = sect.reduce(min);
             final splitted = apps[getSET].datetime.split(' ');
-            print(splitted[0]);
+            // print(splitted[0]);
             final dateMM = splitted[0].split('-');
-            print(splitted[1]);
+            // print(splitted[1]);
 
             String strDAY =
                 "${dateMM[2].toString()}-${dateMM[1].toString()}-${dateMM[0].toString()}";
@@ -1416,7 +1735,7 @@ class _MainPageState extends State<MainPage> {
                         ),
                       ),
                       title: ShowTitle(
-                          title: '',
+                          title: 'นัดหมายเอกซเรย์เต้านม',
                           textStyle: GoogleFonts.kanit(
                               fontSize: 16, fontWeight: FontWeight.w500)),
                       subtitle: ShowTitle(

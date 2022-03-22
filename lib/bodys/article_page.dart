@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:thanyarak/bodys/API/api_articleHl.dart';
 import 'package:thanyarak/bodys/API/api_main_article.dart';
 import 'package:thanyarak/bodys/API/api_url.dart';
 import 'package:thanyarak/bodys/alert_page.dart';
@@ -44,6 +45,20 @@ Future<List<apiarticle>> fetchData() async {
   }
 }
 
+Future<List<Arhighlight>> arhighlight() async {
+  var url = '${apiurl().urlapi}/article.php?highlight=true';
+  final response = await http.get(Uri.parse(url));
+  if (response.statusCode == 200) {
+    List jsonResponse = json.decode(response.body);
+    x = jsonResponse.length.toDouble();
+    // print(x);
+
+    return jsonResponse.map((data) => new Arhighlight.fromJson(data)).toList();
+  } else {
+    throw Exception('Unexpected error occured!');
+  }
+}
+
 final List<String> imgLists = [
   'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
   'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
@@ -59,18 +74,48 @@ String cid = '';
 
 class _Article_pageState extends State<Article_page> {
   Future<List<apiarticle>> futureData;
+  Future<List<Arhighlight>> ArhighlightData;
+
   void initState() {
     Intl.defaultLocale = 'th';
     initializeDateFormatting();
     super.initState();
     getDATA();
     futureData = fetchData();
+    ArhighlightData = arhighlight();
+  }
+
+  bool notifiAction = false;
+  Future<void> checknotification({String cmsId}) async {
+    var url = '${apiurl().urlapi}/notification.php?userId=${cmsId}&unread=true';
+    final response = await http.get(Uri.parse(url), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    });
+    if (response.statusCode == 200) {
+      print("checknotification Status API :${response.statusCode}");
+
+      var jsonResponse = json.decode(response.body);
+
+      if (jsonResponse['unread'] == 0) {
+        setState(() {
+          notifiAction = false;
+        });
+      } else {
+        setState(() {
+          notifiAction = true;
+        });
+      }
+    } else {
+      print("checknotification Status API :${response.statusCode}");
+    }
   }
 
   Future getDATA() async {
     final SharedPreferences per = await SharedPreferences.getInstance();
     setState(() {
       cid = per.getString('cid');
+      checknotification(cmsId: cid);
       // print(cid);
     });
   }
@@ -154,7 +199,10 @@ class _Article_pageState extends State<Article_page> {
                                                             cid == '' ||
                                                                     cid == null
                                                                 ? NotiPage()
-                                                                : alert_page()));
+                                                                : alert_page(
+                                                                    pageto:
+                                                                        '/artclePage',
+                                                                  )));
                                               },
                                               child: Stack(
                                                 children: [
@@ -166,6 +214,7 @@ class _Article_pageState extends State<Article_page> {
                                                                 'images/notimenu.png'))),
                                                   ),
                                                   Visibility(
+                                                    visible: notifiAction,
                                                     child: Positioned(
                                                       left: 10,
                                                       top: 6,
@@ -251,11 +300,12 @@ class _Article_pageState extends State<Article_page> {
                                 ),
                                 child: Column(
                                   children: [
-                                    FutureBuilder<List<apiarticle>>(
-                                      future: futureData,
+                                    FutureBuilder<List<Arhighlight>>(
+                                      future: ArhighlightData,
                                       builder: (context, snapshot) {
                                         if (snapshot.hasData) {
-                                          List<apiarticle> data = snapshot.data;
+                                          List<Arhighlight> data =
+                                              snapshot.data;
                                           List<Widget> imageSliderBanner = data
                                               .map((item) => Container(
                                                     child: Container(
@@ -282,7 +332,7 @@ class _Article_pageState extends State<Article_page> {
                                                                           // color: Colors.white,
                                                                           image: DecorationImage(
                                                                               fit: BoxFit.cover,
-                                                                              image: NetworkImage(item.urlpicpath)),
+                                                                              image: NetworkImage(item.picturePath)),
                                                                           borderRadius:
                                                                               BorderRadius.only(
                                                                             topLeft:
@@ -332,9 +382,9 @@ class _Article_pageState extends State<Article_page> {
                                                                                     width: 5,
                                                                                   ),
                                                                                   Text(
-                                                                                    DateFormat('dd/MM/').format(item.createdate) +
+                                                                                    DateFormat('dd/MM/').format(item.createDate) +
                                                                                         DateFormat('yyyy').format(
-                                                                                          item.createdate.add(
+                                                                                          item.createDate.add(
                                                                                             Duration(days: 198195),
                                                                                           ),
                                                                                         ),

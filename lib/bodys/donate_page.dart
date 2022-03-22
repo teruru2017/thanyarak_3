@@ -11,6 +11,8 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:thanyarak/bodys/API/api_donate.dart';
+import 'package:thanyarak/bodys/API/api_donateGET.dart';
+import 'package:thanyarak/bodys/API/api_url.dart';
 import 'package:thanyarak/bodys/alert_page.dart';
 import 'package:thanyarak/bodys/detaildonate_pages.dart';
 import 'package:thanyarak/bodys/menu_page.dart';
@@ -33,13 +35,15 @@ class DonatePage extends StatefulWidget {
 String cid = '';
 
 class _DonatePageState extends State<DonatePage> {
-  Future<List<apiDonate>> donateData() async {
+  Future<List<apiDonateGET>> donateData() async {
     final response =
         await http.get(Uri.parse('https://truethanyarak.com/api/Do_List.php'));
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
-      print(response.body);
-      return jsonResponse.map((data) => new apiDonate.fromJson(data)).toList();
+
+      return jsonResponse
+          .map((data) => new apiDonateGET.fromJson(data))
+          .toList();
     } else {
       throw Exception('Unexpected error occured!');
     }
@@ -50,16 +54,43 @@ class _DonatePageState extends State<DonatePage> {
     setState(() {
       cid = per.getString('cid');
       // print(cid);
+      checknotification(cmsId: cid);
     });
   }
 
-  Future<List<apiDonate>> futureData;
+  Future<List<apiDonateGET>> futureData;
   void initState() {
     Intl.defaultLocale = 'th';
     initializeDateFormatting();
     super.initState();
     getDATA();
     futureData = donateData();
+  }
+
+  bool notifiAction = false;
+  Future<void> checknotification({String cmsId}) async {
+    var url = '${apiurl().urlapi}/notification.php?userId=${cmsId}&unread=true';
+    final response = await http.get(Uri.parse(url), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    });
+    if (response.statusCode == 200) {
+      print("checknotification Status API :${response.statusCode}");
+
+      var jsonResponse = json.decode(response.body);
+
+      if (jsonResponse['unread'] == 0) {
+        setState(() {
+          notifiAction = false;
+        });
+      } else {
+        setState(() {
+          notifiAction = true;
+        });
+      }
+    } else {
+      print("checknotification Status API :${response.statusCode}");
+    }
   }
 
   List<String> pathImageAritcles = [
@@ -172,7 +203,10 @@ class _DonatePageState extends State<DonatePage> {
                                                             cid == '' ||
                                                                     cid == null
                                                                 ? NotiPage()
-                                                                : alert_page()));
+                                                                : alert_page(
+                                                                    pageto:
+                                                                        '/donatePage',
+                                                                  )));
                                               },
                                               child: Stack(
                                                 children: [
@@ -184,10 +218,7 @@ class _DonatePageState extends State<DonatePage> {
                                                                 'images/notimenu.png'))),
                                                   ),
                                                   Visibility(
-                                                    visible:
-                                                        cid == '' || cid == null
-                                                            ? false
-                                                            : true,
+                                                    visible: notifiAction,
                                                     child: Positioned(
                                                       left: 10,
                                                       top: 6,
@@ -266,11 +297,12 @@ class _DonatePageState extends State<DonatePage> {
                           width: MediaQuery.of(context).size.width,
                           child: Column(
                             children: [
-                              FutureBuilder<List<apiDonate>>(
+                              FutureBuilder<List<apiDonateGET>>(
                                 future: futureData,
                                 builder: (context, snapshot) {
                                   if (snapshot.hasData) {
-                                    List<apiDonate> donateData = snapshot.data;
+                                    List<apiDonateGET> donateData =
+                                        snapshot.data;
                                     return Container(
                                       child: Column(
                                         children: donateData
@@ -448,7 +480,7 @@ class _DonatePageState extends State<DonatePage> {
                                                                               5,
                                                                         ),
                                                                         Text(
-                                                                          '10',
+                                                                          "${e.view}",
                                                                           overflow:
                                                                               TextOverflow.ellipsis,
                                                                           style:

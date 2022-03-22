@@ -47,7 +47,34 @@ class _AboutPageState extends State<AboutPage> {
       cid = per.getString('cid');
       // print(cid);
       futureDataAbout = fetchData();
+      checknotification(cmsId: cid);
     });
+  }
+
+  bool notifiAction = false;
+  Future<void> checknotification({String cmsId}) async {
+    var url = '${apiurl().urlapi}/notification.php?userId=${cmsId}&unread=true';
+    final response = await http.get(Uri.parse(url), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    });
+    if (response.statusCode == 200) {
+      print("checknotification Status API :${response.statusCode}");
+
+      var jsonResponse = json.decode(response.body);
+
+      if (jsonResponse['unread'] == 0) {
+        setState(() {
+          notifiAction = false;
+        });
+      } else {
+        setState(() {
+          notifiAction = true;
+        });
+      }
+    } else {
+      print("checknotification Status API :${response.statusCode}");
+    }
   }
 
   Future<About> futureDataAbout;
@@ -156,7 +183,10 @@ class _AboutPageState extends State<AboutPage> {
                                                             cid == '' ||
                                                                     cid == null
                                                                 ? NotiPage()
-                                                                : alert_page()));
+                                                                : alert_page(
+                                                                    pageto:
+                                                                        "/aboutPage",
+                                                                  )));
                                               },
                                               child: Stack(
                                                 children: [
@@ -168,10 +198,7 @@ class _AboutPageState extends State<AboutPage> {
                                                                 'images/notimenu.png'))),
                                                   ),
                                                   Visibility(
-                                                    visible:
-                                                        cid == '' || cid == null
-                                                            ? false
-                                                            : true,
+                                                    visible: notifiAction,
                                                     child: Positioned(
                                                       left: 10,
                                                       top: 6,

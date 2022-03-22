@@ -15,8 +15,9 @@ class SessionManager {
       phone,
       cidOTP,
       nameSET,
-      phoneOTP;
-  bool login;
+      phoneOTP,
+      call;
+  bool login, notiffication;
   Future<void> setID(String auth_token) async {
     SharedPreferences shared = await SharedPreferences.getInstance();
 
@@ -126,6 +127,18 @@ class SessionManager {
     return login;
   }
 
+  Future<void> setCheckNotifi(bool notiffication) async {
+    SharedPreferences shared = await SharedPreferences.getInstance();
+
+    shared.setBool('notifi', notiffication);
+  }
+
+  Future<bool> getCheckNotifi() async {
+    SharedPreferences shared = await SharedPreferences.getInstance();
+    notiffication = shared.getBool('notifi');
+    return notiffication;
+  }
+
   Future<void> setPassword(String password) async {
     SharedPreferences shared = await SharedPreferences.getInstance();
 
@@ -190,5 +203,19 @@ class SessionManager {
     SharedPreferences shared = await SharedPreferences.getInstance();
     phoneOTP = shared.getString('phone_otp');
     return phoneOTP;
+  }
+
+  Future<void> setCall(String call) async {
+    SharedPreferences shared = await SharedPreferences.getInstance();
+
+    shared.setString('call', call);
+    return call;
+  }
+//get value from shared preferences
+
+  Future<String> getCall() async {
+    SharedPreferences shared = await SharedPreferences.getInstance();
+    call = shared.getString('call');
+    return call;
   }
 }
